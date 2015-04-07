@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7CCBBD5A1AD418AF00EA1F7F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD591AD418AF00EA1F7F /* main.m */; };
+		7CCBBD5D1AD418AF00EA1F7F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD5C1AD418AF00EA1F7F /* AppDelegate.m */; };
+		7CCBBD601AD418AF00EA1F7F /* SmartShopping.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD5E1AD418AF00EA1F7F /* SmartShopping.xcdatamodeld */; };
+		7CCBBD631AD418AF00EA1F7F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD621AD418AF00EA1F7F /* ViewController.m */; };
+		7CCBBD661AD418AF00EA1F7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD641AD418AF00EA1F7F /* Main.storyboard */; };
+		7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD671AD418AF00EA1F7F /* Images.xcassets */; };
+		7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD691AD418AF00EA1F7F /* LaunchScreen.xib */; };
+		7CCBBD771AD418AF00EA1F7F /* SmartShoppingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD761AD418AF00EA1F7F /* SmartShoppingTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7CCBBD711AD418AF00EA1F7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CCBBD4C1AD418AF00EA1F7F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CCBBD531AD418AF00EA1F7F;
+			remoteInfo = SmartShopping;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7CCBBD541AD418AF00EA1F7F /* SmartShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CCBBD581AD418AF00EA1F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7CCBBD591AD418AF00EA1F7F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7CCBBD5B1AD418AF00EA1F7F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7CCBBD5C1AD418AF00EA1F7F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7CCBBD5F1AD418AF00EA1F7F /* SmartShopping.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartShopping.xcdatamodel; sourceTree = "<group>"; };
+		7CCBBD611AD418AF00EA1F7F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7CCBBD621AD418AF00EA1F7F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7CCBBD651AD418AF00EA1F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7CCBBD671AD418AF00EA1F7F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		7CCBBD6A1AD418AF00EA1F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		7CCBBD701AD418AF00EA1F7F /* SmartShoppingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartShoppingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CCBBD751AD418AF00EA1F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7CCBBD761AD418AF00EA1F7F /* SmartShoppingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmartShoppingTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7CCBBD511AD418AF00EA1F7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CCBBD6D1AD418AF00EA1F7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7CCBBD4B1AD418AF00EA1F7F = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD561AD418AF00EA1F7F /* SmartShopping */,
+				7CCBBD731AD418AF00EA1F7F /* SmartShoppingTests */,
+				7CCBBD551AD418AF00EA1F7F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7CCBBD551AD418AF00EA1F7F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD541AD418AF00EA1F7F /* SmartShopping.app */,
+				7CCBBD701AD418AF00EA1F7F /* SmartShoppingTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7CCBBD561AD418AF00EA1F7F /* SmartShopping */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD5B1AD418AF00EA1F7F /* AppDelegate.h */,
+				7CCBBD5C1AD418AF00EA1F7F /* AppDelegate.m */,
+				7CCBBD611AD418AF00EA1F7F /* ViewController.h */,
+				7CCBBD621AD418AF00EA1F7F /* ViewController.m */,
+				7CCBBD641AD418AF00EA1F7F /* Main.storyboard */,
+				7CCBBD671AD418AF00EA1F7F /* Images.xcassets */,
+				7CCBBD691AD418AF00EA1F7F /* LaunchScreen.xib */,
+				7CCBBD5E1AD418AF00EA1F7F /* SmartShopping.xcdatamodeld */,
+				7CCBBD571AD418AF00EA1F7F /* Supporting Files */,
+			);
+			path = SmartShopping;
+			sourceTree = "<group>";
+		};
+		7CCBBD571AD418AF00EA1F7F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD581AD418AF00EA1F7F /* Info.plist */,
+				7CCBBD591AD418AF00EA1F7F /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7CCBBD731AD418AF00EA1F7F /* SmartShoppingTests */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD761AD418AF00EA1F7F /* SmartShoppingTests.m */,
+				7CCBBD741AD418AF00EA1F7F /* Supporting Files */,
+			);
+			path = SmartShoppingTests;
+			sourceTree = "<group>";
+		};
+		7CCBBD741AD418AF00EA1F7F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD751AD418AF00EA1F7F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7CCBBD531AD418AF00EA1F7F /* SmartShopping */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7CCBBD7A1AD418AF00EA1F7F /* Build configuration list for PBXNativeTarget "SmartShopping" */;
+			buildPhases = (
+				7CCBBD501AD418AF00EA1F7F /* Sources */,
+				7CCBBD511AD418AF00EA1F7F /* Frameworks */,
+				7CCBBD521AD418AF00EA1F7F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmartShopping;
+			productName = SmartShopping;
+			productReference = 7CCBBD541AD418AF00EA1F7F /* SmartShopping.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7CCBBD6F1AD418AF00EA1F7F /* SmartShoppingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7CCBBD7D1AD418AF00EA1F7F /* Build configuration list for PBXNativeTarget "SmartShoppingTests" */;
+			buildPhases = (
+				7CCBBD6C1AD418AF00EA1F7F /* Sources */,
+				7CCBBD6D1AD418AF00EA1F7F /* Frameworks */,
+				7CCBBD6E1AD418AF00EA1F7F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7CCBBD721AD418AF00EA1F7F /* PBXTargetDependency */,
+			);
+			name = SmartShoppingTests;
+			productName = SmartShoppingTests;
+			productReference = 7CCBBD701AD418AF00EA1F7F /* SmartShoppingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7CCBBD4C1AD418AF00EA1F7F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = wrs;
+				TargetAttributes = {
+					7CCBBD531AD418AF00EA1F7F = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					7CCBBD6F1AD418AF00EA1F7F = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 7CCBBD531AD418AF00EA1F7F;
+					};
+				};
+			};
+			buildConfigurationList = 7CCBBD4F1AD418AF00EA1F7F /* Build configuration list for PBXProject "SmartShopping" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7CCBBD4B1AD418AF00EA1F7F;
+			productRefGroup = 7CCBBD551AD418AF00EA1F7F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7CCBBD531AD418AF00EA1F7F /* SmartShopping */,
+				7CCBBD6F1AD418AF00EA1F7F /* SmartShoppingTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7CCBBD521AD418AF00EA1F7F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CCBBD661AD418AF00EA1F7F /* Main.storyboard in Resources */,
+				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
+				7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CCBBD6E1AD418AF00EA1F7F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7CCBBD501AD418AF00EA1F7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CCBBD601AD418AF00EA1F7F /* SmartShopping.xcdatamodeld in Sources */,
+				7CCBBD5D1AD418AF00EA1F7F /* AppDelegate.m in Sources */,
+				7CCBBD631AD418AF00EA1F7F /* ViewController.m in Sources */,
+				7CCBBD5A1AD418AF00EA1F7F /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CCBBD6C1AD418AF00EA1F7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CCBBD771AD418AF00EA1F7F /* SmartShoppingTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7CCBBD721AD418AF00EA1F7F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7CCBBD531AD418AF00EA1F7F /* SmartShopping */;
+			targetProxy = 7CCBBD711AD418AF00EA1F7F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7CCBBD641AD418AF00EA1F7F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7CCBBD651AD418AF00EA1F7F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7CCBBD691AD418AF00EA1F7F /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7CCBBD6A1AD418AF00EA1F7F /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7CCBBD781AD418AF00EA1F7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7CCBBD791AD418AF00EA1F7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7CCBBD7B1AD418AF00EA1F7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SmartShopping/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7CCBBD7C1AD418AF00EA1F7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SmartShopping/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		7CCBBD7E1AD418AF00EA1F7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SmartShoppingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartShopping.app/SmartShopping";
+			};
+			name = Debug;
+		};
+		7CCBBD7F1AD418AF00EA1F7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SmartShoppingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartShopping.app/SmartShopping";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7CCBBD4F1AD418AF00EA1F7F /* Build configuration list for PBXProject "SmartShopping" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CCBBD781AD418AF00EA1F7F /* Debug */,
+				7CCBBD791AD418AF00EA1F7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7CCBBD7A1AD418AF00EA1F7F /* Build configuration list for PBXNativeTarget "SmartShopping" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CCBBD7B1AD418AF00EA1F7F /* Debug */,
+				7CCBBD7C1AD418AF00EA1F7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		7CCBBD7D1AD418AF00EA1F7F /* Build configuration list for PBXNativeTarget "SmartShoppingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CCBBD7E1AD418AF00EA1F7F /* Debug */,
+				7CCBBD7F1AD418AF00EA1F7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7CCBBD5E1AD418AF00EA1F7F /* SmartShopping.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7CCBBD5F1AD418AF00EA1F7F /* SmartShopping.xcdatamodel */,
+			);
+			currentVersion = 7CCBBD5F1AD418AF00EA1F7F /* SmartShopping.xcdatamodel */;
+			path = SmartShopping.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 7CCBBD4C1AD418AF00EA1F7F /* Project object */;
+}
