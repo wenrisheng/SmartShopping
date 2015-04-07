@@ -15,6 +15,7 @@
 		7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD671AD418AF00EA1F7F /* Images.xcassets */; };
 		7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD691AD418AF00EA1F7F /* LaunchScreen.xib */; };
 		7CCBBD771AD418AF00EA1F7F /* SmartShoppingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBBD761AD418AF00EA1F7F /* SmartShoppingTests.m */; };
+		7CCBBD891AD41B2900EA1F7F /* libBaseStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCBBD861AD419FE00EA1F7F /* libBaseStaticLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +25,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7CCBBD531AD418AF00EA1F7F;
 			remoteInfo = SmartShopping;
+		};
+		7CCBBD851AD419FE00EA1F7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7CCBBD2E1AD416B100EA1F7F;
+			remoteInfo = BaseStaticLibrary;
+		};
+		7CCBBD871AD419FE00EA1F7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7CCBBD391AD416B100EA1F7F;
+			remoteInfo = BaseStaticLibraryTests;
+		};
+		7CCBBD8A1AD41B3200EA1F7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CCBBD2D1AD416B100EA1F7F;
+			remoteInfo = BaseStaticLibrary;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -42,6 +64,8 @@
 		7CCBBD701AD418AF00EA1F7F /* SmartShoppingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartShoppingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CCBBD751AD418AF00EA1F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CCBBD761AD418AF00EA1F7F /* SmartShoppingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmartShoppingTests.m; sourceTree = "<group>"; };
+		7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BaseStaticLibrary.xcodeproj; path = BaseStaticLibrary/BaseStaticLibrary.xcodeproj; sourceTree = "<group>"; };
+		7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCBBD891AD41B2900EA1F7F /* libBaseStaticLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +90,7 @@
 		7CCBBD4B1AD418AF00EA1F7F = {
 			isa = PBXGroup;
 			children = (
+				7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */,
 				7CCBBD561AD418AF00EA1F7F /* SmartShopping */,
 				7CCBBD731AD418AF00EA1F7F /* SmartShoppingTests */,
 				7CCBBD551AD418AF00EA1F7F /* Products */,
@@ -99,6 +125,7 @@
 		7CCBBD571AD418AF00EA1F7F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */,
 				7CCBBD581AD418AF00EA1F7F /* Info.plist */,
 				7CCBBD591AD418AF00EA1F7F /* main.m */,
 			);
@@ -122,6 +149,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7CCBBD811AD419FE00EA1F7F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBBD861AD419FE00EA1F7F /* libBaseStaticLibrary.a */,
+				7CCBBD881AD419FE00EA1F7F /* BaseStaticLibraryTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -136,6 +172,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7CCBBD8B1AD41B3200EA1F7F /* PBXTargetDependency */,
 			);
 			name = SmartShopping;
 			productName = SmartShopping;
@@ -189,6 +226,12 @@
 			mainGroup = 7CCBBD4B1AD418AF00EA1F7F;
 			productRefGroup = 7CCBBD551AD418AF00EA1F7F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 7CCBBD811AD419FE00EA1F7F /* Products */;
+					ProjectRef = 7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				7CCBBD531AD418AF00EA1F7F /* SmartShopping */,
@@ -196,6 +239,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		7CCBBD861AD419FE00EA1F7F /* libBaseStaticLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBaseStaticLibrary.a;
+			remoteRef = 7CCBBD851AD419FE00EA1F7F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7CCBBD881AD419FE00EA1F7F /* BaseStaticLibraryTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BaseStaticLibraryTests.xctest;
+			remoteRef = 7CCBBD871AD419FE00EA1F7F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7CCBBD521AD418AF00EA1F7F /* Resources */ = {
@@ -244,6 +304,11 @@
 			isa = PBXTargetDependency;
 			target = 7CCBBD531AD418AF00EA1F7F /* SmartShopping */;
 			targetProxy = 7CCBBD711AD418AF00EA1F7F /* PBXContainerItemProxy */;
+		};
+		7CCBBD8B1AD41B3200EA1F7F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BaseStaticLibrary;
+			targetProxy = 7CCBBD8A1AD41B3200EA1F7F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -347,9 +412,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
 				INFOPLIST_FILE = SmartShopping/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/** $(BUILT_PRODUCTS_DIR)/include/BaseStaticLibrary/**";
 			};
 			name = Debug;
 		};
@@ -357,9 +425,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
 				INFOPLIST_FILE = SmartShopping/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/** $(BUILT_PRODUCTS_DIR)/include/BaseStaticLibrary/**";
 			};
 			name = Release;
 		};
