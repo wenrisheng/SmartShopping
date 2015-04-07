@@ -1,0 +1,3 @@
+[submodule "BaseStaticLibrary"]
+	path = BaseStaticLibrary
+	url = https://github.com/wenrisheng/BaseStaticLibrary.git
