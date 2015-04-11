@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "HomeViewController.h"
+#import "PromotionCouponViewController.h"
+#import "GainPeasViewController.h"
+#import "MineViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,8 +20,50 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
+    self.window.backgroundColor = [UIColor clearColor];
     
+    [self initTabbarViewController];
+    
+    if (IOS7ORLATER) {
+        UIView *statusBar = [[UIView alloc] init];
+        statusBar.frame = CGRectMake(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT);
+        statusBar.backgroundColor = STATUSBAR_COLOR;
+        [self.window addSubview:statusBar];
+    }
+//    [_nav.navigationBar setTintColor:[UIColor yellowColor]];
+//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor blackColor]];
+
     return YES;
+}
+
+- (void)initTabbarViewController
+{
+    HomeViewController *homeVC = [[HomeViewController alloc] init];
+    PromotionCouponViewController *promotionCouponVC = [[PromotionCouponViewController alloc] init];
+    GainPeasViewController *gainPeasVC = [[GainPeasViewController alloc] init];
+    MineViewController *miniVC = [[MineViewController alloc] init];
+    TabbarViewController *tabbarVC = [[TabbarViewController alloc] init];
+    NSArray *VCs = @[homeVC, promotionCouponVC, gainPeasVC, miniVC];
+    NSArray *titles = @[@"首页", @"促销优惠", @"赚精明豆", @"我的"];
+    NSArray *normalImages = @[@"normal", @"normal", @"normal", @"normal"];
+    NSArray *selectedImages = @[@"selected", @"selected", @"selected", @"selected"];;
+    NSUInteger VCCount = VCs.count;
+    NSMutableArray *dataArray = [NSMutableArray array];
+    for (int i = 0; i < VCCount; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[VCs objectAtIndex:i] forKey:TABBARITEM_VIEWCONTROLLER];
+        [dic setValue:[titles objectAtIndex:i] forKey:TABBARITEM_TITLE];
+        [dic setValue:[normalImages objectAtIndex:i] forKey:TABBARITEM_IMAGE_NORMAL];
+        [dic setValue:[selectedImages objectAtIndex:i] forKey:TABBARITEM_IMAGE_SELECTED];
+        [dataArray addObject:dic];
+    }
+    tabbarVC.dataArray = dataArray;
+    _nav = [[UINavigationController alloc] initWithRootViewController:tabbarVC];
+    _nav.navigationBarHidden = YES;
+    self.window.rootViewController = _nav;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
