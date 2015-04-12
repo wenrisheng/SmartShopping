@@ -19,6 +19,8 @@
 		7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD671AD418AF00EA1F7F /* Images.xcassets */; };
 		7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCBBD691AD418AF00EA1F7F /* LaunchScreen.xib */; };
 		7CCBBD891AD41B2900EA1F7F /* libBaseStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCBBD861AD419FE00EA1F7F /* libBaseStaticLibrary.a */; };
+		7CCCE8261ADA1B3300B10DEB /* HomeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCCE8241ADA1B3300B10DEB /* HomeCollectionViewCell.m */; };
+		7CCCE8271ADA1B3300B10DEB /* HomeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCCE8251ADA1B3300B10DEB /* HomeCollectionViewCell.xib */; };
 		7CCD11371AD54275005A1429 /* ASIHttpWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD10FA1AD54275005A1429 /* ASIHttpWrap.m */; };
 		7CCD11381AD54275005A1429 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD10FD1AD54275005A1429 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CCD11391AD54275005A1429 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD11001AD54275005A1429 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -112,6 +114,9 @@
 		7CCBBD6A1AD418AF00EA1F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BaseStaticLibrary.xcodeproj; path = BaseStaticLibrary/BaseStaticLibrary.xcodeproj; sourceTree = "<group>"; };
 		7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = "<group>"; };
+		7CCCE8231ADA1B3300B10DEB /* HomeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeCollectionViewCell.h; sourceTree = "<group>"; };
+		7CCCE8241ADA1B3300B10DEB /* HomeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeCollectionViewCell.m; sourceTree = "<group>"; };
+		7CCCE8251ADA1B3300B10DEB /* HomeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeCollectionViewCell.xib; sourceTree = "<group>"; };
 		7CCD10F91AD54275005A1429 /* ASIHttpWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHttpWrap.h; sourceTree = "<group>"; };
 		7CCD10FA1AD54275005A1429 /* ASIHttpWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHttpWrap.m; sourceTree = "<group>"; };
 		7CCD10FC1AD54275005A1429 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
@@ -505,6 +510,9 @@
 				7CBD6CDF1AD98C17008B29B4 /* HomeHeaderCollectionReusableView.h */,
 				7CBD6CE01AD98C17008B29B4 /* HomeHeaderCollectionReusableView.m */,
 				7CBD6CE11AD98C17008B29B4 /* HomeHeaderCollectionReusableView.xib */,
+				7CCCE8231ADA1B3300B10DEB /* HomeCollectionViewCell.h */,
+				7CCCE8241ADA1B3300B10DEB /* HomeCollectionViewCell.m */,
+				7CCCE8251ADA1B3300B10DEB /* HomeCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -688,6 +696,7 @@
 				7CCD11761AD54FCA005A1429 /* GainPeasViewController.xib in Resources */,
 				7CCD114E1AD54275005A1429 /* README-GHUnit in Resources */,
 				7C013F031AD56C9D00E74C78 /* selected.png in Resources */,
+				7CCCE8271ADA1B3300B10DEB /* HomeCollectionViewCell.xib in Resources */,
 				7CCD117B1AD54FE5005A1429 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,6 +722,7 @@
 				7CCD11461AD54275005A1429 /* ASICloudFilesObjectRequest.m in Sources */,
 				7CCD11451AD54275005A1429 /* ASICloudFilesObject.m in Sources */,
 				7CBD6CE21AD98C17008B29B4 /* HomeHeaderCollectionReusableView.m in Sources */,
+				7CCCE8261ADA1B3300B10DEB /* HomeCollectionViewCell.m in Sources */,
 				7CCD11431AD54275005A1429 /* ASICloudFilesContainerRequest.m in Sources */,
 				7CCD11751AD54FCA005A1429 /* GainPeasViewController.m in Sources */,
 				7CCD11441AD54275005A1429 /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,

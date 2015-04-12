@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [_segmentedControl setTintColor:STATUSBAR_COLOR];
 }
 
 @end
