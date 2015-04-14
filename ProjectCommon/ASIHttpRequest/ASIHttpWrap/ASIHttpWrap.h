@@ -19,7 +19,7 @@
 
 @interface Service : NSObject
 
-@property (weak, nonatomic) id<ServiceDelegate> delegate;
+@property (assign, nonatomic) id<ServiceDelegate> delegate;
 
 - (void)get:(NSString *)url tag:(int)tag;
 

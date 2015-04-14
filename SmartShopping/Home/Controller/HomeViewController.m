@@ -13,10 +13,11 @@
 #define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
 #define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
-@interface HomeViewController () <NavigationBarButSearchButViewDelegate, SlideSwitchViewDelegate, HomeCollectionViewCellDelegate>
+@interface HomeViewController () <NavigationBarButSearchButViewDelegate, SlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate>
 {
     NSMutableArray *collectionViewDataArray;
     NSMutableArray *slideImageArray;
+    BMKMapView* mapView;
 }
 
 @property (weak, nonatomic) IBOutlet NavigationBarManagerView *navBarManagerView;
@@ -29,13 +30,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
     collectionViewDataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     
+    // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
     
+    mapView = [[BMKMapView alloc]initWithFrame:CGRectZero];
     
     [self addTestData];
 }
@@ -45,6 +49,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    // 此处记得不用的时候需要置nil，否则影响内存的释放
+    mapView.delegate = self;
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+     // 不用时，置nil
+    mapView.delegate = nil;
+}
+
+#pragma mark - 测试数据
 - (void)addTestData
 {
     [collectionViewDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
@@ -204,6 +222,12 @@
         default:
             break;
     }
+}
+
+#pragma mark - BMKMapViewDelegate
+- (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    DLog(@"regionDidChangeAnimated");
 }
 
 @end
