@@ -1,18 +1,18 @@
 //
-//  GainPeasViewController.m
+//  MineViewController.m
 //  SmartShopping
 //
 //  Created by wrs on 15/4/8.
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "GainPeasViewController.h"
+#import "WSMineViewController.h"
 
-@interface GainPeasViewController ()
+@interface WSMineViewController ()
 
 @end
 
-@implementation GainPeasViewController
+@implementation WSMineViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

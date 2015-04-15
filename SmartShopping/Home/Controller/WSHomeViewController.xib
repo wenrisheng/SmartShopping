@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSHomeViewController">
             <connections>
                 <outlet property="collectionView" destination="LVV-jW-dLo" id="juf-mm-AXR"/>
                 <outlet property="navBarManagerView" destination="6ua-IV-0ab" id="7AB-M9-tkX"/>
@@ -17,19 +17,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view tag="101" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ua-IV-0ab" customClass="NavigationBarManagerView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <view tag="101" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ua-IV-0ab" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                     <color key="backgroundColor" red="0.8980392157" green="0.3803921569" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="B7C-D7-plC"/>
+                        <constraint firstAttribute="height" constant="64" id="B7C-D7-plC"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e82-Ih-sjJ">
-                    <rect key="frame" x="0.0" y="44" width="320" height="436"/>
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="LVV-jW-dLo">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
-                            <color key="backgroundColor" red="0.87843137250000003" green="0.88235294119999996" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                            <color key="backgroundColor" red="0.83137254900000002" green="0.83529411760000005" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="0zX-Gk-WwS">
                                 <size key="itemSize" width="50" height="50"/>
                                 <size key="headerReferenceSize" width="320" height="50"/>

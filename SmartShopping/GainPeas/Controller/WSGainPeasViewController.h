@@ -1,5 +1,5 @@
 //
-//  PromotionCouponViewController.h
+//  GainPeasViewController.h
 //  SmartShopping
 //
 //  Created by wrs on 15/4/8.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PromotionCouponViewController : BaseViewController
+@interface WSGainPeasViewController : UIViewController
 
 @end

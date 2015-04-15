@@ -6,30 +6,31 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "HomeViewController.h"
+#import "WSHomeViewController.h"
 #import "HomeHeaderCollectionReusableView.h"
 #import "HomeCollectionViewCell.h"
+#import "WSInfoListViewController.h"
 
 #define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
 #define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
-@interface HomeViewController () <NavigationBarButSearchButViewDelegate, SlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate>
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableArray *collectionViewDataArray;
     NSMutableArray *slideImageArray;
     BMKMapView* mapView;
 }
 
-@property (weak, nonatomic) IBOutlet NavigationBarManagerView *navBarManagerView;
+@property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
-@implementation HomeViewController
+@implementation WSHomeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    // Do any additional setup after loading the view from its nib
     
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
     collectionViewDataArray = [[NSMutableArray alloc] init];
@@ -39,7 +40,18 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
     
-    mapView = [[BMKMapView alloc]initWithFrame:CGRectZero];
+[_collectionView addHeaderWithCallback:^{
+    // 模拟延迟加载数据，因此2秒后才调用）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 结束刷新
+        [_collectionView headerEndRefreshing];
+    });
+
+    DLog(@"下拉刷新完成！");
+}];
+    [_collectionView addFooterWithCallback:^{
+        DLog(@"上拉刷新完成");
+    }];
     
     [self addTestData];
 }
@@ -77,7 +89,8 @@
 
 - (void)navigationBarRightButClick:(UIButton *)but
 {
-     DLog(@"navigationBarRightButClick");
+    WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
+    [self.navigationController pushViewController:infoListVC animated:YES];
 }
 
 - (void)navigationBarSearchViewTextFieldDidEndEditing:(UITextField *)textField
@@ -149,7 +162,7 @@
 {
     if (indexPath.section == 0) {
         HomeHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
-        SlideSwitchView *slideSwitchView = headerView.slideSwitchManagerView.slideSwitchView;
+        WSSlideSwitchView *slideSwitchView = headerView.slideSwitchManagerView.slideSwitchView;
         [slideSwitchView setImageViewArray:slideImageArray];
         slideSwitchView.delegate = self;
         [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -161,6 +174,12 @@
     } else {
         return nil;
     }
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 #pragma mark - HomeCollectionViewCellDelegate

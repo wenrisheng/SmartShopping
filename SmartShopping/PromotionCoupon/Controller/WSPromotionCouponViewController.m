@@ -6,13 +6,13 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "PromotionCouponViewController.h"
+#import "WSPromotionCouponViewController.h"
 
-@interface PromotionCouponViewController ()
+@interface WSPromotionCouponViewController ()
 
 @end
 
-@implementation PromotionCouponViewController
+@implementation WSPromotionCouponViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

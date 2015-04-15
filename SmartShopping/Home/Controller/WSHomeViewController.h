@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : BaseViewController
+@interface WSHomeViewController : WSBaseViewController
 
 @end

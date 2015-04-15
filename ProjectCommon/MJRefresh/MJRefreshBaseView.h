@@ -5,12 +5,15 @@
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 
+// 版权属于原作者
+// http://code4app.com (cn) http://code4app.net (en)
+// 发布代码于最专业的源码分享网站: Code4App.com
+
 #import <UIKit/UIKit.h>
 
-/**
- 枚举
- */
-// 控件的刷新状态
+@class MJRefreshBaseView;
+
+#pragma mark - 控件的刷新状态
 typedef enum {
 	MJRefreshStatePulling = 1, // 松开就可以进行刷新的状态
 	MJRefreshStateNormal = 2, // 普通状态
@@ -18,92 +21,60 @@ typedef enum {
     MJRefreshStateWillRefreshing = 4
 } MJRefreshState;
 
-// 控件的类型
+#pragma mark - 控件的类型
 typedef enum {
     MJRefreshViewTypeHeader = -1, // 头部控件
     MJRefreshViewTypeFooter = 1 // 尾部控件
 } MJRefreshViewType;
 
-@class MJRefreshBaseView;
-
-/**
- 回调的Block定义
- */
-// 开始进入刷新状态就会调用
-typedef void (^BeginRefreshingBlock)(MJRefreshBaseView *refreshView);
-// 刷新完毕就会调用
-typedef void (^EndRefreshingBlock)(MJRefreshBaseView *refreshView);
-// 刷新状态变更就会调用
-typedef void (^RefreshStateChangeBlock)(MJRefreshBaseView *refreshView, MJRefreshState state);
-
-/**
- 代理的协议定义
- */
-@protocol MJRefreshBaseViewDelegate <NSObject>
-@optional
-// 开始进入刷新状态就会调用
-- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView;
-// 刷新完毕就会调用
-- (void)refreshViewEndRefreshing:(MJRefreshBaseView *)refreshView;
-// 刷新状态变更就会调用
-- (void)refreshView:(MJRefreshBaseView *)refreshView stateChange:(MJRefreshState)state;
-@end
-
 /**
  类的声明
  */
 @interface MJRefreshBaseView : UIView
-{
-    // 父控件一开始的contentInset
-    UIEdgeInsets _scrollViewInitInset;
-    // 父控件
-    __weak UIScrollView *_scrollView;
-    
-    // 子控件
-    __weak UILabel *_lastUpdateTimeLabel;
-	__weak UILabel *_statusLabel;
-    __weak UIImageView *_arrowImage;
-	__weak UIActivityIndicatorView *_activityView;
-    
-    // 状态
-    MJRefreshState _state;
-}
+#pragma mark - 父控件
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
+@property (nonatomic, assign, readonly) UIEdgeInsets scrollViewOriginalInset;
 
-// 构造方法
-- (instancetype)initWithScrollView:(UIScrollView *)scrollView;
-// 设置要显示的父控件
-@property (nonatomic, weak) UIScrollView *scrollView;
-
-// 内部的控件
-@property (nonatomic, weak, readonly) UILabel *lastUpdateTimeLabel;
+#pragma mark - 内部的控件
 @property (nonatomic, weak, readonly) UILabel *statusLabel;
 @property (nonatomic, weak, readonly) UIImageView *arrowImage;
+@property (nonatomic, weak, readonly) UIActivityIndicatorView *activityView;
 
-// Block回调
-@property (nonatomic, copy) BeginRefreshingBlock beginRefreshingBlock;
-@property (nonatomic, copy) RefreshStateChangeBlock refreshStateChangeBlock;
-@property (nonatomic, copy) EndRefreshingBlock endStateChangeBlock;
-// 代理
-@property (nonatomic, weak) id<MJRefreshBaseViewDelegate> delegate;
+#pragma mark - 回调
+/**
+ *  开始进入刷新状态的监听器
+ */
+@property (weak, nonatomic) id beginRefreshingTaget;
+/**
+ *  开始进入刷新状态的监听方法
+ */
+@property (assign, nonatomic) SEL beginRefreshingAction;
+/**
+ *  开始进入刷新状态就会调用
+ */
+@property (nonatomic, copy) void (^beginRefreshingCallback)();
 
-// 刷新类型：上拉刷新还是下拉加载更多，交给子类去实现
-@property (nonatomic, assign) int viewType;
-
-// 是否正在刷新
+#pragma mark - 刷新相关
+/**
+ *  是否正在刷新
+ */
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
-// 开始刷新
+/**
+ *  开始刷新
+ */
 - (void)beginRefreshing;
-// 结束刷新
+/**
+ *  结束刷新
+ */
 - (void)endRefreshing;
-// 不静止地结束刷新
-//- (void)endRefreshingWithoutIdle;
-// 结束使用、释放资源
-- (void)free;
+
+#pragma mark - 交给子类去实现 和 调用
+@property (assign, nonatomic) MJRefreshState state;
 
 /**
- 交给子类去实现 和 调用
+ *  文字
  */
-- (void)setState:(MJRefreshState)state;
-- (int)totalDataCountInScrollView;
-
+@property (copy, nonatomic) NSString *pullToRefreshText;
+@property (copy, nonatomic) NSString *releaseToRefreshText;
+@property (copy, nonatomic) NSString *refreshingText;
 @end

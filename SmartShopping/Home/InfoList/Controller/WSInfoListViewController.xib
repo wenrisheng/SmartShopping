@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInfoListViewController">
+            <connections>
+                <outlet property="contentTableView" destination="qWL-j7-ljV" id="g3g-cG-OGs"/>
+                <outlet property="navigationBarManagerView" destination="0wG-zd-Dd7" id="2Gh-J2-LSW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wG-zd-Dd7" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="Bnf-9u-zJE"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qWL-j7-ljV">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" red="0.86274509803921573" green="0.8666666666666667" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="R7H-tY-JD1"/>
+                        <outlet property="delegate" destination="-1" id="3dC-IF-dkR"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="qWL-j7-ljV" secondAttribute="trailing" id="3Au-w0-jJM"/>
+                <constraint firstItem="0wG-zd-Dd7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dfT-UH-Fen"/>
+                <constraint firstItem="0wG-zd-Dd7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jw9-ni-PSJ"/>
+                <constraint firstItem="qWL-j7-ljV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="l7E-vl-K7G"/>
+                <constraint firstAttribute="bottom" secondItem="qWL-j7-ljV" secondAttribute="bottom" id="n2V-gn-l9F"/>
+                <constraint firstAttribute="trailing" secondItem="0wG-zd-Dd7" secondAttribute="trailing" id="rp0-Cd-UKz"/>
+                <constraint firstItem="qWL-j7-ljV" firstAttribute="top" secondItem="0wG-zd-Dd7" secondAttribute="bottom" id="yE7-L1-LHY"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="200" y="289"/>
+        </view>
+    </objects>
+</document>

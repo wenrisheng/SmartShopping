@@ -6,41 +6,80 @@
 //  Copyright (c) 2013年 itcast. All rights reserved.
 //
 
+// 版权属于原作者
+// http://code4app.com (cn) http://code4app.net (en)
+// 发布代码于最专业的源码分享网站: Code4App.com
+
 #import "MJRefreshBaseView.h"
 #import "MJRefreshConst.h"
+#import "UIView+MJExtension.h"
+#import "UIScrollView+MJExtension.h"
+#import <objc/message.h>
 
 @interface  MJRefreshBaseView()
 {
-    BOOL _hasInitInset;
+    __weak UILabel *_statusLabel;
+    __weak UIImageView *_arrowImage;
+    __weak UIActivityIndicatorView *_activityView;
 }
-/**
- 交给子类去实现
- */
-// 合理的Y值
-- (CGFloat)validY;
-// view的类型
-- (int)viewType;
 @end
 
 @implementation MJRefreshBaseView
-
-#pragma mark 创建一个UILabel
-- (UILabel *)labelWithFontSize:(CGFloat)size
+#pragma mark - 控件初始化
+/**
+ *  状态标签
+ */
+- (UILabel *)statusLabel
 {
-    UILabel *label = [[UILabel alloc] init];
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    label.font = [UIFont boldSystemFontOfSize:size];
-    label.textColor = MJRefreshLabelTextColor;
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    return label;
+    if (!_statusLabel) {
+        UILabel *statusLabel = [[UILabel alloc] init];
+        statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        statusLabel.font = [UIFont boldSystemFontOfSize:13];
+        statusLabel.textColor = MJRefreshLabelTextColor;
+        statusLabel.backgroundColor = [UIColor clearColor];
+        statusLabel.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:_statusLabel = statusLabel];
+    }
+    return _statusLabel;
+}
+
+/**
+ *  箭头图片
+ */
+- (UIImageView *)arrowImage
+{
+    if (!_arrowImage) {
+        UIImageView *arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"arrow.png")]];
+        arrowImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self addSubview:_arrowImage = arrowImage];
+    }
+    return _arrowImage;
+}
+
+/**
+ *  状态标签
+ */
+- (UIActivityIndicatorView *)activityView
+{
+    if (!_activityView) {
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityView.bounds = self.arrowImage.bounds;
+        activityView.autoresizingMask = self.arrowImage.autoresizingMask;
+        [self addSubview:_activityView = activityView];
+    }
+    return _activityView;
 }
 
 #pragma mark - 初始化方法
-- (instancetype)initWithScrollView:(UIScrollView *)scrollView
-{
-    if (self = [super init]) {
-        self.scrollView = scrollView;
+- (instancetype)initWithFrame:(CGRect)frame {
+    frame.size.height = MJRefreshViewHeight;
+    if (self = [super initWithFrame:frame]) {
+        // 1.自己的属性
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.backgroundColor = [UIColor clearColor];
+        
+        // 2.设置默认状态
+        self.state = MJRefreshStateNormal;
     }
     return self;
 }
@@ -49,281 +88,190 @@
 {
     [super layoutSubviews];
     
-    if (!_hasInitInset) {
-        _scrollViewInitInset = _scrollView.contentInset;
+    // 1.箭头
+    CGFloat arrowX = self.mj_width * 0.5 - 100;
+    self.arrowImage.center = CGPointMake(arrowX, self.mj_height * 0.5);
     
-        [self observeValueForKeyPath:MJRefreshContentSize ofObject:nil change:nil context:nil];
+    // 2.指示器
+    self.activityView.center = self.arrowImage.center;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    
+    // 旧的父控件
+    [self.superview removeObserver:self forKeyPath:MJRefreshContentOffset context:nil];
+    
+    if (newSuperview) { // 新的父控件
+        [newSuperview addObserver:self forKeyPath:MJRefreshContentOffset options:NSKeyValueObservingOptionNew context:nil];
         
-        _hasInitInset = YES;
+        // 设置宽度
+        self.mj_width = newSuperview.mj_width;
+        // 设置位置
+        self.mj_x = 0;
         
-        if (_state == MJRefreshStateWillRefreshing) {
-            [self setState:MJRefreshStateRefreshing];
+        // 记录UIScrollView
+        _scrollView = (UIScrollView *)newSuperview;
+        // 记录UIScrollView最开始的contentInset
+        _scrollViewOriginalInset = _scrollView.contentInset;
+    }
+}
+
+#pragma mark - 显示到屏幕上
+- (void)drawRect:(CGRect)rect
+{
+    if (self.state == MJRefreshStateWillRefreshing) {
+        self.state = MJRefreshStateRefreshing;
+    }
+}
+
+#pragma mark - 刷新相关
+#pragma mark 是否正在刷新
+- (BOOL)isRefreshing
+{
+    return MJRefreshStateRefreshing == self.state;
+}
+
+#pragma mark 开始刷新
+typedef void (*send_type)(void *, SEL, UIView *);
+- (void)beginRefreshing
+{
+    if (self.state == MJRefreshStateRefreshing) {
+        // 回调
+        if ([self.beginRefreshingTaget respondsToSelector:self.beginRefreshingAction]) {
+            msgSend((__bridge void *)(self.beginRefreshingTaget), self.beginRefreshingAction, self);
+        }
+        
+        if (self.beginRefreshingCallback) {
+            self.beginRefreshingCallback();
+        }
+    } else {
+        if (self.window) {
+            self.state = MJRefreshStateRefreshing;
+        } else {
+    #warning 不能调用set方法
+            _state = MJRefreshStateWillRefreshing;
+            [super setNeedsDisplay];
         }
     }
 }
 
-#pragma mark 构造方法
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        // 1.自己的属性
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.backgroundColor = [UIColor clearColor];
-        
-        // 2.时间标签
-        [self addSubview:_lastUpdateTimeLabel = [self labelWithFontSize:12]];
-        
-        // 3.状态标签
-        [self addSubview:_statusLabel = [self labelWithFontSize:13]];
-        
-        // 4.箭头图片
-        UIImageView *arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kSrcName(@"arrow.png")]];
-        arrowImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [self addSubview:_arrowImage = arrowImage];
-        
-        // 5.指示器
-        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        activityView.bounds = arrowImage.bounds;
-        activityView.autoresizingMask = arrowImage.autoresizingMask;
-        [self addSubview:_activityView = activityView];
-        
-        // 6.设置默认状态
-        [self setState:MJRefreshStateNormal];
-    }
-    return self;
-}
-
-#pragma mark 设置frame
-- (void)setFrame:(CGRect)frame
+#pragma mark 结束刷新
+- (void)endRefreshing
 {
-    frame.size.height = MJRefreshViewHeight;
-    [super setFrame:frame];
-    
-    CGFloat w = frame.size.width;
-    CGFloat h = frame.size.height;
-    if (w == 0 || _arrowImage.center.y == h * 0.5) return;
-    
-    CGFloat statusX = 0;
-    CGFloat statusY = 5;
-    CGFloat statusHeight = 20;
-    CGFloat statusWidth = w;
-    // 1.状态标签
-    _statusLabel.frame = CGRectMake(statusX, statusY, statusWidth, statusHeight);
-
-    // 2.时间标签
-    CGFloat lastUpdateY = statusY + statusHeight + 5;
-    _lastUpdateTimeLabel.frame = CGRectMake(statusX, lastUpdateY, statusWidth, statusHeight);
-    
-    // 3.箭头
-    CGFloat arrowX = w * 0.5 - 100;
-    _arrowImage.center = CGPointMake(arrowX, h * 0.5);
-    
-    // 4.指示器
-    _activityView.center = _arrowImage.center;
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.state = MJRefreshStateNormal;
+    });
 }
 
-- (void)setBounds:(CGRect)bounds
+#pragma mark - 设置状态
+- (void)setPullToRefreshText:(NSString *)pullToRefreshText
 {
-    bounds.size.height = MJRefreshViewHeight;
-    [super setBounds:bounds];
+    _pullToRefreshText = [pullToRefreshText copy];
+    [self settingLabelText];
 }
-
-#pragma mark - UIScrollView相关
-#pragma mark 设置UIScrollView
-- (void)setScrollView:(UIScrollView *)scrollView
+- (void)setReleaseToRefreshText:(NSString *)releaseToRefreshText
 {
-    // 移除之前的监听器
-    [_scrollView removeObserver:self forKeyPath:MJRefreshContentOffset context:nil];
-    // 监听contentOffset
-    [scrollView addObserver:self forKeyPath:MJRefreshContentOffset options:NSKeyValueObservingOptionNew context:nil];
-    
-    // 设置scrollView
-    _scrollView = scrollView;
-    [_scrollView addSubview:self];
+    _releaseToRefreshText = [releaseToRefreshText copy];
+    [self settingLabelText];
+}
+- (void)setRefreshingText:(NSString *)refreshingText
+{
+    _refreshingText = [refreshingText copy];
+    [self settingLabelText];
+}
+- (void)settingLabelText
+{
+	switch (self.state) {
+		case MJRefreshStateNormal:
+            // 设置文字
+            self.statusLabel.text = self.pullToRefreshText;
+			break;
+		case MJRefreshStatePulling:
+            // 设置文字
+            self.statusLabel.text = self.releaseToRefreshText;
+			break;
+        case MJRefreshStateRefreshing:
+            // 设置文字
+            self.statusLabel.text = self.refreshingText;
+			break;
+        default:
+            break;
+	}
 }
 
-#pragma mark 监听UIScrollView的contentOffset属性
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{    
-    if (![MJRefreshContentOffset isEqualToString:keyPath]) return;
-    
-    if (!self.userInteractionEnabled || self.alpha <= 0.01 || self.hidden
-        || _state == MJRefreshStateRefreshing) return;
-    
-    // scrollView所滚动的Y值 * 控件的类型（头部控件是-1，尾部控件是1）
-    CGFloat offsetY = _scrollView.contentOffset.y * self.viewType;
-    CGFloat validY = self.validY;
-    if (offsetY <= validY) return;
-    
-    if (_scrollView.isDragging) {
-        CGFloat validOffsetY = validY + MJRefreshViewHeight;
-        if (_state == MJRefreshStatePulling && offsetY <= validOffsetY) {
-            // 转为普通状态
-            [self setState:MJRefreshStateNormal];
-            // 通知代理
-            if ([_delegate respondsToSelector:@selector(refreshView:stateChange:)]) {
-                [_delegate refreshView:self stateChange:MJRefreshStateNormal];
-            }
-            
-            // 回调
-            if (_refreshStateChangeBlock) {
-                _refreshStateChangeBlock(self, MJRefreshStateNormal);
-            }
-        } else if (_state == MJRefreshStateNormal && offsetY > validOffsetY) {
-            // 转为即将刷新状态
-            [self setState:MJRefreshStatePulling];
-            // 通知代理
-            if ([_delegate respondsToSelector:@selector(refreshView:stateChange:)]) {
-                [_delegate refreshView:self stateChange:MJRefreshStatePulling];
-            }
-            
-            // 回调
-            if (_refreshStateChangeBlock) {
-                _refreshStateChangeBlock(self, MJRefreshStatePulling);
-            }
-        }
-    } else { // 即将刷新 && 手松开
-        if (_state == MJRefreshStatePulling) {
-            // 开始刷新
-            [self setState:MJRefreshStateRefreshing];
-            // 通知代理
-            if ([_delegate respondsToSelector:@selector(refreshView:stateChange:)]) {
-                [_delegate refreshView:self stateChange:MJRefreshStateRefreshing];
-            }
-            
-            // 回调
-            if (_refreshStateChangeBlock) {
-                _refreshStateChangeBlock(self, MJRefreshStateRefreshing);
-            }
-        }
-    }
-}
-
-#pragma mark 设置状态
 - (void)setState:(MJRefreshState)state
 {
-    if (_state != MJRefreshStateRefreshing) {
-        // 存储当前的contentInset
-        _scrollViewInitInset = _scrollView.contentInset;
+    // 0.存储当前的contentInset
+    if (self.state != MJRefreshStateRefreshing) {
+        _scrollViewOriginalInset = self.scrollView.contentInset;
     }
     
-    // 1.一样的就直接返回
-    if (_state == state) return;
+    // 1.一样的就直接返回(暂时不返回)
+    if (self.state == state) return;
     
     // 2.根据状态执行不同的操作
     switch (state) {
 		case MJRefreshStateNormal: // 普通状态
-            // 显示箭头
-            _arrowImage.hidden = NO;
-            // 停止转圈圈
-			[_activityView stopAnimating];
-            
-            // 说明是刚刷新完毕 回到 普通状态的
-            if (MJRefreshStateRefreshing == _state) {
-                // 通知代理
-                if ([_delegate respondsToSelector:@selector(refreshViewEndRefreshing:)]) {
-                    [_delegate refreshViewEndRefreshing:self];
-                }
+        {
+            if (self.state == MJRefreshStateRefreshing) {
+                [UIView animateWithDuration:MJRefreshSlowAnimationDuration * 0.6 animations:^{
+                    self.activityView.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    // 停止转圈圈
+                    [self.activityView stopAnimating];
+                    
+                    // 恢复alpha
+                    self.activityView.alpha = 1.0;
+                }];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MJRefreshSlowAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    // 再次设置回normal
+                    _state = MJRefreshStatePulling;
+                    self.state = MJRefreshStateNormal;
+                });
+                // 直接返回
+                return;
+            } else {
+                // 显示箭头
+                self.arrowImage.hidden = NO;
                 
-                // 回调
-                if (_endStateChangeBlock) {
-                    _endStateChangeBlock(self);
-                }
+                // 停止转圈圈
+                [self.activityView stopAnimating];
             }
-            
 			break;
+        }
             
         case MJRefreshStatePulling:
             break;
             
 		case MJRefreshStateRefreshing:
+        {
             // 开始转圈圈
-			[_activityView startAnimating];
+			[self.activityView startAnimating];
             // 隐藏箭头
-			_arrowImage.hidden = YES;
-            _arrowImage.transform = CGAffineTransformIdentity;
-            
-            // 通知代理
-            if ([_delegate respondsToSelector:@selector(refreshViewBeginRefreshing:)]) {
-                [_delegate refreshViewBeginRefreshing:self];
-            }
+			self.arrowImage.hidden = YES;
             
             // 回调
-            if (_beginRefreshingBlock) {
-                _beginRefreshingBlock(self);
+            if ([self.beginRefreshingTaget respondsToSelector:self.beginRefreshingAction]) {
+               // objc_msgSend(self.beginRefreshingTaget, self.beginRefreshingAction, self);
+            }
+            
+            if (self.beginRefreshingCallback) {
+                self.beginRefreshingCallback();
             }
 			break;
+        }
         default:
             break;
 	}
     
     // 3.存储状态
     _state = state;
-}
-
-#pragma mark - 状态相关
-#pragma mark 是否正在刷新
-- (BOOL)isRefreshing
-{
-    return MJRefreshStateRefreshing == _state;
-}
-#pragma mark 开始刷新
-- (void)beginRefreshing
-{
-    if (self.window) {
-        [self setState:MJRefreshStateRefreshing];
-    } else {
-        _state = MJRefreshStateWillRefreshing;
-    }
-}
-#pragma mark 结束刷新
-- (void)endRefreshing
-{
-    double delayInSeconds = self.viewType == MJRefreshViewTypeFooter ? 0.3 : 0.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self setState:MJRefreshStateNormal];
-    });
-}
-
-#pragma mark - 随便实现
-- (CGFloat)validY { return 0;}
-- (MJRefreshViewType)viewType
-{
-    return MJRefreshViewTypeHeader;
-}
-
-
-- (void)free
-{
-    [_scrollView removeObserver:self forKeyPath:MJRefreshContentOffset];
-}
-- (void)removeFromSuperview
-{
-    [self free];
-    _scrollView = nil;
-    [super removeFromSuperview];
-}
-- (void)endRefreshingWithoutIdle
-{
-    [self endRefreshing];
-}
-
-- (int)totalDataCountInScrollView
-{
-    int totalCount = 0;
-    if ([self.scrollView isKindOfClass:[UITableView class]]) {
-        UITableView *tableView = (UITableView *)self.scrollView;
-        
-        for (int section = 0; section<tableView.numberOfSections; section++) {
-            totalCount += [tableView numberOfRowsInSection:section];
-        }
-    } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
-        UICollectionView *collectionView = (UICollectionView *)self.scrollView;
-        
-        for (int section = 0; section<collectionView.numberOfSections; section++) {
-            totalCount += [collectionView numberOfItemsInSection:section];
-        }
-    }
-    return totalCount;
+    
+    // 4.设置文字
+    [self settingLabelText];
 }
 @end

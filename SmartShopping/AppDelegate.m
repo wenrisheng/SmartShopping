@@ -7,10 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "HomeViewController.h"
-#import "PromotionCouponViewController.h"
-#import "GainPeasViewController.h"
-#import "MineViewController.h"
+#import "WSHomeViewController.h"
+#import "WSPromotionCouponViewController.h"
+#import "WSGainPeasViewController.h"
+#import "WSMineViewController.h"
 
 @interface AppDelegate ()
 {
@@ -36,26 +36,23 @@
     
     [self initTabbarViewController];
     
-    if (IOS7ORLATER) {
-        UIView *statusBar = [[UIView alloc] init];
-        statusBar.frame = CGRectMake(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT);
-        statusBar.backgroundColor = STATUSBAR_COLOR;
-        [self.window addSubview:statusBar];
-    }
-//    [_nav.navigationBar setTintColor:[UIColor yellowColor]];
-//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-//    [[UINavigationBar appearance] setBarTintColor:[UIColor blackColor]];
+//    if (IOS7ORLATER) {
+//        UIView *statusBar = [[UIView alloc] init];
+//        statusBar.frame = CGRectMake(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT);
+//        statusBar.backgroundColor = STATUSBAR_COLOR;
+//        [self.window addSubview:statusBar];
+//    }
 
     return YES;
 }
 
 - (void)initTabbarViewController
 {
-    HomeViewController *homeVC = [[HomeViewController alloc] init];
-    PromotionCouponViewController *promotionCouponVC = [[PromotionCouponViewController alloc] init];
-    GainPeasViewController *gainPeasVC = [[GainPeasViewController alloc] init];
-    MineViewController *miniVC = [[MineViewController alloc] init];
-    TabbarViewController *tabbarVC = [[TabbarViewController alloc] init];
+    WSHomeViewController *homeVC = [[WSHomeViewController alloc] init];
+    WSPromotionCouponViewController *promotionCouponVC = [[WSPromotionCouponViewController alloc] init];
+    WSGainPeasViewController *gainPeasVC = [[WSGainPeasViewController alloc] init];
+    WSMineViewController *miniVC = [[WSMineViewController alloc] init];
+    WSTabbarViewController *tabbarVC = [[WSTabbarViewController alloc] init];
     NSArray *VCs = @[homeVC, promotionCouponVC, gainPeasVC, miniVC];
     NSArray *titles = @[@"首页", @"促销优惠", @"赚精明豆", @"我的"];
     NSArray *normalImages = @[@"normal", @"normal", @"normal", @"normal"];
