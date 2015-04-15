@@ -25,8 +25,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    [_navigationBarManagerView updateTopConstrainToTopLayoutGuideWithViewController:self topMargin:STATUSBAR_HEIGHT];
+
     _navigationBarManagerView.navigationBarButLabelView.delegate = self;
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"消息列表";
     

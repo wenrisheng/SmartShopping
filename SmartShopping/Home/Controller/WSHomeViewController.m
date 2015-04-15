@@ -14,11 +14,13 @@
 #define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
 #define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
-@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
     NSMutableArray *collectionViewDataArray;
     NSMutableArray *slideImageArray;
-    BMKMapView* mapView;
+    
+     BMKLocationService* _locService;
+    BMKGeoCodeSearch* _geocodesearch;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
@@ -31,16 +33,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
-    
+    //[_navBarManagerView.navigationBarButSearchButView.rightBut setBackgroundImage:[UIImage imageNamed:@"navigationBarButSearchButView"] forState:UIControlStateNormal];
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
     collectionViewDataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
+    
+    // 启动百度地区定位
+    [self initBMK];
     
     // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
     
-[_collectionView addHeaderWithCallback:^{
+
+    [_collectionView addHeaderWithCallback:^{
     // 模拟延迟加载数据，因此2秒后才调用）
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 结束刷新
@@ -56,6 +62,22 @@
     [self addTestData];
 }
 
+- (void)initBMK
+{
+    // 地理位置反编码
+    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
+    
+    //设置定位精确度，默认：kCLLocationAccuracyBest
+    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
+    [BMKLocationService setLocationDistanceFilter:100.f];
+    
+    //初始化BMKLocationService
+    _locService = [[BMKLocationService alloc]init];
+    _locService.delegate = self;
+   
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -64,14 +86,19 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // 此处记得不用的时候需要置nil，否则影响内存的释放
-    mapView.delegate = self;
+    //启动LocationService
+    [_locService startUserLocationService];
+    _locService.delegate = self;
+    _geocodesearch.delegate = self;
+
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-     // 不用时，置nil
-    mapView.delegate = nil;
+    //停止LocationService
+    //[_locService stopUserLocationService];
+    _locService.delegate = nil;
+    _geocodesearch.delegate = nil;
 }
 
 #pragma mark - 测试数据
@@ -79,6 +106,42 @@
 {
     [collectionViewDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
     [slideImageArray addObjectsFromArray: @[[UIImage imageNamed:@"slideswitch"], [UIImage imageNamed:@"normal"], [UIImage imageNamed:@"selected"], [UIImage imageNamed:@"normal"]]];
+}
+
+#pragma mark - BMKLocationServiceDelegate
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
+     [_locService stopUserLocationService];
+    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
+    CLLocationCoordinate2D pt = userLocation.location.coordinate;
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = pt;
+    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
+    if(flag)
+    {
+        DLog(@"反geo检索发送成功");
+    }
+    else
+    {
+        DLog(@"反地理编码失败");
+    }
+}
+
+- (void)didFailToLocateUserWithError:(NSError *)error
+{
+    DLog(@"定位失败！！！");
+}
+
+#pragma mark - BMKGeoCodeSearchDelegate
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+   
+    if (error == 0) {
+        BMKAddressComponent *addressCom = result.addressDetail;
+        DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
+    } else {
+        DLog(@"反地理编码失败");
+    }
 }
 
 #pragma mark - NavigationBarButSearchButViewDelegate

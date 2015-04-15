@@ -12,7 +12,7 @@
 #import "WSGainPeasViewController.h"
 #import "WSMineViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <BMKGeneralDelegate>
 {
      BMKMapManager* _mapManager;
 }
@@ -29,7 +29,7 @@
     // 百度地图
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
-    BOOL ret = [_mapManager start:@"在此处输入您的授权Key"  generalDelegate:nil];
+    BOOL ret = [_mapManager start:BMK_AK generalDelegate:self];
     if (!ret) {
         DLog(@"百度地图启动错误！");
     }
@@ -55,8 +55,8 @@
     WSTabbarViewController *tabbarVC = [[WSTabbarViewController alloc] init];
     NSArray *VCs = @[homeVC, promotionCouponVC, gainPeasVC, miniVC];
     NSArray *titles = @[@"首页", @"促销优惠", @"赚精明豆", @"我的"];
-    NSArray *normalImages = @[@"normal", @"normal", @"normal", @"normal"];
-    NSArray *selectedImages = @[@"selected", @"selected", @"selected", @"selected"];;
+    NSArray *normalImages = @[@"a_normal", @"b_normal", @"c_normal", @"d_normal"];
+    NSArray *selectedImages = @[@"a_selected", @"b_selected", @"c_selected", @"d_selected"];;
     NSUInteger VCCount = VCs.count;
     NSMutableArray *dataArray = [NSMutableArray array];
     for (int i = 0; i < VCCount; i++) {
