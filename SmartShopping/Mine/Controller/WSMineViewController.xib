@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineViewController">
             <connections>
+                <outlet property="contentTableView" destination="oQu-1N-YC7" id="U7y-6P-HGb"/>
+                <outlet property="navigationBarManagerView" destination="JlV-Pd-mqb" id="48F-ms-9eb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -13,8 +16,35 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JlV-Pd-mqb" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="lkq-M0-NqK"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="oQu-1N-YC7">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="saC-ET-loi"/>
+                        <outlet property="delegate" destination="-1" id="eHk-9b-KQt"/>
+                    </connections>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="oQu-1N-YC7" secondAttribute="bottom" id="7be-Mp-1LW"/>
+                <constraint firstItem="oQu-1N-YC7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ex7-I1-VDQ"/>
+                <constraint firstAttribute="trailing" secondItem="JlV-Pd-mqb" secondAttribute="trailing" id="K2Q-T0-wVn"/>
+                <constraint firstItem="oQu-1N-YC7" firstAttribute="top" secondItem="JlV-Pd-mqb" secondAttribute="bottom" id="bJt-Ug-k9p"/>
+                <constraint firstAttribute="trailing" secondItem="oQu-1N-YC7" secondAttribute="trailing" id="eVw-WA-5uK"/>
+                <constraint firstItem="JlV-Pd-mqb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="i0T-YG-l3Y"/>
+                <constraint firstItem="JlV-Pd-mqb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jr1-jJ-tb2"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="230" y="316"/>
         </view>
     </objects>
 </document>
