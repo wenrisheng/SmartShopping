@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSRegisterViewController">
+            <connections>
+                <outlet property="gainVarificateBut" destination="zBJ-Ao-Yoc" id="MTT-rv-oHA"/>
+                <outlet property="inviateTextField" destination="UBH-OV-iCU" id="dzm-WU-S8h"/>
+                <outlet property="inviateView" destination="ltx-dm-jKc" id="aR1-iW-iNb"/>
+                <outlet property="navigationBarView" destination="QpC-Fl-aqA" id="ecr-m3-Koi"/>
+                <outlet property="passwordTextField" destination="5Kw-O2-oIs" id="qkv-EI-eC2"/>
+                <outlet property="passwordView" destination="n0K-l5-Mw9" id="C8q-ou-EcY"/>
+                <outlet property="seeUserServerprotocolBut" destination="hwA-ov-MFX" id="i2Z-ho-v21"/>
+                <outlet property="telTextField" destination="pCS-t3-JzL" id="eHt-bs-GHg"/>
+                <outlet property="telView" destination="tVB-n0-yxl" id="Gk5-kr-gfx"/>
+                <outlet property="varificateTextField" destination="kBe-ZJ-4Rj" id="Y5o-Bf-e6n"/>
+                <outlet property="varificateView" destination="0bQ-1K-QVK" id="yZ4-66-ftj"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QpC-Fl-aqA" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="v8d-mc-xbN"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hiS-mR-m1f">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHv-iZ-Y55">
+                            <rect key="frame" x="10" y="20" width="300" height="380"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVB-n0-yxl">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mobile.png" translatesAutoresizingMaskIntoConstraints="NO" id="rYK-0h-Cjh">
+                                            <rect key="frame" x="8" y="10" width="30" height="30"/>
+                                        </imageView>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pCS-t3-JzL">
+                                            <rect key="frame" x="46" y="0.0" width="246" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="H0j-mO-Oao"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bQ-1K-QVK">
+                                    <rect key="frame" x="0.0" y="70" width="300" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="verification.png" translatesAutoresizingMaskIntoConstraints="NO" id="aU1-em-78x">
+                                            <rect key="frame" x="8" y="10" width="30" height="30"/>
+                                        </imageView>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBe-ZJ-4Rj">
+                                            <rect key="frame" x="46" y="0.0" width="161" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="L6M-O0-6OY"/>
+                                            </connections>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zBJ-Ao-Yoc">
+                                            <rect key="frame" x="215" y="0.0" width="85" height="50"/>
+                                            <color key="backgroundColor" red="0.90196078430000004" green="0.38431372549999998" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="获取验证码">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="gainVarificateButAction:" destination="-1" eventType="touchUpInside" id="wX6-t4-Qj6"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n0K-l5-Mw9">
+                                    <rect key="frame" x="0.0" y="140" width="300" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="VfA-J1-gST">
+                                            <rect key="frame" x="8" y="10" width="30" height="30"/>
+                                        </imageView>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Kw-O2-oIs">
+                                            <rect key="frame" x="46" y="0.0" width="246" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="4oz-ah-1ph"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltx-dm-jKc">
+                                    <rect key="frame" x="0.0" y="210" width="300" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="invitation.png" translatesAutoresizingMaskIntoConstraints="NO" id="gYa-Fq-PVw">
+                                            <rect key="frame" x="8" y="10" width="30" height="30"/>
+                                        </imageView>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入邀请码  (选填)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UBH-OV-iCU">
+                                            <rect key="frame" x="46" y="0.0" width="246" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="Ao8-fC-Ezb"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PVH-IS-ji8">
+                                    <rect key="frame" x="0.0" y="280" width="300" height="50"/>
+                                    <color key="backgroundColor" red="0.90196078430000004" green="0.38431372549999998" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <state key="normal" title="注册">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="registerButAction:" destination="-1" eventType="touchUpInside" id="AIQ-0t-E63"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ADj-5c-9hR">
+                                    <rect key="frame" x="0.0" y="340" width="300" height="30"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="choose-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="lHp-w5-AGk">
+                                            <rect key="frame" x="5" y="5" width="20" height="20"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwA-ov-MFX">
+                                            <rect key="frame" x="33" y="0.0" width="140" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <state key="normal" title="查看用户服务协议">
+                                                <color key="titleColor" red="0.60392156862745094" green="0.60784313725490191" blue="0.61176470588235299" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="seeUserServerProtocolButAction:" destination="-1" eventType="touchUpInside" id="FDR-74-k4M"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="380" id="nF5-t3-xo8"/>
+                                <constraint firstAttribute="width" constant="300" id="nrh-Zm-ryy"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="bHv-iZ-Y55" firstAttribute="top" secondItem="hiS-mR-m1f" secondAttribute="top" constant="20" id="6cI-F8-ox9"/>
+                        <constraint firstAttribute="centerX" secondItem="bHv-iZ-Y55" secondAttribute="centerX" id="DTZ-rD-z5U"/>
+                        <constraint firstItem="bHv-iZ-Y55" firstAttribute="leading" secondItem="hiS-mR-m1f" secondAttribute="leading" priority="989" constant="10" id="fSl-g3-OF1"/>
+                        <constraint firstAttribute="bottom" secondItem="bHv-iZ-Y55" secondAttribute="bottom" constant="16" id="fxe-Nc-aQT"/>
+                        <constraint firstAttribute="trailing" secondItem="bHv-iZ-Y55" secondAttribute="trailing" priority="990" constant="10" id="kep-tj-cZ9"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="dVz-ko-sVM"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="hiS-mR-m1f" secondAttribute="trailing" id="2ob-pR-tmV"/>
+                <constraint firstItem="hiS-mR-m1f" firstAttribute="top" secondItem="QpC-Fl-aqA" secondAttribute="bottom" id="Cyv-Ed-hsJ"/>
+                <constraint firstAttribute="bottom" secondItem="hiS-mR-m1f" secondAttribute="bottom" id="GCu-Di-p3b"/>
+                <constraint firstAttribute="centerX" secondItem="hiS-mR-m1f" secondAttribute="centerX" id="Gvr-9h-J8b"/>
+                <constraint firstItem="QpC-Fl-aqA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="SD4-HE-p0l"/>
+                <constraint firstAttribute="trailing" secondItem="QpC-Fl-aqA" secondAttribute="trailing" id="e7N-u7-s7B"/>
+                <constraint firstItem="hiS-mR-m1f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iol-6H-J73"/>
+                <constraint firstItem="QpC-Fl-aqA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vXd-HI-l2c"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="391" y="297"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="choose-01.png" width="40" height="40"/>
+        <image name="invitation.png" width="44" height="44"/>
+        <image name="lock.png" width="44" height="44"/>
+        <image name="mobile.png" width="44" height="44"/>
+        <image name="verification.png" width="44" height="44"/>
+    </resources>
+</document>

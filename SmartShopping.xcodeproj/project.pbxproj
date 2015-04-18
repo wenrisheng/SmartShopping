@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7C013EF21AD5699E00E74C78 /* BaseStaticLibraryResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C013EF11AD5699E00E74C78 /* BaseStaticLibraryResource.bundle */; };
-		7C013F021AD56C9D00E74C78 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C013F001AD56C9C00E74C78 /* normal.png */; };
-		7C013F031AD56C9D00E74C78 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C013F011AD56C9C00E74C78 /* selected.png */; };
 		7C249B471ADD6114000712BF /* WSHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C249B161ADD6114000712BF /* WSHomeViewController.m */; };
 		7C249B481ADD6114000712BF /* WSHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C249B171ADD6114000712BF /* WSHomeViewController.xib */; };
 		7C249B491ADD6114000712BF /* WSInfoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C249B1B1ADD6114000712BF /* WSInfoListViewController.m */; };
@@ -55,6 +53,23 @@
 		7C6DDE771ADC2163007F81A4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6DDE761ADC2163007F81A4 /* OpenGLES.framework */; };
 		7C6DDE791ADC216F007F81A4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6DDE781ADC216F007F81A4 /* Security.framework */; };
 		7C6DDE7B1ADC21A0007F81A4 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C6DDE7A1ADC21A0007F81A4 /* mapapi.bundle */; };
+		7C6E56F51AE1594100D020D5 /* WSLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6E56F31AE1594100D020D5 /* WSLoginViewController.m */; };
+		7C6E56F61AE1594100D020D5 /* WSLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E56F41AE1594100D020D5 /* WSLoginViewController.xib */; };
+		7C6E57091AE15E9C00D020D5 /* buttom.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E56FD1AE15E9C00D020D5 /* buttom.png */; };
+		7C6E570A1AE15E9C00D020D5 /* input-box.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E56FE1AE15E9C00D020D5 /* input-box.png */; };
+		7C6E570B1AE15E9C00D020D5 /* invitation.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E56FF1AE15E9C00D020D5 /* invitation.png */; };
+		7C6E570C1AE15E9C00D020D5 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57001AE15E9C00D020D5 /* lock.png */; };
+		7C6E570D1AE15E9C00D020D5 /* mobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57011AE15E9C00D020D5 /* mobile.png */; };
+		7C6E570E1AE15E9C00D020D5 /* qq.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57021AE15E9C00D020D5 /* qq.png */; };
+		7C6E570F1AE15E9C00D020D5 /* register_success.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57031AE15E9C00D020D5 /* register_success.png */; };
+		7C6E57101AE15E9C00D020D5 /* verification.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57041AE15E9C00D020D5 /* verification.png */; };
+		7C6E57111AE15E9C00D020D5 /* weibo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57051AE15E9C00D020D5 /* weibo.png */; };
+		7C6E57121AE15E9C00D020D5 /* weixin.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57061AE15E9C00D020D5 /* weixin.png */; };
+		7C6E57131AE15E9C00D020D5 /* get-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57071AE15E9C00D020D5 /* get-01.png */; };
+		7C6E57141AE15E9C00D020D5 /* get-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E57081AE15E9C00D020D5 /* get-02.png */; };
+		7C6E571B1AE167BF00D020D5 /* WSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */; };
+		7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */; };
+		7C6E571E1AE171F100D020D5 /* choose-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571D1AE171F100D020D5 /* choose-01.png */; };
 		7C90842E1ADF723A0073D94C /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */; };
 		7C9084301ADF729E0073D94C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842F1ADF729E0073D94C /* ImageIO.framework */; };
 		7C9085221ADF756C0073D94C /* CopyConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9084CC1ADF756C0073D94C /* CopyConnection.framework */; };
@@ -131,12 +146,21 @@
 		7C9085701ADF76040073D94C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90856F1ADF76040073D94C /* AssetsLibrary.framework */; };
 		7C9085831ADF835D0073D94C /* WSMineFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9085811ADF835D0073D94C /* WSMineFirstCell.m */; };
 		7C9085841ADF835D0073D94C /* WSMineFirstCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C9085821ADF835D0073D94C /* WSMineFirstCell.xib */; };
-		7CBD6CD21AD92630008B29B4 /* slideswitch.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD6CD11AD92630008B29B4 /* slideswitch.png */; };
 		7CC5833C1ADD2D5500329D21 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC5833B1ADD2D5500329D21 /* CoreTelephony.framework */; };
 		7CC5833E1ADD2D6100329D21 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC5833D1ADD2D6100329D21 /* libicucore.dylib */; };
 		7CC583401ADD2DC300329D21 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC5833F1ADD2DC300329D21 /* libstdc++.dylib */; };
 		7CC583421ADD2DCF00329D21 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC583411ADD2DCF00329D21 /* libsqlite3.dylib */; };
 		7CC583441ADD2DD700329D21 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC583431ADD2DD700329D21 /* MessageUI.framework */; };
+		7CC760A61AE2114A000C9085 /* WSUserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */; };
+		7CC760A71AE2114A000C9085 /* WSUserProtocolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */; };
+		7CC760B61AE23081000C9085 /* WSResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */; };
+		7CC760B71AE23081000C9085 /* WSResetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */; };
+		7CC760BA1AE24046000C9085 /* WSRegisterSucView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760B91AE24046000C9085 /* WSRegisterSucView.m */; };
+		7CC760BC1AE24058000C9085 /* WSRegisterSucView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760BB1AE24058000C9085 /* WSRegisterSucView.xib */; };
+		7CC760C01AE2590A000C9085 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC760BF1AE2590A000C9085 /* AudioToolbox.framework */; };
+		7CC760C21AE25933000C9085 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC760C11AE25933000C9085 /* StoreKit.framework */; };
+		7CC760C41AE25B8F000C9085 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC760C31AE25B8F000C9085 /* Parse.framework */; };
+		7CC760C61AE25BB4000C9085 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC760C51AE25BB4000C9085 /* Bolts.framework */; };
 		7CCAD31B1ADEAEB7001D3D8B /* dou.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCAD3191ADEAEB7001D3D8B /* dou.png */; };
 		7CCAD31C1ADEAEB7001D3D8B /* search-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCAD31A1ADEAEB7001D3D8B /* search-icon.png */; };
 		7CCAD3281ADEB0C1001D3D8B /* a_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCAD3201ADEB0C1001D3D8B /* a_selected.png */; };
@@ -238,8 +262,6 @@
 
 /* Begin PBXFileReference section */
 		7C013EF11AD5699E00E74C78 /* BaseStaticLibraryResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BaseStaticLibraryResource.bundle; path = ../BaseStaticLibrary/BaseStaticLibraryResource.bundle; sourceTree = "<group>"; };
-		7C013F001AD56C9C00E74C78 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
-		7C013F011AD56C9C00E74C78 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		7C249B151ADD6114000712BF /* WSHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSHomeViewController.h; sourceTree = "<group>"; };
 		7C249B161ADD6114000712BF /* WSHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSHomeViewController.m; sourceTree = "<group>"; };
 		7C249B171ADD6114000712BF /* WSHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSHomeViewController.xib; sourceTree = "<group>"; };
@@ -321,6 +343,25 @@
 		7C6DDE761ADC2163007F81A4 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7C6DDE781ADC216F007F81A4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7C6DDE7A1ADC21A0007F81A4 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = ../../mapapi.bundle; sourceTree = "<group>"; };
+		7C6E56F21AE1594100D020D5 /* WSLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSLoginViewController.h; sourceTree = "<group>"; };
+		7C6E56F31AE1594100D020D5 /* WSLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSLoginViewController.m; sourceTree = "<group>"; };
+		7C6E56F41AE1594100D020D5 /* WSLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSLoginViewController.xib; sourceTree = "<group>"; };
+		7C6E56FD1AE15E9C00D020D5 /* buttom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttom.png; sourceTree = "<group>"; };
+		7C6E56FE1AE15E9C00D020D5 /* input-box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box.png"; sourceTree = "<group>"; };
+		7C6E56FF1AE15E9C00D020D5 /* invitation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invitation.png; sourceTree = "<group>"; };
+		7C6E57001AE15E9C00D020D5 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
+		7C6E57011AE15E9C00D020D5 /* mobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mobile.png; sourceTree = "<group>"; };
+		7C6E57021AE15E9C00D020D5 /* qq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qq.png; sourceTree = "<group>"; };
+		7C6E57031AE15E9C00D020D5 /* register_success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = register_success.png; sourceTree = "<group>"; };
+		7C6E57041AE15E9C00D020D5 /* verification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = verification.png; sourceTree = "<group>"; };
+		7C6E57051AE15E9C00D020D5 /* weibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weibo.png; sourceTree = "<group>"; };
+		7C6E57061AE15E9C00D020D5 /* weixin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixin.png; sourceTree = "<group>"; };
+		7C6E57071AE15E9C00D020D5 /* get-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "get-01.png"; sourceTree = "<group>"; };
+		7C6E57081AE15E9C00D020D5 /* get-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "get-02.png"; sourceTree = "<group>"; };
+		7C6E57181AE167BF00D020D5 /* WSRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSRegisterViewController.h; sourceTree = "<group>"; };
+		7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSRegisterViewController.m; sourceTree = "<group>"; };
+		7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSRegisterViewController.xib; sourceTree = "<group>"; };
+		7C6E571D1AE171F100D020D5 /* choose-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose-01.png"; sourceTree = "<group>"; };
 		7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		7C90842F1ADF729E0073D94C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		7C9084CC1ADF756C0073D94C /* CopyConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CopyConnection.framework; sourceTree = "<group>"; };
@@ -406,7 +447,6 @@
 		7C9085801ADF835D0073D94C /* WSMineFirstCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMineFirstCell.h; sourceTree = "<group>"; };
 		7C9085811ADF835D0073D94C /* WSMineFirstCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMineFirstCell.m; sourceTree = "<group>"; };
 		7C9085821ADF835D0073D94C /* WSMineFirstCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMineFirstCell.xib; sourceTree = "<group>"; };
-		7CBD6CD11AD92630008B29B4 /* slideswitch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideswitch.png; sourceTree = "<group>"; };
 		7CC5833B1ADD2D5500329D21 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		7CC5833D1ADD2D6100329D21 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7CC5833F1ADD2DC300329D21 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
@@ -414,6 +454,19 @@
 		7CC583431ADD2DD700329D21 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		7CC5A9731ADDF8FC00D3C892 /* WSCommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSCommonMacro.h; sourceTree = "<group>"; };
 		7CC5A9741ADDF96E00D3C892 /* WSCommonHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSCommonHeader.h; sourceTree = "<group>"; };
+		7CC760A31AE2114A000C9085 /* WSUserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSUserProtocolViewController.h; sourceTree = "<group>"; };
+		7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSUserProtocolViewController.m; sourceTree = "<group>"; };
+		7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSUserProtocolViewController.xib; sourceTree = "<group>"; };
+		7CC760B31AE23081000C9085 /* WSResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSResetPasswordViewController.h; sourceTree = "<group>"; };
+		7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSResetPasswordViewController.m; sourceTree = "<group>"; };
+		7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSResetPasswordViewController.xib; sourceTree = "<group>"; };
+		7CC760B81AE24046000C9085 /* WSRegisterSucView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSRegisterSucView.h; sourceTree = "<group>"; };
+		7CC760B91AE24046000C9085 /* WSRegisterSucView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSRegisterSucView.m; sourceTree = "<group>"; };
+		7CC760BB1AE24058000C9085 /* WSRegisterSucView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSRegisterSucView.xib; sourceTree = "<group>"; };
+		7CC760BF1AE2590A000C9085 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		7CC760C11AE25933000C9085 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		7CC760C31AE25B8F000C9085 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		7CC760C51AE25BB4000C9085 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		7CCAD3191ADEAEB7001D3D8B /* dou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dou.png; sourceTree = "<group>"; };
 		7CCAD31A1ADEAEB7001D3D8B /* search-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-icon.png"; sourceTree = "<group>"; };
 		7CCAD3201ADEB0C1001D3D8B /* a_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = a_selected.png; sourceTree = "<group>"; };
@@ -495,6 +548,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CC760C21AE25933000C9085 /* StoreKit.framework in Frameworks */,
+				7CC760C01AE2590A000C9085 /* AudioToolbox.framework in Frameworks */,
 				7C9085701ADF76040073D94C /* AssetsLibrary.framework in Frameworks */,
 				7C90856E1ADF75FA0073D94C /* CoreText.framework in Frameworks */,
 				7C90856C1ADF75F30073D94C /* MediaPlayer.framework in Frameworks */,
@@ -543,6 +598,7 @@
 				7C90853B1ADF756D0073D94C /* SohuConnection.framework in Frameworks */,
 				7C6DDE791ADC216F007F81A4 /* Security.framework in Frameworks */,
 				7C6DDE771ADC2163007F81A4 /* OpenGLES.framework in Frameworks */,
+				7CC760C41AE25B8F000C9085 /* Parse.framework in Frameworks */,
 				7C90853E1ADF756D0073D94C /* TwitterConnection.framework in Frameworks */,
 				7C9085511ADF756D0073D94C /* libWeiboSDK.a in Frameworks */,
 				7C90854A1ADF756D0073D94C /* GooglePlus.framework in Frameworks */,
@@ -559,6 +615,7 @@
 				7C9085421ADF756D0073D94C /* YiXinConnection.framework in Frameworks */,
 				7CCD11581AD542C5005A1429 /* libxml2.dylib in Frameworks */,
 				7C9085261ADF756C0073D94C /* FacebookConnection.framework in Frameworks */,
+				7CC760C61AE25BB4000C9085 /* Bolts.framework in Frameworks */,
 				7C9085621ADF756D0073D94C /* ShareSDKShareActionSheet.framework in Frameworks */,
 				7CCD11541AD542B6005A1429 /* UIKit.framework in Frameworks */,
 				7C90853A1ADF756D0073D94C /* SMSConnection.framework in Frameworks */,
@@ -704,6 +761,8 @@
 		7C6DDE031ADC1D35007F81A4 /* ProjectCommon */ = {
 			isa = PBXGroup;
 			children = (
+				7CC760C51AE25BB4000C9085 /* Bolts.framework */,
+				7CC760C31AE25B8F000C9085 /* Parse.framework */,
 				7C9084CA1ADF756C0073D94C /* ShareSDK */,
 				7C6DDE6F1ADC2101007F81A4 /* BaiduMapAPI */,
 				7C6DDE041ADC1D35007F81A4 /* ASIHttpRequest */,
@@ -843,6 +902,25 @@
 				7C6DDE701ADC2101007F81A4 /* BaiduMapAPI.framework */,
 			);
 			path = BaiduMapAPI;
+			sourceTree = "<group>";
+		};
+		7C6E56FC1AE15E9C00D020D5 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7C6E56FD1AE15E9C00D020D5 /* buttom.png */,
+				7C6E56FE1AE15E9C00D020D5 /* input-box.png */,
+				7C6E56FF1AE15E9C00D020D5 /* invitation.png */,
+				7C6E57001AE15E9C00D020D5 /* lock.png */,
+				7C6E57011AE15E9C00D020D5 /* mobile.png */,
+				7C6E57021AE15E9C00D020D5 /* qq.png */,
+				7C6E57031AE15E9C00D020D5 /* register_success.png */,
+				7C6E57041AE15E9C00D020D5 /* verification.png */,
+				7C6E57051AE15E9C00D020D5 /* weibo.png */,
+				7C6E57061AE15E9C00D020D5 /* weixin.png */,
+				7C6E57071AE15E9C00D020D5 /* get-01.png */,
+				7C6E57081AE15E9C00D020D5 /* get-02.png */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		7C9084CA1ADF756C0073D94C /* ShareSDK */ = {
@@ -1031,6 +1109,7 @@
 		7C9085711ADF7CD20073D94C /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				7CC760B11AE2306C000C9085 /* ResetPassword */,
 				7C9085721ADF7CD20073D94C /* Controller */,
 				7C9085731ADF7CD20073D94C /* Model */,
 				7C9085741ADF7CD20073D94C /* Register */,
@@ -1042,6 +1121,9 @@
 		7C9085721ADF7CD20073D94C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7C6E56F21AE1594100D020D5 /* WSLoginViewController.h */,
+				7C6E56F31AE1594100D020D5 /* WSLoginViewController.m */,
+				7C6E56F41AE1594100D020D5 /* WSLoginViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1059,6 +1141,7 @@
 				7C9085751ADF7CD20073D94C /* Controller */,
 				7C9085761ADF7CD20073D94C /* Model */,
 				7C9085771ADF7CD20073D94C /* View */,
+				7CC760A11AE21128000C9085 /* UserProtocol */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -1066,6 +1149,9 @@
 		7C9085751ADF7CD20073D94C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7C6E57181AE167BF00D020D5 /* WSRegisterViewController.h */,
+				7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */,
+				7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1080,6 +1166,9 @@
 		7C9085771ADF7CD20073D94C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7CC760B81AE24046000C9085 /* WSRegisterSucView.h */,
+				7CC760B91AE24046000C9085 /* WSRegisterSucView.m */,
+				7CC760BB1AE24058000C9085 /* WSRegisterSucView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1126,9 +1215,46 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		7CC760A11AE21128000C9085 /* UserProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				7CC760A21AE21128000C9085 /* Control */,
+			);
+			path = UserProtocol;
+			sourceTree = "<group>";
+		};
+		7CC760A21AE21128000C9085 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				7CC760A31AE2114A000C9085 /* WSUserProtocolViewController.h */,
+				7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */,
+				7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
+		7CC760B11AE2306C000C9085 /* ResetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				7CC760B21AE2306C000C9085 /* Control */,
+			);
+			path = ResetPassword;
+			sourceTree = "<group>";
+		};
+		7CC760B21AE2306C000C9085 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				7CC760B31AE23081000C9085 /* WSResetPasswordViewController.h */,
+				7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */,
+				7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
 		7CCAD3181ADEAEB7001D3D8B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7C6E571D1AE171F100D020D5 /* choose-01.png */,
 				7CCAD3481ADEBD4C001D3D8B /* arrow-right.png */,
 				7CCAD3401ADEBA1C001D3D8B /* store_signin.png */,
 				7CCAD3411ADEBA1C001D3D8B /* scan_product.png */,
@@ -1164,6 +1290,8 @@
 		7CCBBD4B1AD418AF00EA1F7F = {
 			isa = PBXGroup;
 			children = (
+				7CC760C11AE25933000C9085 /* StoreKit.framework */,
+				7CC760BF1AE2590A000C9085 /* AudioToolbox.framework */,
 				7C6DDE031ADC1D35007F81A4 /* ProjectCommon */,
 				7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */,
 				7CCBBD561AD418AF00EA1F7F /* SmartShopping */,
@@ -1359,24 +1487,14 @@
 				7CCD8AFB1ADFD0D5007B86A9 /* Mine */,
 				7CCAD31F1ADEB0C1001D3D8B /* Tabbar */,
 				7CCAD3181ADEAEB7001D3D8B /* Common */,
-				7CCD118D1AD5575E005A1429 /* TestImages */,
 			);
 			path = images;
-			sourceTree = "<group>";
-		};
-		7CCD118D1AD5575E005A1429 /* TestImages */ = {
-			isa = PBXGroup;
-			children = (
-				7CBD6CD11AD92630008B29B4 /* slideswitch.png */,
-				7C013F001AD56C9C00E74C78 /* normal.png */,
-				7C013F011AD56C9C00E74C78 /* selected.png */,
-			);
-			path = TestImages;
 			sourceTree = "<group>";
 		};
 		7CCD8AFB1ADFD0D5007B86A9 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
+				7C6E56FC1AE15E9C00D020D5 /* Login */,
 				7CCD8AFC1ADFD0D5007B86A9 /* 01.png */,
 				7CCD8AFD1ADFD0D5007B86A9 /* 02.png */,
 				7CCD8AFE1ADFD0D5007B86A9 /* 03.png */,
@@ -1491,12 +1609,13 @@
 				7C9085841ADF835D0073D94C /* WSMineFirstCell.xib in Resources */,
 				7CCD8B211ADFD0D5007B86A9 /* doudou-02.png in Resources */,
 				7C9085601ADF756D0073D94C /* ShareSDKiPhoneSimpleShareViewUI.bundle in Resources */,
+				7CC760A71AE2114A000C9085 /* WSUserProtocolViewController.xib in Resources */,
 				7CCAD32C1ADEB0C1001D3D8B /* c_selected.png in Resources */,
 				7C249B4A1ADD6114000712BF /* WSInfoListViewController.xib in Resources */,
 				7C6DDE7B1ADC21A0007F81A4 /* mapapi.bundle in Resources */,
-				7C013F021AD56C9D00E74C78 /* normal.png in Resources */,
 				7C90852B1ADF756C0073D94C /* InstapaperResource.bundle in Resources */,
 				7CCAD3441ADEBA1C001D3D8B /* scan_product.png in Resources */,
+				7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */,
 				7CCAD33F1ADEB8D7001D3D8B /* time-clock.png in Resources */,
 				7C90854F1ADF756D0073D94C /* RennSDK.bundle in Resources */,
 				7CCD8B281ADFD0D5007B86A9 /* line.png in Resources */,
@@ -1505,6 +1624,8 @@
 				7CCAD3451ADEBA1C001D3D8B /* invate_friend.png in Resources */,
 				7CCD8B271ADFD0D5007B86A9 /* icon-03.png in Resources */,
 				7CCAD3371ADEB469001D3D8B /* back.png in Resources */,
+				7CC760BC1AE24058000C9085 /* WSRegisterSucView.xib in Resources */,
+				7C6E57141AE15E9C00D020D5 /* get-02.png in Resources */,
 				7CCAD32D1ADEB0C1001D3D8B /* c_normal.png in Resources */,
 				7CCAD32A1ADEB0C1001D3D8B /* b_selected.png in Resources */,
 				7C90854E1ADF756D0073D94C /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
@@ -1513,9 +1634,9 @@
 				7CCAD3381ADEB469001D3D8B /* share.png in Resources */,
 				7C249B481ADD6114000712BF /* WSHomeViewController.xib in Resources */,
 				7C013EF21AD5699E00E74C78 /* BaseStaticLibraryResource.bundle in Resources */,
+				7C6E570A1AE15E9C00D020D5 /* input-box.png in Resources */,
 				7C249B731ADD6B7A000712BF /* WSInfoListCell.xib in Resources */,
 				7C3511721ADFF4380014696B /* WSMineThirdCell.xib in Resources */,
-				7CBD6CD21AD92630008B29B4 /* slideswitch.png in Resources */,
 				7CCD8B231ADFD0D5007B86A9 /* head-01.png in Resources */,
 				7CCD8B181ADFD0D5007B86A9 /* 05.png in Resources */,
 				7CCAD3491ADEBD4C001D3D8B /* arrow-right.png in Resources */,
@@ -1525,11 +1646,14 @@
 				7C90855B1ADF756D0073D94C /* ShareSDKiPadSimpleShareViewUI.bundle in Resources */,
 				7CCAD32B1ADEB0C1001D3D8B /* b_normal.png in Resources */,
 				7CCAD3281ADEB0C1001D3D8B /* a_selected.png in Resources */,
+				7C6E570C1AE15E9C00D020D5 /* lock.png in Resources */,
+				7C6E570E1AE15E9C00D020D5 /* qq.png in Resources */,
 				7CCAD32F1ADEB0C1001D3D8B /* d_normal.png in Resources */,
 				7CCAD3431ADEBA1C001D3D8B /* store_signin.png in Resources */,
 				7C90854C1ADF756D0073D94C /* PinterestSDKResources.bundle in Resources */,
 				7CCD11801AD54FFE005A1429 /* WSMineViewController.xib in Resources */,
 				7CCD8B191ADFD0D5007B86A9 /* 06.png in Resources */,
+				7C6E57121AE15E9C00D020D5 /* weixin.png in Resources */,
 				7CCD8B1F1ADFD0D5007B86A9 /* buttom-01.png in Resources */,
 				7CCD8B1D1ADFD0D5007B86A9 /* arrow-03.png in Resources */,
 				7C3511771ADFF80A0014696B /* WSMineFourCell.xib in Resources */,
@@ -1537,16 +1661,24 @@
 				7CCD8B1B1ADFD0D5007B86A9 /* arrow-01.png in Resources */,
 				7CCAD3291ADEB0C1001D3D8B /* a_normal.png in Resources */,
 				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
+				7C6E57101AE15E9C00D020D5 /* verification.png in Resources */,
 				7CCD8B1A1ADFD0D5007B86A9 /* 07.png in Resources */,
 				7CCD8B301ADFED84007B86A9 /* WSMineSecondCell.xib in Resources */,
 				7CCD8B201ADFD0D5007B86A9 /* buttom-02.png in Resources */,
 				7C249B5C1ADD6114000712BF /* HomeCollectionViewCell.xib in Resources */,
+				7C6E570F1AE15E9C00D020D5 /* register_success.png in Resources */,
 				7CCD8B291ADFD0D5007B86A9 /* mobile.png in Resources */,
+				7C6E570D1AE15E9C00D020D5 /* mobile.png in Resources */,
 				7CCD8B1C1ADFD0D5007B86A9 /* arrow-02.png in Resources */,
 				7C9085491ADF756D0073D94C /* GooglePlus.bundle in Resources */,
 				7CCD8B151ADFD0D5007B86A9 /* 02.png in Resources */,
 				7C9085521ADF756D0073D94C /* WeiboSDK.bundle in Resources */,
+				7C6E56F61AE1594100D020D5 /* WSLoginViewController.xib in Resources */,
+				7C6E570B1AE15E9C00D020D5 /* invitation.png in Resources */,
 				7CCD8B221ADFD0D5007B86A9 /* doudou.png in Resources */,
+				7C6E57131AE15E9C00D020D5 /* get-01.png in Resources */,
+				7C6E571E1AE171F100D020D5 /* choose-01.png in Resources */,
+				7C6E57111AE15E9C00D020D5 /* weibo.png in Resources */,
 				7CCD8B141ADFD0D5007B86A9 /* 01.png in Resources */,
 				7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */,
 				7CCAD3351ADEB469001D3D8B /* collected.png in Resources */,
@@ -1554,14 +1686,15 @@
 				7CCD8B2B1ADFD0D5007B86A9 /* switch.png in Resources */,
 				7CCAD33E1ADEB8D7001D3D8B /* map.png in Resources */,
 				7C249B5E1ADD6114000712BF /* HomeHeaderCollectionReusableView.xib in Resources */,
+				7CC760B71AE23081000C9085 /* WSResetPasswordViewController.xib in Resources */,
 				7CCD11851AD55085005A1429 /* WSPromotionCouponViewController.xib in Resources */,
 				7CCD8B1E1ADFD0D5007B86A9 /* bj.png in Resources */,
 				7C9085571ADF756D0073D94C /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				7C9085451ADF756D0073D94C /* ShareSDKLocalizable.strings in Resources */,
 				7CCAD31C1ADEAEB7001D3D8B /* search-icon.png in Resources */,
 				7CCD11761AD54FCA005A1429 /* WSGainPeasViewController.xib in Resources */,
+				7C6E57091AE15E9C00D020D5 /* buttom.png in Resources */,
 				7CCD8B261ADFD0D5007B86A9 /* icon-02.png in Resources */,
-				7C013F031AD56C9D00E74C78 /* selected.png in Resources */,
 				7C6DDE5A1ADC1D35007F81A4 /* README-GHUnit in Resources */,
 				7CCAD32E1ADEB0C1001D3D8B /* d_selected.png in Resources */,
 				7C9085461ADF756D0073D94C /* Resource.bundle in Resources */,
@@ -1580,10 +1713,14 @@
 				7C6DDE491ADC1D35007F81A4 /* ASIHTTPRequest.m in Sources */,
 				7C6DDE551ADC1D35007F81A4 /* ASIS3BucketObject.m in Sources */,
 				7C6DDE4E1ADC1D35007F81A4 /* ASICloudFilesContainer.m in Sources */,
+				7C6E56F51AE1594100D020D5 /* WSLoginViewController.m in Sources */,
 				7C6DDE531ADC1D35007F81A4 /* ASICloudFilesRequest.m in Sources */,
 				7C6DDE541ADC1D35007F81A4 /* ASIS3Bucket.m in Sources */,
+				7CC760BA1AE24046000C9085 /* WSRegisterSucView.m in Sources */,
+				7CC760A61AE2114A000C9085 /* WSUserProtocolViewController.m in Sources */,
 				7C6DDE4B1ADC1D35007F81A4 /* ASINetworkQueue.m in Sources */,
 				7C6DDE501ADC1D35007F81A4 /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,
+				7C6E571B1AE167BF00D020D5 /* WSRegisterViewController.m in Sources */,
 				7C6DDE4A1ADC1D35007F81A4 /* ASIInputStream.m in Sources */,
 				7CCBBD601AD418AF00EA1F7F /* SmartShopping.xcdatamodeld in Sources */,
 				7C6DDE461ADC1D35007F81A4 /* ASIDataDecompressor.m in Sources */,
@@ -1613,6 +1750,7 @@
 				7C6DDE441ADC1D35007F81A4 /* ASIAuthenticationDialog.m in Sources */,
 				7C249B471ADD6114000712BF /* WSHomeViewController.m in Sources */,
 				7C6DDE561ADC1D35007F81A4 /* ASIS3BucketRequest.m in Sources */,
+				7CC760B61AE23081000C9085 /* WSResetPasswordViewController.m in Sources */,
 				7CCD8B2F1ADFED84007B86A9 /* WSMineSecondCell.m in Sources */,
 				7C249B5B1ADD6114000712BF /* HomeCollectionViewCell.m in Sources */,
 			);
@@ -1738,17 +1876,10 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lanjun Fan (NT5CLLX966)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Connection",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Core",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/GooglePlusSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/Pinterest.embeddedframework",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/QQConnectSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/RenRenSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/UI",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Connection",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Core",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/GooglePlusSDK",
@@ -1757,6 +1888,7 @@
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/UI",
+					"$(PROJECT_DIR)/ProjectCommon",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
@@ -1770,10 +1902,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/SinaWeiboSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/TencentWeiboSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/WeChatSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/WeChatSDK",
@@ -1782,6 +1910,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "87b213bd-a906-4bc2-ac89-aadfa0b28957";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -1795,17 +1924,10 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lanjun Fan (NT5CLLX966)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Connection",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Core",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/GooglePlusSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/Pinterest.embeddedframework",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/QQConnectSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/RenRenSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/UI",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Connection",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Core",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/GooglePlusSDK",
@@ -1814,6 +1936,7 @@
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/UI",
+					"$(PROJECT_DIR)/ProjectCommon",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
@@ -1827,10 +1950,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/SinaWeiboSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/TencentWeiboSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/WeChatSDK",
-					"$(PROJECT_DIR)/SmartShopping/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/WeChatSDK",
@@ -1839,6 +1958,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "87b213bd-a906-4bc2-ac89-aadfa0b28957";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSMineViewController : UIViewController
+@interface WSMineViewController : WSBaseViewController
 
 @end

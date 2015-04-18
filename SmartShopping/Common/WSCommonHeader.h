@@ -15,8 +15,5 @@
 
 
 #import <BaiduMapAPI/BMapKit.h>
-#import "MJRefresh.h"
-#import "UIView+WSAutoLayout.h"
-#import "MJRefresh.h"
 
 #endif

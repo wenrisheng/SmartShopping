@@ -17,6 +17,7 @@
 #import "WXApi.h"
 #import "WeiboApi.h"
 #import "WeiboSDK.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate () <BMKGeneralDelegate>
 {
@@ -32,6 +33,8 @@
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
     
+
+
     // 百度地图
     [self initBMK];
     
@@ -60,10 +63,18 @@
     //字符串api20为您的ShareSDK的AppKey
     [ShareSDK registerApp:SHARESDK_APPKEY];
     
+    [Parse setApplicationId:PARSE_APPLICATIONID
+                  clientKey:PARSE_CLIENTKEY];
+    
     //添加新浪微博应用 注册网址 http://open.weibo.com
     [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
-                             redirectUri:@"http://www.sharesdk.cn"];
+                            redirectUri:@"http://www.sharesdk.cn"];
+    
+//    [ShareSDK connectSinaWeiboWithAppKey:SINAWEIBO_APPKEY
+//                               appSecret:SINAWEIBO_SECRET
+//                             redirectUri:@"http://www.sharesdk.cn"];
+//    
     //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
     [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
                                 appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
@@ -127,6 +138,18 @@
     _nav = [[UINavigationController alloc] initWithRootViewController:tabbarVC];
     _nav.navigationBarHidden = YES;
     self.window.rootViewController = _nav;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url wxDelegate:nil];
+}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [ShareSDK handleOpenURL:url
+                 sourceApplication:sourceApplication
+                        annotation:annotation
+                        wxDelegate:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -35,6 +35,7 @@
     // Do any additional setup after loading the view from its nib
     //[_navBarManagerView.navigationBarButSearchButView.rightBut setBackgroundImage:[UIImage imageNamed:@"navigationBarButSearchButView"] forState:UIControlStateNormal];
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
+    _navBarManagerView.navigationBarButSearchButView.leftLabel.text = nil;
     collectionViewDataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     
@@ -105,7 +106,7 @@
 - (void)addTestData
 {
     [collectionViewDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-    [slideImageArray addObjectsFromArray: @[[UIImage imageNamed:@"slideswitch"], [UIImage imageNamed:@"normal"], [UIImage imageNamed:@"selected"], [UIImage imageNamed:@"normal"]]];
+   // [slideImageArray addObjectsFromArray: @[[UIImage imageNamed:@"slideswitch"], [UIImage imageNamed:@"normal"], [UIImage imageNamed:@"selected"], [UIImage imageNamed:@"normal"]]];
 }
 
 #pragma mark - BMKLocationServiceDelegate
@@ -138,6 +139,7 @@
    
     if (error == 0) {
         BMKAddressComponent *addressCom = result.addressDetail;
+        _navBarManagerView.navigationBarButSearchButView.leftLabel.text = addressCom.city;
         DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
     } else {
         DLog(@"反地理编码失败");

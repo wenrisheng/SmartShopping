@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSMINEFIRSTCELL_HEIGHT   150
+#define WSMINEFIRSTCELL_HEIGHT   190
 
 @protocol WSMineFirstCellDelegate <NSObject>
 

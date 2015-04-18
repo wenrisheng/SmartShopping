@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSMINESECONDCELL_HEIGHT     180
+#define WSMINESECONDCELL_HEIGHT     200
 
 @interface WSMineSecondCell : UITableViewCell
 

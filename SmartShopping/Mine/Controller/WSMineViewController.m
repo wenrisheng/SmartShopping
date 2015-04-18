@@ -11,6 +11,7 @@
 #import "WSMineSecondCell.h"
 #import "WSMineThirdCell.h"
 #import "WSMineFourCell.h"
+#import "WSLoginViewController.h"
 
 @interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate>
 
@@ -62,6 +63,7 @@
             WSMineSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = [WSMineSecondCell getCell];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             [cell.moreBut addTarget:self action:@selector(moreGiftButAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.leftBut addTarget:self action:@selector(giftLeftButAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -76,6 +78,7 @@
             WSMineThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = [WSMineThirdCell getCell];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             cell.upImageView.image = [UIImage imageNamed:@"01"];
             cell.downImageView.image = [UIImage imageNamed:@"02"];
@@ -93,6 +96,7 @@
             WSMineThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = [WSMineThirdCell getCell];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             cell.upImageView.image = [UIImage imageNamed:@"03"];
             cell.downImageView.image = [UIImage imageNamed:@"04"];
@@ -110,6 +114,7 @@
             WSMineFourCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = [WSMineFourCell getCell];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             cell.firstImageView.image = [UIImage imageNamed:@"05"];
             cell.secondImageView.image = [UIImage imageNamed:@"06"];
@@ -175,7 +180,8 @@
 #pragma mark 马上登录按钮事件
 - (void)mineFirstCelLoginImmediateButAction:(UIButton *)but
 {
-    
+    WSLoginViewController *loginVC = [[WSLoginViewController alloc] init];
+    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 #pragma mark 我的精明豆按钮事件
@@ -208,55 +214,55 @@
     
 }
 
-#pragma mark - 更多礼品左边按钮事件
+#pragma mark  更多礼品左边按钮事件
 - (void)giftLeftButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 更多礼品右边按钮事件
+#pragma mark 更多礼品右边按钮事件
 - (void)giftRightButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 更换手机号按钮事件
+#pragma mark 更换手机号按钮事件
 - (void)changeTelButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 密码修改按钮事件
+#pragma mark 密码修改按钮事件
 - (void)changePasswordButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 关于按钮事件
+#pragma mark 关于按钮事件
 - (void)aboutButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 意见反馈按钮事件
+#pragma mark 意见反馈按钮事件
 - (void)adviceGiveButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 推送设置按钮事件
+#pragma mark 推送设置按钮事件
 - (void)pushSettingSwitchAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 清除缓存按钮事件
+#pragma mark 清除缓存按钮事件
 - (void)clearCacheButAction:(UIButton *)but
 {
     
 }
 
-#pragma mark - 检查更新按钮事件
+#pragma mark 检查更新按钮事件
 - (void)checkUpdateButAction:(UIButton *)but
 {
     
