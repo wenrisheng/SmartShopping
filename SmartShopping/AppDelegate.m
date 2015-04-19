@@ -32,8 +32,6 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
-    
-
 
     // 百度地图
     [self initBMK];
@@ -67,14 +65,15 @@
                   clientKey:PARSE_CLIENTKEY];
     
     //添加新浪微博应用 注册网址 http://open.weibo.com
-    [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
-                               appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
-                            redirectUri:@"http://www.sharesdk.cn"];
+//    [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
+//                               appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+//                            redirectUri:@"http://www.sharesdk.cn"];
     
-//    [ShareSDK connectSinaWeiboWithAppKey:SINAWEIBO_APPKEY
-//                               appSecret:SINAWEIBO_SECRET
-//                             redirectUri:@"http://www.sharesdk.cn"];
-//    
+    // 登陆已成功
+    [ShareSDK connectSinaWeiboWithAppKey:SINAWEIBO_APPKEY
+                               appSecret:SINAWEIBO_SECRET
+                             redirectUri:@"http://www.sharesdk.cn"];
+    
     //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
     [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
                                 appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
@@ -135,7 +134,7 @@
         [dataArray addObject:dic];
     }
     tabbarVC.dataArray = dataArray;
-    _nav = [[UINavigationController alloc] initWithRootViewController:tabbarVC];
+    _nav = [[WSBaseNavigationController alloc] initWithRootViewController:tabbarVC];
     _nav.navigationBarHidden = YES;
     self.window.rootViewController = _nav;
 }

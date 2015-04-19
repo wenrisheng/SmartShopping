@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInStoreNoSignViewController">
+            <connections>
+                <outlet property="addressLabel" destination="IxD-uE-7gP" id="zJZ-xA-2hk"/>
+                <outlet property="navigationBarManagerView" destination="qdh-Oe-mLp" id="zBU-kg-CIu"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdh-Oe-mLp" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="IWm-6y-fAV"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="摇一摇签到，马上赚取10精明豆" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8UW-e1-EYg">
+                    <rect key="frame" x="0.0" y="102" width="320" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="v6k-Pt-ZGh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.89019607840000003" green="0.35294117650000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shake-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="NY9-2i-lqz">
+                    <rect key="frame" x="60" y="140" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="0Oe-Ge-Q4o"/>
+                        <constraint firstAttribute="width" constant="200" id="uxx-A3-vLc"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大润发汇景新城店" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IxD-uE-7gP">
+                    <rect key="frame" x="0.0" y="383" width="320" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="1K1-C1-Rw7"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.29411764705882354" green="0.29411764705882354" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="qdh-Oe-mLp" secondAttribute="trailing" id="86y-7O-aPL"/>
+                <constraint firstAttribute="trailing" secondItem="IxD-uE-7gP" secondAttribute="trailing" id="Du7-W6-9K2"/>
+                <constraint firstAttribute="centerX" secondItem="NY9-2i-lqz" secondAttribute="centerX" id="G2F-33-jmt"/>
+                <constraint firstItem="qdh-Oe-mLp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Wqn-DY-Vtx"/>
+                <constraint firstAttribute="centerY" secondItem="NY9-2i-lqz" secondAttribute="centerY" id="XiM-bL-auf"/>
+                <constraint firstItem="8UW-e1-EYg" firstAttribute="top" secondItem="qdh-Oe-mLp" secondAttribute="bottom" constant="38" id="cV0-yd-hFp"/>
+                <constraint firstItem="qdh-Oe-mLp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hyo-LS-udO"/>
+                <constraint firstItem="8UW-e1-EYg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="qYe-eV-On0"/>
+                <constraint firstItem="IxD-uE-7gP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vFO-jJ-FgE"/>
+                <constraint firstAttribute="trailing" secondItem="8UW-e1-EYg" secondAttribute="trailing" id="xmU-gx-1pc"/>
+                <constraint firstItem="IxD-uE-7gP" firstAttribute="top" secondItem="NY9-2i-lqz" secondAttribute="bottom" constant="43" id="yMd-HW-8F9"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="217" y="95"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="shake-02.png" width="340" height="340"/>
+    </resources>
+</document>

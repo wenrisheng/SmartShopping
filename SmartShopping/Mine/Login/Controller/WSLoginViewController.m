@@ -84,6 +84,13 @@
 
 - (IBAction)loginButAction:(id)sender
 {
+    WSRunTime *runTime = [WSRunTime sharedWSRunTime];
+    WSUser *user = runTime.user;
+    if (!user) {
+        WSUser *user = [[WSUser alloc] init];
+        runTime.user = user;
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)forgetPasswordButAction:(id)sender
@@ -104,23 +111,30 @@
 {
     [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
         if (result) {
-            PFQuery *query = [PFQuery queryWithClassName:@"UserInfo"];
-            [query whereKey:@"uid" equalTo:[userInfo uid]];
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if ([objects count] == 0)
-                {
-                    PFObject *newUser = [PFObject objectWithClassName:@"UserInfo"];
-                    [newUser setObject:[userInfo uid] forKey:@"uid"];
-                    [newUser setObject:[userInfo nickname] forKey:@"name"];
-                    [newUser setObject:[userInfo profileImage] forKey:@"icon"];
-                    [newUser saveInBackground];
-                    // 欢迎注册
-                    
-                } else {
-                    // 欢迎回来
-                    
-                }
-            }];
+            //打印输出用户uid：
+            NSLog(@"uid = %@",[userInfo uid]);
+            //打印输出用户昵称：
+            NSLog(@"name = %@",[userInfo nickname]);
+            //打印输出用户头像地址：
+            NSLog(@"icon = %@",[userInfo profileImage]);
+            
+//            PFQuery *query = [PFQuery queryWithClassName:@"UserInfo"];
+//            [query whereKey:@"uid" equalTo:[userInfo uid]];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                if ([objects count] == 0)
+//                {
+//                    PFObject *newUser = [PFObject objectWithClassName:@"UserInfo"];
+//                    [newUser setObject:[userInfo uid] forKey:@"uid"];
+//                    [newUser setObject:[userInfo nickname] forKey:@"name"];
+//                    [newUser setObject:[userInfo profileImage] forKey:@"icon"];
+//                    [newUser saveInBackground];
+//                    // 欢迎注册
+//                    
+//                } else {
+//                    // 欢迎回来
+//                    
+//                }
+//            }];
         } else {
             
         }

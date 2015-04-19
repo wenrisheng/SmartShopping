@@ -12,8 +12,6 @@
 
 @protocol WSMineFirstCellDelegate <NSObject>
 
-- (void)mineFirstCellLoginedButAction:(UIButton *)but;
-- (void)mineFirstCelLoginImmediateButAction:(UIButton *)but;
 - (void)mineFirstCellMinePeasButAction:(UIButton *)but;
 - (void)mineFirstCellMineConverButAction:(UIButton *)but;
 - (void)mineFirstCellMineConsumeButAction:(UIButton *)but;
@@ -27,16 +25,8 @@
 
 @property (weak, nonatomic) id<WSMineFirstCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIView *loginStatusView;
 
-// 已登录
-@property (weak, nonatomic) IBOutlet UIView *loginedView;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *telLabel;
-- (IBAction)loginedButAction:(id)sender;
-
-//  未登录
-@property (weak, nonatomic) IBOutlet UIView *noLoginView;
-- (IBAction)loginImmediateAction:(id)sender;
 
 //我的精明豆
 - (IBAction)myPeasButAction:(id)sender;

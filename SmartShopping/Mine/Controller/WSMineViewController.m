@@ -12,8 +12,18 @@
 #import "WSMineThirdCell.h"
 #import "WSMineFourCell.h"
 #import "WSLoginViewController.h"
+#import "WSMineInfoViewController.h"
+#import "WSLoginedView.h"
+#import "WSNoLoginView.h"
+#import "WSMinePeasViewController.h"
 
 @interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate>
+{
+    WSMineFirstCell *firstCell;
+    WSLoginedView *loginedView;
+    WSNoLoginView *noLoginView;
+}
+
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
@@ -33,6 +43,45 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+   
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+     [self setLoginStatus];
+}
+
+- (void)setLoginStatus
+{
+    UIView *loginStatusView = firstCell.loginStatusView;
+    if (loginStatusView) {
+        WSUser *user = [WSRunTime sharedWSRunTime].user;
+        [loginStatusView clearSubviews];
+        if (user) {
+            if (!loginedView) {
+                 loginedView = [WSLoginedView getView];
+                [loginedView.rightBut addTarget:self action:@selector(loginedRightButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [loginedView.rightBut setEnlargeEdgeWithTop:20 right:20 bottom:20 left:50];
+            }
+            [loginStatusView addSubview:loginedView];
+            [loginedView expandToSuperView];
+            
+        } else {
+            if (!noLoginView) {
+                noLoginView = [WSNoLoginView getView];
+                [noLoginView.logigImmediately addTarget:self action:@selector(loginImmediateButAction:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            [loginStatusView addSubview:noLoginView];
+            [noLoginView expandToSuperView];
+            
+        }
+    }
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -47,13 +96,14 @@
         case 0:
         {
             static NSString *identify = @"WSMineFirstCell";
-            WSMineFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
-            if (!cell) {
-                cell = [WSMineFirstCell getCell];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            firstCell = [tableView dequeueReusableCellWithIdentifier:identify];
+            if (!firstCell) {
+                firstCell = [WSMineFirstCell getCell];
+                firstCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            cell.delegate = self;
-            return cell;
+            firstCell.delegate = self;
+           // [self setLoginStatus];
+            return firstCell;
         }
             break;
         // 奖励兑换
@@ -172,13 +222,14 @@
 
 #pragma mark - WSMineFirstCellDelegate
 #pragma mark 已经登录右边按钮事件
-- (void)mineFirstCellLoginedButAction:(UIButton *)but
+- (void)loginedRightButAction:(UIButton *)but
 {
-    
+    WSMineInfoViewController *mineInfoVC = [[WSMineInfoViewController alloc] init];
+    [self.navigationController pushViewController:mineInfoVC animated:YES];
 }
 
 #pragma mark 马上登录按钮事件
-- (void)mineFirstCelLoginImmediateButAction:(UIButton *)but
+- (void)loginImmediateButAction:(UIButton *)but
 {
     WSLoginViewController *loginVC = [[WSLoginViewController alloc] init];
     [self.navigationController pushViewController:loginVC animated:YES];
@@ -187,7 +238,8 @@
 #pragma mark 我的精明豆按钮事件
 - (void)mineFirstCellMinePeasButAction:(UIButton *)but
 {
-    
+    WSMinePeasViewController *minePeasVC = [[WSMinePeasViewController alloc] init];
+    [self.navigationController pushViewController:minePeasVC animated:YES];
 }
 
 #pragma mark 我的兑换按钮事件

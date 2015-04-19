@@ -19,7 +19,7 @@
     NSMutableArray *collectionViewDataArray;
     NSMutableArray *slideImageArray;
     
-     BMKLocationService* _locService;
+    BMKLocationService* _locService;
     BMKGeoCodeSearch* _geocodesearch;
 }
 
@@ -93,6 +93,7 @@
     _geocodesearch.delegate = self;
 
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

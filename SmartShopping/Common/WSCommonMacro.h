@@ -21,9 +21,11 @@
 #define PARSE_APPLICATIONID   @"CVa6OhurE383B6zkpQKOUv0cMHPUJT7T2NKuIRPj"
 #define PARSE_CLIENTKEY       @"lIn9aJkboD3r5ebSvNRKU9BxfsiRSIXwkEI9ZYid"
 
-// 新浪微博
+// 新浪微博  授权回调url需要在开放平台中设置
 #define SINAWEIBO_APPKEY    @"2278135746"
 #define SINAWEIBO_SECRET    @"0229c752b7213bd8cf409ff98896ece4"
+
+// 微信   需要bundle id 、 应用网址 审核通过后才有appkey之类的
 
 // 状态栏颜色
 #define STATUSBAR_COLOR    [UIColor colorWithRed:0.898 green:0.380 blue:0.133 alpha:1.000]

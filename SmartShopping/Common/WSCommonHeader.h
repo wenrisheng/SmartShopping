@@ -13,7 +13,8 @@
 #import "WSBaseMacro.h"
 #import "WSBaseStatic.h"
 
-
 #import <BaiduMapAPI/BMapKit.h>
+
+#import "WSRunTime.h"
 
 #endif

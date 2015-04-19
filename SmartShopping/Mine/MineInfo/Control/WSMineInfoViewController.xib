@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineInfoViewController">
+            <connections>
+                <outlet property="emailView" destination="oA8-y0-Cgn" id="YSC-ji-l3W"/>
+                <outlet property="gainVarificateBut" destination="P53-nU-l7i" id="agN-u5-m3f"/>
+                <outlet property="inviateView" destination="Kci-bC-E89" id="reN-yx-Ooi"/>
+                <outlet property="ladyBut" destination="s4O-8V-tfu" id="qRn-EB-9Rg"/>
+                <outlet property="manBut" destination="s2L-js-zrG" id="WTo-Yc-GsW"/>
+                <outlet property="navigationBarManagerView" destination="ol3-Og-bA4" id="GJv-Bp-Q4B"/>
+                <outlet property="nicknameView" destination="HQP-R5-xhr" id="x28-n7-zFA"/>
+                <outlet property="varificateView" destination="enz-IJ-Zw0" id="IK1-Ju-HUo"/>
+                <outlet property="view" destination="K5P-yv-Yoa" id="0HZ-H8-uuY"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="K5P-yv-Yoa">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ol3-Og-bA4" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="UDU-uW-0K2"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uca-Ty-syk">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4r-y9-1kc">
+                            <rect key="frame" x="10" y="20" width="300" height="400"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQP-R5-xhr">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SLe-62-EF0">
+                                            <rect key="frame" x="8" y="0.0" width="284" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oA8-y0-Cgn">
+                                    <rect key="frame" x="0.0" y="70" width="300" height="50"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MTC-MO-iSk">
+                                            <rect key="frame" x="8" y="0.0" width="199" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P53-nU-l7i">
+                                            <rect key="frame" x="215" y="0.0" width="85" height="50"/>
+                                            <color key="backgroundColor" red="0.90196078430000004" green="0.38431372549999998" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="获取验证码">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="gainVarificateButAction:" destination="-1" eventType="touchUpInside" id="Ibw-vv-gYc"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="enz-IJ-Zw0">
+                                    <rect key="frame" x="0.0" y="140" width="300" height="50"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FYO-VG-VHl">
+                                            <rect key="frame" x="8" y="0.0" width="284" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q2V-eV-NNR">
+                                    <rect key="frame" x="0.0" y="200" width="300" height="40"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="性别" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5a-kf-ry9">
+                                            <rect key="frame" x="8" y="9" width="34" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.22352941176470589" green="0.22352941176470589" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="女" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RqH-nw-H03">
+                                            <rect key="frame" x="86" y="9" width="17" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="男" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAu-TE-1Rz">
+                                            <rect key="frame" x="162" y="10" width="17" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4O-8V-tfu">
+                                            <rect key="frame" x="58" y="10" width="20" height="20"/>
+                                            <state key="normal" backgroundImage="radio_choose-01.png">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="ladyButAction:" destination="-1" eventType="touchUpInside" id="67q-XK-5Qd"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s2L-js-zrG">
+                                            <rect key="frame" x="129" y="10" width="20" height="20"/>
+                                            <state key="normal" backgroundImage="radio_choose-02.png">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="manButAction:" destination="-1" eventType="touchUpInside" id="ljO-Pa-mEo"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kci-bC-E89">
+                                    <rect key="frame" x="0.0" y="250" width="300" height="50"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入推荐人邀请码  " minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PO5-du-GUl">
+                                            <rect key="frame" x="8" y="0.0" width="284" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bb-ui-m9s">
+                                    <rect key="frame" x="0.0" y="320" width="300" height="50"/>
+                                    <color key="backgroundColor" red="0.90196078430000004" green="0.38431372549999998" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <state key="normal" title="提交">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="commitButAction:" destination="-1" eventType="touchUpInside" id="lmd-qM-wPE"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="300" id="LE2-v5-Qub"/>
+                                <constraint firstAttribute="height" constant="400" id="cjx-uw-Kxc"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="z4r-y9-1kc" secondAttribute="bottom" constant="16" id="LtO-Gi-JTe"/>
+                        <constraint firstAttribute="centerX" secondItem="z4r-y9-1kc" secondAttribute="centerX" id="fJv-cD-coe"/>
+                        <constraint firstItem="z4r-y9-1kc" firstAttribute="top" secondItem="uca-Ty-syk" secondAttribute="top" constant="20" id="r0z-ar-jY1"/>
+                        <constraint firstAttribute="trailing" secondItem="z4r-y9-1kc" secondAttribute="trailing" priority="990" constant="10" id="v8H-i7-Twd"/>
+                        <constraint firstItem="z4r-y9-1kc" firstAttribute="leading" secondItem="uca-Ty-syk" secondAttribute="leading" priority="989" constant="10" id="ylV-aK-FBJ"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="ol3-Og-bA4" secondAttribute="trailing" id="4AL-cR-kgp"/>
+                <constraint firstAttribute="trailing" secondItem="uca-Ty-syk" secondAttribute="trailing" id="EMb-Xn-B6d"/>
+                <constraint firstAttribute="bottom" secondItem="uca-Ty-syk" secondAttribute="bottom" id="JKF-Fc-0CQ"/>
+                <constraint firstAttribute="centerX" secondItem="uca-Ty-syk" secondAttribute="centerX" id="Pf8-0j-qdz"/>
+                <constraint firstItem="uca-Ty-syk" firstAttribute="leading" secondItem="K5P-yv-Yoa" secondAttribute="leading" id="hle-xS-q1X"/>
+                <constraint firstItem="ol3-Og-bA4" firstAttribute="top" secondItem="K5P-yv-Yoa" secondAttribute="top" id="iCe-vw-YsL"/>
+                <constraint firstItem="ol3-Og-bA4" firstAttribute="leading" secondItem="K5P-yv-Yoa" secondAttribute="leading" id="kRb-1I-k7P"/>
+                <constraint firstItem="uca-Ty-syk" firstAttribute="top" secondItem="ol3-Og-bA4" secondAttribute="bottom" id="szL-4C-poJ"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="472" y="304"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="radio_choose-01.png" width="40" height="40"/>
+        <image name="radio_choose-02.png" width="40" height="40"/>
+    </resources>
+</document>

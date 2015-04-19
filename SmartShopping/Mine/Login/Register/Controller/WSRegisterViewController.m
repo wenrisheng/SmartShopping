@@ -115,6 +115,7 @@
 
 - (IBAction)registerButAction:(id)sender
 {
+    //  注册成功后的弹框
     if (!registerSucView) {
         registerSucView = [WSRegisterSucView getView];
     }

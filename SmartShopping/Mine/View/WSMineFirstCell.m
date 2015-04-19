@@ -30,20 +30,6 @@
     // Configure the view for the selected state
 }
 
-- (IBAction)loginedButAction:(id)sender
-{
-    if ([_delegate respondsToSelector:@selector(mineFirstCellLoginedButAction:)]) {
-        [_delegate mineFirstCellLoginedButAction:sender];
-    }
-}
-
-- (IBAction)loginImmediateAction:(id)sender
-{
-    if ([_delegate respondsToSelector:@selector(mineFirstCelLoginImmediateButAction:)]) {
-        [_delegate mineFirstCelLoginImmediateButAction:sender];
-    }
-}
-
 - (IBAction)myPeasButAction:(id)sender
 {
     if ([_delegate respondsToSelector:@selector(mineFirstCellMinePeasButAction:)]) {
