@@ -9,6 +9,9 @@
 #import "WSNoInStoreViewController.h"
 #import "WSNoInStoreSectionView.h"
 #import "WSNoinStoreCell.h"
+#import "WSInStoreNoSignScopeViewController.h"
+#import "WSInStoreNoSignViewController.h"
+#import "WSStoreDetailViewController.h"
 
 @interface WSNoInStoreViewController () <UITableViewDataSource, UITableViewDelegate>
 {
@@ -48,7 +51,16 @@
     WSNoinStoreCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (!cell) {
         cell = [WSNoinStoreCell getCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.titleBut addTarget:self action:@selector(storeNameButAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.distanceBut addTarget:self action:@selector(distanceButAction:) forControlEvents:UIControlEventTouchUpInside];
     }
+    NSInteger row = indexPath.row;
+    cell.titleBut.tag = row;
+    cell.signupBut.tag = row;
+    cell.distanceBut.tag = row;
+    
     return cell;
 }
 
@@ -71,9 +83,48 @@
     return sectionView;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - 商店名称按钮事件
+- (void)storeNameButAction:(UIButton *)but
 {
     
+}
+
+#pragma mark 签到按钮事件
+- (void)signupButAction:(UIButton *)but
+{
+    // 1. GPS定位不在店内跳到 不在签到范围页面 WSInStoreNoSignScopeViewController
+    //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
+    //  3. 在店内已签到 跳到 WSStoreDetailViewController
+    [self toStoreDetail];
+}
+
+#pragma mark 地图距离按钮事件
+- (void)distanceButAction:(UIButton *)but
+{
+    
+}
+
+
+#pragma mark － 在店内不在签到范围
+- (void)toInStoreNoScope
+{
+    WSInStoreNoSignScopeViewController *inStoreNoSignScoprVC = [[WSInStoreNoSignScopeViewController alloc] init];
+    [self.navigationController pushViewController:inStoreNoSignScoprVC animated:YES];
+}
+
+#pragma mark 在店内没签到
+- (void)toInStoreNoSign
+{
+    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+    
+}
+
+#pragma mark 在店内已签到
+- (void)toStoreDetail
+{
+    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+    [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
 /*

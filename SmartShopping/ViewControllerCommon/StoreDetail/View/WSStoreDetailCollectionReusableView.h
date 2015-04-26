@@ -11,10 +11,13 @@
 #define WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT     220
 
 @interface WSStoreDetailCollectionReusableView : UICollectionReusableView
-@property (weak, nonatomic) IBOutlet UIView *imageSwitchView;
-@property (weak, nonatomic) IBOutlet UIView *signedView;
-@property (weak, nonatomic) IBOutlet UIView *noSignupView;
-@property (weak, nonatomic) IBOutlet UIButton *noSignupBut;
-@property (weak, nonatomic) IBOutlet UIButton *noSignupScanBut;
+
+@property (weak, nonatomic) IBOutlet ACImageScrollManagerView *imageScrollManagerView;
+@property (weak, nonatomic) IBOutlet UIImageView *signupImageView;
+@property (weak, nonatomic) IBOutlet UILabel *signupLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *scanImageView;
+@property (weak, nonatomic) IBOutlet UILabel *scanLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *peaLabel;
 
 @end

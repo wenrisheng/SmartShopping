@@ -53,6 +53,7 @@
     WSMineConverCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (!cell) {
         cell = [WSMineConverCell getCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSInteger row = indexPath.row;
     NSInteger itemCount = dataArray.count;

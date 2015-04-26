@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ck-IV-4Jh">
+                <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ck-IV-4Jh" customClass="ACImageScrollManagerView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -47,7 +47,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="xf9-Q8-oal" secondAttribute="centerY" id="5jl-jl-uqq"/>
                         <constraint firstAttribute="trailing" secondItem="UON-zC-ag2" secondAttribute="trailing" constant="9" id="5zk-YV-UlO"/>
@@ -270,7 +270,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="XbY-lM-mnM" secondAttribute="centerX" id="4VL-h5-x4Y"/>
                         <constraint firstItem="gew-oi-HRO" firstAttribute="leading" secondItem="1Lc-fU-eFx" secondAttribute="leading" id="JOP-6g-qTO"/>
@@ -334,11 +334,12 @@
                 <constraint firstAttribute="trailing" secondItem="1ck-IV-4Jh" secondAttribute="trailing" id="wT1-0O-6Ry"/>
             </constraints>
             <connections>
-                <outlet property="imageSwitchView" destination="1ck-IV-4Jh" id="4vj-md-QHe"/>
-                <outlet property="noSignupBut" destination="q6o-RG-Vet" id="bLu-hS-hMf"/>
-                <outlet property="noSignupScanBut" destination="XeA-TF-zvj" id="Fz5-x1-sNQ"/>
-                <outlet property="noSignupView" destination="whs-fI-x4o" id="FSb-sP-zyx"/>
-                <outlet property="signedView" destination="2IE-4f-08L" id="Hsm-j0-qw7"/>
+                <outlet property="imageScrollManagerView" destination="1ck-IV-4Jh" id="pCo-B5-rd1"/>
+                <outlet property="peaLabel" destination="TVw-BF-KIF" id="YM9-wh-p22"/>
+                <outlet property="scanImageView" destination="aif-wq-ZOw" id="dc6-2K-8Qs"/>
+                <outlet property="scanLabel" destination="gZh-NA-Sye" id="fR6-PV-JaT"/>
+                <outlet property="signupImageView" destination="4MP-hN-1yl" id="dx4-Ck-C4m"/>
+                <outlet property="signupLabel" destination="N3g-O5-aPt" id="MkM-bQ-gt6"/>
             </connections>
             <point key="canvasLocation" x="154" y="209"/>
         </collectionReusableView>

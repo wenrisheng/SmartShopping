@@ -350,6 +350,7 @@
 - (void)aboutButAction:(UIButton *)but
 {
     WSAboutViewController *aboutVC = [[WSAboutViewController alloc] init];
+    aboutVC.url = @"http://www.baidu.com";
     [self.navigationController pushViewController:aboutVC animated:YES];
 }
 
@@ -370,7 +371,9 @@
 #pragma mark 清除缓存按钮事件
 - (void)clearCacheButAction:(UIButton *)but
 {
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"您确定要清除缓存吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 101;
+    [alert show];
 }
 
 #pragma mark 检查更新按钮事件
@@ -393,6 +396,7 @@
             if (latesVersionInt > currentVersionInt) {
                 self.appURL = [releaseInfo objectForKey:@"trackViewUrl"];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"更新" message:@"有新的版本更新，是否前往更新？" delegate:self cancelButtonTitle:@"关闭" otherButtonTitles:@"更新", nil];
+                alert.tag = 100;
                 [alert show];
             } else {
                 [SVProgressHUD showSuccessWithStatus:@"当前已是最新版本！" duration:TOAST_VIEW_TIME];
@@ -412,10 +416,25 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    NSInteger tag = alertView.tag;
+    // 更新应用
+    if (tag == 100) {
         if (buttonIndex==1) {
             NSURL *url = [NSURL URLWithString:self.appURL];
             [[UIApplication sharedApplication]openURL:url];
         }
+    }
+    // 清除缓存
+    if (tag == 101) {
+        if (buttonIndex == 1) {
+            [[SDImageCache sharedImageCache] clearMemory];
+            [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
+                [SVProgressHUD showSuccessWithStatus:@"缓存已清除完！" duration:TOAST_VIEW_TIME];
+            }];
+            
+        }
+    }
+    
 }
 
 @end

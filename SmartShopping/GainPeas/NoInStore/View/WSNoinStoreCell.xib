@@ -22,15 +22,6 @@
                             <constraint firstAttribute="height" constant="30" id="hy3-sR-ZDi"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大润发汇景新城店" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LM3-71-84R">
-                        <rect key="frame" x="84" y="4" width="183" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="ejU-bM-aZc"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="天河区汇景新城北路60路" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gH-qq-uhv">
                         <rect key="frame" x="10" y="31" width="170" height="21"/>
                         <constraints>
@@ -51,13 +42,6 @@
                         <color key="textColor" red="0.8901960784313725" green="0.35294117647058826" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qiandao.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wlw-7d-apt">
-                        <rect key="frame" x="275" y="0.0" width="45" height="39"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="45" id="fY9-0V-RaR"/>
-                            <constraint firstAttribute="height" constant="39" id="rwG-K1-Sc4"/>
-                        </constraints>
-                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2AF-v1-aBU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                         <color key="backgroundColor" red="0.74509803921568629" green="0.74901960784313726" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
@@ -79,6 +63,12 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Erk-7r-giT">
                         <rect key="frame" x="190" y="33" width="93" height="21"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HtD-wk-Mew">
+                                <rect key="frame" x="0.0" y="0.0" width="93" height="21"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map.png" translatesAutoresizingMaskIntoConstraints="NO" id="96l-Ig-g6a">
                                 <rect key="frame" x="0.0" y="2" width="12" height="18"/>
                                 <constraints>
@@ -98,46 +88,72 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="HtD-wk-Mew" secondAttribute="bottom" id="0f0-M4-sUQ"/>
                             <constraint firstAttribute="centerY" secondItem="gm4-px-CtT" secondAttribute="centerY" id="NZD-Fl-Lej"/>
                             <constraint firstAttribute="trailing" secondItem="gm4-px-CtT" secondAttribute="trailing" id="OYM-QJ-8Ft"/>
+                            <constraint firstItem="HtD-wk-Mew" firstAttribute="top" secondItem="Erk-7r-giT" secondAttribute="top" id="UuT-OG-rKt"/>
+                            <constraint firstAttribute="trailing" secondItem="HtD-wk-Mew" secondAttribute="trailing" id="ZNc-L4-7Qg"/>
                             <constraint firstItem="96l-Ig-g6a" firstAttribute="leading" secondItem="Erk-7r-giT" secondAttribute="leading" id="bTD-lA-DYb"/>
                             <constraint firstAttribute="centerY" secondItem="96l-Ig-g6a" secondAttribute="centerY" id="cz7-SN-Swq"/>
                             <constraint firstAttribute="height" constant="21" id="elP-LG-R1D"/>
                             <constraint firstItem="gm4-px-CtT" firstAttribute="leading" secondItem="96l-Ig-g6a" secondAttribute="trailing" constant="2" id="nkW-vE-8Lk"/>
-                            <constraint firstAttribute="width" constant="93" id="wvg-LN-XfE"/>
+                            <constraint firstItem="HtD-wk-Mew" firstAttribute="leading" secondItem="Erk-7r-giT" secondAttribute="leading" id="shj-Xo-1dW"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTl-BA-Ba5">
+                        <rect key="frame" x="84" y="1" width="183" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="kJB-RC-JgY"/>
+                        </constraints>
+                        <state key="normal" title="大润发汇景新城店">
+                            <color key="titleColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Htk-zi-SGM">
+                        <rect key="frame" x="275" y="1" width="45" height="39"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="45" id="n6G-0y-1bW"/>
+                            <constraint firstAttribute="height" constant="39" id="vZN-0e-BpH"/>
+                        </constraints>
+                        <state key="normal" backgroundImage="qiandao.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="jTl-BA-Ba5" firstAttribute="top" secondItem="2AF-v1-aBU" secondAttribute="bottom" id="Acg-oR-yKE"/>
                     <constraint firstAttribute="trailing" secondItem="b1k-XZ-gaH" secondAttribute="trailing" id="Bch-Ss-nge"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Erk-7r-giT" secondAttribute="trailing" constant="29" id="DLB-5l-bQE"/>
                     <constraint firstAttribute="bottom" secondItem="b1k-XZ-gaH" secondAttribute="bottom" constant="20" id="Dzl-qP-Swg"/>
-                    <constraint firstAttribute="trailing" secondItem="Wlw-7d-apt" secondAttribute="trailing" id="E6b-e8-W43"/>
                     <constraint firstItem="b1k-XZ-gaH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Er1-Ep-FMt"/>
-                    <constraint firstItem="Wlw-7d-apt" firstAttribute="leading" secondItem="LM3-71-84R" secondAttribute="trailing" constant="8" id="I6k-VH-1TI"/>
-                    <constraint firstItem="LM3-71-84R" firstAttribute="top" secondItem="2AF-v1-aBU" secondAttribute="bottom" constant="3" id="PJT-W4-AEy"/>
-                    <constraint firstItem="Erk-7r-giT" firstAttribute="top" secondItem="LM3-71-84R" secondAttribute="bottom" constant="8" id="PUJ-11-gs7"/>
+                    <constraint firstAttribute="trailing" secondItem="Htk-zi-SGM" secondAttribute="trailing" id="Mfe-UN-Dv9"/>
+                    <constraint firstItem="Htk-zi-SGM" firstAttribute="leading" secondItem="jTl-BA-Ba5" secondAttribute="trailing" constant="8" id="NRb-kY-llP"/>
                     <constraint firstItem="2AF-v1-aBU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="PcI-6d-FsL"/>
-                    <constraint firstItem="Wlw-7d-apt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Ps5-iM-dU9"/>
+                    <constraint firstItem="Htk-zi-SGM" firstAttribute="top" secondItem="2AF-v1-aBU" secondAttribute="bottom" id="Sny-wa-X8g"/>
                     <constraint firstItem="rrq-89-dYw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="TFm-jU-Kt3"/>
                     <constraint firstItem="SWg-uE-ugu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="TQc-jh-5gW"/>
-                    <constraint firstItem="LM3-71-84R" firstAttribute="leading" secondItem="SWg-uE-ugu" secondAttribute="trailing" constant="8" id="X0D-Ex-f6Z"/>
                     <constraint firstAttribute="trailing" secondItem="2AF-v1-aBU" secondAttribute="trailing" id="XzF-Ng-3Ro"/>
                     <constraint firstItem="3gH-qq-uhv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="fbt-l4-kPB"/>
                     <constraint firstItem="2AF-v1-aBU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="gxa-aD-4rV"/>
                     <constraint firstItem="3gH-qq-uhv" firstAttribute="top" secondItem="SWg-uE-ugu" secondAttribute="bottom" constant="1" id="i4J-eO-QpL"/>
+                    <constraint firstItem="jTl-BA-Ba5" firstAttribute="leading" secondItem="SWg-uE-ugu" secondAttribute="trailing" constant="8" id="iKy-Ll-ycA"/>
                     <constraint firstItem="Erk-7r-giT" firstAttribute="leading" secondItem="3gH-qq-uhv" secondAttribute="trailing" constant="10" id="iMY-C4-bEH"/>
                     <constraint firstItem="SWg-uE-ugu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="pg1-CA-Vyc"/>
+                    <constraint firstItem="Erk-7r-giT" firstAttribute="top" secondItem="jTl-BA-Ba5" secondAttribute="bottom" constant="2" id="siO-ZW-Zld"/>
                     <constraint firstItem="rrq-89-dYw" firstAttribute="top" secondItem="3gH-qq-uhv" secondAttribute="bottom" id="uHd-CU-RNq"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="addressLabel" destination="3gH-qq-uhv" id="uAk-Ec-QVp"/>
+                <outlet property="distanceBut" destination="HtD-wk-Mew" id="4w1-Oq-jmG"/>
                 <outlet property="distanceLabel" destination="gm4-px-CtT" id="GI8-9b-2Vp"/>
                 <outlet property="distanceView" destination="Erk-7r-giT" id="rww-xt-Zau"/>
                 <outlet property="leftImageView" destination="SWg-uE-ugu" id="Gw0-ND-jq7"/>
-                <outlet property="titleLabel" destination="LM3-71-84R" id="sav-I2-uQV"/>
+                <outlet property="signupBut" destination="Htk-zi-SGM" id="2TF-nX-2lG"/>
+                <outlet property="titleBut" destination="jTl-BA-Ba5" id="e0t-My-fls"/>
             </connections>
-            <point key="canvasLocation" x="142" y="150.5"/>
+            <point key="canvasLocation" x="16" y="178"/>
         </tableViewCell>
     </objects>
     <resources>

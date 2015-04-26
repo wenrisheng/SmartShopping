@@ -10,7 +10,7 @@
 #import "HomeHeaderCollectionReusableView.h"
 #import "HomeCollectionViewCell.h"
 #import "WSInfoListViewController.h"
-
+#import "WSProductDetailViewController.h"
 
 @interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
@@ -263,7 +263,10 @@
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+    productDetailVC.hasScan = YES;
+    productDetailVC.url = @"http://www.baidu.com";
+    [self.navigationController pushViewController:productDetailVC animated:YES];
 }
 
 #pragma mark - HomeCollectionViewCellDelegate

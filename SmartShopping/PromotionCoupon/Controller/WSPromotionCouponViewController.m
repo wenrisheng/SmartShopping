@@ -12,6 +12,8 @@
 #import "HomeCollectionViewCell.h"
 #import "WSHomeViewController.h"
 
+#define TOP_TAB_IMAGE_WIDTH     10
+
 @interface WSPromotionCouponViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NavigationBarButSearchButViewDelegate, HomeCollectionViewCellDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
     NSMutableArray *inStoreDataArray;
@@ -107,7 +109,18 @@
     isInStore = NO;
     _outStoreTabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
     _outStoreTabSlideManagerView.tabSlideGapTextView.selectedImage = @"arrow-click";
-    [_outStoreTabSlideManagerView.tabSlideGapTextView setDataArray:@[@"附近", @"所有商店"]];
+    _outStoreTabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
+    _outStoreTabSlideManagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
+    NSArray *titleArray = @[@"附近", @"所有商店"];
+    NSMutableArray *dataArray = [NSMutableArray array];
+    NSInteger  count = titleArray.count;
+    for (int i = 0; i < count; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[titleArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_TITLE];
+        [dataArray addObject:dic];
+    }
+    
+    [_outStoreTabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
     _outStoreTabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
         [self outOfStoreClickTag:index];
     };
@@ -215,9 +228,19 @@
     _inStoreTabSlideMnagerView.hidden = NO;
     _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = NO;
     isInStore = YES;
+    _inStoreTabSlideMnagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
+    _inStoreTabSlideMnagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
     _inStoreTabSlideMnagerView.tabSlideGapTextView.normalImage = @"arrow-down";
     _inStoreTabSlideMnagerView.tabSlideGapTextView.selectedImage = @"arrow-click";
-    [_inStoreTabSlideMnagerView.tabSlideGapTextView setDataArray:@[@"附近", storeName, @"所有"]];
+    NSArray *titleArray = @[@"附近", storeName, @"所有"];
+    NSMutableArray *dataArray = [NSMutableArray array];
+    NSInteger  count = titleArray.count;
+    for (int i = 0; i < count; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[titleArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_TITLE];
+        [dataArray addObject:dic];
+    }
+    [_inStoreTabSlideMnagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
     
     _inStoreTabSlideMnagerView.tabSlideGapTextView.callBack = ^(int index) {
         [self inOfStoreClickTag:index];

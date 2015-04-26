@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSStoreDetailViewController">
             <connections>
+                <outlet property="collectionView" destination="aWU-18-YOk" id="NVW-Al-Ofg"/>
                 <outlet property="navigationBarManagerView" destination="Vr7-eQ-N5d" id="nnN-Fs-hpZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,8 +24,9 @@
                         <constraint firstAttribute="height" constant="64" id="r6J-el-CCW"/>
                     </constraints>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aWU-18-YOk">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aWU-18-YOk">
                     <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KIX-eG-fPS">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -39,7 +41,11 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="aWU-18-YOk" firstAttribute="top" secondItem="Vr7-eQ-N5d" secondAttribute="bottom" id="42m-MQ-3qd"/>
                 <constraint firstItem="Vr7-eQ-N5d" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Dem-O4-1Y3"/>
+                <constraint firstAttribute="bottom" secondItem="aWU-18-YOk" secondAttribute="bottom" id="Mqs-Mo-dfU"/>
+                <constraint firstAttribute="trailing" secondItem="aWU-18-YOk" secondAttribute="trailing" id="NEF-hh-Bg5"/>
+                <constraint firstItem="aWU-18-YOk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="V26-IH-UDc"/>
                 <constraint firstAttribute="trailing" secondItem="Vr7-eQ-N5d" secondAttribute="trailing" id="ggA-78-7H1"/>
                 <constraint firstItem="Vr7-eQ-N5d" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="tb5-sl-S9E"/>
             </constraints>

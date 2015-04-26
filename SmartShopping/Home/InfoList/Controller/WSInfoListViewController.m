@@ -8,6 +8,7 @@
 
 #import "WSInfoListViewController.h"
 #import "WSInfoListCell.h"
+#import "WSInfoDetailViewController.h"
 
 @interface WSInfoListViewController () <WSNavigationBarButLabelViewDelegate>
 {
@@ -61,6 +62,7 @@
     WSInfoListCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (!cell) {
         cell = [WSInfoListCell getCelll];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return cell;
 }
@@ -73,7 +75,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    WSInfoDetailViewController *infDetailVC = [[WSInfoDetailViewController alloc] init];
+    infDetailVC.url = @"http://www.baidu.com";
+    [self.navigationController pushViewController:infDetailVC animated:YES];
 }
 
 @end

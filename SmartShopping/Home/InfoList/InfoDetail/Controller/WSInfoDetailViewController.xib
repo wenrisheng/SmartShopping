@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInfoDetailViewController">
+            <connections>
+                <outlet property="navigationBarManagerView" destination="r8H-kl-onu" id="0QQ-Mx-Cvq"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webView" destination="xyj-Gs-rpU" id="aQK-Gk-NE9"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8H-kl-onu" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="YkL-ms-URq"/>
+                    </constraints>
+                </view>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xyj-Gs-rpU">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="OZZ-km-E5s"/>
+                    </connections>
+                </webView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="r8H-kl-onu" secondAttribute="trailing" id="0G5-m7-HpF"/>
+                <constraint firstItem="xyj-Gs-rpU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="34q-ks-zZd"/>
+                <constraint firstItem="r8H-kl-onu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Vf-se-Bny"/>
+                <constraint firstAttribute="bottom" secondItem="xyj-Gs-rpU" secondAttribute="bottom" id="IMp-kq-Do4"/>
+                <constraint firstItem="r8H-kl-onu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nxu-xg-JdX"/>
+                <constraint firstAttribute="trailing" secondItem="xyj-Gs-rpU" secondAttribute="trailing" id="fzj-9D-seR"/>
+                <constraint firstItem="xyj-Gs-rpU" firstAttribute="top" secondItem="r8H-kl-onu" secondAttribute="bottom" id="wPo-oU-elz"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="181" y="183"/>
+        </view>
+    </objects>
+</document>

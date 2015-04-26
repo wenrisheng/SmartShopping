@@ -10,6 +10,7 @@
 #import "WSNoInStoreViewController.h"
 #import "WSInStoreNoSignViewController.h"
 #import "WSInStoreNoSignScopeViewController.h"
+#import "WSStoreDetailViewController.h"
 
 #define TITLE_HEIGHT    20.0   // 标题label高度
 #define IMAGE_WIDTH     30.0   // 导航条图片宽度
@@ -174,10 +175,14 @@
     DLog(@"定位失败！！！");
 }
 
+#pragma mark - 到店签到
 - (IBAction)storeSignupButAction:(id)sender
 {
-    
-    [self toInStoreNoSign];
+    //  1. GPS定位不在店内跳到 WSNoInStoreViewController
+    //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
+    //  3. 在店内已签到 跳到 WSStoreDetailViewController
+
+    [self toNoInStoreVC];
    
 }
 
@@ -188,19 +193,19 @@
     [self.navigationController pushViewController:noInstoreVC animated:YES];
 }
 
-#pragma mark 在店内不在签到范围
-- (void)toInStoreNoScope
-{
-    WSInStoreNoSignScopeViewController *inStoreNoSignScoprVC = [[WSInStoreNoSignScopeViewController alloc] init];
-    [self.navigationController pushViewController:inStoreNoSignScoprVC animated:YES];
-}
-
 #pragma mark 在店内没签到
 - (void)toInStoreNoSign
 {
     WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
     [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
 
+}
+
+#pragma mark 在店内已签到
+- (void)toStoreDetail
+{
+    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+    [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
 - (IBAction)scanProductButAction:(id)sender
