@@ -6,8 +6,7 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "WSBaseViewController.h"
 
-@interface WSInStoreNoSignScopeViewController : WSBaseViewController
+@interface WSInStoreNoSignScopeViewController : WSServiceViewController
 
 @end

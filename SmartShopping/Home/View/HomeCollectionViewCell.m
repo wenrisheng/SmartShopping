@@ -13,8 +13,7 @@
 - (void)awakeFromNib
 {
     // Initialization code
-    _conView.layer.cornerRadius = 5;
-    _conView.layer.masksToBounds = YES;
+    [_conView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.706 green:0.710 blue:0.714 alpha:1.000] cornerRadius:5];
     
     [self.leftBut addTarget:self action:@selector(leftButAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.rightBut addTarget:self action:@selector(rightButAction:) forControlEvents:UIControlEventTouchUpInside];

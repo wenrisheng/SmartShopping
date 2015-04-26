@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSRegisterViewController : WSBaseViewController
+@interface WSRegisterViewController : WSServiceViewController
 
 @end

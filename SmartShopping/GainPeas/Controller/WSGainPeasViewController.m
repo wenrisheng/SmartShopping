@@ -17,10 +17,11 @@
 @interface WSGainPeasViewController () <BMKLocationServiceDelegate>
 {
     BMKLocationService* _locService;
+    NSMutableArray *slideImageArray;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
-@property (weak, nonatomic) IBOutlet UIView *imageSlideView;
+@property (weak, nonatomic) IBOutlet ACImageScrollManagerView *imageSlideView;
 @property (weak, nonatomic) IBOutlet UIView *storeSignupView;
 @property (weak, nonatomic) IBOutlet UIView *scanProductView;
 @property (weak, nonatomic) IBOutlet UIView *inviateFriendView;
@@ -37,11 +38,19 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    slideImageArray = [[NSMutableArray alloc] init];
     
     [self initView];
     
     // 启动百度地区定位
     [self initBMK];
+    
+    [self addTestData];
+    ACImageScrollView *imageScrollView = _imageSlideView.acImageScrollView;
+    [imageScrollView setImageData:slideImageArray];
+    imageScrollView.callback = ^(int index) {
+        DLog(@"点击图片");
+    };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,6 +76,12 @@
     //停止LocationService
     _locService.delegate = nil;
 //    _geocodesearch.delegate = nil;
+}
+
+#pragma mark - 测试数据
+- (void)addTestData
+{
+    [slideImageArray addObjectsFromArray: @[@"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=0b5e32f9af18972bbc3a07cad6cc7b9d/9f2f070828381f30326c8344ad014c086f06f0e2.jpg", @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D360/sign=c0558e592adda3cc14e4be2631e83905/b03533fa828ba61e23b0dfe94534970a314e599d.jpg", @"https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=f3287c32237f9e2f6f351a082f31e962/d8f9d72a6059252d8689d3d0309b033b5ab5b94c.jpg", @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D360/sign=90cef1c74b4a20a42e1e3ac1a0509847/d1a20cf431adcbefa5d1d7d3a8af2edda2cc9f7a.jpg"]];
 }
 
 - (void)initBMK

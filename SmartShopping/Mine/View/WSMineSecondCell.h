@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSMINESECONDCELL_HEIGHT     200
+#define WSMINESECONDCELL_HEIGHT     210
 
 @interface WSMineSecondCell : UITableViewCell
 
 + (instancetype)getCell;
+@property (weak, nonatomic) IBOutlet UIView *saperateView;
 
 @property (weak, nonatomic) IBOutlet UIView *conView;
 @property (weak, nonatomic) IBOutlet UIButton *moreBut;

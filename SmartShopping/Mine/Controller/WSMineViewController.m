@@ -16,6 +16,14 @@
 #import "WSLoginedView.h"
 #import "WSNoLoginView.h"
 #import "WSMinePeasViewController.h"
+#import "WSMineConverViewController.h"
+#import "WSMineCollectViewController.h"
+#import "WSMineConsumeViewController.h"
+#import "WSLogoutCell.h"
+#import "WSMoreGiftViewController.h"
+#import "WSGiftDetailViewController.h"
+#import "WSUpdateTelViewController.h"
+#import "WSResetPasswordViewController.h"
 
 @interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate>
 {
@@ -53,6 +61,7 @@
 {
     [super viewDidAppear:animated];
      [self setLoginStatus];
+    [_contentTableView reloadData];
 }
 
 - (void)setLoginStatus
@@ -85,7 +94,12 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        return 6;
+    } else {
+       return 5;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -117,7 +131,7 @@
             }
             [cell.moreBut addTarget:self action:@selector(moreGiftButAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.leftBut addTarget:self action:@selector(giftLeftButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.leftBut addTarget:self action:@selector(giftRightButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.rightBut addTarget:self action:@selector(giftRightButAction:) forControlEvents:UIControlEventTouchUpInside];
             return cell;
         }
             break;
@@ -178,6 +192,17 @@
             return cell;
         }
             break;
+        case 5:
+        {
+            static NSString *identify = @"WSLogoutCell";
+            WSLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+            if (!cell) {
+                cell = GET_XIB_FIRST_OBJECT(identify);
+                [cell.loginBut addTarget:self action:@selector(logoutButAction) forControlEvents:UIControlEventTouchUpInside];
+            }
+            return cell;
+        }
+            break;
         default:
             break;
     }
@@ -214,10 +239,21 @@
             return WSMINEFOURCELL_HEIGHT;
         }
             break;
+        case 5:
+        {
+            return WSLOGOUTCELL_HEIGHT;
+        }
+            break;
         default:
             break;
     }
     return 0;
+}
+
+#pragma mark - 注销按钮事件
+- (void)logoutButAction
+{
+    
 }
 
 #pragma mark - WSMineFirstCellDelegate
@@ -245,49 +281,59 @@
 #pragma mark 我的兑换按钮事件
 - (void)mineFirstCellMineConverButAction:(UIButton *)but
 {
-    
+    WSMineConverViewController *mineConverVC = [[WSMineConverViewController alloc] init];
+    [self.navigationController pushViewController:mineConverVC animated:YES];
 }
 
 #pragma mark 我的消费卷按钮事件
 - (void)mineFirstCellMineConsumeButAction:(UIButton *)but
 {
-    
+    WSMineConsumeViewController *mineConsumeVC = [[WSMineConsumeViewController alloc] init];
+    [self.navigationController pushViewController:mineConsumeVC animated:YES];
 }
 
 #pragma mark 我的收藏按钮事件
 - (void)mineFirstCellMineCollectButAction:(UIButton *)but
 {
-    
+    WSMineCollectViewController *mineCollectVC = [[WSMineCollectViewController alloc] init];
+    [self.navigationController pushViewController:mineCollectVC animated:YES];
 }
 
 #pragma mark - 更多礼品按钮事件
 - (void)moreGiftButAction:(UIButton *)but
 {
-    
+    WSMoreGiftViewController *moreGiftVC = [[WSMoreGiftViewController alloc] init];
+    [self.navigationController pushViewController:moreGiftVC animated:YES];
 }
 
-#pragma mark  更多礼品左边按钮事件
+#pragma mark  礼品兑换左边礼品按钮事件
 - (void)giftLeftButAction:(UIButton *)but
 {
-    
+    WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
+    giftDetailVC.url = @"http://www.baidu.com";
+    [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
-#pragma mark 更多礼品右边按钮事件
+#pragma mark 礼品兑换右边礼品按钮事件
 - (void)giftRightButAction:(UIButton *)but
 {
-    
+    WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
+     giftDetailVC.url = @"http://www.baidu.com";
+    [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
 #pragma mark 更换手机号按钮事件
 - (void)changeTelButAction:(UIButton *)but
 {
-    
+    WSUpdateTelViewController *updateTelVC = [[WSUpdateTelViewController alloc] init];
+    [self.navigationController pushViewController:updateTelVC animated:YES];
 }
 
 #pragma mark 密码修改按钮事件
 - (void)changePasswordButAction:(UIButton *)but
 {
-    
+    WSResetPasswordViewController *resetPasswordVC = [[WSResetPasswordViewController alloc] init];
+    [self.navigationController pushViewController:resetPasswordVC animated:YES];
 }
 
 #pragma mark 关于按钮事件

@@ -11,8 +11,6 @@
 #import "HomeCollectionViewCell.h"
 #import "WSInfoListViewController.h"
 
-#define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
-#define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
 @interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
@@ -21,6 +19,7 @@
     
     BMKLocationService* _locService;
     BMKGeoCodeSearch* _geocodesearch;
+    HomeHeaderCollectionReusableView *headerView;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
@@ -35,7 +34,9 @@
     // Do any additional setup after loading the view from its nib
     //[_navBarManagerView.navigationBarButSearchButView.rightBut setBackgroundImage:[UIImage imageNamed:@"navigationBarButSearchButView"] forState:UIControlStateNormal];
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
-    _navBarManagerView.navigationBarButSearchButView.leftLabel.text = nil;
+    _navBarManagerView.navigationBarButSearchButView.leftLabel.text = @"--";
+    _navBarManagerView.navigationBarButSearchButView.leftBut.enabled = NO;
+    
     collectionViewDataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     
@@ -55,9 +56,15 @@
     });
 
     DLog(@"下拉刷新完成！");
-}];
+    }];
     [_collectionView addFooterWithCallback:^{
-        DLog(@"上拉刷新完成");
+        // 模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            // 结束刷新
+            [_collectionView footerEndRefreshing];
+        });
+        
+        DLog(@"下拉刷新完成！");
     }];
     
     [self addTestData];
@@ -91,7 +98,7 @@
     [_locService startUserLocationService];
     _locService.delegate = self;
     _geocodesearch.delegate = self;
-
+   // [SVProgressHUD showWithStatus:@"定位中……" maskType:SVProgressHUDMaskTypeNone];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -107,12 +114,13 @@
 - (void)addTestData
 {
     [collectionViewDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-   // [slideImageArray addObjectsFromArray: @[[UIImage imageNamed:@"slideswitch"], [UIImage imageNamed:@"normal"], [UIImage imageNamed:@"selected"], [UIImage imageNamed:@"normal"]]];
+    [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
 }
 
 #pragma mark - BMKLocationServiceDelegate
 - (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
 {
+     [SVProgressHUD dismiss];
      [_locService stopUserLocationService];
     DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
     CLLocationCoordinate2D pt = userLocation.location.coordinate;
@@ -121,17 +129,20 @@
     BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
     if(flag)
     {
+       
         DLog(@"反geo检索发送成功");
     }
     else
     {
-        DLog(@"反地理编码失败");
+         DLog(@"反地理编码失败");
     }
 }
 
 - (void)didFailToLocateUserWithError:(NSError *)error
 {
+    [_locService stopUserLocationService];
     DLog(@"定位失败！！！");
+   // [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:3];
 }
 
 #pragma mark - BMKGeoCodeSearchDelegate
@@ -143,6 +154,7 @@
         _navBarManagerView.navigationBarButSearchButView.leftLabel.text = addressCom.city;
         DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
     } else {
+       // [SVProgressHUD showErrorWithStatus:@"地理编码解析失败！" duration:3];
         DLog(@"反地理编码失败");
     }
 }
@@ -184,6 +196,12 @@
 {
     HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
     cell.validDateLabel.text = [NSString stringWithFormat:@"%d,%d", (int)indexPath.section, (int)indexPath.row];
+    [cell.bigImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSBaseUtility gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    [cell.smallImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042g"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSBaseUtility gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
     cell.delegate = self;
     return cell;
 }
@@ -227,10 +245,10 @@
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        HomeHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
-        WSSlideSwitchView *slideSwitchView = headerView.slideSwitchManagerView.slideSwitchView;
-        [slideSwitchView setImageViewArray:slideImageArray];
-        slideSwitchView.delegate = self;
+        headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
+        ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
+        [imageScrollView setImageData:slideImageArray];
+
         [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];

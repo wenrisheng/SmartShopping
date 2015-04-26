@@ -11,6 +11,7 @@
 #import "WSResetPasswordViewController.h"
 #import <ShareSDK/ShareSDK.h>
 #import <Parse/Parse.h>
+#import "WSUser.h"
 
 @interface WSLoginViewController () <UITextFieldDelegate, WSNavigationBarButLabelButViewDelegate>
 
@@ -39,6 +40,7 @@
     
     [_telView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     [_passwordView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,15 +84,69 @@
     return YES;
 }
 
+#pragma mark - 登陆按钮事件
 - (IBAction)loginButAction:(id)sender
 {
-    WSRunTime *runTime = [WSRunTime sharedWSRunTime];
-    WSUser *user = runTime.user;
-    if (!user) {
-        WSUser *user = [[WSUser alloc] init];
-        runTime.user = user;
+    BOOL flag = [self validData];
+    if (flag) {
+        [self requestLogin];
     }
-    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark 请求登陆
+- (void)requestLogin
+{
+    NSString *pwd = _passwordTextField.text;
+    NSString *account = _telTextField.text;
+#if DEBUG
+    account = @"13800000001";
+    pwd = @"123456";
+#endif
+    pwd = [pwd encodeMD5_32_uppercase];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:account forKey:@"phone"];
+    [dic setValue:pwd forKey:@"password"];
+    [dic setValue:@"1" forKey:@"type"];
+    
+    [SVProgressHUD showWithStatus:@"正在登录……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeLogin] data:dic tag:WSInterfaceTypeLogin];
+}
+
+#pragma mark 验证登陆数据
+- (BOOL)validData
+{
+    BOOL flag = YES;
+    if (_telTextField.text.length <= 0) {
+
+        flag = NO;
+        return flag;
+    }
+    if (_passwordTextField.text.length <= 0) {
+
+        return flag;
+    }
+    return flag;
+}
+
+#pragma mark - ServiceDelegate
+- (void)requestSucess:(id)result tag:(int)tag
+{
+    [SVProgressHUD dismiss];
+    BOOL flag = [WSInterfaceUtility validRequestResult:result];
+    if (flag) {
+        NSDictionary *data = [result valueForKey:@"data"];
+        NSDictionary *userDic = [data valueForKey:@"user"];
+        WSUser *user = [[WSUser alloc] init];
+        [user setValuesForKeysWithDictionary:userDic];
+        WSRunTime *runTime = [WSRunTime sharedWSRunTime];
+        runTime.user = user;
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)requestFail:(id)error tag:(int)tag
+{
+    [SVProgressHUD dismiss];
 }
 
 - (IBAction)forgetPasswordButAction:(id)sender

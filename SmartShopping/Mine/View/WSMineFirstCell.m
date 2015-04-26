@@ -22,6 +22,11 @@
     _bottomView.layer.borderColor = [UIColor colorWithRed:0.855 green:0.859 blue:0.863 alpha:1.000].CGColor;
     _bottomView.layer.borderWidth = 1;
     _bottomView.layer.masksToBounds = YES;
+    
+    NSArray *buts = @[_mineConverBut, _mineCollectBut, _mineConsumeBut];
+    for (UIButton *but in buts) {
+        [but setEnlargeEdge:20];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

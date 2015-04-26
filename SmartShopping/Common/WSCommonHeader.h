@@ -16,5 +16,8 @@
 #import <BaiduMapAPI/BMapKit.h>
 
 #import "WSRunTime.h"
+#import "WSService.h"
+#import "WSInterfaceUtility.h"
+#import "WSServiceViewController.h"
 
 #endif

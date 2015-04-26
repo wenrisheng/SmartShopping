@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#define WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT     220
+
 @interface WSStoreDetailCollectionReusableView : UICollectionReusableView
+@property (weak, nonatomic) IBOutlet UIView *imageSwitchView;
+@property (weak, nonatomic) IBOutlet UIView *signedView;
+@property (weak, nonatomic) IBOutlet UIView *noSignupView;
+@property (weak, nonatomic) IBOutlet UIButton *noSignupBut;
+@property (weak, nonatomic) IBOutlet UIButton *noSignupScanBut;
 
 @end

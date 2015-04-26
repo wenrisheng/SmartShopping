@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSInfoListViewController : WSBaseViewController
+@interface WSInfoListViewController : WSServiceViewController
 
 @end

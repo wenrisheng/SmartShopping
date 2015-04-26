@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define HOMECOLLECTIONVIEWCELL_HEIGHT          212
-#define HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL    180
+#define HOMECOLLECTIONVIEWCELL_HEIGHT          250
+#define HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL    212
 
 @class HomeCollectionViewCell;
 @protocol HomeCollectionViewCellDelegate <NSObject>
@@ -22,7 +22,6 @@
 @interface HomeCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) id<HomeCollectionViewCellDelegate> delegate;
-
 @property (weak, nonatomic) IBOutlet UIView *conView;
 @property (weak, nonatomic) IBOutlet UILabel *validDateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *bigImageView;

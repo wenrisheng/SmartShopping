@@ -17,7 +17,7 @@
 
 @end
 
-@interface Service : NSObject
+@interface WSService : NSObject
 
 @property (assign, nonatomic) id<ServiceDelegate> delegate;
 

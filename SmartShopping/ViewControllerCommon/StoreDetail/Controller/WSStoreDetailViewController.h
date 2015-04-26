@@ -6,8 +6,7 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "WSBaseViewController.h"
 
-@interface WSStoreDetailViewController : WSBaseViewController
+@interface WSStoreDetailViewController : WSServiceViewController
 
 @end

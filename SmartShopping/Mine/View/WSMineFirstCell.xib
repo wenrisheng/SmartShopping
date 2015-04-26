@@ -280,6 +280,9 @@
             <connections>
                 <outlet property="bottomView" destination="Ohu-7q-Udb" id="wma-nE-71Q"/>
                 <outlet property="loginStatusView" destination="nkY-IV-iB6" id="xKR-mM-ThP"/>
+                <outlet property="mineCollectBut" destination="iyc-FD-9bT" id="whJ-G0-jau"/>
+                <outlet property="mineConsumeBut" destination="xp5-Fj-V2L" id="cHa-gT-2yH"/>
+                <outlet property="mineConverBut" destination="cr5-fk-OrJ" id="4Tz-bt-b1C"/>
             </connections>
             <point key="canvasLocation" x="516" y="263"/>
         </tableViewCell>

@@ -48,7 +48,7 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pCS-t3-JzL">
                                             <rect key="frame" x="46" y="0.0" width="246" height="50"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="H0j-mO-Oao"/>
                                             </connections>

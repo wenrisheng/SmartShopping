@@ -12,7 +12,7 @@
 
 @interface HomeHeaderCollectionReusableView : UICollectionReusableView
 
-@property (weak, nonatomic) IBOutlet WSSlideSwitchManagerView *slideSwitchManagerView;
+@property (weak, nonatomic) IBOutlet ACImageScrollManagerView *imageScrollManagerView;
 @property (weak, nonatomic) IBOutlet UILabel *peasLabel;
 @property (weak, nonatomic) IBOutlet UIButton *storeSignInBut;
 @property (weak, nonatomic) IBOutlet UIButton *scanProductBut;

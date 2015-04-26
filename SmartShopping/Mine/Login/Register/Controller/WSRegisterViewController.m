@@ -48,6 +48,7 @@
     [super viewDidLoad];
     varificateTime = VARIFICATE_TIME;
     [self initView];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,8 +113,55 @@
 }
 */
 
-
+#pragma mark - 注册
+#pragma mark 注册按钮事件
 - (IBAction)registerButAction:(id)sender
+{
+    BOOL flag = [self validData];
+    if (flag) {
+        [self requestRegister];
+    }
+}
+
+#pragma mark 请求注册
+- (void)requestRegister
+{
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : _passwordTextField.text, @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : @"", @"lat" : @""};
+     [SVProgressHUD showWithStatus:@"正在注册……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeRegister] data:dic tag:WSInterfaceTypeRegister];
+
+}
+
+#pragma mark 验证注册数据
+- (BOOL)validData
+{
+    BOOL flag = YES;
+    if (_telTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+    if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+    if (_varificateTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+
+    if (_passwordTextField.text.length == 0) {
+         [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+       return flag;
+}
+
+#pragma mark 注册成功
+- (void)registerSuc
 {
     //  注册成功后的弹框
     if (!registerSucView) {
@@ -121,22 +169,37 @@
     }
     [self.view addSubview:registerSucView];
     [registerSucView expandToSuperView];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(removeRegisterSucView:) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(removeRegisterSucView:) userInfo:nil repeats:NO];
 }
 
+#pragma mark － 查看用户服务协议
 - (IBAction)seeUserServerProtocolButAction:(id)sender
 {
     WSUserProtocolViewController *userProtocolVC = [[WSUserProtocolViewController alloc] init];
     [self.navigationController pushViewController:userProtocolVC animated:YES];
 }
 
+#pragma mark － 获取验证码
 - (IBAction)gainVarificateButAction:(id)sender
 {
-    UIButton *but = (UIButton *)sender;
-    [but setEnabled:NO];
-    varificateTime = VARIFICATE_TIME;
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-    but.alpha = 0.7;
+    if (_telTextField.text.length > 0) {
+        UIButton *but = (UIButton *)sender;
+        [but setEnabled:NO];
+        varificateTime = VARIFICATE_TIME;
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+        but.alpha = 0.7;
+        [self requestValidCode];
+    } else {
+        
+    }
+}
+
+#pragma mark 请求验证吗
+- (void)requestValidCode
+{
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"type" : @"1"};
+   // [SVProgressHUD showWithStatus:@""];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetValidCode] data:dic tag:WSInterfaceTypeGetValidCode];
 }
 
 - (void)timeAction:(NSTimer *)time
@@ -157,6 +220,55 @@
 {
     [registerSucView removeFromSuperview];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - ServiceDelegate
+- (void)requestSucess:(id)result tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                NSDictionary *data = [result valueForKey:@"data"];
+                NSString *code = [data valueForKey:@"code"];
+                DLog(@"验证码：%@", code);
+               // _varificateTextField.text = code;
+            }
+        }
+            break;
+        case WSInterfaceTypeRegister:
+        {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                WSUser *user = [[WSUser alloc] init];
+                [self registerSuc];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)requestFail:(id)error tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            
+        }
+            break;
+        case WSInterfaceTypeRegister:
+        {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"注册失败！" duration:TOAST_VIEW_TIME];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end

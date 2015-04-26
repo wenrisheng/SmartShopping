@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hPZ-v6-gJA" customClass="WSSlideSwitchManagerView">
+                <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hPZ-v6-gJA" customClass="ACImageScrollManagerView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -268,11 +268,11 @@
                 <constraint firstAttribute="trailing" secondItem="jB8-4E-ONF" secondAttribute="trailing" id="zz3-i9-uIn"/>
             </constraints>
             <connections>
+                <outlet property="imageScrollManagerView" destination="hPZ-v6-gJA" id="hJi-Nx-sW9"/>
                 <outlet property="inviteFriendBut" destination="WAN-e4-rC5" id="Vta-N4-8f8"/>
                 <outlet property="peasLabel" destination="6pc-4r-GLo" id="hqD-jI-5gT"/>
                 <outlet property="scanProductBut" destination="g4y-Y4-SAI" id="Ry5-16-EQC"/>
                 <outlet property="segmentedControl" destination="LgP-2u-NgX" id="QcI-kL-QJ1"/>
-                <outlet property="slideSwitchManagerView" destination="hPZ-v6-gJA" id="nGb-5c-ENg"/>
                 <outlet property="storeSignInBut" destination="wft-Gy-caD" id="wxo-ZH-Ngl"/>
             </connections>
             <point key="canvasLocation" x="-257" y="153"/>

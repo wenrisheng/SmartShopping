@@ -6,16 +6,16 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "ASIHttpWrap.h"
+#import "WSService.h"
 #import "ASIFormDataRequest.h"
 
 #define ASIHTTPWRAP_TIMEOUT_DEFAULT     10   //默认超时
 
-@interface Service () <ASIHTTPRequestDelegate>
+@interface WSService () <ASIHTTPRequestDelegate>
 
 @end
 
-@implementation Service
+@implementation WSService
 
 -(void)get:(NSString *)url tag:(int)tag
 {
@@ -36,36 +36,47 @@
 
 - (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag
 {
-    
-#ifdef DEBUG
-    NSLog(@"request post url:%@ \n tag:%d", url, tag);
-#endif
-    
     NSURL *nsUrl = [NSURL URLWithString:url];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsUrl];
     request.tag = tag;
     [request setTimeOutSeconds:ASIHTTPWRAP_TIMEOUT_DEFAULT];
     [request setDelegate:self];
-    for(id key in [dataDic allKeys])
+    NSArray *allKeys = [dataDic allKeys];
+    for(id key in allKeys)
     {
-        [request setPostValue:[dataDic objectForKey:key] forKey:(NSString *)key];
+        id value = [dataDic valueForKey:key];
+        value = value == nil ? @"" : value;
+        [request setPostValue:value forKey:(NSString *)key];
     }
     [request buildPostBody];
     
 #ifdef DEBUG
     NSString * str = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
-    NSLog(@"PostBody %@",str);
+    DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
 #endif
     [request startAsynchronous];
+
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request;
 
 {
+    NSData *responseData = [request responseData];
+    NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+#ifdef DEBUG
+    NSArray *allKeys = [resultDic allKeys];
+    NSMutableString *resultStr = [[NSMutableString alloc] init];
+    [resultStr appendString:@"*********request result:\n"];
+    [resultStr appendString:@"{\n"];
+    for (id key in allKeys) {
+        [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
+    }
+    [resultStr appendString:@"}\n"];
+    [resultStr appendString:@"*********************\n"];
+    DLog(@"%@", resultStr);
+#endif
     if ([_delegate respondsToSelector:@selector(requestSucess:tag:)]) {
-        NSData *responseData = [request responseData];
-        NSError *error = [[NSError alloc] init];
-        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
+        NSError *error = [request error];
         if (!error) {
             [_delegate requestSucess:resultDic tag:(int)request.tag];
         } else {

@@ -34,9 +34,9 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3l-74-ynG">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="420"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wwb-SQ-30B">
+                                <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wwb-SQ-30B" customClass="ACImageScrollManagerView">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="100" id="wI2-oy-ore"/>
                                     </constraints>

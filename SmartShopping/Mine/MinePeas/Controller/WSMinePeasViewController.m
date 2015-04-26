@@ -7,12 +7,13 @@
 //
 
 #import "WSMinePeasViewController.h"
+#import "WSGiftDetailViewController.h"
+#import "WSMoreGiftViewController.h"
 
 @interface WSMinePeasViewController ()
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UILabel *peasLabel;
-@property (weak, nonatomic) IBOutlet UIButton *moreGiftButAction;
 @property (weak, nonatomic) IBOutlet UIImageView *leftImageView;
 @property (weak, nonatomic) IBOutlet UILabel *leftlabel;
 @property (weak, nonatomic) IBOutlet UILabel *leftPeasNumLabel;
@@ -31,6 +32,7 @@
 - (IBAction)storeSignupButAction:(id)sender;
 - (IBAction)scanProductButAction:(id)sender;
 - (IBAction)inviateFriendButAction:(id)sender;
+- (IBAction)moreGiftButAction:(id)sender;
 
 @end
 
@@ -59,17 +61,45 @@
 
 }
 
-- (IBAction)rightButAction:(id)sender {
+#pragma mark - 更多礼品按钮事件
+- (IBAction)moreGiftButAction:(id)sender
+{
+    WSMoreGiftViewController *moreGiftVC = [[WSMoreGiftViewController alloc] init];
+    [self.navigationController pushViewController:moreGiftVC animated:YES];
 }
 
-- (IBAction)leftProductButAction:(id)sender {
-}
-- (IBAction)storeSignupButAction:(id)sender {
+#pragma mark 右边礼品按钮事件
+- (IBAction)rightButAction:(id)sender
+{
+    WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
+    [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
-- (IBAction)scanProductButAction:(id)sender {
+#pragma mark 左边礼品按钮事件
+- (IBAction)leftProductButAction:(id)sender
+{
+    WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
+    [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
-- (IBAction)inviateFriendButAction:(id)sender {
+#pragma mark － 到店签到按钮事件
+- (IBAction)storeSignupButAction:(id)sender
+{
+
 }
+
+#pragma mark 扫描按钮事件
+- (IBAction)scanProductButAction:(id)sender
+{
+    
+}
+
+#pragma mark 邀请好友按钮事件
+- (IBAction)inviateFriendButAction:(id)sender
+{
+    
+}
+
+
+
 @end

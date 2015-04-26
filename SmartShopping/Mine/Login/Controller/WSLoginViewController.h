@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSLoginViewController : WSBaseViewController
+@interface WSLoginViewController : WSServiceViewController
 
 @end

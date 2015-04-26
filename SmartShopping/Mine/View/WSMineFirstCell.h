@@ -27,6 +27,9 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 @property (weak, nonatomic) IBOutlet UIView *loginStatusView;
 
+@property (weak, nonatomic) IBOutlet UIButton *mineConverBut;
+@property (weak, nonatomic) IBOutlet UIButton *mineConsumeBut;
+@property (weak, nonatomic) IBOutlet UIButton *mineCollectBut;
 
 //我的精明豆
 - (IBAction)myPeasButAction:(id)sender;

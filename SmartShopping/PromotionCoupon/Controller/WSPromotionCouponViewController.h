@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSPromotionCouponViewController : WSBaseViewController
+@interface WSPromotionCouponViewController : WSServiceViewController
 
 @end

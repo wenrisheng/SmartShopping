@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineCollectViewController">
+            <connections>
+                <outlet property="contentCollectionView" destination="Y9E-nz-ZFG" id="np1-jz-LUg"/>
+                <outlet property="navigationBarManagerView" destination="DOC-Pi-FRJ" id="H9B-xo-YdT"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DOC-Pi-FRJ" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="YTM-9a-TpY"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Y9E-nz-ZFG">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HIo-JW-djv">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="2UT-DI-3qy"/>
+                        <outlet property="delegate" destination="-1" id="aMk-vo-1ff"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Y9E-nz-ZFG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4kt-rY-kkY"/>
+                <constraint firstAttribute="trailing" secondItem="DOC-Pi-FRJ" secondAttribute="trailing" id="Ly2-ba-kHz"/>
+                <constraint firstItem="DOC-Pi-FRJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="OOr-Zj-7ok"/>
+                <constraint firstItem="Y9E-nz-ZFG" firstAttribute="top" secondItem="DOC-Pi-FRJ" secondAttribute="bottom" id="QsU-aI-xGd"/>
+                <constraint firstAttribute="bottom" secondItem="Y9E-nz-ZFG" secondAttribute="bottom" id="Ss2-JX-GlY"/>
+                <constraint firstItem="DOC-Pi-FRJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iLX-cw-Zgu"/>
+                <constraint firstAttribute="trailing" secondItem="Y9E-nz-ZFG" secondAttribute="trailing" id="kQb-sw-463"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="202" y="213"/>
+        </view>
+    </objects>
+</document>

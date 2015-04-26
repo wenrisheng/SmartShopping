@@ -93,7 +93,7 @@
                      tencentOAuthCls:[TencentOAuth class]];
     
     //添加QQ应用  注册网址  http://open.qq.com/
-    [ShareSDK connectQQWithQZoneAppKey:@"100371282"
+    [ShareSDK connectQQWithQZoneAppKey:QQ_APPKEY
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
     

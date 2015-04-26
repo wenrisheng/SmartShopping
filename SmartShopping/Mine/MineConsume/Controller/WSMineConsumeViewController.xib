@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineConsumeViewController">
+            <connections>
+                <outlet property="contentTableView" destination="rml-Wf-xq1" id="pLZ-lh-Fe9"/>
+                <outlet property="navigationBarManagerView" destination="Xqs-Us-Mgk" id="YJs-kX-meO"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xqs-Us-Mgk" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="cYx-FW-wXg"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="rml-Wf-xq1">
+                    <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="yWH-Ai-EE9"/>
+                        <outlet property="delegate" destination="-1" id="NyW-al-8jG"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Xqs-Us-Mgk" secondAttribute="trailing" id="60P-kg-o41"/>
+                <constraint firstItem="rml-Wf-xq1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8Uu-gJ-YoI"/>
+                <constraint firstItem="Xqs-Us-Mgk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Do3-xt-MIf"/>
+                <constraint firstItem="Xqs-Us-Mgk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="awe-2E-jHM"/>
+                <constraint firstAttribute="trailing" secondItem="rml-Wf-xq1" secondAttribute="trailing" id="cBv-NK-ZW3"/>
+                <constraint firstAttribute="bottom" secondItem="rml-Wf-xq1" secondAttribute="bottom" id="gYh-j1-nhn"/>
+                <constraint firstItem="rml-Wf-xq1" firstAttribute="top" secondItem="Xqs-Us-Mgk" secondAttribute="bottom" id="oq6-fZ-hlQ"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>
