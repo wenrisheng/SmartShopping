@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSAdviceBackViewController">
             <connections>
+                <outlet property="commitBut" destination="mPZ-k7-d9Y" id="Se9-Kz-hCK"/>
                 <outlet property="holderLabel" destination="9cX-6b-2Vo" id="b0V-VI-soJ"/>
                 <outlet property="navigationBarManagerView" destination="sgv-0y-n4d" id="g3I-SI-05f"/>
                 <outlet property="textView" destination="ZfF-8T-Y8i" id="uOV-aw-2Dh"/>

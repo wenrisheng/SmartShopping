@@ -38,6 +38,8 @@
 #define STATUSBAR_COLOR               [UIColor colorWithRed:0.898 green:0.380 blue:0.133 alpha:1.000]
 
 #define  TOAST_VIEW_TIME              3  // 提示时间
+#define  APP_URL                      @"http://itunes.apple.com/lookup?id=924413147"  // 暂时用了艾童会 1.11
+
 
 /******************服务器地址**********************/
 #define SERVER_BASE_URL               @"http://192.168.0.238:8088/jmg"

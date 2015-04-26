@@ -21,6 +21,9 @@
 @property (weak, nonatomic) IBOutlet UIView *varificateView;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIButton *gainVarificateBut;
+@property (weak, nonatomic) IBOutlet UITextField *telTextField;
+@property (weak, nonatomic) IBOutlet UITextField *varificateTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwodTestField;
 
 - (IBAction)gainVarificateButAction:(id)sender;
 - (IBAction)resetButAction:(id)sender;
@@ -64,6 +67,15 @@
 
 - (IBAction)gainVarificateButAction:(id)sender
 {
+    NSString *tel = _telTextField.text;
+    if (tel.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号！" duration:TOAST_VIEW_TIME];
+        return;
+    }
+    if (![WSIdentifierValidator isValidPhone:tel]) {
+        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     UIButton *but = (UIButton *)sender;
     [but setEnabled:NO];
     varificateTime = VARIFICATE_TIME;
@@ -88,5 +100,37 @@
 
 - (IBAction)resetButAction:(id)sender
 {
+    BOOL flag = [self validData];
+    if (flag) {
+        
+    }
 }
+
+- (BOOL)validData
+{
+    BOOL flag = YES;
+    NSString *tel = _telTextField.text;
+    if (tel.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+    if (![WSIdentifierValidator isValidPhone:tel]) {
+        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return NO;
+    }
+    if (_varificateTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return NO;
+    }
+    if (_passwodTestField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return NO;
+    }
+    return flag;
+}
+
 @end

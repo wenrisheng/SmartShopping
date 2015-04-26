@@ -191,6 +191,10 @@
 		7CCA01A01AEC8E0D0081A8CC /* WSOrderFailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA019F1AEC8E0D0081A8CC /* WSOrderFailView.xib */; };
 		7CCA01AB1AEC92C90081A8CC /* WSUpdateTelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01A91AEC92C90081A8CC /* WSUpdateTelViewController.m */; };
 		7CCA01AC1AEC92C90081A8CC /* WSUpdateTelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01AA1AEC92C90081A8CC /* WSUpdateTelViewController.xib */; };
+		7CCA01B21AECC4C70081A8CC /* WSAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01B01AECC4C70081A8CC /* WSAboutViewController.m */; };
+		7CCA01B31AECC4C70081A8CC /* WSAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01B11AECC4C70081A8CC /* WSAboutViewController.xib */; };
+		7CCA01B61AECCACF0081A8CC /* WSConfirmClearCacheView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01B51AECCACF0081A8CC /* WSConfirmClearCacheView.m */; };
+		7CCA01B81AECCADD0081A8CC /* WSConfirmClearCacheView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01B71AECCADD0081A8CC /* WSConfirmClearCacheView.xib */; };
 		7CCA18AF1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA18AD1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m */; };
 		7CCA18B01AEBDA2100714EA0 /* WSGiftOrderWriterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA18AE1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.xib */; };
 		7CCA18B61AEBDC9500714EA0 /* left-.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA18B11AEBDC9500714EA0 /* left-.png */; };
@@ -607,6 +611,12 @@
 		7CCA01A81AEC92C90081A8CC /* WSUpdateTelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSUpdateTelViewController.h; sourceTree = "<group>"; };
 		7CCA01A91AEC92C90081A8CC /* WSUpdateTelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSUpdateTelViewController.m; sourceTree = "<group>"; };
 		7CCA01AA1AEC92C90081A8CC /* WSUpdateTelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSUpdateTelViewController.xib; sourceTree = "<group>"; };
+		7CCA01AF1AECC4C70081A8CC /* WSAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAboutViewController.h; sourceTree = "<group>"; };
+		7CCA01B01AECC4C70081A8CC /* WSAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAboutViewController.m; sourceTree = "<group>"; };
+		7CCA01B11AECC4C70081A8CC /* WSAboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSAboutViewController.xib; sourceTree = "<group>"; };
+		7CCA01B41AECCACF0081A8CC /* WSConfirmClearCacheView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSConfirmClearCacheView.h; sourceTree = "<group>"; };
+		7CCA01B51AECCACF0081A8CC /* WSConfirmClearCacheView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSConfirmClearCacheView.m; sourceTree = "<group>"; };
+		7CCA01B71AECCADD0081A8CC /* WSConfirmClearCacheView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSConfirmClearCacheView.xib; sourceTree = "<group>"; };
 		7CCA18AC1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSGiftOrderWriterViewController.h; sourceTree = "<group>"; };
 		7CCA18AD1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSGiftOrderWriterViewController.m; sourceTree = "<group>"; };
 		7CCA18AE1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSGiftOrderWriterViewController.xib; sourceTree = "<group>"; };
@@ -1488,6 +1498,9 @@
 				7CA484401AEA578A00116BBC /* WSLogoutCell.h */,
 				7CA484411AEA578A00116BBC /* WSLogoutCell.m */,
 				7CA484421AEA578A00116BBC /* WSLogoutCell.xib */,
+				7CCA01B41AECCACF0081A8CC /* WSConfirmClearCacheView.h */,
+				7CCA01B51AECCACF0081A8CC /* WSConfirmClearCacheView.m */,
+				7CCA01B71AECCADD0081A8CC /* WSConfirmClearCacheView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1630,6 +1643,24 @@
 				7CCA01AA1AEC92C90081A8CC /* WSUpdateTelViewController.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		7CCA01AD1AECC4B80081A8CC /* About */ = {
+			isa = PBXGroup;
+			children = (
+				7CCA01AE1AECC4B80081A8CC /* Conroller */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		7CCA01AE1AECC4B80081A8CC /* Conroller */ = {
+			isa = PBXGroup;
+			children = (
+				7CCA01AF1AECC4C70081A8CC /* WSAboutViewController.h */,
+				7CCA01B01AECC4C70081A8CC /* WSAboutViewController.m */,
+				7CCA01B11AECC4C70081A8CC /* WSAboutViewController.xib */,
+			);
+			path = Conroller;
 			sourceTree = "<group>";
 		};
 		7CCA18AA1AEBDA0400714EA0 /* OrderWriter */ = {
@@ -1861,6 +1892,7 @@
 				7CA484531AEA8C0500116BBC /* MoreGift */,
 				7CCE4F5B1AEB7B8C0097DFBB /* AdviceBack */,
 				7CCA01A11AEC92450081A8CC /* UpdateTel */,
+				7CCA01AD1AECC4B80081A8CC /* About */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -2350,6 +2382,7 @@
 				7C90852B1ADF756C0073D94C /* InstapaperResource.bundle in Resources */,
 				7CCAD3441ADEBA1C001D3D8B /* scan_product.png in Resources */,
 				7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */,
+				7CCA01B31AECC4C70081A8CC /* WSAboutViewController.xib in Resources */,
 				7CEEB2A71AE3C8DE005CB218 /* gainpeas_icon-02.png in Resources */,
 				7CCAD33F1ADEB8D7001D3D8B /* time-clock.png in Resources */,
 				7C90854F1ADF756D0073D94C /* RennSDK.bundle in Resources */,
@@ -2482,6 +2515,7 @@
 				7CEEB29E1AE3C49B005CB218 /* WSStoreDetailCollectionReusableView.xib in Resources */,
 				7CEEB2AA1AE3C8DE005CB218 /* gainpeas_icon-06.png in Resources */,
 				7CCAD32E1ADEB0C1001D3D8B /* d_selected.png in Resources */,
+				7CCA01B81AECCADD0081A8CC /* WSConfirmClearCacheView.xib in Resources */,
 				7CA484441AEA578A00116BBC /* WSLogoutCell.xib in Resources */,
 				7CCA01981AEC7C650081A8CC /* buttom.png in Resources */,
 				7CCE4F611AEB7B9F0097DFBB /* WSAdviceBackViewController.xib in Resources */,
@@ -2562,6 +2596,7 @@
 				7C6DDE481ADC1D35007F81A4 /* ASIFormDataRequest.m in Sources */,
 				7CCBBD5A1AD418AF00EA1F7F /* main.m in Sources */,
 				7C3511711ADFF4380014696B /* WSMineThirdCell.m in Sources */,
+				7CCA01B21AECC4C70081A8CC /* WSAboutViewController.m in Sources */,
 				7CCE4F591AEB73480097DFBB /* WSGiftDetailViewController.m in Sources */,
 				7C6DDE571ADC1D35007F81A4 /* ASIS3ObjectRequest.m in Sources */,
 				7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */,
@@ -2576,6 +2611,7 @@
 				7CC760B61AE23081000C9085 /* WSResetPasswordViewController.m in Sources */,
 				7CD8F31C1AE543760039CE0F /* WSMineConverCell.m in Sources */,
 				7CCD8B2F1ADFED84007B86A9 /* WSMineSecondCell.m in Sources */,
+				7CCA01B61AECCACF0081A8CC /* WSConfirmClearCacheView.m in Sources */,
 				7C249B5B1ADD6114000712BF /* HomeCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,9 @@
             <connections>
                 <outlet property="gainVarificateBut" destination="tIA-t5-DkX" id="6kA-y1-tPa"/>
                 <outlet property="navigationBarManagerView" destination="rY5-mn-ljH" id="jug-Nt-B7m"/>
+                <outlet property="telTextField" destination="0Yl-ee-AxB" id="L5h-Cs-lP9"/>
                 <outlet property="telView" destination="YXy-d2-T7g" id="tNp-33-IcM"/>
+                <outlet property="varificateTextField" destination="bdK-hI-6DN" id="g77-U3-X10"/>
                 <outlet property="varificateView" destination="lzW-NG-fnN" id="UA3-jH-izl"/>
                 <outlet property="view" destination="YkS-nm-vf8" id="GOw-zc-dzB"/>
             </connections>
@@ -41,7 +43,7 @@
                                                 <constraint firstAttribute="height" constant="50" id="ZLp-8B-UId"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                         </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

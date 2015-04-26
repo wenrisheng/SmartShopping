@@ -24,14 +24,18 @@
 #import "WSGiftDetailViewController.h"
 #import "WSUpdateTelViewController.h"
 #import "WSResetPasswordViewController.h"
+#import "WSAboutViewController.h"
+#import "WSAdviceBackViewController.h"
+#import "ASIFormDataRequest.h"
 
-@interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate>
+@interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate, UIAlertViewDelegate>
 {
     WSMineFirstCell *firstCell;
     WSLoginedView *loginedView;
     WSNoLoginView *noLoginView;
 }
 
+@property (strong, nonatomic) NSString *appURL;
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
@@ -179,16 +183,22 @@
             if (!cell) {
                 cell = [WSMineFourCell getCell];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.firstImageView.image = [UIImage imageNamed:@"05"];
+                cell.secondImageView.image = [UIImage imageNamed:@"06"];
+                cell.thirdImageView.image = [UIImage imageNamed:@"07"];
+                cell.firstLabel.text = @"推送通知";
+                cell.secondLabel.text = @"清除缓存";
+                cell.thirdLabel.text = @"检查更新";
+                [cell.pushSettingSwitch addTarget:self action:@selector(pushSettingSwitchAction:) forControlEvents:UIControlEventValueChanged];
+                [cell.clearCacheBut addTarget:self action:@selector(clearCacheButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.chectUpdateBut addTarget:self action:@selector(checkUpdateButAction:) forControlEvents:UIControlEventTouchUpInside];
             }
-            cell.firstImageView.image = [UIImage imageNamed:@"05"];
-            cell.secondImageView.image = [UIImage imageNamed:@"06"];
-            cell.thirdImageView.image = [UIImage imageNamed:@"07"];
-            cell.firstLabel.text = @"推送通知";
-            cell.secondLabel.text = @"清除缓存";
-            cell.thirdLabel.text = @"检查更新";
-            [cell.pushSettingSwitch addTarget:self action:@selector(pushSettingSwitchAction:) forControlEvents:UIControlEventValueChanged];
-            [cell.clearCacheBut addTarget:self action:@selector(clearCacheButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.chectUpdateBut addTarget:self action:@selector(checkUpdateButAction:) forControlEvents:UIControlEventTouchUpInside];
+            BOOL isPush = [WSRunTime sharedWSRunTime].user.isPushNotification;
+            if (isPush) {
+                [cell.pushSettingSwitch setOn:YES animated:YES];
+            } else {
+                [cell.pushSettingSwitch setOn:NO animated:YES];
+            }
             return cell;
         }
             break;
@@ -339,19 +349,22 @@
 #pragma mark 关于按钮事件
 - (void)aboutButAction:(UIButton *)but
 {
-    
+    WSAboutViewController *aboutVC = [[WSAboutViewController alloc] init];
+    [self.navigationController pushViewController:aboutVC animated:YES];
 }
 
 #pragma mark 意见反馈按钮事件
 - (void)adviceGiveButAction:(UIButton *)but
 {
-    
+    WSAdviceBackViewController *adviceBackVC = [[WSAdviceBackViewController alloc] init];
+    [self.navigationController pushViewController:adviceBackVC animated:YES];
 }
 
 #pragma mark 推送设置按钮事件
-- (void)pushSettingSwitchAction:(UIButton *)but
+- (void)pushSettingSwitchAction:(UISwitch *)pushSwitch
 {
-    
+    BOOL isPush = pushSwitch.on;
+    [WSRunTime sharedWSRunTime].user.isPushNotification = isPush;
 }
 
 #pragma mark 清除缓存按钮事件
@@ -363,18 +376,46 @@
 #pragma mark 检查更新按钮事件
 - (void)checkUpdateButAction:(UIButton *)but
 {
-    
+    [SVProgressHUD showWithStatus:@"检查更新中……"];
+    NSURL *url = [NSURL URLWithString:APP_URL];
+   __weak ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setTimeOutSeconds:ASIHTTPWRAP_TIMEOUT_DEFAULT];
+    [request setCompletionBlock:^{
+        [SVProgressHUD dismiss];
+        NSData *responseData = [request responseData];
+         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+        NSArray *infoArray = [jsonData objectForKey:@"results"];
+        if ([infoArray count]) {
+            NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
+            NSString *latestVersion = [releaseInfo objectForKey:@"version"];
+            float latesVersionInt = [latestVersion floatValue];
+            float currentVersionInt = [APP_VERSION floatValue];
+            if (latesVersionInt > currentVersionInt) {
+                self.appURL = [releaseInfo objectForKey:@"trackViewUrl"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"更新" message:@"有新的版本更新，是否前往更新？" delegate:self cancelButtonTitle:@"关闭" otherButtonTitles:@"更新", nil];
+                [alert show];
+            } else {
+                [SVProgressHUD showSuccessWithStatus:@"当前已是最新版本！" duration:TOAST_VIEW_TIME];
+            }
+           
+        } else {
+             [SVProgressHUD showErrorWithStatus:@"检查更新失败！" duration:TOAST_VIEW_TIME];
+        }
+    }];
+    [request setFailedBlock:^{
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"检查更新失败！" duration:TOAST_VIEW_TIME];
+    }];
+    [request startAsynchronous];
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+        if (buttonIndex==1) {
+            NSURL *url = [NSURL URLWithString:self.appURL];
+            [[UIApplication sharedApplication]openURL:url];
+        }
 }
-*/
 
 @end

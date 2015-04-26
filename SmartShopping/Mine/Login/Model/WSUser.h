@@ -26,4 +26,7 @@
 @property (strong, nonatomic) NSString *type;
 @property (strong, nonatomic) NSString *logoPath;
 
+// 推送通知
+@property (assign, nonatomic) BOOL isPushNotification;
+
 @end

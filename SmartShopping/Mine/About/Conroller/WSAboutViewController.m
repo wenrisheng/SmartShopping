@@ -1,29 +1,26 @@
 //
-//  WSGiftDetailViewController.m
+//  WSAboutViewController.m
 //  SmartShopping
 //
-//  Created by wrs on 15/4/25.
+//  Created by wrs on 15/4/26.
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "WSGiftDetailViewController.h"
-#import "WSGiftOrderWriterViewController.h"
+#import "WSAboutViewController.h"
 
-@interface WSGiftDetailViewController () <UIWebViewDelegate>
+@interface WSAboutViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
-- (IBAction)converButAction:(id)sender;
-
 @end
 
-@implementation WSGiftDetailViewController
+@implementation WSAboutViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"礼品详情";
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"关于";
     NSURL *url =[NSURL URLWithString:_url];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [_webView loadRequest:request];
@@ -39,12 +36,6 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:@"打开网页出错！" duration:TOAST_VIEW_TIME];
-}
-
-- (IBAction)converButAction:(id)sender
-{
-    WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
-    [self.navigationController pushViewController:orderWriterVC animated:YES];
 }
 
 @end

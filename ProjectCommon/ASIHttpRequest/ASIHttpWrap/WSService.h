@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
 
+#define ASIHTTPWRAP_TIMEOUT_DEFAULT     10   //默认超时
+
+typedef void(^ServiceSucCallBack)(NSDictionary *result);
+typedef void(^ServiceFailCallBack)(NSDictionary *result);
+
 @protocol ServiceDelegate <NSObject>
 
 - (void)requestSucess:(id)result tag:(int)tag;
@@ -20,6 +25,8 @@
 @interface WSService : NSObject
 
 @property (assign, nonatomic) id<ServiceDelegate> delegate;
+@property (strong, nonatomic) ServiceSucCallBack serviceSucCallBack;
+@property (strong, nonatomic) ServiceFailCallBack serviceFailCallBack;
 
 - (void)get:(NSString *)url tag:(int)tag;
 

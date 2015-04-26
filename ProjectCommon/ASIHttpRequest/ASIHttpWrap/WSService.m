@@ -9,8 +9,6 @@
 #import "WSService.h"
 #import "ASIFormDataRequest.h"
 
-#define ASIHTTPWRAP_TIMEOUT_DEFAULT     10   //默认超时
-
 @interface WSService () <ASIHTTPRequestDelegate>
 
 @end
@@ -63,6 +61,8 @@
 {
     NSData *responseData = [request responseData];
     NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+    
+    // 调试打印响应数据
 #ifdef DEBUG
     NSArray *allKeys = [resultDic allKeys];
     NSMutableString *resultStr = [[NSMutableString alloc] init];
@@ -75,6 +75,13 @@
     [resultStr appendString:@"*********************\n"];
     DLog(@"%@", resultStr);
 #endif
+    
+    // 块回调
+    if (_serviceSucCallBack) {
+        _serviceSucCallBack(resultDic);
+    }
+    
+    // 代理回调
     if ([_delegate respondsToSelector:@selector(requestSucess:tag:)]) {
         NSError *error = [request error];
         if (!error) {
@@ -89,6 +96,12 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request;
 {
+    // 块回调
+    if (_serviceFailCallBack) {
+        _serviceFailCallBack(nil);
+    }
+    
+    // 代理回调
     if ([_delegate respondsToSelector:@selector(requestFail:tag:)]) {
         [_delegate requestFail:nil tag:(int)request.tag];
     }
