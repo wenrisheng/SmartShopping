@@ -126,7 +126,7 @@
 #pragma mark 请求注册
 - (void)requestRegister
 {
-    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : _passwordTextField.text, @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : @"", @"lat" : @""};
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : [_passwordTextField.text encodeMD5_32_lowercase], @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : @"", @"lat" : @""};
      [SVProgressHUD showWithStatus:@"正在注册……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeRegister] data:dic tag:WSInterfaceTypeRegister];
 
@@ -137,23 +137,23 @@
 {
     BOOL flag = YES;
     if (_telTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:2.0];
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
     if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
-        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:2.0];
+        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
     if (_varificateTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:2.0];
+        [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
 
     if (_passwordTextField.text.length == 0) {
-         [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:2.0];
+         [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
@@ -198,7 +198,6 @@
 - (void)requestValidCode
 {
     NSDictionary *dic = @{@"phone" : _telTextField.text, @"type" : @"1"};
-   // [SVProgressHUD showWithStatus:@""];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetValidCode] data:dic tag:WSInterfaceTypeGetValidCode];
 }
 
@@ -233,7 +232,6 @@
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSString *code = [data valueForKey:@"code"];
                 DLog(@"验证码：%@", code);
-               // _varificateTextField.text = code;
             }
         }
             break;
@@ -242,7 +240,6 @@
             [SVProgressHUD dismiss];
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
-                WSUser *user = [[WSUser alloc] init];
                 [self registerSuc];
             }
         }

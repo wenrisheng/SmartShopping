@@ -26,6 +26,12 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeSearchGift,                    // 奖励兑换-礼品查询
     WSInterfaceTypeGetGiftDetails,                // 礼品详情
     WSInterfaceTypeExchangeGift,                 // 礼品兑换
+    
+    WSInterfaceTypeMyGiftList,                   // 我的兑换、消费券
+    WSInterfaceTypeUserAgreeAbout,               // 用户协议、关于
+    WSInterfaceTypeFeedBack,                     // 用户意见反馈
+    WSInterfaceTypeGetAdsPhoto,                  // 首页广告轮播图片
+    WSInterfaceTypeGetHomePageGoods,             // 首页附件精选
 };
 
 

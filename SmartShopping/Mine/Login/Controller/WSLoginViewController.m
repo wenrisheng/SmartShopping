@@ -98,11 +98,7 @@
 {
     NSString *pwd = _passwordTextField.text;
     NSString *account = _telTextField.text;
-#if DEBUG
-    account = @"13800000001";
-    pwd = @"123456";
-#endif
-    pwd = [pwd encodeMD5_32_uppercase];
+    pwd = [pwd encodeMD5_32_lowercase];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setValue:account forKey:@"phone"];
     [dic setValue:pwd forKey:@"password"];
@@ -116,13 +112,13 @@
 - (BOOL)validData
 {
     BOOL flag = YES;
-    if (_telTextField.text.length <= 0) {
-
+    if (_telTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
-    if (_passwordTextField.text.length <= 0) {
-
+    if (_passwordTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
         return flag;
     }
     return flag;
@@ -136,17 +132,46 @@
     if (flag) {
         NSDictionary *data = [result valueForKey:@"data"];
         NSDictionary *userDic = [data valueForKey:@"user"];
+        
+        NSMutableDictionary *tempDic = [WSBaseUtility changNumberToStringValue:userDic];
         WSUser *user = [[WSUser alloc] init];
-        [user setValuesForKeysWithDictionary:userDic];
+        [user setValuesForKeysWithDictionary:tempDic];
+        user.phone = _telTextField.text;
+        
+        //
+        NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
+        if (beforeData) {
+            WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
+            user.isPushNotification = beforeUser.isPushNotification;
+        }
+       
+        
         WSRunTime *runTime = [WSRunTime sharedWSRunTime];
         runTime.user = user;
+        
+        // 从本机器取出积累的精明豆给用户
+       int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+        if (user.beanNumber.length > 0) {
+            user.beanNumber = [NSString stringWithFormat:@"%d", [user.beanNumber intValue] + appPeasNum];
+        } else {
+            user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
+        }
+        // 本机精明豆重新清零
+        [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
+        
+        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
+        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
         [self.navigationController popViewControllerAnimated:YES];
+        if (_callBack) {
+            _callBack();
+        }
     }
 }
 
 - (void)requestFail:(id)error tag:(int)tag
 {
     [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:@"登陆失败！" duration:TOAST_VIEW_TIME];
 }
 
 - (IBAction)forgetPasswordButAction:(id)sender

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSPromotionCouponSearchViewController">
+            <connections>
+                <outlet property="collectionView" destination="eYu-zs-83y" id="8XG-j6-qmq"/>
+                <outlet property="navigationBarManagerView" destination="vQf-Ko-0lE" id="0sU-OK-O4D"/>
+                <outlet property="tabSlideManagerView" destination="NVH-Lr-cGF" id="Yfh-qJ-xAx"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="101" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vQf-Ko-0lE" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="jfB-Kj-a0o"/>
+                    </constraints>
+                </view>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVH-Lr-cGF" customClass="WSTabSlideManagerView">
+                    <rect key="frame" x="0.0" y="64" width="320" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PJ4-aF-QMi"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="eYu-zs-83y">
+                    <rect key="frame" x="0.0" y="104" width="320" height="376"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="w4U-Uc-T5Q">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="cXv-EQ-Sx1"/>
+                        <outlet property="delegate" destination="-1" id="GZS-Ou-p3Q"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="eYu-zs-83y" firstAttribute="top" secondItem="NVH-Lr-cGF" secondAttribute="bottom" id="Asj-W1-dnZ"/>
+                <constraint firstAttribute="trailing" secondItem="NVH-Lr-cGF" secondAttribute="trailing" id="GcI-Ta-8H4"/>
+                <constraint firstAttribute="trailing" secondItem="eYu-zs-83y" secondAttribute="trailing" id="PXd-2D-BOf"/>
+                <constraint firstItem="NVH-Lr-cGF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QbO-Ec-QGl"/>
+                <constraint firstItem="eYu-zs-83y" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YUX-a4-wQT"/>
+                <constraint firstItem="vQf-Ko-0lE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="aZZ-C7-WgM"/>
+                <constraint firstAttribute="bottom" secondItem="eYu-zs-83y" secondAttribute="bottom" id="jj2-Td-h3O"/>
+                <constraint firstItem="vQf-Ko-0lE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="luq-AE-Xy2"/>
+                <constraint firstAttribute="trailing" secondItem="vQf-Ko-0lE" secondAttribute="trailing" id="qaK-QQ-Y0H"/>
+                <constraint firstItem="NVH-Lr-cGF" firstAttribute="top" secondItem="vQf-Ko-0lE" secondAttribute="bottom" id="tph-Sa-OvR"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="238" y="186"/>
+        </view>
+    </objects>
+</document>

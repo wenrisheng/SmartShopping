@@ -184,7 +184,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lly-WG-sh3">
                                         <rect key="frame" x="0.0" y="120" width="135" height="20"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="doudou-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="JrI-GF-wou">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="doudou-02.png" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JrI-GF-wou">
                                                 <rect key="frame" x="45" y="3" width="15" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="15" id="VhV-qi-z6k"/>

@@ -41,7 +41,7 @@
         [dic setValue:[imageArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_SELECTED];
         [dataArray addObject:dic];
     }
-    
+    _tabSlideManagerView.tabSlideGapTextView.titleSelectedColor = [UIColor colorWithWhite:0.427 alpha:1.000];
     [_tabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
     NSURL *url =[NSURL URLWithString:_url];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];

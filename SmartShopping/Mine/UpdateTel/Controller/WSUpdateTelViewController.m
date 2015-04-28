@@ -64,7 +64,8 @@
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
         return;
     }
-
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"type" : @"1"};
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetValidCode] data:dic tag:WSInterfaceTypeGetValidCode];
     UIButton *but = (UIButton *)sender;
     [but setEnabled:NO];
     varificateTime = VARIFICATE_TIME;

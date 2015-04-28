@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WSUser : NSObject
+@interface WSUser : NSObject <NSCoding>
 
 @property (strong, nonatomic) NSString *_id;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *password;
-@property (strong, nonatomic) NSString *Nickname;
+@property (strong, nonatomic) NSString *nickname;
 @property (strong, nonatomic) NSString *inviteCode;
 @property (strong, nonatomic) NSString *byInviteCode;
 @property (strong, nonatomic) NSString *email;
@@ -25,6 +25,15 @@
 @property (strong, nonatomic) NSString *birthday;
 @property (strong, nonatomic) NSString *type;
 @property (strong, nonatomic) NSString *logoPath;
+
+@property (strong, nonatomic) NSString *createTime;
+@property (strong, nonatomic) NSString *eState;
+@property (strong, nonatomic) NSString *inviteCount;
+@property (strong, nonatomic) NSString *modifyTime;
+@property (strong, nonatomic) NSString *status;
+@property (strong, nonatomic) NSString *verifyCode;
+
+@property (strong, nonatomic) NSString *phone;
 
 // 推送通知
 @property (assign, nonatomic) BOOL isPushNotification;

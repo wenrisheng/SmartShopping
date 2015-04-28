@@ -9,6 +9,9 @@
 #ifndef SmartShopping_WSMacroHeader_h
 #define SmartShopping_WSMacroHeader_h
 
+#define USER_KEY              @"USER_KEY"      // 保存登陆用户信息，用来做自动登录
+#define APP_PEAS_NUM          @"APP_PEAS_NUM"  // 本机保存的精明豆数量
+
 // 百度地区ak
 //#define BMK_AK              @"DN1fArBETwGtWqS5DYz1Oe1n"
 
@@ -37,7 +40,7 @@
 // 状态栏颜色
 #define STATUSBAR_COLOR               [UIColor colorWithRed:0.898 green:0.380 blue:0.133 alpha:1.000]
 
-#define  TOAST_VIEW_TIME              3  // 提示时间
+#define  TOAST_VIEW_TIME              2  // 提示时间
 #define  APP_URL                      @"http://itunes.apple.com/lookup?id=924413147"  // 暂时用了艾童会 1.11
 
 

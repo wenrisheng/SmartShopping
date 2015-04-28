@@ -11,6 +11,8 @@
 #import "WSPromotionCouponOutStoreCollectionViewCell.h"
 #import "HomeCollectionViewCell.h"
 #import "WSHomeViewController.h"
+#import "WSFilterBrandViewController.h"
+#import "WSPromotionCouponSearchViewController.h"
 
 #define TOP_TAB_IMAGE_WIDTH     10
 
@@ -174,11 +176,13 @@
 #pragma mark - 在店内搜索按钮事件
 - (void)inStoreSearchButAction:(UIButton *)but
 {
-    if (isInStore) {
-        [self toOutStoreStatus];
-    } else {
-        [self toInStoreStatus:@"沃尔玛"];
-    }
+    WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
+    [self.navigationController pushViewController:filterBrandVC animated:YES];
+//    if (isInStore) {
+//        [self toOutStoreStatus];
+//    } else {
+//        [self toInStoreStatus:@"沃尔玛"];
+//    }
 }
 
 #pragma mark - BMKLocationServiceDelegate
@@ -199,7 +203,7 @@
         DLog(@"反地理编码失败");
     }
     
-    [self toInStoreStatus:@"沃尔玛"];
+   // [self toInStoreStatus:@"沃尔玛"];
 }
 
 - (void)didFailToLocateUserWithError:(NSError *)error
@@ -321,6 +325,13 @@
 
 #pragma mark - 搜索框代理 
 #pragma mark  NavigationBarButSearchButViewDelegate
+- (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
+{
+    WSPromotionCouponSearchViewController *promotioncouponSearchVC = [[WSPromotionCouponSearchViewController alloc] init];
+    [self.navigationController pushViewController:promotioncouponSearchVC animated:YES];
+    return NO;
+}
+
 - (void)navigationBarLeftButClick:(UIButton *)but
 {
 

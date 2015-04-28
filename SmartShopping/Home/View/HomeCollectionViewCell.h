@@ -30,5 +30,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftBut;
 @property (weak, nonatomic) IBOutlet UIButton *rightBut;
+@property (weak, nonatomic) IBOutlet UIButton *distanceBut;
 
 @end

@@ -25,7 +25,6 @@
                     <color key="backgroundColor" red="0.8980392157" green="0.3803921569" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="EdH-F1-bIU"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="qgP-h1-603"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bc3-38-pMs">

@@ -78,31 +78,31 @@
             return [NSString stringWithFormat:@"%@/app/exchangeGift.do", BASE_URL];
         }
             break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
+        case WSInterfaceTypeMyGiftList:
+        {
+            return [NSString stringWithFormat:@"%@/app/mygiftlist.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeUserAgreeAbout:
+        {
+            return [NSString stringWithFormat:@"%@/app/userAgreeAbout.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeFeedBack:
+        {
+            return [NSString stringWithFormat:@"%@/app/feedBack.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetAdsPhoto:
+        {
+            return [NSString stringWithFormat:@"%@/app/getAdsPhoto.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetHomePageGoods:
+        {
+            return [NSString stringWithFormat:@"%@/app/getHomePageGoods.do", BASE_URL];
+        }
+            break;
 //        case WSInterfaceTypeLogin:
 //        {
 //            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
@@ -152,7 +152,7 @@
     }
    
 #ifdef DEBUG
-    DLog(@"请求结果状态描述：%@", statusDesc);
+    DLog(@"请求错误结果状态描述：%@", statusDesc);
 #endif
     return flag;
 }

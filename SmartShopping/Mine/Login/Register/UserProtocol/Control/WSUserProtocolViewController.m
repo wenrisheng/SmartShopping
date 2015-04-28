@@ -23,10 +23,14 @@
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"用户协议";
     
-    NSString *HTMLData = @"<img src=\"test2.png\" />ddd";
-    _webView.scalesPageToFit = YES;
-    [self.webView loadHTMLString:HTMLData baseURL:[NSURL fileURLWithPath: [[NSBundle mainBundle]  bundlePath]]];
-baseURL:[NSURL fileURLWithPath: [[NSBundle mainBundle]  bundlePath]];
+    [self requestUserProtocol];
+}
+
+- (void)requestUserProtocol
+{
+    [SVProgressHUD showWithStatus:@"正在请求数据……"];
+    NSDictionary *dic = @{@"title" : @"协议"};
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserAgreeAbout] data:dic tag:WSInterfaceTypeUserAgreeAbout];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,14 +49,21 @@ baseURL:[NSURL fileURLWithPath: [[NSBundle mainBundle]  bundlePath]];
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - ServiceDelegate
+- (void)requestSucess:(id)result tag:(int)tag
+{
+    [SVProgressHUD dismiss];
+    BOOL flag = [WSInterfaceUtility validRequestResult:result];
+    if (flag) {
+        NSDictionary *data = [result objectForKey:@"data"];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]]];
+    }
 }
-*/
+
+- (void)requestFail:(id)error tag:(int)tag
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:@"请求数据失败！" duration:TOAST_VIEW_TIME];
+}
 
 @end

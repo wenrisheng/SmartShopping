@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LoginedCallBack)();
+
 @interface WSLoginViewController : WSServiceViewController
+
+@property (strong, nonatomic) LoginedCallBack callBack;
 
 @end

@@ -11,6 +11,8 @@
 #import "WSInStoreNoSignViewController.h"
 #import "WSInStoreNoSignScopeViewController.h"
 #import "WSStoreDetailViewController.h"
+#import "WSScanNoInStoreViewController.h"
+#import "WSInviateFriendViewController.h"
 
 #define TITLE_HEIGHT    20.0   // 标题label高度
 #define IMAGE_WIDTH     30.0   // 导航条图片宽度
@@ -82,7 +84,7 @@
 #pragma mark - 测试数据
 - (void)addTestData
 {
-    [slideImageArray addObjectsFromArray: @[@"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=0b5e32f9af18972bbc3a07cad6cc7b9d/9f2f070828381f30326c8344ad014c086f06f0e2.jpg", @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D360/sign=c0558e592adda3cc14e4be2631e83905/b03533fa828ba61e23b0dfe94534970a314e599d.jpg", @"https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=f3287c32237f9e2f6f351a082f31e962/d8f9d72a6059252d8689d3d0309b033b5ab5b94c.jpg", @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D360/sign=90cef1c74b4a20a42e1e3ac1a0509847/d1a20cf431adcbefa5d1d7d3a8af2edda2cc9f7a.jpg"]];
+    [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
 }
 
 - (void)initBMK
@@ -186,7 +188,22 @@
    
 }
 
-#pragma mark - 不在店内
+#pragma mark 扫描产品按钮事件
+- (IBAction)scanProductButAction:(id)sender
+{
+    // 1. 在店内跳到 WSStoreDetailViewController
+    // 2. 不在店内跳到 WSScanNoInStoreViewController
+    [self toScanNoInStore];
+}
+
+#pragma mark 邀请好友
+- (IBAction)inviateFriendButAction:(id)sender
+{
+    WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
+    [self.navigationController pushViewController:inviateFriendVC animated:YES];
+}
+
+#pragma mark - 到店签到 不在店内
 - (void)toNoInStoreVC
 {
     WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
@@ -198,7 +215,7 @@
 {
     WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
     [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-
+    
 }
 
 #pragma mark 在店内已签到
@@ -208,13 +225,10 @@
     [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
-- (IBAction)scanProductButAction:(id)sender
+- (void)toScanNoInStore
 {
-    
+    WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+    [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
 }
 
-- (IBAction)inviateFriendButAction:(id)sender
-{
-    
-}
 @end

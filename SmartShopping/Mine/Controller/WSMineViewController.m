@@ -80,6 +80,11 @@
                 [loginedView.rightBut addTarget:self action:@selector(loginedRightButAction:) forControlEvents:UIControlEventTouchUpInside];
                 [loginedView.rightBut setEnlargeEdgeWithTop:20 right:20 bottom:20 left:50];
             }
+            if (user.logoPath.length > 0) {
+                loginedView.loginedHeadImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:user.logoPath]]];
+            }
+            loginedView.nickNameLabel.text = user.nickname.length == 0 ? @"你还没有设置昵称哦！" : user.nickname;
+            loginedView.telLabel.text = user.phone;
             [loginStatusView addSubview:loginedView];
             [loginedView expandToSuperView];
             
