@@ -20,4 +20,6 @@
 #import "WSInterfaceUtility.h"
 #import "WSServiceViewController.h"
 
+#import "WSProjUtil.h"
+
 #endif

@@ -133,7 +133,7 @@
         NSDictionary *data = [result valueForKey:@"data"];
         NSDictionary *userDic = [data valueForKey:@"user"];
         
-        NSMutableDictionary *tempDic = [WSBaseUtility changNumberToStringValue:userDic];
+        NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
         WSUser *user = [[WSUser alloc] init];
         [user setValuesForKeysWithDictionary:tempDic];
         user.phone = _telTextField.text;

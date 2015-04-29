@@ -10,6 +10,7 @@
 #import "WSStoreDetailCollectionViewCell.h"
 #import "WSHomeViewController.h"
 #import "WSStoreDetailCollectionReusableView.h"
+#import "WSScanProductViewController.h"
 
 @interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -83,7 +84,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     WSStoreDetailCollectionViewCell *cell = (WSStoreDetailCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell" forIndexPath:indexPath];
-    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSBaseUtility gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
 
@@ -150,7 +151,14 @@
 #pragma mark - 扫描按钮事件
 - (void)scanButActioin:(UIButton *)but
 {
-    
+    // 1. 不在店内则提示不在店内
+    // 2. 在店内则跳到 WSScanProductViewController
+}
+
+- (void)toScanProduct
+{
+    WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+    [self.navigationController pushViewController:scanProductVC animated:YES];
 }
 
 @end

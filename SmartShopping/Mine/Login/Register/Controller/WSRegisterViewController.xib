@@ -159,6 +159,7 @@
                             </constraints>
                         </view>
                     </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="bHv-iZ-Y55" firstAttribute="top" secondItem="hiS-mR-m1f" secondAttribute="top" constant="20" id="6cI-F8-ox9"/>
                         <constraint firstAttribute="centerX" secondItem="bHv-iZ-Y55" secondAttribute="centerX" id="DTZ-rD-z5U"/>
@@ -171,7 +172,7 @@
                     </connections>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="hiS-mR-m1f" secondAttribute="trailing" id="2ob-pR-tmV"/>
                 <constraint firstItem="hiS-mR-m1f" firstAttribute="top" secondItem="QpC-Fl-aqA" secondAttribute="bottom" id="Cyv-Ed-hsJ"/>

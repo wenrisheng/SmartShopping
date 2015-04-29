@@ -22,7 +22,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hfr-aL-6Hx">
                     <rect key="frame" x="0.0" y="100" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="在指定的商店内，点击“扫描产品”图标，扫描以下产品条码，赚取精明豆！" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9M-Ma-5GM">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="在指定的商店内，点击“扫描产品”图标，扫描以下产品条码，赚取精明豆！" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="o9M-Ma-5GM">
                             <rect key="frame" x="10" y="5" width="300" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="jDt-r0-ove"/>
