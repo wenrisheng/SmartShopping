@@ -11,6 +11,8 @@
 #import "HomeCollectionViewCell.h"
 #import "WSInfoListViewController.h"
 #import "WSProductDetailViewController.h"
+#import "WSAdvertisementDetailViewController.h"
+#import "WSLocationDetailViewController.h"
 
 @interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
@@ -78,11 +80,10 @@
     //设置定位精确度，默认：kCLLocationAccuracyBest
     [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
     //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:100.f];
+    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
     
     //初始化BMKLocationService
     _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
    
 }
 
@@ -94,11 +95,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     //启动LocationService
     [_locService startUserLocationService];
     _locService.delegate = self;
     _geocodesearch.delegate = self;
-   // [SVProgressHUD showWithStatus:@"定位中……" maskType:SVProgressHUDMaskTypeNone];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -251,7 +252,12 @@
         headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
         [imageScrollView setImageData:slideImageArray];
-
+        imageScrollView.callback = ^(int index) {
+            DLog(@"广告：%d", index);
+            WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+            advertisementVC.url = @"http://www.baidu.com";
+            [self.navigationController pushViewController:advertisementVC animated:YES];
+        };
         [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -275,7 +281,8 @@
 #pragma mark -  距离按钮事件
 - (void)distanceButAction:(UIButton *)but
 {
-    
+    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+    [self.navigationController pushViewController:locationDetailVC animated:YES];
 }
 
 #pragma mark - HomeCollectionViewCellDelegate

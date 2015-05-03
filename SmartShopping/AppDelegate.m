@@ -72,23 +72,23 @@
     // 登陆已成功
     [ShareSDK connectSinaWeiboWithAppKey:SINAWEIBO_APPKEY
                                appSecret:SINAWEIBO_SECRET
-                             redirectUri:@"http://www.sharesdk.cn"];
+                             redirectUri:SINAWEIBO_REDIRECT_URL];
     
     //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
-    [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
-                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
-                              redirectUri:@"http://www.sharesdk.cn"
+    [ShareSDK  connectSinaWeiboWithAppKey:SINAWEIBO_APPKEY
+                                appSecret:SINAWEIBO_SECRET
+                              redirectUri:SINAWEIBO_REDIRECT_URL
                               weiboSDKCls:[WeiboSDK class]];
     
-    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
-    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
-                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
-                                redirectUri:@"http://www.sharesdk.cn"
-                                   wbApiCls:[WeiboApi class]];
+//    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
+//    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
+//                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+//                                redirectUri:@"http://www.sharesdk.cn"
+//                                   wbApiCls:[WeiboApi class]];
     
     //添加QQ空间应用  注册网址  http://connect.qq.com/intro/login/
-    [ShareSDK connectQZoneWithAppKey:@"100371282"
-                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"
+    [ShareSDK connectQZoneWithAppKey:QQ_APPID
+                           appSecret:QQ_APPKEY
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
     
@@ -98,17 +98,13 @@
                        tencentOAuthCls:[TencentOAuth class]];
     
     //添加微信应用 注册网址 http://open.weixin.qq.com
-    [ShareSDK connectWeChatWithAppId:@"wx4868b35061f87885"
-                           wechatCls:[WXApi class]];
+    // 加上以下代码微信登陆收授权失败
+   // [ShareSDK connectWeChatWithAppId:WECHAT_APPID
+        //                   wechatCls:[WXApi class]];
     //微信登陆的时候需要初始化
-    [ShareSDK connectWeChatWithAppId:@"wx4868b35061f87885"
-                           appSecret:@"64020361b8ec4c99936c0e3999a9f249"
+    [ShareSDK connectWeChatWithAppId:WECHAT_APPID
+                           appSecret:WECHAT_APPSECRET
                            wechatCls:[WXApi class]];
-    
-    //添加搜狐微博应用  注册网址  http://open.t.sohu.com
-    [ShareSDK connectSohuWeiboWithConsumerKey:@"SAfmTG1blxZY3HztESWx"
-                               consumerSecret:@"yfTZf)!rVwh*3dqQuVJVsUL37!F)!yS9S!Orcsij"
-                                  redirectUri:@"http://www.sharesdk.cn"];
 }
 
 #pragma mark - 初始化TabbarViewController

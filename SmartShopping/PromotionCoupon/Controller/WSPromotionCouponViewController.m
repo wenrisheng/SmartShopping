@@ -91,7 +91,7 @@
     //设置定位精确度，默认：kCLLocationAccuracyBest
     [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
     //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:100.f];
+    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
     
     //初始化BMKLocationService
     _locService = [[BMKLocationService alloc]init];

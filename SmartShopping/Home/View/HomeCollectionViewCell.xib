@@ -95,6 +95,12 @@
                                             <constraint firstAttribute="height" constant="1" id="zo0-6d-pmE"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P2n-vZ-8J6">
+                                        <rect key="frame" x="55" y="0.0" width="75" height="30"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cww-IG-85m">
                                         <rect key="frame" x="55" y="13" width="75" height="16"/>
                                         <subviews>
@@ -115,23 +121,13 @@
                                                 <color key="textColor" red="0.46274509803921571" green="0.61568627450980395" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P2n-vZ-8J6">
-                                                <rect key="frame" x="0.0" y="0.0" width="75" height="16"/>
-                                                <state key="normal">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="centerY" secondItem="kPi-CF-LjK" secondAttribute="centerY" id="1Hh-nB-AMb"/>
-                                            <constraint firstAttribute="trailing" secondItem="P2n-vZ-8J6" secondAttribute="trailing" id="2vi-we-dl6"/>
                                             <constraint firstAttribute="trailing" secondItem="CPJ-Ii-alm" secondAttribute="trailing" constant="6" id="AaA-wc-0dj"/>
-                                            <constraint firstAttribute="bottom" secondItem="P2n-vZ-8J6" secondAttribute="bottom" id="Ddr-DI-6Rp"/>
                                             <constraint firstItem="CPJ-Ii-alm" firstAttribute="leading" secondItem="kPi-CF-LjK" secondAttribute="trailing" constant="6" id="hVe-GK-ORA"/>
-                                            <constraint firstItem="P2n-vZ-8J6" firstAttribute="leading" secondItem="Cww-IG-85m" secondAttribute="leading" id="rE8-sh-NuI"/>
                                             <constraint firstItem="kPi-CF-LjK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cww-IG-85m" secondAttribute="leading" constant="2" id="tei-0x-zy7"/>
-                                            <constraint firstItem="P2n-vZ-8J6" firstAttribute="top" secondItem="Cww-IG-85m" secondAttribute="top" id="tnB-BG-dLE"/>
                                             <constraint firstAttribute="centerY" secondItem="CPJ-Ii-alm" secondAttribute="centerY" id="wcs-LJ-ak9"/>
                                         </constraints>
                                     </view>
@@ -141,10 +137,14 @@
                                     <constraint firstAttribute="trailing" secondItem="Cww-IG-85m" secondAttribute="trailing" id="4DH-lq-Zga"/>
                                     <constraint firstItem="Hl5-zw-ol6" firstAttribute="top" secondItem="XrE-ST-FQL" secondAttribute="bottom" id="5DY-P9-xdn"/>
                                     <constraint firstAttribute="trailing" secondItem="WmD-uq-YRc" secondAttribute="trailing" id="77L-DM-ZOe"/>
+                                    <constraint firstAttribute="bottom" secondItem="P2n-vZ-8J6" secondAttribute="bottom" id="8UV-Nd-pcX"/>
                                     <constraint firstAttribute="height" constant="30" id="AQ0-vf-G6C"/>
                                     <constraint firstItem="uL2-TQ-SI7" firstAttribute="top" secondItem="iaL-2s-GVf" secondAttribute="top" id="CtP-EO-6Ep"/>
+                                    <constraint firstAttribute="trailing" secondItem="P2n-vZ-8J6" secondAttribute="trailing" id="Fzl-y5-6T1"/>
+                                    <constraint firstItem="P2n-vZ-8J6" firstAttribute="leading" secondItem="XrE-ST-FQL" secondAttribute="trailing" id="Gss-bd-KbB"/>
                                     <constraint firstItem="XrE-ST-FQL" firstAttribute="top" secondItem="WmD-uq-YRc" secondAttribute="bottom" id="MBr-wT-S0p"/>
                                     <constraint firstItem="Cww-IG-85m" firstAttribute="leading" secondItem="XrE-ST-FQL" secondAttribute="trailing" id="RyV-5w-A53"/>
+                                    <constraint firstItem="P2n-vZ-8J6" firstAttribute="top" secondItem="iaL-2s-GVf" secondAttribute="top" id="bhY-ki-Snw"/>
                                     <constraint firstItem="WmD-uq-YRc" firstAttribute="top" secondItem="iaL-2s-GVf" secondAttribute="top" id="cZC-2v-fDe"/>
                                     <constraint firstItem="XrE-ST-FQL" firstAttribute="leading" secondItem="iaL-2s-GVf" secondAttribute="leading" id="e6c-Vb-qau"/>
                                     <constraint firstAttribute="trailing" secondItem="uL2-TQ-SI7" secondAttribute="trailing" constant="2" id="esc-qC-0dM"/>

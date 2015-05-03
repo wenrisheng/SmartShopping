@@ -17,6 +17,9 @@
     
     [self.leftBut addTarget:self action:@selector(leftButAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.rightBut addTarget:self action:@selector(rightButAction:) forControlEvents:UIControlEventTouchUpInside];
+   // [_distanceBut setEnlargeEdgeWithTop:13 right:0 bottom:0 left:10];
+    [_leftBut setEnlargeEdgeWithTop:5 right:23 bottom:5 left:23];
+    [_rightBut setEnlargeEdgeWithTop:5 right:23 bottom:5 left:23];
 }
 
 - (void)leftButAction:(UIButton *)but

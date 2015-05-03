@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *telTextField;
 @property (weak, nonatomic) IBOutlet UITextField *varificateTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwodTestField;
+@property (weak, nonatomic) IBOutlet UIButton *resetPwdBut;
 
 - (IBAction)gainVarificateButAction:(id)sender;
 - (IBAction)resetButAction:(id)sender;
@@ -47,7 +48,7 @@
 - (void)initView
 {
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"重设密码";
-    
+    [_resetPwdBut setBorderCornerWithBorderWidth:0 borderColor:[UIColor clearColor] cornerRadius:5];
     // 输入框边界线
     NSArray *array = @[_telView, _varificateView, _passwordView];
     for (UIView *view in array) {

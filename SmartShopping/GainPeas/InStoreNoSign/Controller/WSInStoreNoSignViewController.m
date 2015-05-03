@@ -9,10 +9,14 @@
 #import "WSInStoreNoSignViewController.h"
 #import "WSSignupSucView.h"
 #import "WSStoreDetailViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
 #define SIGNUPSUC_TIME      2
 
 @interface WSInStoreNoSignViewController ()
+{
+     AVAudioPlayer *player;
+}
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 
@@ -29,6 +33,12 @@
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     
     [self becomeFirstResponder];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"glass" ofType:@"wav"];
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
+    player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [player prepareToPlay];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,6 +49,7 @@
 - (void) motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
     [super motionBegan:motion withEvent:event];
+    [player play];
 }
 
 - (void) motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event
@@ -46,7 +57,6 @@
     [super motionCancelled:motion withEvent:event];
     //摇动取消
 }
-
 
 
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event

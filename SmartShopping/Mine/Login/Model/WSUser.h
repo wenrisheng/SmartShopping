@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, UserLoginType) {
+    UserLoginTypePhone = 0,   // 手机
+    UserLoginTypeWeibo,       // 微博
+    UserLoginTypeQQ,          // QQ
+    UserLoginTypeWechat       // 微信
+};
+
 @interface WSUser : NSObject <NSCoding>
 
 @property (strong, nonatomic) NSString *_id;
@@ -37,5 +44,10 @@
 
 // 推送通知
 @property (assign, nonatomic) BOOL isPushNotification;
+@property (assign, nonatomic) int loginType;
+
+// 第三方登录
+@property (assign, nonatomic) NSString *uid;
+@property (assign, nonatomic) NSString *profileImage;
 
 @end

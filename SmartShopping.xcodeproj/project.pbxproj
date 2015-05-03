@@ -28,6 +28,18 @@
 		7C3DFF2D1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2B1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib */; };
 		7C3DFF311AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2F1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m */; };
 		7C3DFF321AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3DFF301AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib */; };
+		7C4206201AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C42061E1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m */; };
+		7C4206211AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C42061F1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.xib */; };
+		7C4206271AF5A954005F9F44 /* WSLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4206251AF5A954005F9F44 /* WSLocationDetailViewController.m */; };
+		7C4206281AF5A954005F9F44 /* WSLocationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4206261AF5A954005F9F44 /* WSLocationDetailViewController.xib */; };
+		7C42062A1AF5B4C9005F9F44 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C4206291AF5B4C9005F9F44 /* location.png */; };
+		7C42062E1AF5B951005F9F44 /* PaopaoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C42062D1AF5B951005F9F44 /* PaopaoView.m */; };
+		7C4206321AF5BC4C005F9F44 /* PaopaoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4206311AF5BC4C005F9F44 /* PaopaoView.xib */; };
+		7C4206371AF5FECC005F9F44 /* WSScanAfterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4206351AF5FECC005F9F44 /* WSScanAfterViewController.m */; };
+		7C4206381AF5FECC005F9F44 /* WSScanAfterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */; };
+		7C42063B1AF60F71005F9F44 /* scan.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7C42063A1AF60F71005F9F44 /* scan.wav */; };
+		7C42063D1AF60F7E005F9F44 /* glass.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7C42063C1AF60F7E005F9F44 /* glass.wav */; };
+		7C4206401AF61094005F9F44 /* WSAudioUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C42063F1AF61094005F9F44 /* WSAudioUtil.m */; };
 		7C46E43C1AF0614100EBDCDC /* WSScanProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E43A1AF0614100EBDCDC /* WSScanProductViewController.m */; };
 		7C46E43D1AF0614100EBDCDC /* WSScanProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C46E43B1AF0614100EBDCDC /* WSScanProductViewController.xib */; };
 		7C46E4491AF07DD000EBDCDC /* WSProjUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */; };
@@ -85,6 +97,8 @@
 		7C6E571B1AE167BF00D020D5 /* WSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */; };
 		7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */; };
 		7C6E571E1AE171F100D020D5 /* choose-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571D1AE171F100D020D5 /* choose-01.png */; };
+		7C7C9F851AF28C370011485C /* WSBMKUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7C9F841AF28C370011485C /* WSBMKUtil.m */; };
+		7C7E26D21AF4DC0600EC6598 /* redmobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E26D11AF4DC0600EC6598 /* redmobile.png */; };
 		7C90842E1ADF723A0073D94C /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */; };
 		7C9084301ADF729E0073D94C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842F1ADF729E0073D94C /* ImageIO.framework */; };
 		7C9085221ADF756C0073D94C /* CopyConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9084CC1ADF756C0073D94C /* CopyConnection.framework */; };
@@ -192,6 +206,9 @@
 		7CC827AE1AF12C8E00A837F8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC827AD1AF12C8E00A837F8 /* CoreMedia.framework */; };
 		7CC827B01AF12CAE00A837F8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC827AF1AF12CAD00A837F8 /* CoreVideo.framework */; };
 		7CC827B21AF12CD500A837F8 /* libiconv.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC827B11AF12CD500A837F8 /* libiconv.2.4.0.dylib */; };
+		7CC827B71AF1311B00A837F8 /* kuang.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B41AF1311B00A837F8 /* kuang.png */; };
+		7CC827B81AF1311B00A837F8 /* lamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B51AF1311B00A837F8 /* lamp.png */; };
+		7CC827B91AF1311B00A837F8 /* light.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B61AF1311B00A837F8 /* light.png */; };
 		7CCA018B1AEC69490081A8CC /* WSConsumeOrderWriterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */; };
 		7CCA018C1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */; };
 		7CCA01901AEC7B7C0081A8CC /* WSOrderSucView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018F1AEC7B7C0081A8CC /* WSOrderSucView.xib */; };
@@ -436,6 +453,23 @@
 		7C3DFF2E1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPromotionCouponOutStoreCollectionViewCell.h; sourceTree = "<group>"; };
 		7C3DFF2F1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPromotionCouponOutStoreCollectionViewCell.m; sourceTree = "<group>"; };
 		7C3DFF301AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSPromotionCouponOutStoreCollectionViewCell.xib; sourceTree = "<group>"; };
+		7C42061D1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAdvertisementDetailViewController.h; sourceTree = "<group>"; };
+		7C42061E1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAdvertisementDetailViewController.m; sourceTree = "<group>"; };
+		7C42061F1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSAdvertisementDetailViewController.xib; sourceTree = "<group>"; };
+		7C4206241AF5A954005F9F44 /* WSLocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSLocationDetailViewController.h; sourceTree = "<group>"; };
+		7C4206251AF5A954005F9F44 /* WSLocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSLocationDetailViewController.m; sourceTree = "<group>"; };
+		7C4206261AF5A954005F9F44 /* WSLocationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSLocationDetailViewController.xib; sourceTree = "<group>"; };
+		7C4206291AF5B4C9005F9F44 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
+		7C42062C1AF5B951005F9F44 /* PaopaoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaopaoView.h; sourceTree = "<group>"; };
+		7C42062D1AF5B951005F9F44 /* PaopaoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaopaoView.m; sourceTree = "<group>"; };
+		7C4206311AF5BC4C005F9F44 /* PaopaoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaopaoView.xib; sourceTree = "<group>"; };
+		7C4206341AF5FECC005F9F44 /* WSScanAfterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSScanAfterViewController.h; sourceTree = "<group>"; };
+		7C4206351AF5FECC005F9F44 /* WSScanAfterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSScanAfterViewController.m; sourceTree = "<group>"; };
+		7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSScanAfterViewController.xib; sourceTree = "<group>"; };
+		7C42063A1AF60F71005F9F44 /* scan.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scan.wav; sourceTree = "<group>"; };
+		7C42063C1AF60F7E005F9F44 /* glass.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = glass.wav; sourceTree = "<group>"; };
+		7C42063E1AF61094005F9F44 /* WSAudioUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAudioUtil.h; sourceTree = "<group>"; };
+		7C42063F1AF61094005F9F44 /* WSAudioUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAudioUtil.m; sourceTree = "<group>"; };
 		7C46E4391AF0614100EBDCDC /* WSScanProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSScanProductViewController.h; sourceTree = "<group>"; };
 		7C46E43A1AF0614100EBDCDC /* WSScanProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSScanProductViewController.m; sourceTree = "<group>"; };
 		7C46E43B1AF0614100EBDCDC /* WSScanProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSScanProductViewController.xib; sourceTree = "<group>"; };
@@ -520,7 +554,6 @@
 		7C6E56FE1AE15E9C00D020D5 /* input-box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box.png"; sourceTree = "<group>"; };
 		7C6E56FF1AE15E9C00D020D5 /* invitation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invitation.png; sourceTree = "<group>"; };
 		7C6E57001AE15E9C00D020D5 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
-		7C6E57011AE15E9C00D020D5 /* mobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mobile.png; sourceTree = "<group>"; };
 		7C6E57021AE15E9C00D020D5 /* qq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qq.png; sourceTree = "<group>"; };
 		7C6E57031AE15E9C00D020D5 /* register_success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = register_success.png; sourceTree = "<group>"; };
 		7C6E57041AE15E9C00D020D5 /* verification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = verification.png; sourceTree = "<group>"; };
@@ -532,6 +565,9 @@
 		7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSRegisterViewController.m; sourceTree = "<group>"; };
 		7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSRegisterViewController.xib; sourceTree = "<group>"; };
 		7C6E571D1AE171F100D020D5 /* choose-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose-01.png"; sourceTree = "<group>"; };
+		7C7C9F831AF28C370011485C /* WSBMKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSBMKUtil.h; sourceTree = "<group>"; };
+		7C7C9F841AF28C370011485C /* WSBMKUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSBMKUtil.m; sourceTree = "<group>"; };
+		7C7E26D11AF4DC0600EC6598 /* redmobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redmobile.png; sourceTree = "<group>"; };
 		7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		7C90842F1ADF729E0073D94C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		7C9084CC1ADF756C0073D94C /* CopyConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CopyConnection.framework; sourceTree = "<group>"; };
@@ -676,6 +712,9 @@
 		7CC827AD1AF12C8E00A837F8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		7CC827AF1AF12CAD00A837F8 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		7CC827B11AF12CD500A837F8 /* libiconv.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.4.0.dylib; path = usr/lib/libiconv.2.4.0.dylib; sourceTree = SDKROOT; };
+		7CC827B41AF1311B00A837F8 /* kuang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kuang.png; sourceTree = "<group>"; };
+		7CC827B51AF1311B00A837F8 /* lamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lamp.png; sourceTree = "<group>"; };
+		7CC827B61AF1311B00A837F8 /* light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light.png; sourceTree = "<group>"; };
 		7CCA01881AEC69490081A8CC /* WSConsumeOrderWriterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSConsumeOrderWriterViewController.h; sourceTree = "<group>"; };
 		7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSConsumeOrderWriterViewController.m; sourceTree = "<group>"; };
 		7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSConsumeOrderWriterViewController.xib; sourceTree = "<group>"; };
@@ -1166,6 +1205,62 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		7C42061B1AF5A5D5005F9F44 /* AdvertisementDetail */ = {
+			isa = PBXGroup;
+			children = (
+				7C42061C1AF5A5D5005F9F44 /* Controller */,
+			);
+			path = AdvertisementDetail;
+			sourceTree = "<group>";
+		};
+		7C42061C1AF5A5D5005F9F44 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C42061D1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.h */,
+				7C42061E1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m */,
+				7C42061F1AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C4206221AF5A940005F9F44 /* LocationDetail */ = {
+			isa = PBXGroup;
+			children = (
+				7C4206231AF5A940005F9F44 /* Controller */,
+				7C42062B1AF5B934005F9F44 /* View */,
+			);
+			path = LocationDetail;
+			sourceTree = "<group>";
+		};
+		7C4206231AF5A940005F9F44 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C4206241AF5A954005F9F44 /* WSLocationDetailViewController.h */,
+				7C4206251AF5A954005F9F44 /* WSLocationDetailViewController.m */,
+				7C4206261AF5A954005F9F44 /* WSLocationDetailViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C42062B1AF5B934005F9F44 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7C42062C1AF5B951005F9F44 /* PaopaoView.h */,
+				7C42062D1AF5B951005F9F44 /* PaopaoView.m */,
+				7C4206311AF5BC4C005F9F44 /* PaopaoView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7C4206391AF60F71005F9F44 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				7C42063C1AF60F7E005F9F44 /* glass.wav */,
+				7C42063A1AF60F71005F9F44 /* scan.wav */,
+			);
+			path = audio;
+			sourceTree = "<group>";
+		};
 		7C46E4351AF0612E00EBDCDC /* ScanProduct */ = {
 			isa = PBXGroup;
 			children = (
@@ -1196,6 +1291,9 @@
 		7C46E4381AF0612E00EBDCDC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7C4206341AF5FECC005F9F44 /* WSScanAfterViewController.h */,
+				7C4206351AF5FECC005F9F44 /* WSScanAfterViewController.m */,
+				7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1369,11 +1467,11 @@
 		7C6E56FC1AE15E9C00D020D5 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				7C7E26D11AF4DC0600EC6598 /* redmobile.png */,
 				7C6E56FD1AE15E9C00D020D5 /* buttom.png */,
 				7C6E56FE1AE15E9C00D020D5 /* input-box.png */,
 				7C6E56FF1AE15E9C00D020D5 /* invitation.png */,
 				7C6E57001AE15E9C00D020D5 /* lock.png */,
-				7C6E57011AE15E9C00D020D5 /* mobile.png */,
 				7C6E57021AE15E9C00D020D5 /* qq.png */,
 				7C6E57031AE15E9C00D020D5 /* register_success.png */,
 				7C6E57041AE15E9C00D020D5 /* verification.png */,
@@ -1571,11 +1669,11 @@
 		7C9085711ADF7CD20073D94C /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				7CC760B11AE2306C000C9085 /* ResetPassword */,
 				7C9085721ADF7CD20073D94C /* Controller */,
 				7C9085731ADF7CD20073D94C /* Model */,
-				7C9085741ADF7CD20073D94C /* Register */,
 				7C9085781ADF7CD20073D94C /* View */,
+				7CC760B11AE2306C000C9085 /* ResetPassword */,
+				7C9085741ADF7CD20073D94C /* Register */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1751,6 +1849,10 @@
 				7CD0E44F1AE299F100B78C9C /* WSRunTime.m */,
 				7C46E4471AF07DD000EBDCDC /* WSProjUtil.h */,
 				7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */,
+				7C7C9F831AF28C370011485C /* WSBMKUtil.h */,
+				7C7C9F841AF28C370011485C /* WSBMKUtil.m */,
+				7C42063E1AF61094005F9F44 /* WSAudioUtil.h */,
+				7C42063F1AF61094005F9F44 /* WSAudioUtil.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1833,6 +1935,16 @@
 				7CC8279D1AF12BEB00A837F8 /* Window.h */,
 			);
 			path = zbar;
+			sourceTree = "<group>";
+		};
+		7CC827B31AF1311B00A837F8 /* scan */ = {
+			isa = PBXGroup;
+			children = (
+				7CC827B41AF1311B00A837F8 /* kuang.png */,
+				7CC827B51AF1311B00A837F8 /* lamp.png */,
+				7CC827B61AF1311B00A837F8 /* light.png */,
+			);
+			path = scan;
 			sourceTree = "<group>";
 		};
 		7CCA01811AEC68D00081A8CC /* ConsumeOrderWriter */ = {
@@ -1960,6 +2072,7 @@
 		7CCAD3181ADEAEB7001D3D8B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7C4206291AF5B4C9005F9F44 /* location.png */,
 				7CCBF5071AEFE722005321BF /* erweimiao.png */,
 				7CCBF5031AEFE28D005321BF /* pengyouquan.png */,
 				7CCBF5041AEFE28D005321BF /* qqkongjian.png */,
@@ -2057,6 +2170,7 @@
 		7CCBBD571AD418AF00EA1F7F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7C4206391AF60F71005F9F44 /* audio */,
 				7C013EF11AD5699E00E74C78 /* BaseStaticLibraryResource.bundle */,
 				7CCD118C1AD5575E005A1429 /* images */,
 				7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */,
@@ -2270,6 +2384,7 @@
 		7CCD118C1AD5575E005A1429 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7CC827B31AF1311B00A837F8 /* scan */,
 				7CA484481AEA83B000116BBC /* radom */,
 				7CEEB29F1AE3C8DE005CB218 /* GainPeas */,
 				7CD0E4AA1AE3A63100B78C9C /* StoreSingup */,
@@ -2283,8 +2398,8 @@
 		7CCD8AFB1ADFD0D5007B86A9 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
-				7CD8F3381AE558CC0039CE0F /* under.png */,
 				7C6E56FC1AE15E9C00D020D5 /* Login */,
+				7CD8F3381AE558CC0039CE0F /* under.png */,
 				7CCD8AFC1ADFD0D5007B86A9 /* 01.png */,
 				7CCD8AFD1ADFD0D5007B86A9 /* 02.png */,
 				7CCD8AFE1ADFD0D5007B86A9 /* 03.png */,
@@ -2429,6 +2544,8 @@
 		7CD0E4991AE3A3BE00B78C9C /* ViewControllerCommon */ = {
 			isa = PBXGroup;
 			children = (
+				7C4206221AF5A940005F9F44 /* LocationDetail */,
+				7C42061B1AF5A5D5005F9F44 /* AdvertisementDetail */,
 				7CD0E49A1AE3A3BE00B78C9C /* StoreDetail */,
 			);
 			path = ViewControllerCommon;
@@ -2758,9 +2875,11 @@
 				7CCA01BF1AED0A030081A8CC /* WSInfoDetailViewController.xib in Resources */,
 				7C90852B1ADF756C0073D94C /* InstapaperResource.bundle in Resources */,
 				7CCAD3441ADEBA1C001D3D8B /* scan_product.png in Resources */,
+				7CC827B91AF1311B00A837F8 /* light.png in Resources */,
 				7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */,
 				7CCA01B31AECC4C70081A8CC /* WSAboutViewController.xib in Resources */,
 				7CEEB2A71AE3C8DE005CB218 /* gainpeas_icon-02.png in Resources */,
+				7C42062A1AF5B4C9005F9F44 /* location.png in Resources */,
 				7CCAD33F1ADEB8D7001D3D8B /* time-clock.png in Resources */,
 				7C90854F1ADF756D0073D94C /* RennSDK.bundle in Resources */,
 				7CCA01C81AED30380081A8CC /* scan_green.png in Resources */,
@@ -2771,6 +2890,7 @@
 				7CD0E4B11AE3A63100B78C9C /* shake-02.png in Resources */,
 				7CCE4F5A1AEB73480097DFBB /* WSGiftDetailViewController.xib in Resources */,
 				7CCD8B271ADFD0D5007B86A9 /* icon-03.png in Resources */,
+				7C7E26D21AF4DC0600EC6598 /* redmobile.png in Resources */,
 				7CCAD3371ADEB469001D3D8B /* back.png in Resources */,
 				7CCFCD631AE9CCD20096152F /* arrow-click.png in Resources */,
 				7CC760BC1AE24058000C9085 /* WSRegisterSucView.xib in Resources */,
@@ -2781,6 +2901,7 @@
 				7CCAD32D1ADEB0C1001D3D8B /* c_normal.png in Resources */,
 				7CCBF5021AEFDEA2005321BF /* WSInviateFriendViewController.xib in Resources */,
 				7CCAD32A1ADEB0C1001D3D8B /* b_selected.png in Resources */,
+				7CC827B81AF1311B00A837F8 /* lamp.png in Resources */,
 				7C46E43D1AF0614100EBDCDC /* WSScanProductViewController.xib in Resources */,
 				7C90854E1ADF756D0073D94C /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				7C90855E1ADF756D0073D94C /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
@@ -2793,6 +2914,7 @@
 				7CD0E4A91AE3A40E00B78C9C /* WSInStoreNoSignViewController.xib in Resources */,
 				7CD0E4661AE2B63900B78C9C /* WSLoginedView.xib in Resources */,
 				7C6AD53D1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib in Resources */,
+				7C42063D1AF60F7E005F9F44 /* glass.wav in Resources */,
 				7CCA18B81AEBDC9500714EA0 /* middle.png in Resources */,
 				7CEEB2A61AE3C8DE005CB218 /* gainpeas_dou.png in Resources */,
 				7CA4844D1AEA83B000116BBC /* radom_1.png in Resources */,
@@ -2827,6 +2949,7 @@
 				7C6E570E1AE15E9C00D020D5 /* qq.png in Resources */,
 				7CCAD32F1ADEB0C1001D3D8B /* d_normal.png in Resources */,
 				7CD7714A1AEE4D390040E9FD /* WSFilterBrandViewController.xib in Resources */,
+				7C42063B1AF60F71005F9F44 /* scan.wav in Resources */,
 				7CCA01C61AED2FB50081A8CC /* scanning.png in Resources */,
 				7CCAD3431ADEBA1C001D3D8B /* store_signin.png in Resources */,
 				7C90854C1ADF756D0073D94C /* PinterestSDKResources.bundle in Resources */,
@@ -2846,6 +2969,7 @@
 				7CCAD3291ADEB0C1001D3D8B /* a_normal.png in Resources */,
 				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
 				7CEEB2AB1AE3C8DE005CB218 /* gainpeas_  .png in Resources */,
+				7C4206321AF5BC4C005F9F44 /* PaopaoView.xib in Resources */,
 				7C6E57101AE15E9C00D020D5 /* verification.png in Resources */,
 				7CCD8B1A1ADFD0D5007B86A9 /* 07.png in Resources */,
 				7CD0E4B71AE3A78500B78C9C /* WSInStoreNoSignScopeViewController.xib in Resources */,
@@ -2863,6 +2987,7 @@
 				7CCD8B151ADFD0D5007B86A9 /* 02.png in Resources */,
 				7CD0E45E1AE2A75000B78C9C /* radio_choose-02.png in Resources */,
 				7C9085521ADF756D0073D94C /* WeiboSDK.bundle in Resources */,
+				7C4206381AF5FECC005F9F44 /* WSScanAfterViewController.xib in Resources */,
 				7CD0E4C21AE3AC6C00B78C9C /* WSStoreDetailViewController.xib in Resources */,
 				7CD0E4B21AE3A63100B78C9C /* sing_success.png in Resources */,
 				7C6E56F61AE1594100D020D5 /* WSLoginViewController.xib in Resources */,
@@ -2878,6 +3003,7 @@
 				7CA4844E1AEA83B000116BBC /* radom_2.png in Resources */,
 				7CCA019A1AEC7C650081A8CC /* photo-02.png in Resources */,
 				7CCA18B01AEBDA2100714EA0 /* WSGiftOrderWriterViewController.xib in Resources */,
+				7CC827B71AF1311B00A837F8 /* kuang.png in Resources */,
 				7CCBBD681AD418AF00EA1F7F /* Images.xcassets in Resources */,
 				7CCAD3351ADEB469001D3D8B /* collected.png in Resources */,
 				7C9085591ADF756D0073D94C /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
@@ -2897,6 +3023,7 @@
 				7C9085451ADF756D0073D94C /* ShareSDKLocalizable.strings in Resources */,
 				7CA4845A1AEA8C3F00116BBC /* WSMoreGiftViewController.xib in Resources */,
 				7CCA01D61AED37930081A8CC /* WSProductDetailViewController.xib in Resources */,
+				7C4206211AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.xib in Resources */,
 				7CCAD31C1ADEAEB7001D3D8B /* search-icon.png in Resources */,
 				7CD8F3251AE54CAB0039CE0F /* WSMineCollectViewController.xib in Resources */,
 				7CCD11761AD54FCA005A1429 /* WSGainPeasViewController.xib in Resources */,
@@ -2905,6 +3032,7 @@
 				7CCD8B261ADFD0D5007B86A9 /* icon-02.png in Resources */,
 				7C6DDE5A1ADC1D35007F81A4 /* README-GHUnit in Resources */,
 				7CEEB29E1AE3C49B005CB218 /* WSStoreDetailCollectionReusableView.xib in Resources */,
+				7C4206281AF5A954005F9F44 /* WSLocationDetailViewController.xib in Resources */,
 				7CEEB2AA1AE3C8DE005CB218 /* gainpeas_icon-06.png in Resources */,
 				7CCAD32E1ADEB0C1001D3D8B /* d_selected.png in Resources */,
 				7CCA01B81AECCADD0081A8CC /* WSConfirmClearCacheView.xib in Resources */,
@@ -2925,9 +3053,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C42062E1AF5B951005F9F44 /* PaopaoView.m in Sources */,
 				7CCD117F1AD54FFE005A1429 /* WSMineViewController.m in Sources */,
 				7C6DDE491ADC1D35007F81A4 /* ASIHTTPRequest.m in Sources */,
 				7C6DDE551ADC1D35007F81A4 /* ASIS3BucketObject.m in Sources */,
+				7C4206271AF5A954005F9F44 /* WSLocationDetailViewController.m in Sources */,
 				7C6DDE4E1ADC1D35007F81A4 /* ASICloudFilesContainer.m in Sources */,
 				7CD0E4B61AE3A78500B78C9C /* WSInStoreNoSignScopeViewController.m in Sources */,
 				7CD8F3311AE557E90039CE0F /* WSMineConsumeViewController.m in Sources */,
@@ -2936,6 +3066,7 @@
 				7C6DDE531ADC1D35007F81A4 /* ASICloudFilesRequest.m in Sources */,
 				7C6DDE541ADC1D35007F81A4 /* ASIS3Bucket.m in Sources */,
 				7CD771491AEE4D390040E9FD /* WSFilterBrandViewController.m in Sources */,
+				7C4206201AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m in Sources */,
 				7CCA018B1AEC69490081A8CC /* WSConsumeOrderWriterViewController.m in Sources */,
 				7CD0E4C11AE3AC6C00B78C9C /* WSStoreDetailViewController.m in Sources */,
 				7CA484431AEA578A00116BBC /* WSLogoutCell.m in Sources */,
@@ -2988,6 +3119,7 @@
 				7CCBF4EF1AEFC53E005321BF /* WSScanNoInStoreViewController.m in Sources */,
 				7C6DDE4C1ADC1D35007F81A4 /* ASIWebPageRequest.m in Sources */,
 				7C6DDE4D1ADC1D35007F81A4 /* ASICloudFilesCDNRequest.m in Sources */,
+				7C4206401AF61094005F9F44 /* WSAudioUtil.m in Sources */,
 				7C3DFF311AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */,
 				7C6DDE4F1ADC1D35007F81A4 /* ASICloudFilesContainerRequest.m in Sources */,
 				7C0789ED1AE69672003ADA36 /* WSInterfaceUtility.m in Sources */,
@@ -3006,6 +3138,7 @@
 				7CCA01B21AECC4C70081A8CC /* WSAboutViewController.m in Sources */,
 				7CCE4F591AEB73480097DFBB /* WSGiftDetailViewController.m in Sources */,
 				7C6DDE571ADC1D35007F81A4 /* ASIS3ObjectRequest.m in Sources */,
+				7C4206371AF5FECC005F9F44 /* WSScanAfterViewController.m in Sources */,
 				7CCA01D51AED37930081A8CC /* WSProductDetailViewController.m in Sources */,
 				7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */,
 				7CD8F3241AE54CAB0039CE0F /* WSMineCollectViewController.m in Sources */,
@@ -3022,6 +3155,7 @@
 				7CCA01B61AECCACF0081A8CC /* WSConfirmClearCacheView.m in Sources */,
 				7CD7715A1AEE61DE0040E9FD /* WSDoubleTableCell.m in Sources */,
 				7CCBF5011AEFDEA2005321BF /* WSInviateFriendViewController.m in Sources */,
+				7C7C9F851AF28C370011485C /* WSBMKUtil.m in Sources */,
 				7C249B5B1ADD6114000712BF /* HomeCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3146,7 +3280,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Lanjun Fan (NT5CLLX966)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3182,7 +3316,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ac8d74be-139e-467d-befb-6534f340ebc3";
+				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3196,7 +3330,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Lanjun Fan (NT5CLLX966)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3232,7 +3366,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ac8d74be-139e-467d-befb-6534f340ebc3";
+				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

@@ -27,6 +27,7 @@
 #import "WSAboutViewController.h"
 #import "WSAdviceBackViewController.h"
 #import "ASIFormDataRequest.h"
+#import <ShareSDK/ShareSDK.h>
 
 @interface WSMineViewController () <UITableViewDataSource, UITableViewDelegate, WSMineFirstCellDelegate, UIAlertViewDelegate>
 {
@@ -268,7 +269,32 @@
 #pragma mark - 注销按钮事件
 - (void)logoutButAction
 {
-    
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    switch (user.loginType) {
+        case UserLoginTypePhone:
+        {
+            
+        }
+            break;
+        case UserLoginTypeWechat:
+        {
+            [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+        }
+            break;
+        case UserLoginTypeWeibo:
+        {
+            [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+        }
+            break;
+        case UserLoginTypeQQ:
+        {
+           [ShareSDK cancelAuthWithType:ShareTypeQQ]; 
+        }
+            break;
+        default:
+            break;
+    }
+    [WSRunTime sharedWSRunTime].user = nil;
 }
 
 #pragma mark - WSMineFirstCellDelegate

@@ -12,7 +12,7 @@
 // 基项目库
 #import "WSBaseMacro.h"
 #import "WSBaseStatic.h"
-
+#import "WSAudioUtil.h"
 #import <BaiduMapAPI/BMapKit.h>
 
 #import "WSRunTime.h"
@@ -21,5 +21,6 @@
 #import "WSServiceViewController.h"
 
 #import "WSProjUtil.h"
+#import "WSBMKUtil.h"
 
 #endif

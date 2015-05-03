@@ -123,10 +123,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cr5-fk-OrJ">
-                                                        <rect key="frame" x="36" y="8" width="28" height="20"/>
+                                                        <rect key="frame" x="34" y="8" width="32" height="23"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="28" id="3TP-Cq-Arg"/>
-                                                            <constraint firstAttribute="height" constant="20" id="zYV-tD-B8k"/>
+                                                            <constraint firstAttribute="width" constant="32" id="3TP-Cq-Arg"/>
+                                                            <constraint firstAttribute="height" constant="23" id="zYV-tD-B8k"/>
                                                         </constraints>
                                                         <state key="normal" backgroundImage="icon-01.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -284,7 +284,7 @@
                 <outlet property="mineConsumeBut" destination="xp5-Fj-V2L" id="cHa-gT-2yH"/>
                 <outlet property="mineConverBut" destination="cr5-fk-OrJ" id="4Tz-bt-b1C"/>
             </connections>
-            <point key="canvasLocation" x="516" y="263"/>
+            <point key="canvasLocation" x="353" y="180"/>
         </tableViewCell>
     </objects>
     <resources>

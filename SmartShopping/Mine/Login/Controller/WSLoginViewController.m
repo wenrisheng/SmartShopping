@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *telTextField;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIButton *loginBut;
 
 - (IBAction)loginButAction:(id)sender;
 - (IBAction)forgetPasswordButAction:(id)sender;
@@ -38,6 +39,7 @@
     _navigationBarView.navigationBarButLabelButView.delegate = self;
     _navigationBarView.navigationBarButLabelButView.centerLabel.text = @"登录";
     
+    [_loginBut setBorderCornerWithBorderWidth:0 borderColor:[UIColor clearColor] cornerRadius:5];
     [_telView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     [_passwordView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     
@@ -137,34 +139,8 @@
         WSUser *user = [[WSUser alloc] init];
         [user setValuesForKeysWithDictionary:tempDic];
         user.phone = _telTextField.text;
-        
-        //
-        NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
-        if (beforeData) {
-            WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
-            user.isPushNotification = beforeUser.isPushNotification;
-        }
-       
-        
-        WSRunTime *runTime = [WSRunTime sharedWSRunTime];
-        runTime.user = user;
-        
-        // 从本机器取出积累的精明豆给用户
-       int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-        if (user.beanNumber.length > 0) {
-            user.beanNumber = [NSString stringWithFormat:@"%d", [user.beanNumber intValue] + appPeasNum];
-        } else {
-            user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
-        }
-        // 本机精明豆重新清零
-        [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
-        
-        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
-        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
-        [self.navigationController popViewControllerAnimated:YES];
-        if (_callBack) {
-            _callBack();
-        }
+        user.loginType = UserLoginTypePhone;
+         [self doAfterLoginSucWithUser:user];
     }
 }
 
@@ -184,44 +160,15 @@
 #pragma mark  微信登陆
 - (IBAction)weixinLoginButAction:(id)sender
 {
-    
+    [self loginWithType:ShareTypeWeixiSession];
+    // 注销
+    //  [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
 }
 
 #pragma mark  微博登陆
 - (IBAction)weiboLoginButAction:(id)sender
 {
-    [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-        if (result) {
-            //打印输出用户uid：
-            NSLog(@"uid = %@",[userInfo uid]);
-            //打印输出用户昵称：
-            NSLog(@"name = %@",[userInfo nickname]);
-            //打印输出用户头像地址：
-            NSLog(@"icon = %@",[userInfo profileImage]);
-            
-//            PFQuery *query = [PFQuery queryWithClassName:@"UserInfo"];
-//            [query whereKey:@"uid" equalTo:[userInfo uid]];
-//            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                if ([objects count] == 0)
-//                {
-//                    PFObject *newUser = [PFObject objectWithClassName:@"UserInfo"];
-//                    [newUser setObject:[userInfo uid] forKey:@"uid"];
-//                    [newUser setObject:[userInfo nickname] forKey:@"name"];
-//                    [newUser setObject:[userInfo profileImage] forKey:@"icon"];
-//                    [newUser saveInBackground];
-//                    // 欢迎注册
-//                    
-//                } else {
-//                    // 欢迎回来
-//                    
-//                }
-//            }];
-        } else {
-            
-        }
-    }];
-    
-    
+    [self loginWithType:ShareTypeSinaWeibo];
     // 注销
 //    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
 }
@@ -229,7 +176,113 @@
 #pragma mark  qq登陆
 - (IBAction)qqLoginButAction:(id)sender
 {
-    
+    [self loginWithType:ShareTypeQQ];
+    // 注销
+//        [ShareSDK cancelAuthWithType:ShareTypeQQ];
 }
-                               
+
+- (void)loginWithType:(ShareType)shareType
+{
+    [ShareSDK getUserInfoWithType:shareType authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+        if (result) {
+            //打印输出用户uid：
+            NSLog(@"uid = %@",[userInfo uid]);
+            //打印输出用户昵称：
+            NSLog(@"name = %@",[userInfo nickname]);
+            //打印输出用户头像地址：
+            NSLog(@"icon = %@",[userInfo profileImage]);
+            UserLoginType loginType;
+            switch (shareType) {
+                case ShareTypeWeixiSession:
+                {
+                    loginType = UserLoginTypeWechat;
+                }
+                    break;
+                case ShareTypeSinaWeibo:
+                {
+                    loginType = UserLoginTypeWeibo;
+                }
+                    break;
+                case ShareTypeQQ:
+                {
+                    loginType = UserLoginTypeQQ;
+                }
+                    break;
+                default:
+                    break;
+            }
+            WSUser *user = [[WSUser alloc] init];
+            user.loginType = loginType;
+            user.uid = [userInfo uid];
+            user.nickname = [userInfo nickname];
+            user.profileImage = [userInfo profileImage];
+            
+            [self doAfterLoginSucWithUser:user];
+            
+            //            PFQuery *query = [PFQuery queryWithClassName:@"UserInfo"];
+            //            [query whereKey:@"uid" equalTo:[userInfo uid]];
+            //            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            //                if ([objects count] == 0)
+            //                {
+            //                    PFObject *newUser = [PFObject objectWithClassName:@"UserInfo"];
+            //                    [newUser setObject:[userInfo uid] forKey:@"uid"];
+            //                    [newUser setObject:[userInfo nickname] forKey:@"name"];
+            //                    [newUser setObject:[userInfo profileImage] forKey:@"icon"];
+            //                    [newUser saveInBackground];
+            //                    // 欢迎注册
+            //
+            //                } else {
+            //                    // 欢迎回来
+            //
+            //                }
+            //            }];
+        } else {
+            DLog(@"error code:%d description:%@ level:%d", (int)error.errorCode, error.errorDescription, error.errorLevel);
+        }
+    }];
+}
+
+#pragma mark - 登录成功后
+- (void)doAfterLoginSucWithUser:(WSUser *)user
+{
+    // 同步本地用户信息
+    [self synchromUserData:user];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    if (_callBack) {
+        _callBack();
+    }
+}
+
+#pragma mark 同步用户数据
+- (void)synchromUserData:(WSUser *)user
+{
+    //
+    NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
+    if (beforeData) { // 同步是否推动消息
+        WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
+        user.isPushNotification = beforeUser.isPushNotification;
+    }
+    
+    // 设置运行时user
+    WSRunTime *runTime = [WSRunTime sharedWSRunTime];
+    runTime.user = user;
+    
+    // 从本机器取出积累的精明豆给用户
+    int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+    if (user.beanNumber.length > 0) {
+        user.beanNumber = [NSString stringWithFormat:@"%d", [user.beanNumber intValue] + appPeasNum];
+    } else {
+        user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
+    }
+    
+    // 本机精明豆重新清零
+    [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
+    
+    // 本地存储用户信息
+    NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
+    [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+
+}
+
 @end

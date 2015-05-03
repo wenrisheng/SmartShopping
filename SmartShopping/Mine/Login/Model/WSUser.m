@@ -37,6 +37,9 @@
         self.phone = [coder decodeObjectForKey:@"phone"];
         
         self.isPushNotification = [[coder decodeObjectForKey:@"isPushNotification"] boolValue];
+        self.loginType = [[coder decodeObjectForKey:@"logniType"] intValue];
+        self.uid = [coder decodeObjectForKey:@"loginType"];
+        self.profileImage = [coder decodeObjectForKey:@"profileImage"];
     }
     return self;
 }
@@ -66,6 +69,10 @@
     [coder encodeObject:_phone forKey:@"phone"];
     
     [coder encodeObject:[NSNumber numberWithBool:_isPushNotification] forKey:@"isPushNotification"];
+    
+    [coder encodeObject:[NSNumber numberWithInt:_loginType] forKey:@"loginType"];
+    [coder encodeObject:_uid forKey:@"uid"];
+    [coder encodeObject:_profileImage forKey:@"profileImage"];
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key

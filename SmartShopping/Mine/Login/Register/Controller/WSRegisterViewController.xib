@@ -13,6 +13,7 @@
                 <outlet property="navigationBarView" destination="QpC-Fl-aqA" id="ecr-m3-Koi"/>
                 <outlet property="passwordTextField" destination="5Kw-O2-oIs" id="qkv-EI-eC2"/>
                 <outlet property="passwordView" destination="n0K-l5-Mw9" id="C8q-ou-EcY"/>
+                <outlet property="registerBut" destination="PVH-IS-ji8" id="hm5-iC-kyh"/>
                 <outlet property="seeUserServerprotocolBut" destination="hwA-ov-MFX" id="i2Z-ho-v21"/>
                 <outlet property="telTextField" destination="pCS-t3-JzL" id="eHt-bs-GHg"/>
                 <outlet property="telView" destination="tVB-n0-yxl" id="Gk5-kr-gfx"/>
@@ -42,7 +43,7 @@
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVB-n0-yxl">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mobile.png" translatesAutoresizingMaskIntoConstraints="NO" id="rYK-0h-Cjh">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="redmobile.png" translatesAutoresizingMaskIntoConstraints="NO" id="rYK-0h-Cjh">
                                             <rect key="frame" x="8" y="10" width="30" height="30"/>
                                         </imageView>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pCS-t3-JzL">
@@ -191,7 +192,7 @@
         <image name="choose-01.png" width="40" height="40"/>
         <image name="invitation.png" width="44" height="44"/>
         <image name="lock.png" width="44" height="44"/>
-        <image name="mobile.png" width="44" height="44"/>
+        <image name="redmobile.png" width="44" height="44"/>
         <image name="verification.png" width="44" height="44"/>
     </resources>
 </document>

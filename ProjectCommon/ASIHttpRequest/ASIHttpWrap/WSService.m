@@ -96,6 +96,9 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request;
 {
+#ifdef  DEBUG
+     NSLog(@"response result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+#endif
     // 块回调
     if (_serviceFailCallBack) {
         _serviceFailCallBack(nil);

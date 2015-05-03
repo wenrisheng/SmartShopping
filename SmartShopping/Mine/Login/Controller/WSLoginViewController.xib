@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSLoginViewController">
             <connections>
+                <outlet property="loginBut" destination="Vbo-eo-HO0" id="6VZ-Vk-uvr"/>
                 <outlet property="navigationBarView" destination="3Sv-zj-R5v" id="nEk-fX-Ezz"/>
                 <outlet property="passwordTextField" destination="xSZ-eQ-d7f" id="Ml7-hc-Mey"/>
                 <outlet property="passwordView" destination="nvL-YV-7p5" id="eiH-iV-iwV"/>
@@ -33,7 +34,7 @@
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sVM-9Y-irN">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mobile.png" translatesAutoresizingMaskIntoConstraints="NO" id="9tT-IK-MWN">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="redmobile.png" translatesAutoresizingMaskIntoConstraints="NO" id="9tT-IK-MWN">
                                     <rect key="frame" x="8" y="10" width="30" height="30"/>
                                 </imageView>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ALu-yS-FTG">
@@ -177,8 +178,8 @@
     </objects>
     <resources>
         <image name="lock.png" width="44" height="44"/>
-        <image name="mobile.png" width="44" height="44"/>
         <image name="qq.png" width="88" height="88"/>
+        <image name="redmobile.png" width="44" height="44"/>
         <image name="weibo.png" width="88" height="88"/>
         <image name="weixin.png" width="88" height="88"/>
     </resources>

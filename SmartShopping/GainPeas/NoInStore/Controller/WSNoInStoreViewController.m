@@ -12,6 +12,7 @@
 #import "WSInStoreNoSignScopeViewController.h"
 #import "WSInStoreNoSignViewController.h"
 #import "WSStoreDetailViewController.h"
+#import "WSLocationDetailViewController.h"
 
 @interface WSNoInStoreViewController () <UITableViewDataSource, UITableViewDelegate>
 {
@@ -101,7 +102,9 @@
 #pragma mark 地图距离按钮事件
 - (void)distanceButAction:(UIButton *)but
 {
-    
+    NSInteger tag = but.tag;
+    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+    [self.navigationController pushViewController:locationDetailVC animated:YES];
 }
 
 

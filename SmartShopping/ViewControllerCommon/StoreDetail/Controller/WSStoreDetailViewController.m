@@ -11,6 +11,7 @@
 #import "WSHomeViewController.h"
 #import "WSStoreDetailCollectionReusableView.h"
 #import "WSScanProductViewController.h"
+#import "WSScanProductViewController.h"
 
 @interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -153,6 +154,7 @@
 {
     // 1. 不在店内则提示不在店内
     // 2. 在店内则跳到 WSScanProductViewController
+    [self toScanProduct];
 }
 
 - (void)toScanProduct

@@ -12,21 +12,27 @@
 
 #define VARIFICATE_TIME            60
 
-@interface WSRegisterViewController () <UITextFieldDelegate, WSNavigationBarButLabelViewDelegate>
+@interface WSRegisterViewController () <UITextFieldDelegate, WSNavigationBarButLabelViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
     NSTimer *timer;
     int varificateTime;
     WSRegisterSucView *registerSucView;
+    BMKLocationService* _locService;
+    BMKGeoCodeSearch* _geocodesearch;
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *gainVarificateBut;
+@property (strong, nonatomic) NSString *city;
+@property (assign, nonatomic) double latitude;
+@property (assign, nonatomic) double longitude;
 
+@property (weak, nonatomic) IBOutlet UIButton *gainVarificateBut;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarView;
 
 @property (weak, nonatomic) IBOutlet UIView *telView;
 @property (weak, nonatomic) IBOutlet UIView *varificateView;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIView *inviateView;
+@property (weak, nonatomic) IBOutlet UIButton *registerBut;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *telTextField;
@@ -48,6 +54,8 @@
     [super viewDidLoad];
     varificateTime = VARIFICATE_TIME;
     [self initView];
+    // 启动百度地区定位
+   // [self initBMK];
 
 }
 
@@ -62,11 +70,83 @@
     [self.view endEditing:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //启动LocationService
+    [_locService startUserLocationService];
+    _locService.delegate = self;
+    _geocodesearch.delegate = self;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //停止LocationService
+    [_locService stopUserLocationService];
+    _locService.delegate = nil;
+    _geocodesearch.delegate = nil;
+}
+
+
+- (void)initBMK
+{
+    // 地理位置反编码
+    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
+    
+    //设置定位精确度，默认：kCLLocationAccuracyBest
+    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
+    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
+    
+    //初始化BMKLocationService
+    _locService = [[BMKLocationService alloc]init];
+}
+
+#pragma mark - BMKLocationServiceDelegate
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
+    [_locService stopUserLocationService];
+    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
+    CLLocationCoordinate2D pt = userLocation.location.coordinate;
+    _latitude = pt.latitude;
+    _longitude = pt.longitude;
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = pt;
+    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
+    if(flag)
+    {
+        DLog(@"反geo检索发送成功");
+    } else {
+        DLog(@"反地理编码失败");
+    }
+}
+
+- (void)didFailToLocateUserWithError:(NSError *)error
+{
+    DLog(@"定位失败！！！");
+    // [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:3];
+}
+
+#pragma mark - BMKGeoCodeSearchDelegate
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+    if (error == 0) {
+        BMKAddressComponent *addressCom = result.addressDetail;
+        self.city = addressCom.city;
+        DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
+    } else {
+        DLog(@"反地理编码失败");
+    }
+}
+
+#pragma mark - 初始化视图
 - (void)initView
 {
     _navigationBarView.navigationBarButLabelView.label.text = @"注册";
     _navigationBarView.navigationBarButLabelView.delegate = self;
-    
+    [_registerBut setBorderCornerWithBorderWidth:0 borderColor:[UIColor clearColor] cornerRadius:5];
     // 输入框边界线
     NSArray *array = @[_telView, _varificateView, _passwordView, _inviateView];
     for (UIView *view in array) {
@@ -126,7 +206,9 @@
 #pragma mark 请求注册
 - (void)requestRegister
 {
-    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : [_passwordTextField.text encodeMD5_32_lowercase], @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : @"", @"lat" : @""};
+    NSString *latitude = _city.length == 0 ? @"" : [NSString stringWithFormat:@"%f", _latitude];
+    NSString *longitude = _city.length == 0 ? @"" : [NSString stringWithFormat:@"%f", _longitude];
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : [_passwordTextField.text encodeMD5_32_lowercase], @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : longitude, @"lat" : latitude, @"cityName" : _city};
      [SVProgressHUD showWithStatus:@"正在注册……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeRegister] data:dic tag:WSInterfaceTypeRegister];
 
@@ -151,10 +233,18 @@
         flag = NO;
         return flag;
     }
-
     if (_passwordTextField.text.length == 0) {
          [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
         flag = NO;
+        return flag;
+    }
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+#if DEBUG
+      self.city = @"广州";
+        flag = YES;
+#endif
         return flag;
     }
        return flag;
