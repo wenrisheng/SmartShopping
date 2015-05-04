@@ -56,26 +56,36 @@
     }
     NSInteger tag = tableView.tag;
     NSInteger row = indexPath.row;
-    NSArray *dataArray = nil;
-    UIColor *selectedColor = nil;
     switch (tag) {
         case 0:
         {
-            dataArray = _dataArrayF;
-            selectedColor = _cellFSelectColor;
+           NSDictionary *dic = [_dataArrayF objectAtIndex:row];
+            int selected_flag = [[dic objectForKey:DOUBLE_TABLE_SELECTED_FLAG] intValue];
+            if (selected_flag == 0) {
+                cell.backgroundColor = _cellFSelectColor;
+            } else {
+                cell.backgroundColor = _cellFUnSelectColor;
+            }
+            cell.label.text = [dic objectForKey:DOUBLE_TABLE_TITLE];
         }
             break;
         case 1:
         {
-            dataArray = _dataArrayS;
-            selectedColor = _cellSSelectColor;
+            NSDictionary *dic = [_dataArrayS objectAtIndex:row];
+            int selected_flag = [[dic objectForKey:DOUBLE_TABLE_SELECTED_FLAG] intValue];
+            if (selected_flag == 0) {
+                cell.backgroundColor = _cellSSelectColor;
+            } else {
+                cell.backgroundColor = _cellSUnSelectColor;
+            }
+            cell.label.text = [dic objectForKey:DOUBLE_TABLE_TITLE];
         }
             break;
         default:
             break;
     }
-    cell.selectedBackgroundView.backgroundColor = selectedColor;
-    cell.label.text = [dataArray objectAtIndex:row];
+   
+    
     return cell;
 }
 
@@ -92,6 +102,15 @@
     switch (tag) {
         case 0:
         {
+            if (_isLeftToRight) {
+                for (NSDictionary *dic in _dataArrayF) {
+                    [dic setValue:[NSNumber numberWithInt:1] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                }
+                NSMutableDictionary *dic = [_dataArrayF objectAtIndex:row];
+                [dic setValue:[NSNumber numberWithInt:0] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [_tableF reloadData];
+
+            }
             if (_tableFCallBack) {
                 _tableFCallBack(row);
             }
@@ -99,6 +118,15 @@
             break;
         case 1:
         {
+            if (!_isLeftToRight) {
+                for (NSDictionary *dic in _dataArrayS) {
+                    [dic setValue:[NSNumber numberWithInt:1] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                }
+                NSMutableDictionary *dic = [_dataArrayS objectAtIndex:row];
+                [dic setValue:[NSNumber numberWithInt:0] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [_tableS reloadData];
+            }
+
             if (_tableSCallBack) {
                 _tableSCallBack(row);
             }

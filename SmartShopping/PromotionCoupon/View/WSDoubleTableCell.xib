@@ -40,6 +40,7 @@
                     <constraint firstItem="bnz-Mx-Alx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="pQw-tx-EHY"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="label" destination="bnz-Mx-Alx" id="qMF-pL-kBT"/>
             </connections>

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define TOP_TAB_IMAGE_WIDTH     7
+
 @interface WSPromotionCouponViewController : WSServiceViewController
 
 @end

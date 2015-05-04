@@ -7,13 +7,19 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineInfoViewController">
             <connections>
+                <outlet property="birdthDayTextField" destination="PO5-du-GUl" id="6dC-Uw-eKN"/>
+                <outlet property="birdthDayView" destination="Kci-bC-E89" id="3Bf-WF-0Dl"/>
+                <outlet property="emailTextField" destination="MTC-MO-iSk" id="PsT-0c-h2O"/>
                 <outlet property="emailView" destination="oA8-y0-Cgn" id="YSC-ji-l3W"/>
                 <outlet property="gainVarificateBut" destination="P53-nU-l7i" id="agN-u5-m3f"/>
-                <outlet property="inviateView" destination="Kci-bC-E89" id="reN-yx-Ooi"/>
+                <outlet property="inviateTextField" destination="jvZ-MS-SP7" id="ka7-pE-sGL"/>
+                <outlet property="inviateView" destination="FZS-GV-4b4" id="4qR-dB-fAi"/>
                 <outlet property="ladyBut" destination="s4O-8V-tfu" id="qRn-EB-9Rg"/>
                 <outlet property="manBut" destination="s2L-js-zrG" id="WTo-Yc-GsW"/>
                 <outlet property="navigationBarManagerView" destination="ol3-Og-bA4" id="GJv-Bp-Q4B"/>
+                <outlet property="nicknameTextField" destination="SLe-62-EF0" id="BMU-Rd-TrB"/>
                 <outlet property="nicknameView" destination="HQP-R5-xhr" id="x28-n7-zFA"/>
+                <outlet property="validCodeTextField" destination="FYO-VG-VHl" id="FX6-KR-n33"/>
                 <outlet property="varificateView" destination="enz-IJ-Zw0" id="IK1-Ju-HUo"/>
                 <outlet property="view" destination="K5P-yv-Yoa" id="0HZ-H8-uuY"/>
             </connections>
@@ -34,7 +40,7 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4r-y9-1kc">
-                            <rect key="frame" x="10" y="20" width="300" height="400"/>
+                            <rect key="frame" x="10" y="20" width="300" height="430"/>
                             <subviews>
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQP-R5-xhr">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
@@ -81,8 +87,31 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kci-bC-E89">
+                                    <rect key="frame" x="0.0" y="200" width="300" height="50"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="出生年月" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PO5-du-GUl">
+                                            <rect key="frame" x="8" y="0.0" width="284" height="50"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="Z0P-hH-oMA">
+                                            <rect key="frame" x="278" y="12" width="14" height="26"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqH-vA-NLf">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="birthdayButAction:" destination="-1" eventType="touchUpInside" id="SRQ-EB-r2Z"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q2V-eV-NNR">
-                                    <rect key="frame" x="0.0" y="200" width="300" height="40"/>
+                                    <rect key="frame" x="0.0" y="250" width="300" height="40"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="性别" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5a-kf-ry9">
                                             <rect key="frame" x="8" y="9" width="34" height="21"/>
@@ -123,10 +152,10 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kci-bC-E89">
-                                    <rect key="frame" x="0.0" y="250" width="300" height="50"/>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZS-GV-4b4">
+                                    <rect key="frame" x="0.0" y="290" width="300" height="50"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入推荐人邀请码  " minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PO5-du-GUl">
+                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入推荐人邀请码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jvZ-MS-SP7">
                                             <rect key="frame" x="8" y="0.0" width="284" height="50"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
@@ -135,7 +164,7 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bb-ui-m9s">
-                                    <rect key="frame" x="0.0" y="320" width="300" height="50"/>
+                                    <rect key="frame" x="0.0" y="350" width="300" height="50"/>
                                     <color key="backgroundColor" red="0.90196078430000004" green="0.38431372549999998" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <state key="normal" title="提交">
@@ -150,7 +179,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="300" id="LE2-v5-Qub"/>
-                                <constraint firstAttribute="height" constant="400" id="cjx-uw-Kxc"/>
+                                <constraint firstAttribute="height" constant="430" id="cjx-uw-Kxc"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -163,7 +192,7 @@
                     </constraints>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="ol3-Og-bA4" secondAttribute="trailing" id="4AL-cR-kgp"/>
                 <constraint firstAttribute="trailing" secondItem="uca-Ty-syk" secondAttribute="trailing" id="EMb-Xn-B6d"/>
@@ -175,10 +204,11 @@
                 <constraint firstItem="uca-Ty-syk" firstAttribute="top" secondItem="ol3-Og-bA4" secondAttribute="bottom" id="szL-4C-poJ"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="472" y="304"/>
+            <point key="canvasLocation" x="454" y="231"/>
         </view>
     </objects>
     <resources>
+        <image name="arrow-01.png" width="14" height="26"/>
         <image name="radio_choose-01.png" width="40" height="40"/>
         <image name="radio_choose-02.png" width="40" height="40"/>
     </resources>

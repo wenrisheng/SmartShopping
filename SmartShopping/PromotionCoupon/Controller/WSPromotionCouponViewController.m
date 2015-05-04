@@ -13,8 +13,8 @@
 #import "WSHomeViewController.h"
 #import "WSFilterBrandViewController.h"
 #import "WSPromotionCouponSearchViewController.h"
+#import "WSDoubleTableView.h"
 
-#define TOP_TAB_IMAGE_WIDTH     10
 
 @interface WSPromotionCouponViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NavigationBarButSearchButViewDelegate, HomeCollectionViewCellDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
@@ -23,10 +23,15 @@
     BMKLocationService* _locService;
     BMKGeoCodeSearch* _geocodesearch;
     BOOL isInStore;
+    
+    WSDoubleTableView *doubleTableView;
+    NSMutableArray *dataArrayF;
+    NSMutableArray *dataArrayS;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *changeContainerView;
 
 // 不在店内
 @property (weak, nonatomic) IBOutlet WSTabSlideManagerView *outStoreTabSlideManagerView;
@@ -121,7 +126,6 @@
         [dic setValue:[titleArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_TITLE];
         [dataArray addObject:dic];
     }
-    
     [_outStoreTabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
     _outStoreTabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
         [self outOfStoreClickTag:index];
@@ -171,6 +175,25 @@
 {
     [inStoreDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
     [outStoreDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
+    dataArrayF = [[NSMutableArray alloc] init];
+    dataArrayS = [[NSMutableArray alloc] init];
+    for (int i = 0; i < 10; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[NSString stringWithFormat:@"title%d", i] forKey:DOUBLE_TABLE_TITLE];
+        if (i == 0) {
+             [dic setValue:[NSNumber numberWithInt:0] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+        } else {
+             [dic setValue:[NSNumber numberWithInt:1] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+        }
+        [dataArrayF addObject:dic];
+    }
+    
+    for (int i = 0; i < 10; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[NSString stringWithFormat:@"title%d", i] forKey:DOUBLE_TABLE_TITLE];
+        [dic setValue:[NSNumber numberWithInt:1] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+        [dataArrayS addObject:dic];
+    }
 }
 
 #pragma mark - 在店内搜索按钮事件
@@ -245,7 +268,6 @@
         [dataArray addObject:dic];
     }
     [_inStoreTabSlideMnagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
-    
     _inStoreTabSlideMnagerView.tabSlideGapTextView.callBack = ^(int index) {
         [self inOfStoreClickTag:index];
     };
@@ -287,7 +309,23 @@
 #pragma mark 点击了附近tab
 - (void)clickNearTab
 {
-    
+    WSDoubleTableView *doubleTable= [self getDoubleTableView];
+    doubleTable.hidden = NO;
+    doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
+    doubleTable.cellSSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.cellSUnSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.isLeftToRight = YES;
+    doubleTable.dataArrayF = dataArrayF;
+    doubleTable.dataArrayS = dataArrayS;
+    [doubleTable.tableF reloadData];
+    [doubleTable.tableS reloadData];
+    doubleTable.tableFCallBack = ^(NSInteger index) {
+        
+    };
+    doubleTable.tableSCallBack = ^(NSInteger index) {
+        doubleTable.hidden = YES;
+    };
 }
 
 #pragma mark 点击了所有tab
@@ -320,6 +358,21 @@
             break;
         default:
             break;
+    }
+}
+
+- (WSDoubleTableView *)getDoubleTableView
+{
+    if (doubleTableView) {
+        return doubleTableView;
+    } else {
+        doubleTableView = GET_XIB_FIRST_OBJECT(@"WSDoubleTableView");
+        CGRect rect = [_changeContainerView convertRect:_changeContainerView.frame toView:self.view];
+        float y = rect.origin.y + rect.size.height;
+        float h = self.view.bounds.size.height - y;
+        doubleTableView.frame = CGRectMake(0, y, rect.size.width, h);
+        [self.view addSubview:doubleTableView];
+        return doubleTableView;
     }
 }
 

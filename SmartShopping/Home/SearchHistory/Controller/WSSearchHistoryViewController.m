@@ -11,27 +11,70 @@
 #import "WSSearchHistoryCell.h"
 
 #define SEARCH_HISTORY_KEY        @"SEARCH_HISTORY_KEY"
+#define HISTORY_COUNT             3
 
-@interface WSSearchHistoryViewController () <UITableViewDataSource, UITableViewDelegate>
-{
-    NSMutableArray *dataArray;
-}
+@interface WSSearchHistoryViewController () <UITableViewDataSource, UITableViewDelegate, WSSearchViewDelegate>
 
+@property (strong, nonatomic)  NSMutableArray *dataArray;
+@property (weak, nonatomic) IBOutlet WSSearchManagerView *searchManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
+
+- (IBAction)cancalButAction:(id)sender;
 
 @end
 
 @implementation WSSearchHistoryViewController
+@synthesize dataArray;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    dataArray = [USER_DEFAULT objectForKey:SEARCH_HISTORY_KEY];
+    self.dataArray = [[NSMutableArray alloc] initWithArray:[USER_DEFAULT objectForKey:SEARCH_HISTORY_KEY]];
+    _searchManagerView.searchView.delegate = self;
+    _searchManagerView.searchView.textField.returnKeyType = UIReturnKeySearch;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
+
+#pragma mark - WSSearchViewDelegate
+- (void)searchViewDelegateTextFieldDidEndEditing:(UITextField *)textField
+{
+    
+}
+
+- (BOOL)searchViewDelegateTextFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    NSMutableArray *tempArray = [NSMutableArray array];
+    [tempArray addObject:textField.text];
+    NSInteger beforeCount = dataArray.count;
+    for (int i = 0; i < beforeCount; i++) {
+        [tempArray addObject:[dataArray objectAtIndex:i]];
+    }
+    NSInteger count = tempArray.count;
+    if (count > HISTORY_COUNT) {
+        NSInteger deleteCount = count - HISTORY_COUNT;
+        for (int i = 0; i < deleteCount; i++) {
+            [tempArray removeObjectAtIndex:tempArray.count - 1];
+        }
+    }
+   [USER_DEFAULT setValue:tempArray forKey:SEARCH_HISTORY_KEY];
+    return YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -53,7 +96,7 @@
 {
     NSInteger row = indexPath.row;
     NSInteger count = dataArray.count;
-    if (row == count - 1) {
+    if (row == count) {
         static NSString *identify = @"WSClearHistoryCell";
         WSClearHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
         if (!cell) {
@@ -78,7 +121,7 @@
 {
     NSInteger row = indexPath.row;
     NSInteger count = dataArray.count;
-    if (row == count - 1) {
+    if (row == count) {
         return WSCLEARHISTORYCELL_HEIGHT;
     }
     return WSSEARCHHISTORYCELL_HEIGHT;
@@ -88,7 +131,8 @@
 {
     NSInteger row = indexPath.row;
     NSInteger count = dataArray.count;
-    if (row != count - 1) {
+    if (row != count) {
+        _searchManagerView.searchView.textField.text = [dataArray objectAtIndex:row];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -99,6 +143,11 @@
     [USER_DEFAULT setValue:nil forKey:SEARCH_HISTORY_KEY];
     [dataArray removeAllObjects];
     [_contentTableView reloadData];
+}
+
+- (IBAction)cancalButAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

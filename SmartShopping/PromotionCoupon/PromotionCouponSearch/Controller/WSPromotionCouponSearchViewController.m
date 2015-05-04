@@ -10,6 +10,7 @@
 #import "WSFilterBrandViewController.h"
 #import "HomeCollectionViewCell.h"
 #import "WSHomeViewController.h"
+#import "WSPromotionCouponViewController.h"
 
 @interface WSPromotionCouponSearchViewController () <NavigationBarButSearchButViewDelegate, HomeCollectionViewCellDelegate>
 {
@@ -45,6 +46,7 @@
     [_navigationBarManagerView.navigationBarButSearchButView.leftBut setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     
     // tab 切换按钮
+    _storeName = _storeName.length == 0 ? @"" : _storeName;
     NSArray *titleArray = @[@"附近", _storeName, @"所有商店"];
     NSMutableArray *tempArray = [NSMutableArray array];
     NSInteger  count = titleArray.count;
@@ -53,7 +55,10 @@
         [dic setValue:[titleArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_TITLE];
         [tempArray addObject:dic];
     }
-    
+    _tabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
+    _tabSlideManagerView.tabSlideGapTextView.selectedImage = @"arrow-click";
+    _tabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
+    _tabSlideManagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
     [_tabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:tempArray];
     _tabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
        
@@ -75,6 +80,7 @@
     [rightView addConstraints:@[width, height, centerX, centerY]];
     
     // 注册
+    _collectionView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_collectionView addHeaderWithCallback:^{
         // 模拟延迟加载数据，因此2秒后才调用）

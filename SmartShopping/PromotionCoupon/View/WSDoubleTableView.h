@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define DOUBLE_TABLE_TITLE                  @"double_table_title"
+#define DOUBLE_TABLE_SELECTED_FLAG          @"double_table_selected_flag"    // 0 选中 1 没选中
+
 typedef void(^DoubleTableFCallBack)(NSInteger idnex);
 typedef void(^DoubleTableSCallBack)(NSInteger idnex);
 
@@ -16,9 +19,12 @@ typedef void(^DoubleTableSCallBack)(NSInteger idnex);
 @property (strong, nonatomic) DoubleTableFCallBack tableFCallBack;
 @property (strong, nonatomic) DoubleTableSCallBack tableSCallBack;
 @property (strong, nonatomic) UIColor *cellFSelectColor;
+@property (strong, nonatomic) UIColor *cellFUnSelectColor;
 @property (strong, nonatomic) UIColor *cellSSelectColor;
+@property (strong, nonatomic) UIColor *cellSUnSelectColor;
 @property (strong, nonatomic) NSArray *dataArrayF;
 @property (strong, nonatomic) NSArray *dataArrayS;
+@property (assign, nonatomic) BOOL isLeftToRight;
 
 @property (weak, nonatomic) IBOutlet UIView *bgView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;

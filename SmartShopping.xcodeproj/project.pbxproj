@@ -20,6 +20,10 @@
 		7C249B5E1ADD6114000712BF /* HomeHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C249B461ADD6114000712BF /* HomeHeaderCollectionReusableView.xib */; };
 		7C249B721ADD6B7A000712BF /* WSInfoListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C249B701ADD6B7A000712BF /* WSInfoListCell.m */; };
 		7C249B731ADD6B7A000712BF /* WSInfoListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C249B711ADD6B7A000712BF /* WSInfoListCell.xib */; };
+		7C2D76BC1AF7D2BD00126328 /* WSResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D76BA1AF7D2BD00126328 /* WSResetPasswordViewController.m */; };
+		7C2D76BD1AF7D2BD00126328 /* WSResetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C2D76BB1AF7D2BD00126328 /* WSResetPasswordViewController.xib */; };
+		7C2D76C31AF7D30B00126328 /* WSForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D76C11AF7D30B00126328 /* WSForgetPasswordViewController.m */; };
+		7C2D76C41AF7D30B00126328 /* WSForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C2D76C21AF7D30B00126328 /* WSForgetPasswordViewController.xib */; };
 		7C3511711ADFF4380014696B /* WSMineThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C35116F1ADFF4380014696B /* WSMineThirdCell.m */; };
 		7C3511721ADFF4380014696B /* WSMineThirdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3511701ADFF4380014696B /* WSMineThirdCell.xib */; };
 		7C3511761ADFF80A0014696B /* WSMineFourCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3511741ADFF80A0014696B /* WSMineFourCell.m */; };
@@ -193,8 +197,6 @@
 		7CC583441ADD2DD700329D21 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC583431ADD2DD700329D21 /* MessageUI.framework */; };
 		7CC760A61AE2114A000C9085 /* WSUserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */; };
 		7CC760A71AE2114A000C9085 /* WSUserProtocolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */; };
-		7CC760B61AE23081000C9085 /* WSResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */; };
-		7CC760B71AE23081000C9085 /* WSResetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */; };
 		7CC760BA1AE24046000C9085 /* WSRegisterSucView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC760B91AE24046000C9085 /* WSRegisterSucView.m */; };
 		7CC760BC1AE24058000C9085 /* WSRegisterSucView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC760BB1AE24058000C9085 /* WSRegisterSucView.xib */; };
 		7CC760C01AE2590A000C9085 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC760BF1AE2590A000C9085 /* AudioToolbox.framework */; };
@@ -441,6 +443,12 @@
 		7C249B6F1ADD6B7A000712BF /* WSInfoListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSInfoListCell.h; sourceTree = "<group>"; };
 		7C249B701ADD6B7A000712BF /* WSInfoListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSInfoListCell.m; sourceTree = "<group>"; };
 		7C249B711ADD6B7A000712BF /* WSInfoListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSInfoListCell.xib; sourceTree = "<group>"; };
+		7C2D76B91AF7D2BD00126328 /* WSResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSResetPasswordViewController.h; sourceTree = "<group>"; };
+		7C2D76BA1AF7D2BD00126328 /* WSResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSResetPasswordViewController.m; sourceTree = "<group>"; };
+		7C2D76BB1AF7D2BD00126328 /* WSResetPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSResetPasswordViewController.xib; sourceTree = "<group>"; };
+		7C2D76C01AF7D30B00126328 /* WSForgetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSForgetPasswordViewController.h; sourceTree = "<group>"; };
+		7C2D76C11AF7D30B00126328 /* WSForgetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSForgetPasswordViewController.m; sourceTree = "<group>"; };
+		7C2D76C21AF7D30B00126328 /* WSForgetPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSForgetPasswordViewController.xib; sourceTree = "<group>"; };
 		7C35116E1ADFF4380014696B /* WSMineThirdCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMineThirdCell.h; sourceTree = "<group>"; };
 		7C35116F1ADFF4380014696B /* WSMineThirdCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMineThirdCell.m; sourceTree = "<group>"; };
 		7C3511701ADFF4380014696B /* WSMineThirdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMineThirdCell.xib; sourceTree = "<group>"; };
@@ -677,9 +685,6 @@
 		7CC760A31AE2114A000C9085 /* WSUserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSUserProtocolViewController.h; sourceTree = "<group>"; };
 		7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSUserProtocolViewController.m; sourceTree = "<group>"; };
 		7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSUserProtocolViewController.xib; sourceTree = "<group>"; };
-		7CC760B31AE23081000C9085 /* WSResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSResetPasswordViewController.h; sourceTree = "<group>"; };
-		7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSResetPasswordViewController.m; sourceTree = "<group>"; };
-		7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSResetPasswordViewController.xib; sourceTree = "<group>"; };
 		7CC760B81AE24046000C9085 /* WSRegisterSucView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSRegisterSucView.h; sourceTree = "<group>"; };
 		7CC760B91AE24046000C9085 /* WSRegisterSucView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSRegisterSucView.m; sourceTree = "<group>"; };
 		7CC760BB1AE24058000C9085 /* WSRegisterSucView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSRegisterSucView.xib; sourceTree = "<group>"; };
@@ -1186,6 +1191,42 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		7C2D76B71AF7D2BD00126328 /* ResetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D76B81AF7D2BD00126328 /* Control */,
+			);
+			path = ResetPassword;
+			sourceTree = "<group>";
+		};
+		7C2D76B81AF7D2BD00126328 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D76B91AF7D2BD00126328 /* WSResetPasswordViewController.h */,
+				7C2D76BA1AF7D2BD00126328 /* WSResetPasswordViewController.m */,
+				7C2D76BB1AF7D2BD00126328 /* WSResetPasswordViewController.xib */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
+		7C2D76BE1AF7D2EE00126328 /* ForgetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D76BF1AF7D2EE00126328 /* Controller */,
+			);
+			path = ForgetPassword;
+			sourceTree = "<group>";
+		};
+		7C2D76BF1AF7D2EE00126328 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D76C01AF7D30B00126328 /* WSForgetPasswordViewController.h */,
+				7C2D76C11AF7D30B00126328 /* WSForgetPasswordViewController.m */,
+				7C2D76C21AF7D30B00126328 /* WSForgetPasswordViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		7C3DFF281AE91CA30065BB7F /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1672,8 +1713,8 @@
 				7C9085721ADF7CD20073D94C /* Controller */,
 				7C9085731ADF7CD20073D94C /* Model */,
 				7C9085781ADF7CD20073D94C /* View */,
-				7CC760B11AE2306C000C9085 /* ResetPassword */,
 				7C9085741ADF7CD20073D94C /* Register */,
+				7C2D76BE1AF7D2EE00126328 /* ForgetPassword */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1871,24 +1912,6 @@
 				7CC760A31AE2114A000C9085 /* WSUserProtocolViewController.h */,
 				7CC760A41AE2114A000C9085 /* WSUserProtocolViewController.m */,
 				7CC760A51AE2114A000C9085 /* WSUserProtocolViewController.xib */,
-			);
-			path = Control;
-			sourceTree = "<group>";
-		};
-		7CC760B11AE2306C000C9085 /* ResetPassword */ = {
-			isa = PBXGroup;
-			children = (
-				7CC760B21AE2306C000C9085 /* Control */,
-			);
-			path = ResetPassword;
-			sourceTree = "<group>";
-		};
-		7CC760B21AE2306C000C9085 /* Control */ = {
-			isa = PBXGroup;
-			children = (
-				7CC760B31AE23081000C9085 /* WSResetPasswordViewController.h */,
-				7CC760B41AE23081000C9085 /* WSResetPasswordViewController.m */,
-				7CC760B51AE23081000C9085 /* WSResetPasswordViewController.xib */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -2345,6 +2368,7 @@
 				7CCE4F5B1AEB7B8C0097DFBB /* AdviceBack */,
 				7CCA01A11AEC92450081A8CC /* UpdateTel */,
 				7CCA01AD1AECC4B80081A8CC /* About */,
+				7C2D76B71AF7D2BD00126328 /* ResetPassword */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -2872,6 +2896,7 @@
 				7CCBF4FB1AEFCEAD005321BF /* WSScanNoInStoreReusableView.xib in Resources */,
 				7C249B4A1ADD6114000712BF /* WSInfoListViewController.xib in Resources */,
 				7C6DDE7B1ADC21A0007F81A4 /* mapapi.bundle in Resources */,
+				7C2D76C41AF7D30B00126328 /* WSForgetPasswordViewController.xib in Resources */,
 				7CCA01BF1AED0A030081A8CC /* WSInfoDetailViewController.xib in Resources */,
 				7C90852B1ADF756C0073D94C /* InstapaperResource.bundle in Resources */,
 				7CCAD3441ADEBA1C001D3D8B /* scan_product.png in Resources */,
@@ -3010,7 +3035,6 @@
 				7CCD8B2B1ADFD0D5007B86A9 /* switch.png in Resources */,
 				7CCAD33E1ADEB8D7001D3D8B /* map.png in Resources */,
 				7C249B5E1ADD6114000712BF /* HomeHeaderCollectionReusableView.xib in Resources */,
-				7CC760B71AE23081000C9085 /* WSResetPasswordViewController.xib in Resources */,
 				7C3DFF321AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib in Resources */,
 				7CD0E4681AE2B71E00B78C9C /* WSNoLoginView.xib in Resources */,
 				7CCD11851AD55085005A1429 /* WSPromotionCouponViewController.xib in Resources */,
@@ -3031,6 +3055,7 @@
 				7CCA01991AEC7C650081A8CC /* photo-01.png in Resources */,
 				7CCD8B261ADFD0D5007B86A9 /* icon-02.png in Resources */,
 				7C6DDE5A1ADC1D35007F81A4 /* README-GHUnit in Resources */,
+				7C2D76BD1AF7D2BD00126328 /* WSResetPasswordViewController.xib in Resources */,
 				7CEEB29E1AE3C49B005CB218 /* WSStoreDetailCollectionReusableView.xib in Resources */,
 				7C4206281AF5A954005F9F44 /* WSLocationDetailViewController.xib in Resources */,
 				7CEEB2AA1AE3C8DE005CB218 /* gainpeas_icon-06.png in Resources */,
@@ -3092,6 +3117,7 @@
 				7CCBBD5D1AD418AF00EA1F7F /* AppDelegate.m in Sources */,
 				7C249B491ADD6114000712BF /* WSInfoListViewController.m in Sources */,
 				7C6AD53C1AEF4713000B6CB1 /* WSSearchHistoryViewController.m in Sources */,
+				7C2D76C31AF7D30B00126328 /* WSForgetPasswordViewController.m in Sources */,
 				7CD0E4641AE2B62A00B78C9C /* WSNoLoginView.m in Sources */,
 				7CCE4F291AEB190C0097DFBB /* WSMoreGiftCell.m in Sources */,
 				7CCA01C31AED2E250081A8CC /* WSStoreDetailCollectionViewCell.m in Sources */,
@@ -3126,6 +3152,7 @@
 				7C6AD5461AEF49AD000B6CB1 /* WSClearHistoryCell.m in Sources */,
 				7CD0E4611AE2B61B00B78C9C /* WSLoginedView.m in Sources */,
 				7C249B721ADD6B7A000712BF /* WSInfoListCell.m in Sources */,
+				7C2D76BC1AF7D2BD00126328 /* WSResetPasswordViewController.m in Sources */,
 				7CC0859A1AEF0D420095F52B /* WSPromotionCouponSearchViewController.m in Sources */,
 				7CD0E48D1AE3939600B78C9C /* WSNoInStoreSectionView.m in Sources */,
 				7CD0E4A81AE3A40E00B78C9C /* WSInStoreNoSignViewController.m in Sources */,
@@ -3149,7 +3176,6 @@
 				7C6DDE561ADC1D35007F81A4 /* ASIS3BucketRequest.m in Sources */,
 				7CD0E4931AE394D600B78C9C /* WSNoinStoreCell.m in Sources */,
 				7CD8F3361AE5589D0039CE0F /* WSMineConsumeCell.m in Sources */,
-				7CC760B61AE23081000C9085 /* WSResetPasswordViewController.m in Sources */,
 				7CD8F31C1AE543760039CE0F /* WSMineConverCell.m in Sources */,
 				7CCD8B2F1ADFED84007B86A9 /* WSMineSecondCell.m in Sources */,
 				7CCA01B61AECCACF0081A8CC /* WSConfirmClearCacheView.m in Sources */,
@@ -3280,7 +3306,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3316,7 +3342,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
+				PROVISIONING_PROFILE = "e19d0c3e-6ef4-44ad-b1a0-8145f1004e2c";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3330,7 +3356,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3366,7 +3392,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
+				PROVISIONING_PROFILE = "e19d0c3e-6ef4-44ad-b1a0-8145f1004e2c";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

@@ -92,9 +92,18 @@
 {
     BOOL flag = [self validData];
     if (flag) {
-        
+        [self requestUpdateTel];
     }
 }
+
+- (void)requestUpdateTel
+{
+    NSString *oldPhone = [WSRunTime sharedWSRunTime].user.phone;
+    NSDictionary *dic = @{@"phone" : oldPhone, @"newPhon": _telTextField.text, @"validCode" : _varificateTextField.text};
+    [SVProgressHUD showWithStatus:@"正在更改……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdatePhone] data:dic tag:WSInterfaceTypeUpdatePhone];
+}
+
 
 - (BOOL)validData
 {
@@ -117,5 +126,59 @@
     }
     return flag;
 }
+
+#pragma mark - ServiceDelegate
+- (void)requestSucess:(id)result tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                NSDictionary *data = [result valueForKey:@"data"];
+                NSString *code = [data valueForKey:@"code"];
+                DLog(@"验证码：%@", code);
+            }
+        }
+            break;
+        case WSInterfaceTypeUpdatePhone:
+        {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [SVProgressHUD showSuccessWithStatus:@"手机号更改成功！" duration:TOAST_VIEW_TIME];
+                [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(doSucAfter) userInfo:nil repeats:NO];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)doSucAfter
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)requestFail:(id)error tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            
+        }
+            break;
+        case WSInterfaceTypeUpdatePhone:
+        {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"手机号更改失败！" duration:TOAST_VIEW_TIME];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 
 @end

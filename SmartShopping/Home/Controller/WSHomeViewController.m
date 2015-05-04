@@ -13,6 +13,13 @@
 #import "WSProductDetailViewController.h"
 #import "WSAdvertisementDetailViewController.h"
 #import "WSLocationDetailViewController.h"
+#import "WSNoInStoreViewController.h"
+#import "WSInStoreNoSignViewController.h"
+#import "WSInStoreNoSignScopeViewController.h"
+#import "WSStoreDetailViewController.h"
+#import "WSScanNoInStoreViewController.h"
+#import "WSInviateFriendViewController.h"
+#import "WSSearchHistoryViewController.h"
 
 @interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
 {
@@ -172,6 +179,13 @@
     [self.navigationController pushViewController:infoListVC animated:YES];
 }
 
+- (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
+{
+    WSSearchHistoryViewController *searchHistoryVC =[[WSSearchHistoryViewController alloc] init];
+    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+    return NO;
+}
+
 - (void)navigationBarSearchViewTextFieldDidEndEditing:(UITextField *)textField
 {
      DLog(@"navigationBarSearchViewTextFieldDidEndEditing:--%@", textField.text);
@@ -309,19 +323,57 @@
 #pragma mark - 到店签到
 - (void)shopSignInAction:(id)sender
 {
+    //  1. GPS定位不在店内跳到 WSNoInStoreViewController
+    //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
+    //  3. 在店内已签到 跳到 WSStoreDetailViewController
+    
+    [self toNoInStoreVC];
     DLog(@"到店签到");
 }
 
 #pragma mark 扫描产品
 - (void)scanProductAction:(id)sender
 {
+    // 1. 在店内跳到 WSStoreDetailViewController
+    // 2. 不在店内跳到 WSScanNoInStoreViewController
+    [self toScanNoInStore];
      DLog(@"扫描产品");
 }
 
 #pragma mark 邀请好友
 - (void)invateFriendAction:(id)sender
 {
+    WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
+    [self.navigationController pushViewController:inviateFriendVC animated:YES];
     DLog(@"邀请好友");
+}
+
+#pragma mark - 到店签到 不在店内
+- (void)toNoInStoreVC
+{
+    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+    [self.navigationController pushViewController:noInstoreVC animated:YES];
+}
+
+#pragma mark 在店内没签到
+- (void)toInStoreNoSign
+{
+    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+    
+}
+
+#pragma mark 在店内已签到
+- (void)toStoreDetail
+{
+    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+    [self.navigationController pushViewController:storeDetailVC animated:YES];
+}
+
+- (void)toScanNoInStore
+{
+    WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+    [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
 }
 
 #pragma mark 

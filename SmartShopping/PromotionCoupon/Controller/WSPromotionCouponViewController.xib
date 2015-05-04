@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSPromotionCouponViewController">
             <connections>
+                <outlet property="changeContainerView" destination="rKf-Z7-V4S" id="htl-Ul-W39"/>
                 <outlet property="contentCollectionView" destination="T6r-7h-cPE" id="aIy-Hm-Z6S"/>
                 <outlet property="contentView" destination="Bc3-38-pMs" id="Lrk-NO-kTl"/>
                 <outlet property="inStoreTabSlideMnagerView" destination="2se-Sr-hba" id="bdw-tX-dKw"/>

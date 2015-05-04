@@ -1,16 +1,16 @@
 //
-//  WSResetPasswordViewController.m
+//  WSForgetPasswordViewController.m
 //  SmartShopping
 //
-//  Created by wrs on 15/4/18.
+//  Created by wrs on 15/5/5.
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "WSResetPasswordViewController.h"
+#import "WSForgetPasswordViewController.h"
 
 #define VARIFICATE_TIME            60
 
-@interface WSResetPasswordViewController ()
+@interface WSForgetPasswordViewController ()
 {
     NSTimer *timer;
     int varificateTime;
@@ -26,24 +26,19 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwodTestField;
 @property (weak, nonatomic) IBOutlet UIButton *resetPwdBut;
 
-- (IBAction)gainVarificateButAction:(id)sender;
-- (IBAction)resetButAction:(id)sender;
-
 @end
 
-@implementation WSResetPasswordViewController
+@implementation WSForgetPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    [self initView];
+     [self initView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void)initView
 {
@@ -56,15 +51,6 @@
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)gainVarificateButAction:(id)sender
 {
@@ -82,6 +68,14 @@
     varificateTime = VARIFICATE_TIME;
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
     but.alpha = 0.7;
+    [self requestValidCode];
+}
+
+#pragma mark 请求验证吗
+- (void)requestValidCode
+{
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"type" : @"2"};
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetValidCode] data:dic tag:WSInterfaceTypeGetValidCode];
 }
 
 - (void)timeAction:(NSTimer *)time
@@ -103,7 +97,7 @@
 {
     BOOL flag = [self validData];
     if (flag) {
-        
+        [self requestForgetPassword];
     }
 }
 
@@ -133,5 +127,66 @@
     }
     return flag;
 }
+
+- (void)requestForgetPassword
+{
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password": [_passwodTestField.text encodeMD5_32_lowercase], @"validCode" : _varificateTextField.text, @"type" : @"1"};
+    [SVProgressHUD showWithStatus:@"正在重设……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeResetPassword] data:dic tag:WSInterfaceTypeResetPassword];
+}
+
+#pragma mark - ServiceDelegate
+- (void)requestSucess:(id)result tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                NSDictionary *data = [result valueForKey:@"data"];
+                NSString *code = [data valueForKey:@"code"];
+                DLog(@"验证码：%@", code);
+            }
+        }
+            break;
+        case WSInterfaceTypeResetPassword:
+        {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [SVProgressHUD showSuccessWithStatus:@"密码重设成功" duration:TOAST_VIEW_TIME];
+                [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(resetPasswordAfter) userInfo:nil repeats:NO];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)resetPasswordAfter
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)requestFail:(id)error tag:(int)tag
+{
+    switch (tag) {
+        case WSInterfaceTypeGetValidCode:
+        {
+            
+        }
+            break;
+        case WSInterfaceTypeResetPassword:
+        {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"密码重设失败！" duration:TOAST_VIEW_TIME];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 
 @end

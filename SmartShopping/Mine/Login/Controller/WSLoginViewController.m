@@ -8,7 +8,7 @@
 
 #import "WSLoginViewController.h"
 #import "WSRegisterViewController.h"
-#import "WSResetPasswordViewController.h"
+#import "WSForgetPasswordViewController.h"
 #import <ShareSDK/ShareSDK.h>
 #import <Parse/Parse.h>
 #import "WSUser.h"
@@ -152,8 +152,8 @@
 
 - (IBAction)forgetPasswordButAction:(id)sender
 {
-    WSResetPasswordViewController *resetPasswordVC = [[WSResetPasswordViewController alloc] init];
-    [self.navigationController pushViewController:resetPasswordVC animated:YES];
+    WSForgetPasswordViewController *forgetPasswordVC = [[WSForgetPasswordViewController alloc] init];
+    [self.navigationController pushViewController:forgetPasswordVC animated:YES];
 }
 
 #pragma mark - 第三方登陆
