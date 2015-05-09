@@ -41,6 +41,8 @@
     
     [self initTabbarViewController];
     
+    [[WSBMKUtil sharedInstance] startUserLocationService];
+    
     return YES;
 }
 

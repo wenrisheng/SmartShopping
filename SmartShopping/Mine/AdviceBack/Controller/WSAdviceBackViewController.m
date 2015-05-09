@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"意见返回";
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"意见反馈";
     [_textView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     [_commitBut setBorderCornerWithBorderWidth:1 borderColor:[UIColor clearColor] cornerRadius:5];
 }
@@ -50,6 +50,23 @@
         [SVProgressHUD showErrorWithStatus:@"请输入您的宝贵意见！" duration:TOAST_VIEW_TIME];
         return;
     }
-    
+    [SVProgressHUD showWithStatus:@"正在反馈……"];
+    NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeFeedBack] data:@{@"userId": userId, @"content": _textView.text} tag:WSInterfaceTypeFeedBack sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [SVProgressHUD showSuccessWithStatus:@"反馈成功！" duration:TOAST_VIEW_TIME];
+            [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(popVC) userInfo:nil repeats:NO];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"反馈失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
 }
+
+- (void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

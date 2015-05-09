@@ -10,4 +10,6 @@
 
 @interface WSInfoListViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSMutableArray *dataArray;
+
 @end

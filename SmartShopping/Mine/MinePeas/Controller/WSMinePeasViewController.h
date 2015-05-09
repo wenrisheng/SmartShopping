@@ -9,4 +9,6 @@
 
 @interface WSMinePeasViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSMutableArray *dataArray;
+
 @end

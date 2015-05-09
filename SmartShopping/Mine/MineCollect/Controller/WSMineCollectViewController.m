@@ -33,30 +33,44 @@
     [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSMineCollectCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSMineCollectCollectionViewCell"];
     
     [_contentCollectionView addHeaderWithCallback:^{
-        // 模拟延迟加载数据，因此2秒后才调用）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 结束刷新
-            [_contentCollectionView headerEndRefreshing];
-        });
-        
-        DLog(@"下拉刷新完成！");
+        [self requestMineCollect];
     }];
-    [_contentCollectionView addFooterWithCallback:^{
-        // 模拟延迟加载数据，因此2秒后才调用）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 结束刷新
-            [_contentCollectionView footerEndRefreshing];
-        });
-        
-        DLog(@"下拉刷新完成！");
-    }];
+//    [_contentCollectionView addFooterWithCallback:^{
+//        // 模拟延迟加载数据，因此2秒后才调用）
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            // 结束刷新
+//            [_contentCollectionView footerEndRefreshing];
+//        });
+//        
+//        DLog(@"下拉刷新完成！");
+//    }];
     dataArray = [[NSMutableArray alloc] init];
-    [dataArray addObjectsFromArray:@[@"", @"", @"", @""]];
+    [self requestMineCollect];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)requestMineCollect
+{
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyCollectList] data:@{@"uid": userId} tag:WSInterfaceTypeMyCollectList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [dataArray removeAllObjects];
+            NSArray *myCollectList = [result objectForKey:@"myCollectList"];
+            [dataArray addObjectsFromArray:myCollectList];
+            
+            [dataArray addObjectsFromArray:@[@"", @"", @""]];
+            [_contentCollectionView reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -73,7 +87,13 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     WSMineCollectCollectionViewCell *cell = (WSMineCollectCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSMineCollectCollectionViewCell" forIndexPath:indexPath];
-   
+    UISwipeGestureRecognizer *swipeGest = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestAction:)];
+    swipeGest.direction = UISwipeGestureRecognizerDirectionLeft;
+    [cell addGestureRecognizer:swipeGest];
+    NSInteger row = indexPath.row;
+    cell.tag = row;
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+   // [cell setModel:dic];
     return cell;
 }
 
@@ -107,6 +127,28 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+}
+
+#pragma mark - swipeGestAction
+- (void)swipeGestAction:(UISwipeGestureRecognizer *)swipeGest
+{
+    UIView *view = [swipeGest view];
+    NSInteger tag = view.tag;
+    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    NSString *goodsid = [dic objectForKey:@"goodsid"];
+    NSString *uid = [WSRunTime sharedWSRunTime].user._id;
+    [SVProgressHUD showWithStatus:@"正在删除……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:@{@"uid": uid, @"goodsid": goodsid} tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [dataArray removeObjectAtIndex:tag];
+            [_contentCollectionView reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"删除失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
+    DLog(@"tag:%d", (int)tag);
 }
 
 @end

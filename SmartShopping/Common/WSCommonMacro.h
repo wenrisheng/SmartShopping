@@ -11,6 +11,7 @@
 
 #define USER_KEY              @"USER_KEY"      // 保存登陆用户信息，用来做自动登录
 #define APP_PEAS_NUM          @"APP_PEAS_NUM"  // 本机保存的精明豆数量
+#define PAGE_SIZE             @"15"            // 每页请求条数
 
 // 百度地区ak
 //#define BMK_AK              @"DN1fArBETwGtWqS5DYz1Oe1n"

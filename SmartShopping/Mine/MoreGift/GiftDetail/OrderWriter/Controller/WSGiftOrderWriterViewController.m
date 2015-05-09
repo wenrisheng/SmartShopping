@@ -15,8 +15,11 @@
     NSString *temStr1;
     NSString *temStr2;
     NSString *curNum;
+    int maxNum;
+    int unitNum;
     WSOrderSucView *sucView;
     WSOrderFailView *failView;
+    BOOL canBuy;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -45,6 +48,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    canBuy = YES;
     curNum = @"1";
     [self initView];
     // 不可以减
@@ -59,10 +63,45 @@
 - (void)initView
 {
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"订单填写";
-    temStr1 = @"兑换后还剩";
-    temStr2 = @"个精明豆";
-    NSString *remainPea = @"100";
-    [self setRemainPeaValueWithRemainValue:remainPea];
+    NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[_gift objectForKey:@"logoPath"]];;
+    [_productImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    
+    _titleLabel.text = [_gift objectForKey:@"giftName"];
+    
+    // 礼品所需的精明豆
+    unitNum = [[_gift stringForKey:@"amount"] intValue];
+    _peaNumLabel.text = [NSString stringWithFormat:@"%d个精明豆", unitNum];
+
+    // 当前用户的精明豆
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    int currentPeaNum = [user.beanNumber intValue];
+    
+    // 精明豆足够
+    if (currentPeaNum >= unitNum) {
+        if (currentPeaNum >= 2 * unitNum) {
+            [self canAdd];
+        } else {
+            [self notAdd];
+        }
+       
+        temStr1 = @"兑换后还剩";
+        temStr2 = @"个精明豆";
+        maxNum = currentPeaNum / unitNum;
+        NSString *remainPea = [NSString stringWithFormat:@"%d", currentPeaNum - unitNum];
+        [self setRemainPeaValueWithRemainValue:remainPea];
+    
+    // 精明豆不够
+    } else {
+        canBuy = NO;
+        [self notAdd];
+        _remainPeaLabel.text = [NSString stringWithFormat:@"主任您的精明豆还差%d个", unitNum - currentPeaNum];
+        _remainPeaLabel.textColor = [UIColor colorWithRed:0.902 green:0.376 blue:0.129 alpha:1.000];
+        [self showFailView];
+    }
+    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", unitNum];
+   
     _telTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _telTextField.textAlignment = NSTextAlignmentRight;
     _addressTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -100,10 +139,12 @@
 {
     int curNumInt = [curNum intValue];
     int tem = curNumInt - 1;
+    if (tem <= 0) {
+        return;
+    }
     if (tem == 1) { // 不可以减
         [self notSub];
         // 可以加
-        [self canAdd];
         curNumInt = tem;
         curNum = [NSString stringWithFormat:@"%d", curNumInt];
         _numLabel.text = curNum;
@@ -111,10 +152,13 @@
         curNumInt--;
         curNum = [NSString stringWithFormat:@"%d", curNumInt];
         _numLabel.text = curNum;
-        [self canSub];
-        // 可以加
-        [self canAdd];
     }
+    if (curNumInt < maxNum) {
+        [self canAdd];
+    } else {
+        [self notAdd];
+    }
+    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", [curNum intValue] * unitNum];
 }
 
 #pragma mark 加精明豆
@@ -122,18 +166,12 @@
 {
     int curNumInt = [curNum intValue];
     int tem = curNumInt + 1;
-    int maxNum = 5;
+    if (tem > maxNum) {
+        [self showFailView];
+        return;
+    }
     if (tem == maxNum) { // 不可以加
-        if (!failView) {
-            failView = GET_XIB_FIRST_OBJECT(@"WSOrderFailView");
-            [failView.confirmBut addTarget:self action:@selector(dismissFailView) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.view addSubview:failView];
-        [failView expandToSuperView];
-        
         [self notAdd];
-        // 可以减
-        [self canSub];
         curNumInt = tem;
         curNum = [NSString stringWithFormat:@"%d", curNumInt];
         _numLabel.text = curNum;
@@ -141,46 +179,85 @@
         curNumInt++;
         curNum = [NSString stringWithFormat:@"%d", curNumInt];
         _numLabel.text = curNum;
-        [self canAdd];
-        [self canSub];
     }
+    if (curNumInt >= 2) {
+        [self canSub];
+    } else {
+          [self canSub];
+    }
+    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", [curNum intValue] * unitNum];
 }
 
 - (void)canSub
 {
-    _subBut.enabled = YES;
     [_subBut setBackgroundImage:[UIImage imageNamed:@"left-"] forState:UIControlStateNormal];
 }
 
 - (void)notSub
 {
-    _subBut.enabled = NO;
     [_subBut setBackgroundImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
 }
 
 - (void)canAdd
 {
-    _addBut.enabled = YES;
     [_addBut setBackgroundImage:[UIImage imageNamed:@"right"] forState:UIControlStateNormal];
 }
 
 - (void)notAdd
 {
-    _addBut.enabled = NO;
     [_addBut setBackgroundImage:[UIImage imageNamed:@"right-"] forState:UIControlStateNormal];
+}
+
+#pragma mark - 显示精明豆不够视图
+- (void)showFailView
+{
+    if (!failView) {
+        failView = GET_XIB_FIRST_OBJECT(@"WSOrderFailView");
+        [failView.confirmBut addTarget:self action:@selector(dismissFailView) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:failView];
+        [failView expandToSuperView];
+    }
+    failView.hidden = NO;
 }
 
 - (void)dismissFailView
 {
-    [failView removeFromSuperview];
+    
+    failView.hidden  = YES;
 }
 
 #pragma mark - 提交订单按钮事件
 - (IBAction)commitOrderButAction:(id)sender
 {
+    if (!canBuy) {
+        [SVProgressHUD showErrorWithStatus:@"亲，您的精明豆好像不够哦！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     BOOL flag = [self validateData];
     if (flag) {
-        [self commitOrderSuc];
+        NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:[_gift objectForKey:@"giftId"] forKey:@"giftId"];
+        [params setValue:[_gift objectForKey:@"giftType"] forKey:@"giftType"];
+        [params setValue:_telTextField.text forKey:@"contactNumber"];
+        [params setValue:_addressTextField.text forKey:@"deliveryAddress"];
+        [params setValue:_detailAddressTextView.text forKey:@"address"];
+        [params setValue:userId forKey:@"userId"];
+        [params setValue:[NSString stringWithFormat:@"%d", (int)curNum] forKey:@"buyNumber"];
+        [SVProgressHUD showWithStatus:@"正在提交……"];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeExchangeGift] data:params tag:WSInterfaceTypeExchangeGift sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                WSUser *user = [WSRunTime sharedWSRunTime].user;
+                int currentPeaNum = [user.beanNumber intValue];
+                int remainPeaNum = currentPeaNum - ([curNum intValue] * unitNum);
+                user.beanNumber = [NSString stringWithFormat:@"%d", remainPeaNum];
+                [self commitOrderSuc];
+            }
+        } failCallBack:^(id error) {
+            [SVProgressHUD dismissWithError:@"提交失败！" afterDelay:TOAST_VIEW_TIME];
+        }];
     }
 }
 
@@ -190,7 +267,9 @@
         sucView = GET_XIB_FIRST_OBJECT(@"WSOrderSucView");
         [sucView.confirmBut addTarget:self action:@selector(dismissSucView) forControlEvents:UIControlEventTouchUpInside];
     }
-    sucView.remainPeaLavel.text = @"您还有10个精明豆";
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    int currentPeaNum = [user.beanNumber intValue];
+    sucView.remainPeaLavel.text = [NSString stringWithFormat:@"您还有%d个精明豆", currentPeaNum];
     [self.view addSubview:sucView];
     [sucView expandToSuperView];
 }
@@ -204,26 +283,12 @@
 - (BOOL)validateData
 {
     float flag = YES;
-    if (_telTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:2.0];
-        flag = NO;
-        return flag;
-    }
-    if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
+    if (_telTextField.text.length > 0 && ![WSIdentifierValidator isValidPhone:_telTextField.text]) {
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:2.0];
         flag = NO;
         return flag;
     }
-    if (_addressTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请输入配送地址！" duration:2.0];
-        flag = NO;
-        return flag;
-    }
-    if (_detailAddressTextView.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请输入详细地址！" duration:2.0];
-        flag = NO;
-        return flag;
-    }
+
     return flag;
 }
 

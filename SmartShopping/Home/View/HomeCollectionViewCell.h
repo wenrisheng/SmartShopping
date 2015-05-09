@@ -16,10 +16,13 @@
 
 - (void)homeCollectionViewCellDidClickLeftBut:(HomeCollectionViewCell *)cell;
 - (void)homeCollectionViewCellDidClickRightBut:(HomeCollectionViewCell *)cell;
+- (void)homeCollectionViewCellDidClickDistanceBut:(HomeCollectionViewCell *)cell;
 
 @end
 
 @interface HomeCollectionViewCell : UICollectionViewCell
+
+- (void)setModel:(NSDictionary *)dic;
 
 @property (weak, nonatomic) id<HomeCollectionViewCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *conView;
@@ -31,5 +34,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftBut;
 @property (weak, nonatomic) IBOutlet UIButton *rightBut;
 @property (weak, nonatomic) IBOutlet UIButton *distanceBut;
+@property (weak, nonatomic) IBOutlet UIImageView *scanImageView;
 
 @end

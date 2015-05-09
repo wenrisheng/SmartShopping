@@ -10,6 +10,45 @@
 
 @implementation HomeCollectionViewCell
 
+- (void)setModel:(NSDictionary *)dic
+{
+    NSString *goodsScan = [dic stringForKey:@"goodsScan"];
+    if ([goodsScan isEqualToString:@"1"]) {
+        _scanImageView.hidden = NO;
+    } else {
+        _scanImageView.hidden = YES;
+    }
+    
+    NSString *goodsEndDate = [dic objectForKey:@"goodsEndDate"];
+    _validDateLabel.text = [NSString stringWithFormat:@"%@前有效", goodsEndDate];
+    
+    NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+    NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+    [_bigImageView sd_setImageWithURL:[NSURL URLWithString:goodsLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    NSString *shopLogo = [dic objectForKey:@"shopLogo"];
+    NSString *shopLogoURL = [WSInterfaceUtility getImageURLWithStr:shopLogo];
+    [_smallImageView sd_setImageWithURL:[NSURL URLWithString:shopLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    
+    NSString *shopName = [dic objectForKey:@"shopName"];
+    _addressLabel.text = shopName;
+    
+    NSString *distance = [dic stringForKey:@"distance"];
+    _distanceLabel.text = [NSString stringWithFormat:@"%@km", distance];
+    
+    NSString *isCollect = [dic stringForKey:@"isCollect"];
+    // 没有收藏  白色安心
+    if ([isCollect isEqualToString:@"1"]) {
+        [_leftBut setBackgroundImage:[UIImage imageNamed:@"colleation-011"] forState:UIControlStateNormal];
+    // 已收藏
+    } else {
+         [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
+    }
+}
+
 - (void)awakeFromNib
 {
     // Initialization code
@@ -33,6 +72,11 @@
 {
     if ([_delegate respondsToSelector:@selector(homeCollectionViewCellDidClickRightBut:)]) {
         [_delegate homeCollectionViewCellDidClickRightBut:self];
+    }
+}
+- (IBAction)distanceButAction:(id)sender {
+    if ([_delegate respondsToSelector:@selector(homeCollectionViewCellDidClickDistanceBut:)]) {
+        [_delegate homeCollectionViewCellDidClickDistanceBut:self];
     }
 }
 

@@ -30,8 +30,27 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeMyGiftList,                   // 我的兑换、消费券
     WSInterfaceTypeUserAgreeAbout,               // 用户协议、关于
     WSInterfaceTypeFeedBack,                     // 用户意见反馈
+    WSInterfaceTypeCollectGoods,                 //收藏商品
+    WSInterfaceTypeMyCollectList,                // 我的收藏列表
+    WSInterfaceTypeDeleteCollect,                //删除收藏
     WSInterfaceTypeGetAdsPhoto,                  // 首页广告轮播图片
     WSInterfaceTypeGetHomePageGoods,             // 首页附件精选
+    WSInterfaceTypeUserMessage,                  // 消息列表
+    WSInterfaceTypeuUpdateMessage,               // 更新用户消息是否已读
+    WSInterfaceTypeDelMessage,                   // 删除用户消息
+    WSInterfaceTypeGetGoodsDetails,              // 查询商品详情
+    WSInterfaceTypeGetAreaList,                  //区域筛选条件
+    WSInterfaceTypeGetShopTypeList,              //所有商店筛选条件
+    WSInterfaceTypeGetShopCategory,              //品类筛选条件
+    WSInterfaceTypeOutShopGoodsList,             // 店外查询接口
+    WSInterfaceTypeCheckMoreGoodsList,           // 查看更多
+    WSInterfaceTypeShopSignList,                 // 不在店内（列表）
+    WSInterfaceTypeEarnSignBean,                 // 签到获取精明豆
+    WSInterfaceTypeGoodsScanList,                // 扫描首页商品列表
+    WSInterfaceTypeInShopGoodsScanList,           // 店内扫描商品列表
+    WSInterfaceTypeEarnBeanByScanGoods,          // 扫描商品获得精明豆 
+//    WSInterfaceTypeCheckMoreGoodsList,            // 查看更多
+
 };
 
 
@@ -40,5 +59,7 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
 + (NSString *)getURLWithType:(WSInterfaceType)interfaceType;
 
 + (BOOL)validRequestResult:(NSDictionary *)dic;
+
++ (NSString *)getImageURLWithStr:(NSString *)str;
 
 @end

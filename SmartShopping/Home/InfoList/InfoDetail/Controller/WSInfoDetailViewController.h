@@ -10,6 +10,6 @@
 
 @interface WSInfoDetailViewController : WSServiceViewController
 
-@property (strong, nonatomic) NSString *url;
+@property (strong, nonatomic) NSDictionary *dic;
 
 @end

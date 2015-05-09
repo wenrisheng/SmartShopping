@@ -21,9 +21,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"消息详情";
-    NSURL *url =[NSURL URLWithString:_url];
-    NSURLRequest *request =[NSURLRequest requestWithURL:url];
-    [_webView loadRequest:request];
+    NSString *content= [_dic objectForKey:@"content"];
+    if (content.length > 0) {
+        [_webView loadHTMLString:content baseURL:[[NSBundle mainBundle] bundleURL]];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

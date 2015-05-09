@@ -10,6 +10,16 @@
 
 @implementation WSMineCollectCollectionViewCell
 
+- (void)setModel:(NSDictionary *)dic
+{
+    NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodlogo"]];
+    [_bigImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    NSString *enddate = [dic objectForKey:@"enddate"];
+    _validateDateLabel.text = [NSString stringWithFormat:@"%@前有效", enddate];
+}
+
 - (void)awakeFromNib
 {
     // Initialization code

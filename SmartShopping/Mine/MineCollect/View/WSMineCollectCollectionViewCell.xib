@@ -103,12 +103,20 @@
                                             <constraint firstAttribute="width" constant="12" id="n4N-w5-r6v"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tFe-Cb-T0q">
+                                        <rect key="frame" x="55" y="0.0" width="73" height="40"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ZLU-aA-ZCE" secondAttribute="trailing" id="1Ek-cQ-X6w"/>
                                     <constraint firstAttribute="trailing" secondItem="KsU-Ex-LKu" secondAttribute="trailing" constant="2" id="3tX-EM-sij"/>
                                     <constraint firstItem="KsU-Ex-LKu" firstAttribute="top" secondItem="c5R-q1-lk5" secondAttribute="top" id="4OV-Of-3sm"/>
+                                    <constraint firstAttribute="trailing" secondItem="tFe-Cb-T0q" secondAttribute="trailing" constant="2" id="ByZ-hJ-UgP"/>
+                                    <constraint firstItem="tFe-Cb-T0q" firstAttribute="leading" secondItem="vQL-hJ-hfw" secondAttribute="trailing" id="Ewy-hM-Fah"/>
                                     <constraint firstItem="vQL-hJ-hfw" firstAttribute="leading" secondItem="c5R-q1-lk5" secondAttribute="leading" id="G97-50-NRH"/>
                                     <constraint firstAttribute="bottom" secondItem="BPD-vH-R7w" secondAttribute="bottom" constant="2" id="GQ2-IV-HuC"/>
                                     <constraint firstItem="r47-Qb-w2H" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vQL-hJ-hfw" secondAttribute="trailing" constant="2" id="Ia6-Hz-3mm"/>
@@ -120,8 +128,10 @@
                                     <constraint firstItem="r47-Qb-w2H" firstAttribute="leading" relation="lessThanOrEqual" secondItem="vQL-hJ-hfw" secondAttribute="trailing" constant="21" id="Xk6-5T-f6O"/>
                                     <constraint firstItem="ZLU-aA-ZCE" firstAttribute="leading" secondItem="c5R-q1-lk5" secondAttribute="leading" id="aZL-Sg-KjR"/>
                                     <constraint firstAttribute="bottom" secondItem="r47-Qb-w2H" secondAttribute="bottom" constant="3" id="ayr-ac-xN6"/>
+                                    <constraint firstAttribute="bottom" secondItem="tFe-Cb-T0q" secondAttribute="bottom" id="bGT-KC-mI4"/>
                                     <constraint firstAttribute="height" constant="40" id="eZa-jG-akD"/>
                                     <constraint firstAttribute="trailing" secondItem="BPD-vH-R7w" secondAttribute="trailing" constant="2" id="pS1-bm-5tG"/>
+                                    <constraint firstItem="tFe-Cb-T0q" firstAttribute="top" secondItem="c5R-q1-lk5" secondAttribute="top" id="su6-uJ-dUM"/>
                                     <constraint firstItem="KsU-Ex-LKu" firstAttribute="leading" secondItem="vQL-hJ-hfw" secondAttribute="trailing" id="zpj-MC-yzU"/>
                                 </constraints>
                             </view>
@@ -151,11 +161,12 @@
                 <outlet property="addressLabel" destination="KsU-Ex-LKu" id="QdT-5M-YDP"/>
                 <outlet property="bigImageView" destination="uM7-nt-3vz" id="MWO-S8-qb0"/>
                 <outlet property="conView" destination="epR-DY-4hR" id="Yeo-9D-K0A"/>
+                <outlet property="distanceBut" destination="tFe-Cb-T0q" id="KPX-pM-3Vw"/>
                 <outlet property="distanceLabel" destination="BPD-vH-R7w" id="n8g-k7-eJn"/>
                 <outlet property="smallImageView" destination="vQL-hJ-hfw" id="7wM-ac-NUZ"/>
                 <outlet property="validateDateLabel" destination="iNu-Nv-ogW" id="3Pm-l1-7ds"/>
             </connections>
-            <point key="canvasLocation" x="122" y="223"/>
+            <point key="canvasLocation" x="122" y="213"/>
         </collectionViewCell>
     </objects>
     <resources>

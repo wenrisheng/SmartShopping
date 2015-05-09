@@ -10,4 +10,6 @@
 
 @interface WSGiftOrderWriterViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSDictionary *gift;
+
 @end

@@ -10,6 +10,9 @@
 
 @interface WSProductDetailViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *goodsNumber;
+@property (strong, nonatomic) NSString *goodsId;
+
 @property (strong, nonatomic) NSString *url;
 @property (assign, nonatomic) BOOL hasScan;
 

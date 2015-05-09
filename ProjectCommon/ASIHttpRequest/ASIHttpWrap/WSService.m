@@ -53,7 +53,80 @@
     DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
 #endif
     [request startAsynchronous];
+}
 
+- (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id))sucCallBack failCallBack:(void (^)(id))failCallBack
+{
+    NSURL *nsUrl = [NSURL URLWithString:url];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsUrl];
+    request.tag = tag;
+    [request setTimeOutSeconds:ASIHTTPWRAP_TIMEOUT_DEFAULT];
+    NSArray *allKeys = [dataDic allKeys];
+    
+    // 当入参value为nil时改为@""
+    for(id key in allKeys)
+    {
+        id value = [dataDic valueForKey:key];
+        value = value == nil ? @"" : value;
+        [request setPostValue:value forKey:(NSString *)key];
+    }
+    [request buildPostBody];
+    
+    // 调试 打印请求url及入参
+#ifdef DEBUG
+    NSString * str = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
+    DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
+#endif
+    
+    // 请求完成
+    [request setCompletionBlock:^{
+        NSData *responseData = [request responseData];
+        NSError *jsonError = nil;
+        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&jsonError];
+        
+        // 调试打印响应数据
+#ifdef DEBUG
+        NSError *requestError = request.error;
+        if (requestError) {
+            DLog(@"requstError:%@", requestError);
+        }
+        if (jsonError) {
+            DLog(@"JSON 解析失败:%@", jsonError);
+        }
+        NSArray *allKeys = [resultDic allKeys];
+        NSMutableString *resultStr = [[NSMutableString alloc] init];
+        [resultStr appendString:@"*********request result:\n"];
+        [resultStr appendString:@"{\n"];
+        for (id key in allKeys) {
+            [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
+        }
+        [resultStr appendString:@"}\n"];
+        [resultStr appendString:@"*********************\n"];
+        DLog(@"%@", resultStr);
+#endif
+        
+        // 成功回调
+        if (sucCallBack) {
+            sucCallBack(resultDic);
+        }
+    }];
+    
+    // 请求失败
+    [request setFailedBlock:^{
+        
+    // 调试 打印请求错误
+#ifdef  DEBUG
+        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+#endif
+        
+        // 请求错误回调
+        if (failCallBack) {
+            failCallBack(request.error);
+        }
+    }];
+    
+    // 开始异步请求
+    [request startAsynchronous];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request;
@@ -97,16 +170,16 @@
 - (void)requestFailed:(ASIHTTPRequest *)request;
 {
 #ifdef  DEBUG
-     NSLog(@"response result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+     NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
 #endif
     // 块回调
     if (_serviceFailCallBack) {
-        _serviceFailCallBack(nil);
+        _serviceFailCallBack(request.error);
     }
     
     // 代理回调
     if ([_delegate respondsToSelector:@selector(requestFail:tag:)]) {
-        [_delegate requestFail:nil tag:(int)request.tag];
+        [_delegate requestFail:request.error tag:(int)request.tag];
     }
 }
 

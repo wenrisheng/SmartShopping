@@ -36,8 +36,9 @@
     WSNoLoginView *noLoginView;
 }
 
+@property (strong, nonatomic) NSArray *giftList;
 @property (strong, nonatomic) NSString *appURL;
-
+@property (strong, nonatomic) NSString *city;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
 
@@ -59,44 +60,100 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-   
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
+    [self setLoginStatus];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+    [self requestSearchGift];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-     [self setLoginStatus];
-    [_contentTableView reloadData];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)requestSearchGift
+{
+#ifdef DEBUG
+    
+    self.city = @"广州";
+#endif
+    if (_city.length == 0) {
+        return;
+    }
+    
+    [SVProgressHUD showWithStatus:@"正在刷新……"];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:_city forKey:@"cityName"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSearchGift] data:param tag:WSInterfaceTypeSearchGift sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+         BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            self.giftList = [[result objectForKey:@"data"] objectForKey:@"giftList"];
+            [_contentTableView reloadData];
+        }
+    } failCallBack:^(id error) {
+         [SVProgressHUD dismissWithError:@"刷新失败!" afterDelay:TOAST_VIEW_TIME];
+    }];
+}
+
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
+{
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+}
+
+- (void)setLocationCity:(NSDictionary *)locationDic
+{
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        NSString *city = [locationDic objectForKey:LOCATION_CITY];
+        self.city = city;
+        if (_giftList.count == 0) {
+            [self requestSearchGift];
+        }
+    }
+}
+
+#pragma mark - 更新用户有没有登陆视图
 - (void)setLoginStatus
 {
-    UIView *loginStatusView = firstCell.loginStatusView;
-    if (loginStatusView) {
-        WSUser *user = [WSRunTime sharedWSRunTime].user;
-        [loginStatusView clearSubviews];
-        if (user) {
-            if (!loginedView) {
-                 loginedView = [WSLoginedView getView];
-                [loginedView.rightBut addTarget:self action:@selector(loginedRightButAction:) forControlEvents:UIControlEventTouchUpInside];
-                [loginedView.rightBut setEnlargeEdgeWithTop:20 right:20 bottom:20 left:50];
+    if (firstCell) {
+        UIView *loginStatusView = firstCell.loginStatusView;
+        if (loginStatusView) {
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            [loginStatusView clearSubviews];
+            if (user) {
+                if (!loginedView) {
+                    loginedView = [WSLoginedView getView];
+                    [loginedView.rightBut addTarget:self action:@selector(loginedRightButAction:) forControlEvents:UIControlEventTouchUpInside];
+                    [loginedView.rightBut setEnlargeEdgeWithTop:20 right:20 bottom:20 left:50];
+                }
+                if (user.logoPath.length > 0) {
+                    loginedView.loginedHeadImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:user.logoPath]]];
+                }
+                loginedView.nickNameLabel.text = user.nickname.length == 0 ? @"你还没有设置昵称哦！" : user.nickname;
+                loginedView.telLabel.text = user.phone;
+                [loginStatusView addSubview:loginedView];
+                [loginedView expandToSuperView];
+
+                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", user.beanNumber];
+                
+            } else {
+                if (!noLoginView) {
+                    noLoginView = [WSNoLoginView getView];
+                    [noLoginView.logigImmediately addTarget:self action:@selector(loginImmediateButAction:) forControlEvents:UIControlEventTouchUpInside];
+                }
+                [loginStatusView addSubview:noLoginView];
+                [noLoginView expandToSuperView];
+                int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%d豆", appPeasNum];
             }
-            if (user.logoPath.length > 0) {
-                loginedView.loginedHeadImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:user.logoPath]]];
-            }
-            loginedView.nickNameLabel.text = user.nickname.length == 0 ? @"你还没有设置昵称哦！" : user.nickname;
-            loginedView.telLabel.text = user.phone;
-            [loginStatusView addSubview:loginedView];
-            [loginedView expandToSuperView];
-            
-        } else {
-            if (!noLoginView) {
-                noLoginView = [WSNoLoginView getView];
-                [noLoginView.logigImmediately addTarget:self action:@selector(loginImmediateButAction:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            [loginStatusView addSubview:noLoginView];
-            [noLoginView expandToSuperView];
-            
         }
     }
 }
@@ -124,9 +181,9 @@
             if (!firstCell) {
                 firstCell = [WSMineFirstCell getCell];
                 firstCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                firstCell.delegate = self;
             }
-            firstCell.delegate = self;
-           // [self setLoginStatus];
+            [self setLoginStatus];
             return firstCell;
         }
             break;
@@ -138,10 +195,44 @@
             if (!cell) {
                 cell = [WSMineSecondCell getCell];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [cell.moreBut addTarget:self action:@selector(moreGiftButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.leftBut addTarget:self action:@selector(giftLeftButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.rightBut addTarget:self action:@selector(giftRightButAction:) forControlEvents:UIControlEventTouchUpInside];
             }
-            [cell.moreBut addTarget:self action:@selector(moreGiftButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.leftBut addTarget:self action:@selector(giftLeftButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.rightBut addTarget:self action:@selector(giftRightButAction:) forControlEvents:UIControlEventTouchUpInside];
+            cell.leftBut.enabled = NO;
+            NSString *leftImageURL = @"";
+            NSString *leftName = @"--";
+            NSString *leftPeaNum = @"";
+            if (_giftList.count > 0) {
+                NSDictionary *firstDic = [_giftList objectAtIndex:0];
+                leftImageURL = [WSInterfaceUtility getImageURLWithStr:[firstDic objectForKey:@"giftLogo"]];
+                leftName = [firstDic objectForKey:@"giftName"];
+                leftPeaNum = [firstDic stringForKey:@"requiredBean"];
+                cell.leftBut.enabled = YES;
+            }
+            [cell.leftImageView sd_setImageWithURL:[NSURL URLWithString:leftImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+            }];
+            cell.leftLabel.text = leftName;
+            cell.leftPeasLabel.text = leftPeaNum;
+            
+            cell.rightBut.enabled = NO;
+            NSString *rightImageURL = @"";
+            NSString *rightName = @"--";
+            NSString *rightPeaNum = @"";
+            if (_giftList.count > 1) {
+                NSDictionary *secondDic = [_giftList objectAtIndex:1];
+                rightImageURL = [WSInterfaceUtility getImageURLWithStr:[secondDic objectForKey:@"giftLogo"]];
+                rightName = [secondDic objectForKey:@"giftName"];
+                rightPeaNum = [secondDic stringForKey:@"requiredBean"];
+                cell.rightBut.enabled = YES;
+            }
+            [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:rightImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+            }];
+            cell.rightLabel.text = leftName;
+            cell.rightPeasLabel.text = leftPeaNum;
+            
             return cell;
         }
             break;
@@ -214,7 +305,7 @@
             WSLogoutCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = GET_XIB_FIRST_OBJECT(identify);
-                [cell.loginBut addTarget:self action:@selector(logoutButAction) forControlEvents:UIControlEventTouchUpInside];
+                [cell.logoutBut addTarget:self action:@selector(logoutButAction) forControlEvents:UIControlEventTouchUpInside];
             }
             return cell;
         }
@@ -273,6 +364,8 @@
     switch (user.loginType) {
         case UserLoginTypePhone:
         {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_KEY];
+            [WSRunTime sharedWSRunTime].user = nil;
             
         }
             break;
@@ -308,42 +401,54 @@
 #pragma mark 马上登录按钮事件
 - (void)loginImmediateButAction:(UIButton *)but
 {
-    WSLoginViewController *loginVC = [[WSLoginViewController alloc] init];
-    [self.navigationController pushViewController:loginVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        
+    }];
 }
 
 #pragma mark 我的精明豆按钮事件
 - (void)mineFirstCellMinePeasButAction:(UIButton *)but
 {
     WSMinePeasViewController *minePeasVC = [[WSMinePeasViewController alloc] init];
+    minePeasVC.dataArray = [NSMutableArray arrayWithArray:_giftList];
     [self.navigationController pushViewController:minePeasVC animated:YES];
 }
 
 #pragma mark 我的兑换按钮事件
 - (void)mineFirstCellMineConverButAction:(UIButton *)but
 {
-    WSMineConverViewController *mineConverVC = [[WSMineConverViewController alloc] init];
-    [self.navigationController pushViewController:mineConverVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        WSMineConverViewController *mineConverVC = [[WSMineConverViewController alloc] init];
+        [self.navigationController pushViewController:mineConverVC animated:YES];
+    }];
 }
 
 #pragma mark 我的消费卷按钮事件
 - (void)mineFirstCellMineConsumeButAction:(UIButton *)but
 {
-    WSMineConsumeViewController *mineConsumeVC = [[WSMineConsumeViewController alloc] init];
-    [self.navigationController pushViewController:mineConsumeVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        WSMineConsumeViewController *mineConsumeVC = [[WSMineConsumeViewController alloc] init];
+        [self.navigationController pushViewController:mineConsumeVC animated:YES];
+    }];
 }
 
 #pragma mark 我的收藏按钮事件
 - (void)mineFirstCellMineCollectButAction:(UIButton *)but
 {
-    WSMineCollectViewController *mineCollectVC = [[WSMineCollectViewController alloc] init];
-    [self.navigationController pushViewController:mineCollectVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        WSMineCollectViewController *mineCollectVC = [[WSMineCollectViewController alloc] init];
+        [self.navigationController pushViewController:mineCollectVC animated:YES];
+    }];
 }
 
 #pragma mark - 更多礼品按钮事件
 - (void)moreGiftButAction:(UIButton *)but
 {
     WSMoreGiftViewController *moreGiftVC = [[WSMoreGiftViewController alloc] init];
+    if (_giftList) {
+        NSMutableArray *temArray = [NSMutableArray arrayWithArray:_giftList];
+        moreGiftVC.dataArray = temArray;
+    }
     [self.navigationController pushViewController:moreGiftVC animated:YES];
 }
 
@@ -351,7 +456,8 @@
 - (void)giftLeftButAction:(UIButton *)but
 {
     WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
-    giftDetailVC.url = @"http://www.baidu.com";
+    NSDictionary *dic = [_giftList objectAtIndex:0];
+    giftDetailVC.giftId = [dic objectForKey:@"giftId"];
     [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
@@ -359,22 +465,27 @@
 - (void)giftRightButAction:(UIButton *)but
 {
     WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
-     giftDetailVC.url = @"http://www.baidu.com";
+    NSDictionary *dic = [_giftList objectAtIndex:1];
+    giftDetailVC.giftId = [dic objectForKey:@"giftId"];
     [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
 #pragma mark 更换手机号按钮事件
 - (void)changeTelButAction:(UIButton *)but
 {
-    WSUpdateTelViewController *updateTelVC = [[WSUpdateTelViewController alloc] init];
-    [self.navigationController pushViewController:updateTelVC animated:YES];
+     [WSUserUtil actionAfterLogin:^{
+        WSUpdateTelViewController *updateTelVC = [[WSUpdateTelViewController alloc] init];
+        [self.navigationController pushViewController:updateTelVC animated:YES];
+     }];
 }
 
 #pragma mark 密码修改按钮事件
 - (void)changePasswordButAction:(UIButton *)but
 {
-    WSResetPasswordViewController *resetPasswordVC = [[WSResetPasswordViewController alloc] init];
-    [self.navigationController pushViewController:resetPasswordVC animated:YES];
+     [WSUserUtil actionAfterLogin:^{
+        WSResetPasswordViewController *resetPasswordVC = [[WSResetPasswordViewController alloc] init];
+        [self.navigationController pushViewController:resetPasswordVC animated:YES];
+     }];
 }
 
 #pragma mark 关于按钮事件
@@ -388,8 +499,10 @@
 #pragma mark 意见反馈按钮事件
 - (void)adviceGiveButAction:(UIButton *)but
 {
-    WSAdviceBackViewController *adviceBackVC = [[WSAdviceBackViewController alloc] init];
-    [self.navigationController pushViewController:adviceBackVC animated:YES];
+     [WSUserUtil actionAfterLogin:^{
+        WSAdviceBackViewController *adviceBackVC = [[WSAdviceBackViewController alloc] init];
+        [self.navigationController pushViewController:adviceBackVC animated:YES];
+     }];
 }
 
 #pragma mark 推送设置按钮事件
@@ -465,7 +578,6 @@
             
         }
     }
-    
 }
 
 @end

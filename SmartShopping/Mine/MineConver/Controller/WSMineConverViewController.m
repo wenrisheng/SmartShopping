@@ -28,7 +28,23 @@
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的兑换";
     _contentTableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     dataArray = [[NSMutableArray alloc] init];
-    [dataArray addObjectsFromArray:@[@"", @"", @"", @""]];
+    NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:userId forKey:@"userId"];
+    [param setValue:@"1" forKey:@"giftType"];
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyGiftList] data:param tag:WSInterfaceTypeMyGiftList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *userGiftList = [[result objectForKey:@"data"] objectForKey:@"userGiftList"];
+            [dataArray addObjectsFromArray:userGiftList];
+            [_contentTableView reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
+   // [dataArray addObjectsFromArray:@[@"", @"", @"", @""]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +78,8 @@
     } else {
         cell.bottomSaperateView.hidden = YES;
     }
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    [cell setModel:dic];
     return cell;
 }
 

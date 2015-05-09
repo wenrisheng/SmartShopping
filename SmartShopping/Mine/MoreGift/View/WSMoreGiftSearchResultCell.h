@@ -8,18 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSMOREGIFTCELL_HEIGHT  172
+#define WSMOREGIFT_SEARCHRESULT_CELL_HEIGHT  172
 
-@interface WSMoreGiftCell : UITableViewCell
+@interface WSMoreGiftSearchResultCell : UITableViewCell
 
-- (void)setModel:(NSDictionary *)dic;
+- (void)setLeftModel:(NSDictionary *)dic;
+- (void)setRightModel:(NSDictionary *)dic;
 
 @property (weak, nonatomic) IBOutlet UIView *conView;
 @property (weak, nonatomic) IBOutlet UIView *leftProduct;
 @property (weak, nonatomic) IBOutlet UIView *rightProduct;
-
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UIButton *moreGiftBut;
 @property (weak, nonatomic) IBOutlet UIView *leftView;
 @property (weak, nonatomic) IBOutlet UIImageView *leftImageView;
 @property (weak, nonatomic) IBOutlet UILabel *leftLabel;

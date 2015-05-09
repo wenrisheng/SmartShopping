@@ -11,7 +11,7 @@
 @implementation WSLogoutCell
 
 - (void)awakeFromNib {
-    // Initialization code
+    [_logoutBut setBorderCornerWithBorderWidth:0 borderColor:[UIColor clearColor] cornerRadius:5];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

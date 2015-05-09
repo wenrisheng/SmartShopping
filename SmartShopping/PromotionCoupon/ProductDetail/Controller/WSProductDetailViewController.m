@@ -7,12 +7,15 @@
 //
 
 #import "WSProductDetailViewController.h"
+#import "CollectSucView.h"
+#import "WSScanProductViewController.h"
 
 @interface WSProductDetailViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet WSTabSlideManagerView *tabSlideManagerView;
+@property (strong, nonatomic) NSDictionary *goodsDetails;
 
 @end
 
@@ -23,12 +26,46 @@
     // Do any additional setup after loading the view from its nib.
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"商品详情";
+}
+
+- (void)requestProductDetail
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_goodsId.length > 0) {
+        [params setValue:_goodsId forKey:@"goodsId"];
+    }
+    if (_goodsNumber.length > 0) {
+        [params setValue:_goodsNumber forKey:@"goodsNumber"];
+    }
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            self.goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
+            [self initView];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
+}
+                
+- (void)initView
+{
     NSArray *titleArray = nil;
     NSArray *imageArray = nil;
-    if (_hasScan) {
+    NSString *Isscan = [_goodsDetails stringForKey:@"Isscan"];
+    // 可以扫描
+    if ([Isscan isEqualToString:@"1"]) {
+        _hasScan = YES;
         titleArray = @[@"收藏", @"扫描", @"分享"];
         imageArray = @[@"colleation-011", @"scanning", @"share"];
     } else {
+        _hasScan = NO;
         titleArray = @[@"收藏", @"分享"];
         imageArray = @[@"colleation-011", @"share"];
     }
@@ -43,9 +80,59 @@
     }
     _tabSlideManagerView.tabSlideGapTextView.titleSelectedColor = [UIColor colorWithWhite:0.427 alpha:1.000];
     [_tabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
-    NSURL *url =[NSURL URLWithString:_url];
+    _tabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
+        switch (index) {
+                //收藏
+            case 0:
+            {
+                WSUser *user = [WSRunTime sharedWSRunTime].user;
+                if (user) {
+                    NSDictionary *param = @{@"uid": user._id, @"goodsid": [_goodsDetails objectForKey:@"id"]};
+                    [SVProgressHUD show];
+                    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+                        [SVProgressHUD dismiss];
+                        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+                        if (flag) {
+                            [CollectSucView showCollectSucView];
+                        }
+                    } failCallBack:^(id error) {
+                        
+                    }];
+                } else {
+                    [WSUserUtil actionAfterLogin:^{
+                        
+                    }];
+                }
+            }
+                break;
+                // 扫描或分享
+            case 1:
+            {
+                // 扫描
+                if (_hasScan) {
+                    WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+                    [self.navigationController pushViewController:scanProductVC animated:YES];
+                // 分享
+                } else {
+                    
+                }
+            }
+                break;
+                //分享
+            case 2:
+            {
+                
+            }
+                break;
+            default:
+                break;
+        }
+    };
+    NSString *h5url  = [_goodsDetails objectForKey:@"h5url"];
+    NSURL *url =[NSURL URLWithString:h5url];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [_webView loadRequest:request];
+    
 }
 
 - (void)didReceiveMemoryWarning {

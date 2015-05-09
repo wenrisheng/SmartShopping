@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WSGainPeasViewController : UIViewController
+@interface WSGainPeasViewController : WSServiceViewController
 
 @end

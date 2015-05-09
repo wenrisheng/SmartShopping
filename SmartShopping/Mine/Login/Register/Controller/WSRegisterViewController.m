@@ -12,13 +12,11 @@
 
 #define VARIFICATE_TIME            60
 
-@interface WSRegisterViewController () <UITextFieldDelegate, WSNavigationBarButLabelViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
+@interface WSRegisterViewController () <UITextFieldDelegate, WSNavigationBarButLabelViewDelegate>
 {
     NSTimer *timer;
     int varificateTime;
     WSRegisterSucView *registerSucView;
-    BMKLocationService* _locService;
-    BMKGeoCodeSearch* _geocodesearch;
 }
 
 @property (strong, nonatomic) NSString *city;
@@ -54,9 +52,9 @@
     [super viewDidLoad];
     varificateTime = VARIFICATE_TIME;
     [self initView];
-    // 启动百度地区定位
-   // [self initBMK];
-
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,73 +71,35 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
     
-    //启动LocationService
-    [_locService startUserLocationService];
-    _locService.delegate = self;
-    _geocodesearch.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    //停止LocationService
-    [_locService stopUserLocationService];
-    _locService.delegate = nil;
-    _geocodesearch.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-- (void)initBMK
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
 {
-    // 地理位置反编码
-    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
-    
-    //设置定位精确度，默认：kCLLocationAccuracyBest
-    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
 }
 
-#pragma mark - BMKLocationServiceDelegate
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+- (void)setLocationCity:(NSDictionary *)locationDic
 {
-    [_locService stopUserLocationService];
-    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
-    CLLocationCoordinate2D pt = userLocation.location.coordinate;
-    _latitude = pt.latitude;
-    _longitude = pt.longitude;
-    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
-    reverseGeocodeSearchOption.reverseGeoPoint = pt;
-    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-    if(flag)
-    {
-        DLog(@"反geo检索发送成功");
-    } else {
-        DLog(@"反地理编码失败");
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        NSString *city = [locationDic objectForKey:LOCATION_CITY];
+       self.city = city;
+        DLog(@"定位：%@", city);
     }
 }
 
-- (void)didFailToLocateUserWithError:(NSError *)error
-{
-    DLog(@"定位失败！！！");
-    // [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:3];
-}
-
-#pragma mark - BMKGeoCodeSearchDelegate
-- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
-{
-    if (error == 0) {
-        BMKAddressComponent *addressCom = result.addressDetail;
-        self.city = addressCom.city;
-        DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
-    } else {
-        DLog(@"反地理编码失败");
-    }
-}
 
 #pragma mark - 初始化视图
 - (void)initView
@@ -206,9 +166,7 @@
 #pragma mark 请求注册
 - (void)requestRegister
 {
-    NSString *latitude = _city.length == 0 ? @"" : [NSString stringWithFormat:@"%f", _latitude];
-    NSString *longitude = _city.length == 0 ? @"" : [NSString stringWithFormat:@"%f", _longitude];
-    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : [_passwordTextField.text encodeMD5_32_lowercase], @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"lon" : longitude, @"lat" : latitude, @"cityName" : _city};
+    NSDictionary *dic = @{@"phone" : _telTextField.text, @"password" : [_passwordTextField.text encodeMD5_32_lowercase], @"byInviteCode" : _inviateTextField.text, @"validCode" : _varificateTextField.text, @"cityName" : _city};
      [SVProgressHUD showWithStatus:@"正在注册……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeRegister] data:dic tag:WSInterfaceTypeRegister];
 

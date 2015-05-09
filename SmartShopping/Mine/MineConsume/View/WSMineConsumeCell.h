@@ -12,6 +12,8 @@
 
 @interface WSMineConsumeCell : UITableViewCell
 
+- (void)setModel:(NSDictionary *)dic;
+
 @property (weak, nonatomic) IBOutlet UIView *leftView;
 @property (weak, nonatomic) IBOutlet UILabel *consumeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *consumeNumLabel;

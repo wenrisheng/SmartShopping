@@ -9,6 +9,8 @@
 #ifndef SmartShopping_WSCommonHeader_h
 #define SmartShopping_WSCommonHeader_h
 
+#import "AppDelegate.h"
+
 // 基项目库
 #import "WSBaseMacro.h"
 #import "WSBaseStatic.h"
@@ -22,5 +24,6 @@
 
 #import "WSProjUtil.h"
 #import "WSBMKUtil.h"
+#import "WSUserUtil.h"
 
 #endif

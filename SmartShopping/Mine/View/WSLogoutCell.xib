@@ -24,8 +24,9 @@
                     </button>
                 </subviews>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="loginBut" destination="ayp-MV-CjJ" id="Du7-ns-GdM"/>
+                <outlet property="logoutBut" destination="ayp-MV-CjJ" id="Vs6-n7-bPz"/>
             </connections>
             <point key="canvasLocation" x="155" y="199"/>
         </tableViewCell>

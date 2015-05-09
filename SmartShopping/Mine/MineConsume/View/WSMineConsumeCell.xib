@@ -118,6 +118,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="under.png" width="600" height="210"/>
+        <image name="under.png" width="580" height="400"/>
     </resources>
 </document>

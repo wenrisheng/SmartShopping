@@ -10,6 +10,6 @@
 
 @interface WSGiftDetailViewController : WSServiceViewController
 
-@property (strong, nonatomic) NSString *url;
+@property (strong, nonatomic) NSString *giftId;
 
 @end

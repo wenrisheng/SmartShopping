@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *mineConverBut;
 @property (weak, nonatomic) IBOutlet UIButton *mineConsumeBut;
 @property (weak, nonatomic) IBOutlet UIButton *mineCollectBut;
+@property (weak, nonatomic) IBOutlet UILabel *peaNumLabel;
 
 //我的精明豆
 - (IBAction)myPeasButAction:(id)sender;

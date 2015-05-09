@@ -10,6 +10,7 @@
 #import "WSScanNoInStoreCollectionViewCell.h"
 #import "WSScanNoInStoreReusableView.h"
 #import "WSHomeViewController.h"
+#import "WSAdvertisementDetailViewController.h"
 
 @interface WSScanNoInStoreViewController ()
 {
@@ -18,6 +19,7 @@
     NSMutableArray *slideImageArray;
 }
 
+@property (strong, nonatomic) NSString *city;
 @property (weak, nonatomic) IBOutlet UIView *tipView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -67,11 +69,70 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    if (_city.length != 0 && slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
+{
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+    if (slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
+}
+
+- (void)setLocationCity:(NSDictionary *)locationDic
+{
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        NSString *city = [locationDic objectForKey:LOCATION_CITY];
+        self.city = city;
+        DLog(@"定位：%@", city);
+    }
+}
+
+#pragma mark - 请求幻灯片
+- (void)requestGetAdsPhoto
+{
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"2"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [slideImageArray removeAllObjects];
+            NSArray *photoList = [[result objectForKey:@"data"] objectForKey:@"photoList"];
+            [slideImageArray addObjectsFromArray:photoList];
+            [_collectionView reloadData];
+        }
+    } failCallBack:^(id error) {
+        
+    }];
+}
+
+
 #pragma mark - 测试数据
 - (void)addTestData
 {
     [dataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-    [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
+   // [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
 }
 
 - (IBAction)backButAction:(id)sender
@@ -152,10 +213,22 @@
     if (indexPath.section == 0) {
         headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = headerView.acImageScrollManagaerView.acImageScrollView;
-        [imageScrollView setImageData:slideImageArray];
+        NSInteger imageCount = slideImageArray.count;
+        NSMutableArray *imageDataArray = [NSMutableArray array];
+        for (int i = 0; i < imageCount; i++) {
+            NSDictionary *dic = [slideImageArray objectAtIndex:i];
+            NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+            [imageDataArray addObject:imageURL];
+        }
+        [imageScrollView setImageData:imageDataArray];
         imageScrollView.callback = ^(int index) {
-            
+            DLog(@"广告：%d", index);
+            NSDictionary *dic = [slideImageArray objectAtIndex:index];
+            WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+            advertisementVC.url = [dic objectForKey:@"third_link"];
+            [self.navigationController pushViewController:advertisementVC animated:YES];
         };
+
         return headerView;
     } else {
         return nil;

@@ -248,7 +248,7 @@
     // 同步本地用户信息
     [self synchromUserData:user];
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
     if (_callBack) {
         _callBack();
     }

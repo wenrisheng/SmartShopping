@@ -12,6 +12,8 @@
 
 @interface WSMineCollectCollectionViewCell : UICollectionViewCell
 
+- (void)setModel:(NSDictionary *)dic;
+
 @property (weak, nonatomic) IBOutlet UIView *conView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *bigImageView;
@@ -19,5 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *smallImageView;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *distanceBut;
 
 @end

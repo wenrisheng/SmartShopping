@@ -38,6 +38,7 @@
 - (IBAction)gainVarificateButAction:(id)sender;
 - (IBAction)commitButAction:(id)sender;
 - (IBAction)birthdayButAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *commitBut;
 
 
 @end
@@ -70,6 +71,15 @@
     NSArray *array = @[_nicknameView, _emailView, _varificateView,_birdthDayView, _inviateView];
     for (UIView *view in array) {
         [view setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
+    }
+    [_commitBut setBorderCornerWithBorderWidth:1 borderColor:[UIColor clearColor] cornerRadius:5];
+    
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    _nicknameTextField.text = user.nickname;
+    _emailTextField.text = user.email;
+    _birdthDayTextField.text = user.birthday;
+    if ([user.sex isEqualToString:@"1"]) {
+        [self manButAction:nil];
     }
 }
 
@@ -146,6 +156,7 @@
 {
     NSString *userID = [WSRunTime sharedWSRunTime].user._id;
     int sex = 1;
+    // 女
     if (isLady) {
         sex = 0;
     }

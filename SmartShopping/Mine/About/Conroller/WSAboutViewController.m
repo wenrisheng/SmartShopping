@@ -11,7 +11,7 @@
 @interface WSAboutViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end
 
@@ -21,9 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"关于";
-    NSURL *url =[NSURL URLWithString:_url];
-    NSURLRequest *request =[NSURLRequest requestWithURL:url];
-    [_webView loadRequest:request];
+    [self requestUserProtocol];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,11 +29,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-#pragma mark - UIWebViewDelegate
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)requestUserProtocol
 {
-    [SVProgressHUD showErrorWithStatus:@"打开网页出错！" duration:TOAST_VIEW_TIME];
+    [SVProgressHUD showWithStatus:@"正在请求数据……"];
+    NSDictionary *dic = @{@"title" : @"关于"};
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserAgreeAbout] data:dic tag:WSInterfaceTypeUserAgreeAbout sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+         NSDictionary *data = [result objectForKey:@"data"];
+        NSString *memo = [[data objectForKey:@"agreeAbout"] objectForKey:@"memo"];
+        _label.text = memo;
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"请求失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
 }
 
 @end

@@ -11,8 +11,8 @@
 
 #define ASIHTTPWRAP_TIMEOUT_DEFAULT     10   //默认超时
 
-typedef void(^ServiceSucCallBack)(NSDictionary *result);
-typedef void(^ServiceFailCallBack)(NSDictionary *result);
+typedef void(^ServiceSucCallBack)(id result);
+typedef void(^ServiceFailCallBack)(id error);
 
 @protocol ServiceDelegate <NSObject>
 
@@ -31,5 +31,7 @@ typedef void(^ServiceFailCallBack)(NSDictionary *result);
 - (void)get:(NSString *)url tag:(int)tag;
 
 - (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag;
+
+- (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack;
 
 @end

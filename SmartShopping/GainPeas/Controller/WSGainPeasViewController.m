@@ -13,16 +13,17 @@
 #import "WSStoreDetailViewController.h"
 #import "WSScanNoInStoreViewController.h"
 #import "WSInviateFriendViewController.h"
+#import "WSAdvertisementDetailViewController.h"
 
 #define TITLE_HEIGHT    20.0   // 标题label高度
 #define IMAGE_WIDTH     30.0   // 导航条图片宽度
 
-@interface WSGainPeasViewController () <BMKLocationServiceDelegate>
+@interface WSGainPeasViewController ()
 {
-    BMKLocationService* _locService;
     NSMutableArray *slideImageArray;
 }
 
+@property (strong, nonatomic) NSString *city;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet ACImageScrollManagerView *imageSlideView;
 @property (weak, nonatomic) IBOutlet UIView *storeSignupView;
@@ -44,16 +45,6 @@
     slideImageArray = [[NSMutableArray alloc] init];
     
     [self initView];
-    
-    // 启动百度地区定位
-    [self initBMK];
-    
-    [self addTestData];
-    ACImageScrollView *imageScrollView = _imageSlideView.acImageScrollView;
-    [imageScrollView setImageData:slideImageArray];
-    imageScrollView.callback = ^(int index) {
-        DLog(@"点击图片");
-    };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,48 +55,90 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //启动LocationService
-    [_locService startUserLocationService];
-    _locService.delegate = self;
-//    _geocodesearch.delegate = self;
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    if (_city.length != 0 && slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
     
-    [self fitNavigationBar:@"50001111110000精明豆"];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+    [self fitNavigationBar];
 }
 
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    //停止LocationService
-    _locService.delegate = nil;
-//    _geocodesearch.delegate = nil;
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - 测试数据
-- (void)addTestData
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
 {
-    [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+    if (slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
 }
 
-- (void)initBMK
+- (void)setLocationCity:(NSDictionary *)locationDic
 {
-    // 地理位置反编码
-   // _geocodesearch = [[BMKGeoCodeSearch alloc]init];
-    
-    //设置定位精确度，默认：kCLLocationAccuracyBest
-    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:100.f];
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        NSString *city = [locationDic objectForKey:LOCATION_CITY];
+        self.city = city;
+        DLog(@"定位：%@", city);
+    }
+}
+
+#pragma mark - 请求幻灯片
+- (void)requestGetAdsPhoto
+{
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"2"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [slideImageArray removeAllObjects];
+            NSArray *photoList = [[result objectForKey:@"data"] objectForKey:@"photoList"];
+            [slideImageArray addObjectsFromArray:photoList];
+            NSInteger imageCount = slideImageArray.count;
+            NSMutableArray *imageDataArray = [NSMutableArray array];
+            for (int i = 0; i < imageCount; i++) {
+                NSDictionary *dic = [slideImageArray objectAtIndex:i];
+                NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+                [imageDataArray addObject:imageURL];
+            }
+            ACImageScrollView *imageScrollView = _imageSlideView.acImageScrollView;
+            [imageScrollView setImageData:imageDataArray];
+            imageScrollView.callback = ^(int index) {
+                DLog(@"广告：%d", index);
+                NSDictionary *dic = [slideImageArray objectAtIndex:index];
+                WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+                advertisementVC.url = [dic objectForKey:@"third_link"];
+                [self.navigationController pushViewController:advertisementVC animated:YES];
+            };
+
+        }
+    } failCallBack:^(id error) {
+        
+    }];
 }
 
 #pragma mark - 调整导航条标题位置
-- (void)fitNavigationBar:(NSString *)title
+- (void)fitNavigationBar
 {
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    NSString *peaNum = nil;
+    if (user) {
+        peaNum = user.beanNumber;
+    } else {
+        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+       peaNum = [NSString stringWithFormat:@"%d豆", appPeasNum];
+    }
+    NSString *title = [NSString stringWithFormat:@"%@精明豆", peaNum];
     WSNavigationBarCenterImageViewLabelView *barView = _navigationBarManagerView.navigationBarCenterImageViewLabelView;
     UILabel *titleLabel = barView.centerLabel;
     UIView *supView = titleLabel.superview;
@@ -153,29 +186,6 @@
     }
 }
 
-#pragma mark - BMKLocationServiceDelegate
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
-{
-    [_locService stopUserLocationService];
-    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
-    CLLocationCoordinate2D pt = userLocation.location.coordinate;
-//    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
-//    reverseGeocodeSearchOption.reverseGeoPoint = pt;
-//    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-//    if(flag)
-//    {
-//        DLog(@"反geo检索发送成功");
-//    }
-//    else
-//    {
-//        DLog(@"反地理编码失败");
-//    }
-}
-
-- (void)didFailToLocateUserWithError:(NSError *)error
-{
-    DLog(@"定位失败！！！");
-}
 
 #pragma mark - 到店签到
 - (IBAction)storeSignupButAction:(id)sender

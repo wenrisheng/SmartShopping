@@ -6,45 +6,34 @@
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
 
-#import "WSMoreGiftCell.h"
+#import "WSMoreGiftSearchResultCell.h"
 #import "WSMoreGiftViewController.h"
 
-@implementation WSMoreGiftCell
+@implementation WSMoreGiftSearchResultCell
 
-- (void)setModel:(NSDictionary *)dic
+- (void)setLeftModel:(NSDictionary *)dic;
 {
-    NSArray *dataArray = [dic objectForKey:CATEGORY_DATA_ARRAY];
-    NSString *title = [dic objectForKey:CATEGORY_TITLE];
-    _titleLabel.text = title;
-    
-    _leftBut.enabled = NO;
     NSString *leftImageURL = @"";
     NSString *leftName = @"--";
     NSString *leftPeaNum = @"";
-    if (dataArray.count > 0) {
-        NSDictionary *firstDic = [dataArray objectAtIndex:0];
-        leftImageURL = [WSInterfaceUtility getImageURLWithStr:[firstDic objectForKey:@"giftLogo"]];
-        leftName = [firstDic objectForKey:@"giftName"];
-        leftPeaNum = [firstDic stringForKey:@"requiredBean"];
-        _leftBut.enabled = YES;
-    }
+    leftImageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"giftLogo"]];
+    leftName = [dic objectForKey:@"giftName"];
+    leftPeaNum = [dic stringForKey:@"requiredBean"];
     [_leftImageView sd_setImageWithURL:[NSURL URLWithString:leftImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
     _leftLabel.text = leftName;
     _leftPeaLabel.text = leftPeaNum;
-    
-    _rightBut.enabled = NO;
+}
+
+- (void)setRightModel:(NSDictionary *)dic
+{
     NSString *rightImageURL = @"";
     NSString *rightName = @"--";
     NSString *rightPeaNum = @"";
-    if (dataArray.count > 1) {
-        NSDictionary *secondDic = [dataArray objectAtIndex:1];
-        rightImageURL = [WSInterfaceUtility getImageURLWithStr:[secondDic objectForKey:@"giftLogo"]];
-        rightName = [secondDic objectForKey:@"giftName"];
-        rightPeaNum = [secondDic stringForKey:@"requiredBean"];
-        _rightBut.enabled = YES;
-    }
+    rightImageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"giftLogo"]];
+    rightName = [dic objectForKey:@"giftName"];
+    rightPeaNum = [dic stringForKey:@"requiredBean"];
     [_rightImageView sd_setImageWithURL:[NSURL URLWithString:rightImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];

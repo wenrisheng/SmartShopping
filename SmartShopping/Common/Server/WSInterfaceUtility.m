@@ -88,6 +88,21 @@
             return [NSString stringWithFormat:@"%@/app/userAgreeAbout.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeCollectGoods:
+        {
+            return [NSString stringWithFormat:@"%@/app/collectGoods.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeMyCollectList:
+        {
+            return [NSString stringWithFormat:@"%@/app/myCollectList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeDeleteCollect:
+        {
+            return [NSString stringWithFormat:@"%@/app/deleteCollect.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeFeedBack:
         {
             return [NSString stringWithFormat:@"%@/app/feedBack.do", BASE_URL];
@@ -103,19 +118,79 @@
             return [NSString stringWithFormat:@"%@/app/getHomePageGoods.do", BASE_URL];
         }
             break;
-//        case WSInterfaceTypeLogin:
+        case WSInterfaceTypeUserMessage:
+        {
+            return [NSString stringWithFormat:@"%@/app/userMessage.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeuUpdateMessage:
+        {
+            return [NSString stringWithFormat:@"%@/app/updateMessage.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeDelMessage:
+        {
+            return [NSString stringWithFormat:@"%@/app/delMessage.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetGoodsDetails:
+        {
+            return [NSString stringWithFormat:@"%@/appgetGoodsDetails.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetAreaList:
+        {
+            return [NSString stringWithFormat:@"%@/app/getAreaList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetShopTypeList:
+        {
+            return [NSString stringWithFormat:@"%@/app/getShopTypeList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetShopCategory:
+        {
+            return [NSString stringWithFormat:@"%@/app/getShopCategory.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeOutShopGoodsList:
+        {
+            return [NSString stringWithFormat:@"%@/app/outShopGoodsList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeShopSignList:
+        {
+            return [NSString stringWithFormat:@"%@/app/shopSignList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeEarnSignBean:
+        {
+            return [NSString stringWithFormat:@"%@/app/earnSignBean.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGoodsScanList:
+        {
+             return [NSString stringWithFormat:@"%@/app/goodsScanList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeInShopGoodsScanList:
+        {
+            return [NSString stringWithFormat:@"%@/app/inShopGoodsScanList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeEarnBeanByScanGoods:
+        {
+            return [NSString stringWithFormat:@"%@/app/earnBeanByScanGoods.do", BASE_URL];
+        }
+            break;
+//        case WSInterfaceTypeGoodsScanList:
 //        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
+//            return [NSString stringWithFormat:@"%@/app/goodsScanList.do", BASE_URL];
 //        }
 //            break;
-//        case WSInterfaceTypeLogin:
+//        case WSInterfaceTypeGoodsScanList:
 //        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
-//        }
-//            break;
-//        case WSInterfaceTypeLogin:
-//        {
-//            return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
+//            return [NSString stringWithFormat:@"%@/app/goodsScanList.do", BASE_URL];
 //        }
 //            break;
         default:
@@ -155,6 +230,11 @@
     DLog(@"请求错误结果状态描述：%@", statusDesc);
 #endif
     return flag;
+}
+
++ (NSString *)getImageURLWithStr:(NSString *)str
+{
+    return [NSString stringWithFormat:@"%@/%@", BASE_URL, str];
 }
 
 @end

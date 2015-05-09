@@ -7,9 +7,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSAboutViewController">
             <connections>
+                <outlet property="label" destination="EAd-dl-9Uo" id="fOL-ZW-vY7"/>
                 <outlet property="navigationBarManagerView" destination="IAc-AS-4jl" id="dBW-AL-Q6d"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="webView" destination="Src-Dy-Q9e" id="o01-AI-Yxx"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,25 +24,53 @@
                         <constraint firstAttribute="height" constant="64" id="QmS-G3-NT2"/>
                     </constraints>
                 </view>
-                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Src-Dy-Q9e">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="II0-pf-FnI">
                     <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="jSv-mu-yQv"/>
-                    </connections>
-                </webView>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPY-ra-7JO">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAd-dl-9Uo">
+                                    <rect key="frame" x="10" y="10" width="300" height="19.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" red="0.44705882352941179" green="0.45098039215686275" blue="0.45490196078431372" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="centerX" secondItem="EAd-dl-9Uo" secondAttribute="centerX" id="1Ce-NX-xjB"/>
+                                <constraint firstAttribute="bottom" secondItem="EAd-dl-9Uo" secondAttribute="bottom" priority="250" constant="124" id="1gH-r2-jvd"/>
+                                <constraint firstAttribute="height" priority="250" constant="416" id="5qb-hs-gJ5"/>
+                                <constraint firstAttribute="width" constant="320" id="V9g-MH-s5z"/>
+                                <constraint firstAttribute="trailing" secondItem="EAd-dl-9Uo" secondAttribute="trailing" constant="10" id="Xb1-RR-fK2"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="416" id="ayd-if-0GH"/>
+                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="top" secondItem="cPY-ra-7JO" secondAttribute="top" constant="10" id="ceK-Om-LgV"/>
+                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="leading" secondItem="cPY-ra-7JO" secondAttribute="leading" constant="10" id="nJS-v7-5I5"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.72941176470588232" green="0.72941176470588232" blue="0.72941176470588232" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="cPY-ra-7JO" firstAttribute="leading" secondItem="II0-pf-FnI" secondAttribute="leading" id="5WT-V2-gw4"/>
+                        <constraint firstAttribute="bottom" secondItem="cPY-ra-7JO" secondAttribute="bottom" id="KcN-ei-c49"/>
+                        <constraint firstItem="cPY-ra-7JO" firstAttribute="top" secondItem="II0-pf-FnI" secondAttribute="top" id="UEE-H4-oCB"/>
+                        <constraint firstAttribute="trailing" secondItem="cPY-ra-7JO" secondAttribute="trailing" id="wyY-aq-Bl5"/>
+                    </constraints>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Src-Dy-Q9e" firstAttribute="top" secondItem="IAc-AS-4jl" secondAttribute="bottom" id="5bi-18-Lmp"/>
+                <constraint firstAttribute="trailing" secondItem="II0-pf-FnI" secondAttribute="trailing" id="7eb-bj-63K"/>
                 <constraint firstItem="IAc-AS-4jl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ccp-tb-Y3B"/>
-                <constraint firstAttribute="trailing" secondItem="Src-Dy-Q9e" secondAttribute="trailing" id="H8e-ER-LIR"/>
-                <constraint firstAttribute="bottom" secondItem="Src-Dy-Q9e" secondAttribute="bottom" id="J0i-5i-ePj"/>
-                <constraint firstItem="Src-Dy-Q9e" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NqJ-lH-Mxc"/>
                 <constraint firstItem="IAc-AS-4jl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="P1k-Rh-2KW"/>
+                <constraint firstItem="II0-pf-FnI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TKv-j5-VKn"/>
+                <constraint firstAttribute="bottom" secondItem="II0-pf-FnI" secondAttribute="bottom" id="ZYm-Wm-59O"/>
                 <constraint firstAttribute="trailing" secondItem="IAc-AS-4jl" secondAttribute="trailing" id="s6A-Zh-m2A"/>
+                <constraint firstItem="II0-pf-FnI" firstAttribute="top" secondItem="IAc-AS-4jl" secondAttribute="bottom" id="uMC-Jv-ri9"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-26" y="78"/>
         </view>
     </objects>
 </document>

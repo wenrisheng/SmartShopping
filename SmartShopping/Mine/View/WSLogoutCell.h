@@ -12,6 +12,7 @@
 
 @interface WSLogoutCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIButton *loginBut;
+@property (weak, nonatomic) IBOutlet UIButton *logoutBut;
+
 
 @end

@@ -21,6 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _naviagationBarManagerView.navigationBarButLabelView.label.text = @"广告详情";
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
 }
 
 - (void)didReceiveMemoryWarning {

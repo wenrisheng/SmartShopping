@@ -16,12 +16,10 @@
 #import "WSDoubleTableView.h"
 
 
-@interface WSPromotionCouponViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NavigationBarButSearchButViewDelegate, HomeCollectionViewCellDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
+@interface WSPromotionCouponViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NavigationBarButSearchButViewDelegate, HomeCollectionViewCellDelegate>
 {
     NSMutableArray *inStoreDataArray;
     NSMutableArray *outStoreDataArray;
-    BMKLocationService* _locService;
-    BMKGeoCodeSearch* _geocodesearch;
     BOOL isInStore;
     
     WSDoubleTableView *doubleTableView;
@@ -51,9 +49,6 @@
     // Do any additional setup after loading the view from its nib.
     inStoreDataArray = [[NSMutableArray alloc] init];
     outStoreDataArray = [[NSMutableArray alloc] init];
-
-    // 启动百度地区定位
-    [self initBMK];
     
     // 初始化视图
     [self initView];
@@ -69,39 +64,36 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    _locService.delegate = nil;
-    _geocodesearch.delegate = nil;
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //启动LocationService
-    [_locService startUserLocationService];
-    _locService.delegate = self;
-    _geocodesearch.delegate = self;
-    if (isInStore) {
-        [self toInStoreStatus:@"沃尔玛"];
-    } else {
-        [self toOutStoreStatus];
-    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - 初始化百度地图
-- (void)initBMK
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
 {
-    // 地理位置反编码
-    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
-    
-    //设置定位精确度，默认：kCLLocationAccuracyBest
-    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+}
+
+- (void)setLocationCity:(NSDictionary *)locationDic
+{
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        NSString *city = [locationDic objectForKey:LOCATION_CITY];
+        _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
+        DLog(@"定位：%@", city);
+    }
 }
 
 #pragma mark - 初始化视图
@@ -114,6 +106,8 @@
     
     // tab 切换按钮
     isInStore = NO;
+    _inStoreTabSlideMnagerView.hidden = YES;
+    _outStoreTabSlideManagerView.hidden = NO;
     _outStoreTabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
     _outStoreTabSlideManagerView.tabSlideGapTextView.selectedImage = @"arrow-click";
     _outStoreTabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
@@ -206,46 +200,6 @@
 //    } else {
 //        [self toInStoreStatus:@"沃尔玛"];
 //    }
-}
-
-#pragma mark - BMKLocationServiceDelegate
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
-{
-    [_locService stopUserLocationService];
-    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
-    CLLocationCoordinate2D pt = userLocation.location.coordinate;
-    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
-    reverseGeocodeSearchOption.reverseGeoPoint = pt;
-    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-    if(flag)
-    {
-        DLog(@"反geo检索发送成功");
-    }
-    else
-    {
-        DLog(@"反地理编码失败");
-    }
-    
-   // [self toInStoreStatus:@"沃尔玛"];
-}
-
-- (void)didFailToLocateUserWithError:(NSError *)error
-{
-    [_locService stopUserLocationService];
-    DLog(@"定位失败！！！");
-}
-
-#pragma mark - BMKGeoCodeSearchDelegate
-- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
-{
-    
-    if (error == 0) {
-        BMKAddressComponent *addressCom = result.addressDetail;
-        _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = addressCom.city;
-        DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
-    } else {
-        DLog(@"反地理编码失败");
-    }
 }
 
 #pragma mark - 切换在不在店内的状态

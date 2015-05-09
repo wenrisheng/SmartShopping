@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="birdthDayTextField" destination="PO5-du-GUl" id="6dC-Uw-eKN"/>
                 <outlet property="birdthDayView" destination="Kci-bC-E89" id="3Bf-WF-0Dl"/>
+                <outlet property="commitBut" destination="0bb-ui-m9s" id="NeJ-1L-skH"/>
                 <outlet property="emailTextField" destination="MTC-MO-iSk" id="PsT-0c-h2O"/>
                 <outlet property="emailView" destination="oA8-y0-Cgn" id="YSC-ji-l3W"/>
                 <outlet property="gainVarificateBut" destination="P53-nU-l7i" id="agN-u5-m3f"/>

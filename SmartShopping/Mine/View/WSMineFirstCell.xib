@@ -283,6 +283,7 @@
                 <outlet property="mineCollectBut" destination="iyc-FD-9bT" id="whJ-G0-jau"/>
                 <outlet property="mineConsumeBut" destination="xp5-Fj-V2L" id="cHa-gT-2yH"/>
                 <outlet property="mineConverBut" destination="cr5-fk-OrJ" id="4Tz-bt-b1C"/>
+                <outlet property="peaNumLabel" destination="Vur-6m-QE8" id="ILw-Ou-uPv"/>
             </connections>
             <point key="canvasLocation" x="353" y="180"/>
         </tableViewCell>

@@ -20,16 +20,31 @@
 #import "WSScanNoInStoreViewController.h"
 #import "WSInviateFriendViewController.h"
 #import "WSSearchHistoryViewController.h"
+#import "CollectSucView.h"
 
-@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, BMKLocationServiceDelegate, BMKGeoCodeSearchDelegate>
+typedef NS_ENUM(NSInteger, ShopType)
 {
-    NSMutableArray *collectionViewDataArray;
+    ShopTypeSuperMarket = 0,
+    ShopTypeBaihuoFuzhuang
+};
+
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+{
+    NSMutableArray *superMarketDataArray;
+    NSMutableArray *baihuoFuzhuangDataArray;
     NSMutableArray *slideImageArray;
-    
-    BMKLocationService* _locService;
-    BMKGeoCodeSearch* _geocodesearch;
     HomeHeaderCollectionReusableView *headerView;
+    ShopType shopType;
+    int supermarketCurPage;
+    BOOL supermarketToEndPage;
+    int baihuoCurPage;
+    BOOL baihuoToEndPage;
 }
+
+@property (strong, nonatomic) NSArray *messages;
+@property (strong, nonatomic) NSString *city;
+@property (assign, nonatomic) double longtide;
+@property (assign, nonatomic) double latitude;
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -45,12 +60,17 @@
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
     _navBarManagerView.navigationBarButSearchButView.leftLabel.text = @"--";
     _navBarManagerView.navigationBarButSearchButView.leftBut.enabled = NO;
+    // 没有登录时隐藏消息数量
+    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
     
-    collectionViewDataArray = [[NSMutableArray alloc] init];
+    superMarketDataArray = [[NSMutableArray alloc] init];
+    baihuoFuzhuangDataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
-    
-    // 启动百度地区定位
-    [self initBMK];
+    shopType = ShopTypeSuperMarket;
+    supermarketCurPage = 0;
+    supermarketToEndPage = NO;
+    baihuoCurPage = 0;
+    baihuoToEndPage = NO;
     
     // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
@@ -76,23 +96,9 @@
         DLog(@"下拉刷新完成！");
     }];
     
-    [self addTestData];
-}
-
-- (void)initBMK
-{
-    // 地理位置反编码
-    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
-    
-    //设置定位精确度，默认：kCLLocationAccuracyBest
-    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
    
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -102,68 +108,175 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    //启动LocationService
-    [_locService startUserLocationService];
-    _locService.delegate = self;
-    _geocodesearch.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
+    // 没有幻灯片时请求幻灯片数据
+    if (_city.length != 0 && slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
+    
+    if (_city.length != 0) {
+        // 页面没有数据时请求数据
+        [self requestData];
+    }
+    
+    // 请求消息列表
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead CONTAINS %@", @"2"];
+                NSArray *temp = [_messages filteredArrayUsingPredicate:predicate];
+                NSInteger count= temp.count;
+                if (count == 0) {
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
+                } else {
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.text = [NSString stringWithFormat:@"%d", (int)count];
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = NO;
+                }
+            }
+        } failCallBack:^(id error) {
+            
+        }];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    //停止LocationService
-    //[_locService stopUserLocationService];
-    _locService.delegate = nil;
-    _geocodesearch.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - 测试数据
-- (void)addTestData
+
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
 {
-    [collectionViewDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-    [slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+    
+    
 }
 
-#pragma mark - BMKLocationServiceDelegate
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+- (void)setLocationCity:(NSDictionary *)locationDic
 {
-     [SVProgressHUD dismiss];
-     [_locService stopUserLocationService];
-    DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
-    CLLocationCoordinate2D pt = userLocation.location.coordinate;
-    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
-    reverseGeocodeSearchOption.reverseGeoPoint = pt;
-    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-    if(flag)
-    {
-       
-        DLog(@"反geo检索发送成功");
+    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    if (deoCodeFalg == 0) {
+        self.city = [locationDic objectForKey:LOCATION_CITY];
+        self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
+        self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
+        _navBarManagerView.navigationBarButSearchButView.leftLabel.text = _city;
+        DLog(@"定位：%@", _city);
+        
+        // 幻灯片
+        if (slideImageArray.count == 0) {
+            [self requestGetAdsPhoto];
+        }
+        
+        // 页面没有数据时请求数据
+        [self requestData];
     }
-    else
-    {
-         DLog(@"反地理编码失败");
+}
+
+- (void)requestGetHomePageGoos
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:_city forKey:@"cityName"];
+    [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lon"];
+    [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lat"];
+    [params setValue:PAGE_SIZE forKey:@"pageSize"];
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            [params setValue:[NSString stringWithFormat:@"%d", supermarketCurPage + 1] forKey:@"pages"];
+            [params setValue:@"1" forKey:@"shopType"];
+        }
+            break;
+         case ShopTypeBaihuoFuzhuang:
+        {
+            [params setValue:[NSString stringWithFormat:@"%d", baihuoCurPage + 1] forKey:@"pages"];
+            [params setValue:@"2" forKey:@"shopType"];
+        }
+            break;
+        default:
+            break;
     }
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        float flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            switch (shopType) {
+                case ShopTypeSuperMarket:
+                {
+                    //  刷新时清楚以前数据
+                    if (supermarketCurPage == 0) {
+                        [superMarketDataArray removeAllObjects];
+                    }
+                    NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
+                    [superMarketDataArray addObjectsFromArray:array];
+                }
+                    break;
+                case ShopTypeBaihuoFuzhuang:
+                {
+                    
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
 }
 
-- (void)didFailToLocateUserWithError:(NSError *)error
+#pragma mark - 请求幻灯片
+- (void)requestGetAdsPhoto
 {
-    [_locService stopUserLocationService];
-    DLog(@"定位失败！！！");
-   // [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:3];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"1"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [slideImageArray removeAllObjects];
+            NSArray *photoList = [[result objectForKey:@"data"] objectForKey:@"photoList"];
+            [slideImageArray addObjectsFromArray:photoList];
+            [_collectionView reloadData];
+        }
+    } failCallBack:^(id error) {
+        
+    }];
 }
 
-#pragma mark - BMKGeoCodeSearchDelegate
-- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+#pragma mark 页面没有数据时请求数据
+- (void)requestData
 {
-   
-    if (error == 0) {
-        BMKAddressComponent *addressCom = result.addressDetail;
-        _navBarManagerView.navigationBarButSearchButView.leftLabel.text = addressCom.city;
-        DLog(@"%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
-    } else {
-       // [SVProgressHUD showErrorWithStatus:@"地理编码解析失败！" duration:3];
-        DLog(@"反地理编码失败");
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            if (superMarketDataArray.count == 0) {
+                [self requestGetHomePageGoos];
+            }
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            if (baihuoFuzhuangDataArray.count == 0) {
+                [self requestGetHomePageGoos];
+            }
+        }
+            break;
+        default:
+            break;
     }
 }
 
@@ -175,8 +288,12 @@
 
 - (void)navigationBarRightButClick:(UIButton *)but
 {
-    WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
-    [self.navigationController pushViewController:infoListVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
+        NSMutableArray *tempArray = [NSMutableArray arrayWithArray:_messages];
+        infoListVC.dataArray = tempArray;
+        [self.navigationController pushViewController:infoListVC animated:YES];
+    }];
 }
 
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
@@ -204,23 +321,60 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return collectionViewDataArray.count;
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            if (superMarketDataArray.count == 0) {
+               // return 1;
+            }
+            return superMarketDataArray.count;
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            if (baihuoFuzhuangDataArray.count == 0) {
+             //   return 1;
+            }
+            return baihuoFuzhuangDataArray.count;
+        }
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSArray *array = nil;
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            if (superMarketDataArray.count == 0) {
+//                return cell;
+            }
+            array = superMarketDataArray;
+            
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            if (baihuoFuzhuangDataArray.count == 0) {
+                
+            }
+            array = baihuoFuzhuangDataArray;
+            
+        }
+            break;
+        default:
+            break;
+    }
     NSInteger row = indexPath.row;
     HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
-    cell.validDateLabel.text = [NSString stringWithFormat:@"%d,%d", (int)indexPath.section, (int)indexPath.row];
-    cell.distanceBut.tag = row;
-    [cell.distanceBut addTarget:self action:@selector(distanceButAction:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.bigImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
-    [cell.smallImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042g"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
+    cell.tag = row;
     cell.delegate = self;
+    NSDictionary *dic = [array objectAtIndex:row];
+    [cell setModel:dic];
     return cell;
 }
 
@@ -265,11 +419,19 @@
     if (indexPath.section == 0) {
         headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
-        [imageScrollView setImageData:slideImageArray];
+        NSInteger imageCount = slideImageArray.count;
+        NSMutableArray *imageDataArray = [NSMutableArray array];
+        for (int i = 0; i < imageCount; i++) {
+            NSDictionary *dic = [slideImageArray objectAtIndex:i];
+            NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+            [imageDataArray addObject:imageURL];
+        }
+        [imageScrollView setImageData:imageDataArray];
         imageScrollView.callback = ^(int index) {
             DLog(@"广告：%d", index);
+            NSDictionary *dic = [slideImageArray objectAtIndex:index];
             WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
-            advertisementVC.url = @"http://www.baidu.com";
+            advertisementVC.url = [dic objectForKey:@"third_link"];
             [self.navigationController pushViewController:advertisementVC animated:YES];
         };
         [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -292,26 +454,45 @@
     [self.navigationController pushViewController:productDetailVC animated:YES];
 }
 
-#pragma mark -  距离按钮事件
-- (void)distanceButAction:(UIButton *)but
-{
-    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
-    [self.navigationController pushViewController:locationDetailVC animated:YES];
-}
 
 #pragma mark - HomeCollectionViewCellDelegate
-//收藏
+#pragma mark 收藏
 - (void)homeCollectionViewCellDidClickLeftBut:(HomeCollectionViewCell *)cell
 {
-    NSInteger tag = cell.tag;
-    DLog(@"收藏：%d", (int)tag);
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        NSInteger tag = cell.tag;
+        NSDictionary *dic = [superMarketDataArray objectAtIndex:tag];
+        NSDictionary *param = @{@"uid": user._id, @"goodsid": [dic objectForKey:@"goodsid"]};
+        [SVProgressHUD show];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [CollectSucView showCollectSucView];
+            }
+        } failCallBack:^(id error) {
+            
+        }];
+    } else {
+        [WSUserUtil actionAfterLogin:^{
+            
+        }];
+    }
 }
 
-//分享
+#pragma mark 分享
 - (void)homeCollectionViewCellDidClickRightBut:(HomeCollectionViewCell *)cell
 {
     NSInteger tag = cell.tag;
     DLog(@"分享：%d", (int)tag);
+}
+
+#pragma mark 距离按钮
+- (void)homeCollectionViewCellDidClickDistanceBut:(HomeCollectionViewCell *)cell
+{
+    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+    [self.navigationController pushViewController:locationDetailVC animated:YES];
 }
 
 #pragma mark - SlideSwitchViewDelegate
@@ -380,22 +561,11 @@
 - (void)typeSegmentControlAction:(UISegmentedControl *)segmentedControl
 {
     NSInteger index = segmentedControl.selectedSegmentIndex;
-    switch (index) {
-        //超市
-        case 0:
-        {
-            DLog(@"超市");
-        }
-            break;
-        //百货服装
-        case 1:
-        {
-          DLog(@"百货服装");
-        }
-            break;
-        default:
-            break;
+    shopType = index;
+    if (_city.length != 0) {
+        [self requestData];
     }
+    [_collectionView reloadData];
 }
 
 #pragma mark - BMKMapViewDelegate

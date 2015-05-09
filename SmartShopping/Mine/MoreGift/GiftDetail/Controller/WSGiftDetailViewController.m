@@ -11,6 +11,7 @@
 
 @interface WSGiftDetailViewController () <UIWebViewDelegate>
 
+@property (strong, nonatomic) NSDictionary *gift;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
@@ -20,19 +21,43 @@
 
 @implementation WSGiftDetailViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"礼品详情";
-    NSURL *url =[NSURL URLWithString:_url];
-    NSURLRequest *request =[NSURLRequest requestWithURL:url];
-    [_webView loadRequest:request];
+    [SVProgressHUD showWithStatus:REQUESTING_TIP];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGiftDetails] data:@{@"giftId": _giftId} tag:WSInterfaceTypeGetGiftDetails sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            self.gift = [[result objectForKey:@"data"] objectForKey:@"gift"];
+            NSString *giftDetails = [_gift objectForKey:@"giftDetails"];
+            NSURL *baseURL =[[NSBundle mainBundle] bundleURL];
+            [_webView loadHTMLString:giftDetails baseURL:baseURL];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:REQUEST_FAIL_TIP afterDelay:TOAST_VIEW_TIME];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+//- (NSString *)converHtmlWithImageURL:(NSString *)imageURL detail:(NSString *)detail
+//{
+//    NSString *imageDIV = [NSString stringWithFormat:@"<div><img src=\"%@\" /></div>", imageURL];
+//    NSRange range = [detail rangeOfString:@"<body>"];
+//    NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"%@", detail];
+//    if (range.location == NSNotFound) {
+//        [result insertString:imageDIV atIndex:0];
+//    } else {
+//        [result insertString:imageDIV atIndex:range.location + range.length];
+//    }
+//    return result;
+//}
 
 
 #pragma mark - UIWebViewDelegate
@@ -43,8 +68,15 @@
 
 - (IBAction)converButAction:(id)sender
 {
-    WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
-    [self.navigationController pushViewController:orderWriterVC animated:YES];
+    if (_gift) {
+        [WSUserUtil actionAfterLogin:^{
+            WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
+            orderWriterVC.gift = self.gift;
+            [self.navigationController pushViewController:orderWriterVC animated:YES];
+        }];
+    } else {
+        [SVProgressHUD showErrorWithStatus:@"数据加载错误！" duration:TOAST_VIEW_TIME];
+    }
 }
 
 @end

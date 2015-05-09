@@ -16,6 +16,17 @@
     return [array firstObject];
 }
 
+- (void)setModel:(NSDictionary *)dic
+{
+    NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"logoPath"]];
+    _leftImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]]];
+    
+    _giftNumLabel.text = [NSString stringWithFormat:@"礼品编号：%@", [dic stringForKey:@"giftNumber"]];
+    _nameLabel.text = [dic objectForKey:@"giftName"];
+    _numLabel.text = [dic stringForKey:@"beanNumber"];
+    _timeLabel.text = [dic objectForKey:@"exchangeTime"];
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }

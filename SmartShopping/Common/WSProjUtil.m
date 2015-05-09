@@ -15,4 +15,10 @@
     return [WSBaseUtil getRandomNumber:1 to:4];
 }
 
++ (UINavigationController *)getRootNav
+{
+    AppDelegate *appDelegate = APP_DELEGATE;
+    return appDelegate.nav;
+}
+
 @end

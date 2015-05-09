@@ -16,6 +16,12 @@
     return [array firstObject];
 }
 
+- (void)setModel:(NSDictionary *)dic
+{
+    _contentLabel.text = [dic objectForKey:@"title"];
+    _timeLabel.text = [dic objectForKey:@"time"];
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }

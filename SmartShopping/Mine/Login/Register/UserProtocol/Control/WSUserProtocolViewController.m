@@ -29,7 +29,7 @@
 - (void)requestUserProtocol
 {
     [SVProgressHUD showWithStatus:@"正在请求数据……"];
-    NSDictionary *dic = @{@"title" : @"协议"};
+    NSDictionary *dic = @{@"title" : @"用户协议"};
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserAgreeAbout] data:dic tag:WSInterfaceTypeUserAgreeAbout];
 }
 
@@ -56,7 +56,8 @@
     BOOL flag = [WSInterfaceUtility validRequestResult:result];
     if (flag) {
         NSDictionary *data = [result objectForKey:@"data"];
-        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]]];
+        NSString *htmlStr = [[data objectForKey:@"agreeAbout"] objectForKey:@"memo"];
+        [self.webView loadHTMLString:htmlStr baseURL:[[NSBundle mainBundle] bundleURL]];
     }
 }
 

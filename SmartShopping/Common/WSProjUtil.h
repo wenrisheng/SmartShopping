@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface WSProjUtil : NSObject
 
 + (int)gerRandomColor;
+
++ (UINavigationController *)getRootNav;
 
 @end

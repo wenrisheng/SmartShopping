@@ -9,12 +9,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMinePeasViewController">
             <connections>
                 <outlet property="inviateFriendView" destination="u3Y-3H-rlG" id="vpi-c3-xox"/>
+                <outlet property="leftBut" destination="Ng8-Kx-B5N" id="Gp4-cd-7JY"/>
                 <outlet property="leftImageView" destination="uOC-pl-kaH" id="kNg-Ov-aQU"/>
                 <outlet property="leftPeasNumLabel" destination="lno-7i-I2y" id="v27-g2-XDq"/>
                 <outlet property="leftProductView" destination="xYz-TE-b2c" id="mTy-7a-VqR"/>
                 <outlet property="leftlabel" destination="MJO-h7-DGb" id="IdK-dP-9c3"/>
                 <outlet property="navigationBarManagerView" destination="VKY-GC-zNd" id="xbh-ex-5Rd"/>
                 <outlet property="peasLabel" destination="VRz-qU-rqq" id="3BK-gf-2w6"/>
+                <outlet property="rightBut" destination="g6r-nV-AFs" id="BQ0-5B-hzo"/>
                 <outlet property="rightImageView" destination="uRD-p2-aFG" id="WSc-Pa-vCk"/>
                 <outlet property="rightLabel" destination="o8n-LI-BQ9" id="VdF-jT-KOx"/>
                 <outlet property="rightPeasNumLabel" destination="v0O-Nt-bnY" id="2tp-Yf-Ijz"/>

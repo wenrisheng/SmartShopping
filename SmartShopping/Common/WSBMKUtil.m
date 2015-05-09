@@ -28,6 +28,9 @@
     self = [super init];
     if (self) {
         _locationDic = [[NSMutableDictionary alloc] init];
+        [_locationDic setValue:[NSNumber numberWithInt:1] forKey:LOCATION_FLAG];
+        [_locationDic setValue:[NSNumber numberWithInt:1] forKey:DEO_CODE_FLAG];
+        
         // 地理位置反编码
         _geocodesearch = [[BMKGeoCodeSearch alloc]init];
         
@@ -74,6 +77,7 @@
         [_locationDic setValue:[NSNumber numberWithDouble:latitude] forKey:LOCATION_LATITUDE];
         [_locationDic setValue:[NSNumber numberWithDouble:longitude] forKey:LOCATION_LONGITUDE];
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATE_NOTIFICATION object:_locationDic userInfo:nil];
         _reverseGeocodeSearchOption.reverseGeoPoint = pt;
         BOOL flag = [_geocodesearch reverseGeoCode:_reverseGeocodeSearchOption];
         if(flag) {
@@ -111,6 +115,7 @@
         [_locationDic setValue:addressCom.streetName forKey:LOCATION_STREET];
         [_locationDic setValue:addressCom.streetNumber forKey:LOCATION_STREET_NUMBER];
         DLog(@"当前用户位置：%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GEO_CODE_SUCCESS_NOTIFICATION object:_locationDic userInfo:nil];
     } else {
         [_locationDic setValue:[NSNumber numberWithInt:1] forKey:DEO_CODE_FLAG];
         DLog(@"反地理编码失败");
