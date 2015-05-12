@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #define DOUBLE_TABLE_TITLE                  @"double_table_title"
-#define DOUBLE_TABLE_SELECTED_FLAG          @"double_table_selected_flag"    // 0 选中 1 没选中
+#define DOUBLE_TABLE_SELECTED_FLAG          @"double_table_selected_flag"    // @"0" 选中 @"1" 没选中
 
 typedef void(^DoubleTableFCallBack)(NSInteger idnex);
 typedef void(^DoubleTableSCallBack)(NSInteger idnex);
@@ -30,5 +30,9 @@ typedef void(^DoubleTableSCallBack)(NSInteger idnex);
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *tableF;
 @property (weak, nonatomic) IBOutlet UITableView *tableS;
+@property (weak, nonatomic) IBOutlet UIImageView *indicateImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewTopCon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightCon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *indicateImageViewCenterXCon;
 
 @end

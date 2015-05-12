@@ -110,11 +110,16 @@
         [_locationDic setValue:[NSNumber numberWithInt:0] forKey:DEO_CODE_FLAG];
         BMKAddressComponent *addressCom = result.addressDetail;
         [_locationDic setValue:addressCom.province forKey:LOCATION_PROVINCE];
-        [_locationDic setValue:addressCom.city forKey:LOCATION_CITY];
+        NSString *city = addressCom.city;
+        NSString *shi = @"市";
+        if ([city containsString:shi]) {
+            city = [city substringToIndex:city.length - shi.length];
+        }
+        [_locationDic setValue:city forKey:LOCATION_CITY];
         [_locationDic setValue:addressCom.district forKey:LOCATION_DISTRICT];
         [_locationDic setValue:addressCom.streetName forKey:LOCATION_STREET];
         [_locationDic setValue:addressCom.streetNumber forKey:LOCATION_STREET_NUMBER];
-        DLog(@"当前用户位置：%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
+        DLog(@"WSBMKUTIL 当前用户位置：%@%@%@%@%@", addressCom.province, addressCom.city, addressCom.district, addressCom.streetName, addressCom.streetNumber);
         [[NSNotificationCenter defaultCenter] postNotificationName:GEO_CODE_SUCCESS_NOTIFICATION object:_locationDic userInfo:nil];
     } else {
         [_locationDic setValue:[NSNumber numberWithInt:1] forKey:DEO_CODE_FLAG];

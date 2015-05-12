@@ -78,22 +78,27 @@ typedef NS_ENUM(NSInteger, ShopType)
     
 
     [_collectionView addHeaderWithCallback:^{
-    // 模拟延迟加载数据，因此2秒后才调用）
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // 结束刷新
-        [_collectionView headerEndRefreshing];
-    });
+        switch (shopType) {
+            case ShopTypeSuperMarket:
+            {
+                supermarketCurPage = 0;
+                 [self requestGetHomePageGoos];
+            }
+                break;
+            case ShopTypeBaihuoFuzhuang:
+            {
+                baihuoCurPage = 0;
+                [self requestGetHomePageGoos];
+            }
+                break;
+            default:
+                break;
+        }
 
     DLog(@"下拉刷新完成！");
     }];
     [_collectionView addFooterWithCallback:^{
-        // 模拟延迟加载数据，因此2秒后才调用）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 结束刷新
-            [_collectionView footerEndRefreshing];
-        });
-        
-        DLog(@"下拉刷新完成！");
+        [self requestGetHomePageGoos];
     }];
     
    
@@ -108,13 +113,14 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(locationUpdate:)
-                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+
     // 没有幻灯片时请求幻灯片数据
     if (_city.length != 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
@@ -146,6 +152,10 @@ typedef NS_ENUM(NSInteger, ShopType)
             
         }];
     }
+    
+    if (headerView) {
+        headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -166,30 +176,31 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    if (deoCodeFalg == 0) {
-        self.city = [locationDic objectForKey:LOCATION_CITY];
-        self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
-        self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-        _navBarManagerView.navigationBarButSearchButView.leftLabel.text = _city;
-        DLog(@"定位：%@", _city);
-        
+    //int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    //if (deoCodeFalg == 0) {
+    self.city = [locationDic objectForKey:LOCATION_CITY];
+    self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
+    self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
+    _navBarManagerView.navigationBarButSearchButView.leftLabel.text = _city;
+    DLog(@"定位：%@", _city);
+    if (_city.length > 0) {
         // 幻灯片
-        if (slideImageArray.count == 0) {
+        if (self.city.length > 0 && slideImageArray.count == 0) {
             [self requestGetAdsPhoto];
         }
         
         // 页面没有数据时请求数据
         [self requestData];
     }
+  //  }
 }
 
 - (void)requestGetHomePageGoos
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:_city forKey:@"cityName"];
-    [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lon"];
-    [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lat"];
+    [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
+    [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lon"];
     [params setValue:PAGE_SIZE forKey:@"pageSize"];
     switch (shopType) {
         case ShopTypeSuperMarket:
@@ -213,6 +224,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     [SVProgressHUD showWithStatus:@"加载中……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
+        [_collectionView headerEndRefreshing];
+        [_collectionView footerEndRefreshing];
         [SVProgressHUD dismiss];
         float flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -223,20 +236,41 @@ typedef NS_ENUM(NSInteger, ShopType)
                     if (supermarketCurPage == 0) {
                         [superMarketDataArray removeAllObjects];
                     }
+                    supermarketCurPage ++;
                     NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
-                    [superMarketDataArray addObjectsFromArray:array];
+                    NSInteger count = array.count;
+                    for (int i = 0; i < count; i++) {
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                        [dic setDictionary:[array objectAtIndex:i]];
+                        [superMarketDataArray addObject:dic];
+                    }
+                  
                 }
                     break;
                 case ShopTypeBaihuoFuzhuang:
                 {
-                    
+                    //  刷新时清楚以前数据
+                    if (baihuoCurPage == 0) {
+                        [baihuoFuzhuangDataArray removeAllObjects];
+                    }
+                    baihuoCurPage++;
+                    NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
+                    NSInteger count = array.count;
+                    for (int i = 0; i < count; i++) {
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                        [dic setDictionary:[array objectAtIndex:i]];
+                        [baihuoFuzhuangDataArray addObject:dic];
+                    }
                 }
                     break;
                 default:
                     break;
             }
+            [_collectionView reloadData];
         }
     } failCallBack:^(id error) {
+        [_collectionView headerEndRefreshing];
+        [_collectionView footerEndRefreshing];
         [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
     }];
 }
@@ -437,7 +471,8 @@ typedef NS_ENUM(NSInteger, ShopType)
         [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
         [headerView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-        [headerView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:) forControlEvents:UIControlEventValueChanged];
+        headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
         headerView.tag = indexPath.row;
         return headerView;
     } else {
@@ -449,8 +484,26 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
-    productDetailVC.hasScan = YES;
-    productDetailVC.url = @"http://www.baidu.com";
+    NSArray *dataArray = nil;
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            dataArray = superMarketDataArray;
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            dataArray = baihuoFuzhuangDataArray;
+        }
+            break;
+        default:
+            break;
+    }
+    NSInteger row = indexPath.row;
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsId = [dic stringForKey:@"goodsId"];
+    productDetailVC.goodsId = goodsId;
+    productDetailVC.shopId = [dic stringForKey:@"shopId"];
     [self.navigationController pushViewController:productDetailVC animated:YES];
 }
 
@@ -462,21 +515,66 @@ typedef NS_ENUM(NSInteger, ShopType)
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
         NSInteger tag = cell.tag;
-        NSDictionary *dic = [superMarketDataArray objectAtIndex:tag];
-        NSDictionary *param = @{@"uid": user._id, @"goodsid": [dic objectForKey:@"goodsid"]};
-        [SVProgressHUD show];
-        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-            [SVProgressHUD dismiss];
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-            if (flag) {
-                [CollectSucView showCollectSucView];
+        NSArray *dataArray = nil;
+        switch (shopType) {
+            case ShopTypeSuperMarket:
+            {
+                dataArray = superMarketDataArray;
             }
-        } failCallBack:^(id error) {
-            
-        }];
+                break;
+            case ShopTypeBaihuoFuzhuang:
+            {
+                dataArray = baihuoFuzhuangDataArray;
+            }
+                break;
+            default:
+                break;
+        }
+
+        NSMutableDictionary *dic = [dataArray objectAtIndex:tag];
+        NSString *isCollect = [dic stringForKey:@"isCollect"];
+        
+        // 没有收藏  白色安心
+        if ([isCollect isEqualToString:@"N"])
+        {
+            NSString *goodsid = [dic stringForKey:@"goodsId"];
+            NSString *shopId = [dic stringForKey:@"shopId"];
+            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
+            [SVProgressHUD show];
+            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+                [SVProgressHUD dismiss];
+                BOOL flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    [dic setValue:@"Y" forKey:@"isCollect"];
+                    [_collectionView reloadData];
+                    [CollectSucView showCollectSucView];
+                }
+            } failCallBack:^(id error) {
+                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
+            }];
+
+        // 已收藏
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
+        }
     } else {
         [WSUserUtil actionAfterLogin:^{
-            
+            switch (shopType) {
+                case ShopTypeSuperMarket:
+                {
+                    supermarketCurPage = 0;
+                    [self requestGetHomePageGoos];
+                }
+                    break;
+                case ShopTypeBaihuoFuzhuang:
+                {
+                    baihuoCurPage = 0;
+                    [self requestGetHomePageGoos];
+                }
+                    break;
+                default:
+                    break;
+            }
         }];
     }
 }
@@ -486,6 +584,37 @@ typedef NS_ENUM(NSInteger, ShopType)
 {
     NSInteger tag = cell.tag;
     DLog(@"分享：%d", (int)tag);
+    NSArray *dataArray = nil;
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            dataArray = superMarketDataArray;
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            dataArray = baihuoFuzhuangDataArray;
+        }
+            break;
+        default:
+            break;
+    }
+    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    NSString *title = [dic objectForKey:@"goodsName"];
+    NSString *conent = [dic objectForKey:@"shopName"];
+    NSString *url = @"http://www.baidu.com";
+    NSString *description = title;
+    NSString *imagePath = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
+    [WSShareSDKUtil shareWithTitle:title content:conent description:description url:url imagePath:imagePath thumbImagePath:imagePath result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                if (state == SSResponseStateSuccess)
+                                {
+                                    DLog(@"分享成功");
+                                }
+                                else if (state == SSResponseStateFail)
+                                {
+                                    DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
+                                }
+    }];
 }
 
 #pragma mark 距离按钮
@@ -557,15 +686,53 @@ typedef NS_ENUM(NSInteger, ShopType)
     [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
 }
 
-#pragma mark 
+#pragma mark - 超市、百货服装切换
 - (void)typeSegmentControlAction:(UISegmentedControl *)segmentedControl
 {
     NSInteger index = segmentedControl.selectedSegmentIndex;
     shopType = index;
-    if (_city.length != 0) {
-        [self requestData];
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            if (superMarketDataArray.count == 0) {
+                [self requestGetHomePageGoos];
+            }
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            if (baihuoFuzhuangDataArray.count == 0) {
+                [self requestGetHomePageGoos];
+            }
+        }
+            break;
+        default:
+            break;
     }
     [_collectionView reloadData];
+    [_collectionView addHeaderWithCallback:^{
+        switch (shopType) {
+            case ShopTypeSuperMarket:
+            {
+                supermarketCurPage = 0;
+                [self requestGetHomePageGoos];
+            }
+                break;
+            case ShopTypeBaihuoFuzhuang:
+            {
+                baihuoCurPage = 0;
+                [self requestGetHomePageGoos];
+            }
+                break;
+            default:
+                break;
+        }
+        
+        DLog(@"下拉刷新完成！");
+    }];
+    [_collectionView addFooterWithCallback:^{
+        [self requestGetHomePageGoos];
+    }];
 }
 
 #pragma mark - BMKMapViewDelegate

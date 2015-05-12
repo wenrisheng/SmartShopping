@@ -122,8 +122,9 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    if (deoCodeFalg == 0) {
+//    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+//    if (deoCodeFalg == 0) {
+    DLog(@"city:%@", _city);
         NSString *city = [locationDic objectForKey:LOCATION_CITY];
         self.city = city;
         if (dataArray.count == 0) {
@@ -140,7 +141,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
                     break;
             }
         }
-    }
+//    }
 }
 
 - (void)initView
@@ -303,6 +304,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         iteview.label.text = [BeanScope objectForKey:@"beanScope"];
         [_searchParam setValue:[BeanScope objectForKey:@"beforeBean"] forKey:@"beforeBean"];
         [_searchParam setValue:[BeanScope objectForKey:@"afterBean"] forKey:@"afterBean"];
+        [_searchParam setValue:_city forKey:@"cityName"];
         viewType = MoreGiftViewTypeFilterView;
         [self requestSearchGift:_searchParam];
         doubleTableView.hidden = YES;
@@ -339,6 +341,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         WSTabSlideGapTextItemView *iteview = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1];
         iteview.label.text = [GiftCategory objectForKey:@"giftCategoryName"];
         [_searchParam setValue:[GiftCategory objectForKey:@"giftType"] forKey:@"categoryId"];
+        [_searchParam setValue:_city forKey:@"cityName"];
         viewType = MoreGiftViewTypeFilterView;
         [self requestSearchGift:_searchParam];
         doubleTableView.hidden = YES;
@@ -351,6 +354,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         return doubleTableView;
     } else {
         doubleTableView = GET_XIB_FIRST_OBJECT(@"WSDoubleTableView");
+        doubleTableView.topViewHeightCon = 0;
         doubleTableView.bgView.backgroundColor = [UIColor clearColor];
         doubleTableView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:doubleTableView];

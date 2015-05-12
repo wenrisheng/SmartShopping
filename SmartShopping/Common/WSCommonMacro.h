@@ -32,21 +32,21 @@
 //授权回调页：http://app.ismartgo.com
 //取消授权回调页：http://http://app.ismartgo.com
 /********* 启汇 的  登录授权出错，初步分析是应用审核被驳回 **********/
-//#define SINAWEIBO_APPKEY          @"3471108719"
-//#define SINAWEIBO_SECRET          @"bc4161722e80558f7ec4fb6b06e0b6cf"
-//#define SINAWEIBO_REDIRECT_URL    @"http://app.ismartgo.com"
+#define SINAWEIBO_APPKEY          @"3471108719"
+#define SINAWEIBO_SECRET          @"bc4161722e80558f7ec4fb6b06e0b6cf"
+#define SINAWEIBO_REDIRECT_URL    @"http://app.ismartgo.com"
 
 /********我的********/
 //应用地址：http://www.sharesdk.cn
 //授权回调页：http://www.sharesdk.cn
 //取消授权回调页：http://www.sharesdk.cn
 
-#define SINAWEIBO_APPKEY          @"2278135746"
-#define SINAWEIBO_SECRET          @"0229c752b7213bd8cf409ff98896ece4"
-#define SINAWEIBO_REDIRECT_URL    @"http://www.sharesdk.cn"
+//#define SINAWEIBO_APPKEY          @"2278135746"
+//#define SINAWEIBO_SECRET          @"0229c752b7213bd8cf409ff98896ece4"
+//#define SINAWEIBO_REDIRECT_URL    @"http://www.sharesdk.cn"
 
-// QQ    需填写平台信息中的应用开发地址
-/********* 启汇 的  目前登录功能处于审核状态**********/
+// QQ    需填写平台信息中的应用开发地址  QQ不支持第三方登陆，要通过QQ空间授权
+/********* 启汇 的  登陆已经成功授权**********/
 // appid 转十六进制后41D5E170
 // url schema QQ41D5E170
 // 调试QQ 3162484720  密码： ismartgo66
@@ -64,15 +64,15 @@
 // 微信   需要bundle id 、 应用网址 审核通过后才有appkey之类的
 
 // 微信
-/*********启汇 的*********/
+/*********启汇 登陆授权成功*********/
 //应用官网app.ismartgo.com
-//#define WECHAT_APPID       @"wx9e58ac62f72d9042"
-//#define WECHAT_APPSECRET   @"9ffbe1acbb8a561ea9d03b3409649e17"
+#define WECHAT_APPID       @"wx9e58ac62f72d9042"
+#define WECHAT_APPSECRET   @"9ffbe1acbb8a561ea9d03b3409649e17"
 
 
 /*************我的**************/
-#define WECHAT_APPID       @"wx9e58ac62f72d9042"
-#define WECHAT_APPSECRET   @"9ffbe1acbb8a561ea9d03b3409649e17"
+//#define WECHAT_APPID       @"wx9e58ac62f72d9042"
+//#define WECHAT_APPSECRET   @"9ffbe1acbb8a561ea9d03b3409649e17"
 
 
 // 状态栏颜色

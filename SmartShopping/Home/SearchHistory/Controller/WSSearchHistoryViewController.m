@@ -11,27 +11,46 @@
 #import "WSSearchHistoryCell.h"
 
 #define SEARCH_HISTORY_KEY        @"SEARCH_HISTORY_KEY"
-#define HISTORY_COUNT             3
+#define HISTORY_COUNT             10
+
+typedef NS_ENUM(NSInteger, TableViewType) {
+    TableViewTypeSearchHistory = 0,
+    TableViewTypeStore,
+    TableViewTypeProduct
+};
 
 @interface WSSearchHistoryViewController () <UITableViewDataSource, UITableViewDelegate, WSSearchViewDelegate>
+{
+    TableViewType tableViewType;
+    TableViewType searchType;
+    NSMutableArray *storeDataArray;
+    NSMutableArray *productDataArray;
+    NSArray *typeArray;
+    BOOL isShowTypeView;
+}
 
-@property (strong, nonatomic)  NSMutableArray *dataArray;
+
+@property (strong, nonatomic)  NSMutableArray *historyDataArray;
 @property (weak, nonatomic) IBOutlet WSSearchManagerView *searchManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
 
-- (IBAction)cancalButAction:(id)sender;
+- (IBAction)backButAction:(id)sender;
 
 @end
 
 @implementation WSSearchHistoryViewController
-@synthesize dataArray;
+@synthesize historyDataArray;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.dataArray = [[NSMutableArray alloc] initWithArray:[USER_DEFAULT objectForKey:SEARCH_HISTORY_KEY]];
-    _searchManagerView.searchView.delegate = self;
-    _searchManagerView.searchView.textField.returnKeyType = UIReturnKeySearch;
+    tableViewType = TableViewTypeSearchHistory;
+    searchType = TableViewTypeStore;
+    storeDataArray = [[NSMutableArray alloc] init];
+    productDataArray = [[NSMutableArray alloc] init];
+    self.historyDataArray = [[NSMutableArray alloc] initWithArray:[USER_DEFAULT objectForKey:SEARCH_HISTORY_KEY]];
+    typeArray = @[@"商店", @"商品"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,6 +70,25 @@
      [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 }
 
+- (void)setSearchTypeTitle
+{
+    WSSearchTypeView *searchView = _searchManagerView.searchTypeView;
+    switch (searchType) {
+        case TableViewTypeStore:
+        {
+           
+        }
+            break;
+        case TableViewTypeProduct:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - WSSearchViewDelegate
 - (void)searchViewDelegateTextFieldDidEndEditing:(UITextField *)textField
 {
@@ -62,9 +100,9 @@
     [textField resignFirstResponder];
     NSMutableArray *tempArray = [NSMutableArray array];
     [tempArray addObject:textField.text];
-    NSInteger beforeCount = dataArray.count;
+    NSInteger beforeCount = historyDataArray.count;
     for (int i = 0; i < beforeCount; i++) {
-        [tempArray addObject:[dataArray objectAtIndex:i]];
+        [tempArray addObject:[historyDataArray objectAtIndex:i]];
     }
     NSInteger count = tempArray.count;
     if (count > HISTORY_COUNT) {
@@ -85,7 +123,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count = dataArray.count;
+    NSInteger count = historyDataArray.count;
     if (count > 0) {
         return count + 1;
     }
@@ -95,7 +133,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    NSInteger count = dataArray.count;
+    NSInteger count = historyDataArray.count;
     if (row == count) {
         static NSString *identify = @"WSClearHistoryCell";
         WSClearHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
@@ -112,7 +150,7 @@
     if (!cell) {
         cell = GET_XIB_FIRST_OBJECT(identify);
     }
-    cell.label.text = [dataArray objectAtIndex:row];
+    cell.label.text = [historyDataArray objectAtIndex:row];
     return cell;
 }
 
@@ -120,7 +158,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSInteger row = indexPath.row;
-    NSInteger count = dataArray.count;
+    NSInteger count = historyDataArray.count;
     if (row == count) {
         return WSCLEARHISTORYCELL_HEIGHT;
     }
@@ -130,9 +168,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    NSInteger count = dataArray.count;
+    NSInteger count = historyDataArray.count;
     if (row != count) {
-        _searchManagerView.searchView.textField.text = [dataArray objectAtIndex:row];
+        _searchManagerView.searchView.textField.text = [historyDataArray objectAtIndex:row];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -141,13 +179,16 @@
 - (void)clearHistoryButAction:(UIButton *)but
 {
     [USER_DEFAULT setValue:nil forKey:SEARCH_HISTORY_KEY];
-    [dataArray removeAllObjects];
+    [historyDataArray removeAllObjects];
     [_contentTableView reloadData];
 }
 
 - (IBAction)cancalButAction:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)backButAction:(id)sender {
 }
 
 @end

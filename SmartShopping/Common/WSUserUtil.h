@@ -12,4 +12,6 @@
 
 + (void)actionAfterLogin:(void(^)(void))action;
 
++ (NSString *)getUserPeasNum;
+
 @end

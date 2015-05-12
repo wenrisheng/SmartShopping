@@ -25,13 +25,6 @@
                         <constraint firstAttribute="height" constant="64" id="jfB-Kj-a0o"/>
                     </constraints>
                 </view>
-                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVH-Lr-cGF" customClass="WSTabSlideManagerView">
-                    <rect key="frame" x="0.0" y="64" width="320" height="40"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="PJ4-aF-QMi"/>
-                    </constraints>
-                </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="eYu-zs-83y">
                     <rect key="frame" x="0.0" y="104" width="320" height="376"/>
                     <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
@@ -46,6 +39,13 @@
                         <outlet property="delegate" destination="-1" id="GZS-Ou-p3Q"/>
                     </connections>
                 </collectionView>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVH-Lr-cGF" customClass="WSTabSlideManagerView">
+                    <rect key="frame" x="0.0" y="64" width="320" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PJ4-aF-QMi"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>

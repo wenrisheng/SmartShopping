@@ -8,6 +8,8 @@
 
 #import "CollectSucView.h"
 
+#define DURATION_TIME    3
+
 @implementation CollectSucView
 
 + (void)showCollectSucView
@@ -17,12 +19,25 @@
     collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
     [windown addSubview:collectSucView];
     [collectSucView expandToSuperView];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:3 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
 }
 
 - (void)dismissCollsecSucView
 {
     [self removeFromSuperview];
+    if (_callBack) {
+        _callBack();
+    }
+}
+
++ (void)showCollectSucViewWithFinishCallBack:(FinishCallBack)callBack
+{
+    UIWindow *windown = [UIApplication sharedApplication].keyWindow;
+    CollectSucView *collectSucView = GET_XIB_FIRST_OBJECT(@"CollectSucView");
+    collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
+    [windown addSubview:collectSucView];
+    [collectSucView expandToSuperView];
+    [NSTimer scheduledTimerWithTimeInterval:3 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
 }
 
 @end

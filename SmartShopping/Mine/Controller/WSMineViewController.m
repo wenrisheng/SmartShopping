@@ -110,14 +110,14 @@
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    if (deoCodeFalg == 0) {
+//    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+//    if (deoCodeFalg == 0) {
         NSString *city = [locationDic objectForKey:LOCATION_CITY];
         self.city = city;
         if (_giftList.count == 0) {
             [self requestSearchGift];
         }
-    }
+//    }
 }
 
 #pragma mark - 更新用户有没有登陆视图

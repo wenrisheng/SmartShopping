@@ -12,6 +12,8 @@
 
 @interface WSPromotionCouponOutStoreCollectionViewCell : UICollectionViewCell
 
+- (void)setModel:(NSDictionary *)dic;
+
 @property (weak, nonatomic) IBOutlet UIImageView *loginImageView;
 @property (weak, nonatomic) IBOutlet UILabel *storeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
@@ -29,5 +31,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightShareBut;
 @property (weak, nonatomic) IBOutlet UIView *leftProductView;
 @property (weak, nonatomic) IBOutlet UIView *rightProductView;
+@property (weak, nonatomic) IBOutlet UILabel *leftValidDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rightValidDateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *leftProductBut;
+@property (weak, nonatomic) IBOutlet UIButton *rightProductBut;
 
 @end

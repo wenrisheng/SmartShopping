@@ -135,7 +135,7 @@
             break;
         case WSInterfaceTypeGetGoodsDetails:
         {
-            return [NSString stringWithFormat:@"%@/appgetGoodsDetails.do", BASE_URL];
+            return [NSString stringWithFormat:@"%@/app/getGoodsDetails.do", BASE_URL];
         }
             break;
         case WSInterfaceTypeGetAreaList:

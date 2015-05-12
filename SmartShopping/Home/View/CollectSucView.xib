@@ -14,7 +14,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V0b-nA-hhx">
                     <rect key="frame" x="115" y="206" width="90" height="67"/>
                     <subviews>
-                        <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJK-2F-7qo">
+                        <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJK-2F-7qo">
                             <rect key="frame" x="0.0" y="0.0" width="90" height="67"/>
                             <color key="backgroundColor" red="0.41960784313725491" green="0.42352941176470588" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                         </view>

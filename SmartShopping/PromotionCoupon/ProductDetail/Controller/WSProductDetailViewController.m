@@ -26,6 +26,7 @@
     // Do any additional setup after loading the view from its nib.
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"商品详情";
+    [self requestProductDetail];
 }
 
 - (void)requestProductDetail
@@ -58,7 +59,7 @@
 {
     NSArray *titleArray = nil;
     NSArray *imageArray = nil;
-    NSString *Isscan = [_goodsDetails stringForKey:@"Isscan"];
+    NSString *Isscan = [_goodsDetails stringForKey:@"isscan"];
     // 可以扫描
     if ([Isscan isEqualToString:@"1"]) {
         _hasScan = YES;
@@ -128,11 +129,38 @@
                 break;
         }
     };
-    NSString *h5url  = [_goodsDetails objectForKey:@"h5url"];
+    id h5url  = [_goodsDetails objectForKey:@"h5url"];
+    h5url = h5url == nil ? @"" : h5url;
+    BOOL flag = [h5url isKindOfClass:[NSNull class]];
+    h5url =  flag ? @"" : h5url;
     NSURL *url =[NSURL URLWithString:h5url];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [_webView loadRequest:request];
     
+}
+
+- (void)collectAction
+{
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        NSString *goodsid = [_goodsDetails objectForKey:@"id"];
+        NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": _shopId};
+        [SVProgressHUD show];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [CollectSucView showCollectSucView];
+            }
+        } failCallBack:^(id error) {
+            [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
+        }];
+    } else {
+        [WSUserUtil actionAfterLogin:^{
+          
+        }];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {

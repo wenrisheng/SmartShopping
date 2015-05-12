@@ -80,19 +80,19 @@
 {
     NSDictionary *locationDic = [notification object];
     [self setLocationCity:locationDic];
-    if (slideImageArray.count == 0) {
+    if (self.city.length > 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
 }
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    if (deoCodeFalg == 0) {
+    //int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    //if (deoCodeFalg == 0) {
         NSString *city = [locationDic objectForKey:LOCATION_CITY];
         self.city = city;
         DLog(@"定位：%@", city);
-    }
+   // }
 }
 
 #pragma mark - 请求幻灯片

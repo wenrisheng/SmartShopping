@@ -30,6 +30,10 @@
 		7C3511721ADFF4380014696B /* WSMineThirdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3511701ADFF4380014696B /* WSMineThirdCell.xib */; };
 		7C3511761ADFF80A0014696B /* WSMineFourCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3511741ADFF80A0014696B /* WSMineFourCell.m */; };
 		7C3511771ADFF80A0014696B /* WSMineFourCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3511751ADFF80A0014696B /* WSMineFourCell.xib */; };
+		7C36DFA11B00DF6C0030530C /* screening.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C36DFA01B00DF6C0030530C /* screening.png */; };
+		7C36DFB51B022B190030530C /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C36DFB31B022B190030530C /* TencentOpenAPI.framework */; };
+		7C36DFB61B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C36DFB41B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle */; };
+		7C36DFB91B0235D30030530C /* WSShareSDKUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */; };
 		7C3DFF2C1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2A1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m */; };
 		7C3DFF2D1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2B1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib */; };
 		7C3DFF311AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2F1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m */; };
@@ -154,8 +158,6 @@
 		7C90854A1ADF756D0073D94C /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9084F91ADF756C0073D94C /* GooglePlus.framework */; };
 		7C90854B1ADF756D0073D94C /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9084FB1ADF756C0073D94C /* Pinterest.framework */; };
 		7C90854C1ADF756D0073D94C /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C9084FD1ADF756C0073D94C /* PinterestSDKResources.bundle */; };
-		7C90854D1ADF756D0073D94C /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9084FF1ADF756C0073D94C /* TencentOpenAPI.framework */; };
-		7C90854E1ADF756D0073D94C /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C9085001ADF756C0073D94C /* TencentOpenApi_IOS_Bundle.bundle */; };
 		7C90854F1ADF756D0073D94C /* RennSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C9085021ADF756C0073D94C /* RennSDK.bundle */; };
 		7C9085501ADF756D0073D94C /* RennSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9085031ADF756C0073D94C /* RennSDK.framework */; };
 		7C9085511ADF756D0073D94C /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9085051ADF756C0073D94C /* libWeiboSDK.a */; };
@@ -464,6 +466,11 @@
 		7C3511731ADFF80A0014696B /* WSMineFourCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMineFourCell.h; sourceTree = "<group>"; };
 		7C3511741ADFF80A0014696B /* WSMineFourCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMineFourCell.m; sourceTree = "<group>"; };
 		7C3511751ADFF80A0014696B /* WSMineFourCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMineFourCell.xib; sourceTree = "<group>"; };
+		7C36DFA01B00DF6C0030530C /* screening.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screening.png; sourceTree = "<group>"; };
+		7C36DFB31B022B190030530C /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
+		7C36DFB41B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
+		7C36DFB71B0235D30030530C /* WSShareSDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSShareSDKUtil.h; sourceTree = "<group>"; };
+		7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSShareSDKUtil.m; sourceTree = "<group>"; };
 		7C3DFF291AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPromotionCouponInStoreCollectionReusableView.h; sourceTree = "<group>"; };
 		7C3DFF2A1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPromotionCouponInStoreCollectionReusableView.m; sourceTree = "<group>"; };
 		7C3DFF2B1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSPromotionCouponInStoreCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -637,8 +644,6 @@
 		7C9084F91ADF756C0073D94C /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		7C9084FB1ADF756C0073D94C /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
 		7C9084FD1ADF756C0073D94C /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
-		7C9084FF1ADF756C0073D94C /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
-		7C9085001ADF756C0073D94C /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		7C9085021ADF756C0073D94C /* RennSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RennSDK.bundle; sourceTree = "<group>"; };
 		7C9085031ADF756C0073D94C /* RennSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RennSDK.framework; sourceTree = "<group>"; };
 		7C9085051ADF756C0073D94C /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -1010,8 +1015,8 @@
 				7C9085291ADF756C0073D94C /* InstagramConnection.framework in Frameworks */,
 				7C90854B1ADF756D0073D94C /* Pinterest.framework in Frameworks */,
 				7CC5833E1ADD2D6100329D21 /* libicucore.dylib in Frameworks */,
-				7C90854D1ADF756D0073D94C /* TencentOpenAPI.framework in Frameworks */,
 				7C90853F1ADF756D0073D94C /* VKontakteConnection.framework in Frameworks */,
+				7C36DFB51B022B190030530C /* TencentOpenAPI.framework in Frameworks */,
 				7C9085411ADF756D0073D94C /* WhatsAppConnection.framework in Frameworks */,
 				7C9085481ADF756D0073D94C /* GoogleOpenSource.framework in Frameworks */,
 				7C9085381ADF756D0073D94C /* RenRenConnection.framework in Frameworks */,
@@ -1243,6 +1248,15 @@
 				7C2D76C21AF7D30B00126328 /* WSForgetPasswordViewController.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C36DFB21B022B190030530C /* QQConnectSDK */ = {
+			isa = PBXGroup;
+			children = (
+				7C36DFB31B022B190030530C /* TencentOpenAPI.framework */,
+				7C36DFB41B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle */,
+			);
+			path = QQConnectSDK;
 			sourceTree = "<group>";
 		};
 		7C3DFF281AE91CA30065BB7F /* View */ = {
@@ -1609,9 +1623,9 @@
 		7C9084F51ADF756C0073D94C /* Extend */ = {
 			isa = PBXGroup;
 			children = (
+				7C36DFB21B022B190030530C /* QQConnectSDK */,
 				7C9084F61ADF756C0073D94C /* GooglePlusSDK */,
 				7C9084FA1ADF756C0073D94C /* Pinterest.embeddedframework */,
-				7C9084FE1ADF756C0073D94C /* QQConnectSDK */,
 				7C9085011ADF756C0073D94C /* RenRenSDK */,
 				7C9085041ADF756C0073D94C /* SinaWeiboSDK */,
 				7C9085081ADF756C0073D94C /* TencentWeiboSDK */,
@@ -1646,15 +1660,6 @@
 				7C9084FD1ADF756C0073D94C /* PinterestSDKResources.bundle */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		7C9084FE1ADF756C0073D94C /* QQConnectSDK */ = {
-			isa = PBXGroup;
-			children = (
-				7C9084FF1ADF756C0073D94C /* TencentOpenAPI.framework */,
-				7C9085001ADF756C0073D94C /* TencentOpenApi_IOS_Bundle.bundle */,
-			);
-			path = QQConnectSDK;
 			sourceTree = "<group>";
 		};
 		7C9085011ADF756C0073D94C /* RenRenSDK */ = {
@@ -1917,6 +1922,8 @@
 				7C42063F1AF61094005F9F44 /* WSAudioUtil.m */,
 				7C2E385D1AF8C24900EF54B0 /* WSUserUtil.h */,
 				7C2E385E1AF8C24900EF54B0 /* WSUserUtil.m */,
+				7C36DFB71B0235D30030530C /* WSShareSDKUtil.h */,
+				7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2121,6 +2128,7 @@
 				7C4206291AF5B4C9005F9F44 /* location.png */,
 				7CCBF5071AEFE722005321BF /* erweimiao.png */,
 				7CCBF5031AEFE28D005321BF /* pengyouquan.png */,
+				7C36DFA01B00DF6C0030530C /* screening.png */,
 				7CCBF5041AEFE28D005321BF /* qqkongjian.png */,
 				7CD771501AEE58FC0040E9FD /* choose-02.png */,
 				7CCA01D71AED42900081A8CC /* colleation-011.png */,
@@ -2952,7 +2960,7 @@
 				7CCAD32A1ADEB0C1001D3D8B /* b_selected.png in Resources */,
 				7CC827B81AF1311B00A837F8 /* lamp.png in Resources */,
 				7C46E43D1AF0614100EBDCDC /* WSScanProductViewController.xib in Resources */,
-				7C90854E1ADF756D0073D94C /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
+				7C36DFB61B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				7C90855E1ADF756D0073D94C /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7CCA18B71AEBDC9500714EA0 /* left.png in Resources */,
 				7CCD8B161ADFD0D5007B86A9 /* 03.png in Resources */,
@@ -3031,6 +3039,7 @@
 				7CCBF4F61AEFCAC0005321BF /* WSScanNoInStoreCollectionViewCell.xib in Resources */,
 				7CD8F32A1AE54E240039CE0F /* WSMineCollectCollectionViewCell.xib in Resources */,
 				7CCD8B1C1ADFD0D5007B86A9 /* arrow-02.png in Resources */,
+				7C36DFA11B00DF6C0030530C /* screening.png in Resources */,
 				7CCBF4F01AEFC53E005321BF /* WSScanNoInStoreViewController.xib in Resources */,
 				7C9085491ADF756D0073D94C /* GooglePlus.bundle in Resources */,
 				7CD0E45A1AE2A51B00B78C9C /* WSMineInfoViewController.xib in Resources */,
@@ -3106,6 +3115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C42062E1AF5B951005F9F44 /* PaopaoView.m in Sources */,
+				7C36DFB91B0235D30030530C /* WSShareSDKUtil.m in Sources */,
 				7CCD117F1AD54FFE005A1429 /* WSMineViewController.m in Sources */,
 				7C6DDE491ADC1D35007F81A4 /* ASIHTTPRequest.m in Sources */,
 				7C6DDE551ADC1D35007F81A4 /* ASIS3BucketObject.m in Sources */,

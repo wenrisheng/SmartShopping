@@ -11,12 +11,6 @@
 #import "WSPromotionCouponViewController.h"
 #import "WSGainPeasViewController.h"
 #import "WSMineViewController.h"
-#import <ShareSDK/ShareSDK.h>
-#import <TencentOpenAPI/QQApiInterface.h>
-#import <TencentOpenAPI/TencentOAuth.h>
-#import "WXApi.h"
-#import "WeiboApi.h"
-#import "WeiboSDK.h"
 #import <Parse/Parse.h>
 
 @interface AppDelegate () <BMKGeneralDelegate>
@@ -95,7 +89,7 @@
                      tencentOAuthCls:[TencentOAuth class]];
     
     //添加QQ应用  注册网址  http://open.qq.com/
-    [ShareSDK connectQQWithQZoneAppKey:QQ_APPKEY
+    [ShareSDK connectQQWithQZoneAppKey:QQ_APPID
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
     
@@ -107,6 +101,10 @@
     [ShareSDK connectWeChatWithAppId:WECHAT_APPID
                            appSecret:WECHAT_APPSECRET
                            wechatCls:[WXApi class]];
+    
+    //开启QQ空间网页授权开关(optional)
+    id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];
+    [app setIsAllowWebAuthorize:YES];
 }
 
 #pragma mark - 初始化TabbarViewController

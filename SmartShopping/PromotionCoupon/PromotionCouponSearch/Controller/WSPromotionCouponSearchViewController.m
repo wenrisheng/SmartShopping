@@ -44,6 +44,7 @@
     _navigationBarManagerView.navigationBarButSearchButView.delegate = self;
     _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = @"";
     [_navigationBarManagerView.navigationBarButSearchButView.leftBut setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [_navigationBarManagerView.navigationBarButSearchButView.leftBut addTarget:self action:@selector(navigationBarLeftButClick:) forControlEvents:UIControlEventTouchUpInside];
     
     // tab 切换按钮
     _storeName = _storeName.length == 0 ? @"" : _storeName;
@@ -63,6 +64,21 @@
     _tabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
        
     };
+    
+    // 添加在左边返回按钮
+    UIButton *leftBut = [[UIButton alloc] init];
+    [leftBut setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [leftBut addTarget:self action:@selector(navigationBarLeftButClick:) forControlEvents:UIControlEventTouchUpInside];
+    // but.backgroundColor = [UIColor grayColor];
+    UIView *leftView = _navigationBarManagerView.navigationBarButSearchButView.leftview;
+    [leftView clearSubviews];
+    [leftView addSubview:leftBut];
+    leftBut.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *lwidth = [NSLayoutConstraint constraintWithItem:leftBut attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:30];
+    NSLayoutConstraint *lheight = [NSLayoutConstraint constraintWithItem:leftBut attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:30];
+    NSLayoutConstraint *lcenterX = [NSLayoutConstraint constraintWithItem:leftBut attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:leftView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+    NSLayoutConstraint *lcenterY = [NSLayoutConstraint constraintWithItem:leftBut attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:leftView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
+    [leftView addConstraints:@[lwidth, lheight, lcenterX, lcenterY]];
     
     // 添加在店内搜索框右边的搜索按钮
     UIButton *but = [[UIButton alloc] init];

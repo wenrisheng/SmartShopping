@@ -32,7 +32,7 @@
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelButView.centerLabel.text = @"筛选品牌";
     _navigationBarManagerView.navigationBarButLabelButView.delegate = self;
-    [_navigationBarManagerView.navigationBarButLabelButView.rightBut setBackgroundImage:[UIImage imageNamed:@"colleation-011"] forState:UIControlStateNormal];
+    [_navigationBarManagerView.navigationBarButLabelButView.rightBut setBackgroundImage:[UIImage imageNamed:@"screening"] forState:UIControlStateNormal];
     [_navigationBarManagerView.navigationBarButLabelButView.rightBut setTitle:@"" forState:UIControlStateNormal];
     dataArray = [[NSMutableArray alloc] init];
     

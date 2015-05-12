@@ -14,6 +14,7 @@
 @class HomeCollectionViewCell;
 @protocol HomeCollectionViewCellDelegate <NSObject>
 
+@optional
 - (void)homeCollectionViewCellDidClickLeftBut:(HomeCollectionViewCell *)cell;
 - (void)homeCollectionViewCellDidClickRightBut:(HomeCollectionViewCell *)cell;
 - (void)homeCollectionViewCellDidClickDistanceBut:(HomeCollectionViewCell *)cell;

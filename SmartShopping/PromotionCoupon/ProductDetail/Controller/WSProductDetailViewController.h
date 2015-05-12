@@ -11,6 +11,8 @@
 @interface WSProductDetailViewController : WSServiceViewController
 
 @property (strong, nonatomic) NSString *goodsNumber;
+
+@property (strong, nonatomic) NSString *shopId;
 @property (strong, nonatomic) NSString *goodsId;
 
 @property (strong, nonatomic) NSString *url;

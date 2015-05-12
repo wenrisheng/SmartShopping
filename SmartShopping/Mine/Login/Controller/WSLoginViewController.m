@@ -176,7 +176,7 @@
 #pragma mark  qq登陆
 - (IBAction)qqLoginButAction:(id)sender
 {
-    [self loginWithType:ShareTypeQQ];
+    [self loginWithType:ShareTypeQQSpace];
     // 注销
 //        [ShareSDK cancelAuthWithType:ShareTypeQQ];
 }

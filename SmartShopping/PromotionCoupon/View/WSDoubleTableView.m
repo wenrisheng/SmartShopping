@@ -18,7 +18,15 @@
     
     _tableS.dataSource = self;
     _tableS.delegate = self;
+    
+//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestAction:)];
+//    [self.bgView addGestureRecognizer:tapGest];
 }
+
+//- (void)tapGestAction:(UITapGestureRecognizer *)tapGest
+//{
+//    self.hidden = YES;
+//}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -66,13 +74,13 @@
             } else {
                 cell.backgroundColor = _cellFUnSelectColor;
             }
-            cell.label.text = [dic objectForKey:DOUBLE_TABLE_TITLE];
+            cell.label.text = [dic valueForKey:DOUBLE_TABLE_TITLE];
         }
             break;
         case 1:
         {
             NSDictionary *dic = [_dataArrayS objectAtIndex:row];
-            int selected_flag = [[dic objectForKey:DOUBLE_TABLE_SELECTED_FLAG] intValue];
+            int selected_flag = [[dic valueForKey:DOUBLE_TABLE_SELECTED_FLAG] intValue];
             if (selected_flag == 0) {
                 cell.backgroundColor = _cellSSelectColor;
             } else {
@@ -85,7 +93,6 @@
             break;
     }
    
-    
     return cell;
 }
 

@@ -20,7 +20,8 @@
     }
     
     NSString *goodsEndDate = [dic objectForKey:@"goodsEndDate"];
-    _validDateLabel.text = [NSString stringWithFormat:@"%@前有效", goodsEndDate];
+    NSString *formatDate = [self getValidateWithDateStr:goodsEndDate];
+    _validDateLabel.text = formatDate;
     
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
     NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
@@ -37,16 +38,34 @@
     _addressLabel.text = shopName;
     
     NSString *distance = [dic stringForKey:@"distance"];
-    _distanceLabel.text = [NSString stringWithFormat:@"%@km", distance];
+    float distanceFloat = [distance floatValue];
+    _distanceLabel.text = [NSString stringWithFormat:@"%.1fm", distanceFloat];
     
     NSString *isCollect = [dic stringForKey:@"isCollect"];
     // 没有收藏  白色安心
-    if ([isCollect isEqualToString:@"1"]) {
+    if ([isCollect isEqualToString:@"N"]) {
         [_leftBut setBackgroundImage:[UIImage imageNamed:@"colleation-011"] forState:UIControlStateNormal];
     // 已收藏
     } else {
-         [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
+        [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
     }
+}
+
+- (NSString *)getValidateWithDateStr:(NSString *)dateStr
+{
+    if (!dateStr) {
+        return @"有效日期未知";
+    }
+    NSArray *array = [dateStr componentsSeparatedByString:@"-"];
+    if (array.count < 3) {
+        return  @"有效日期未知";
+    }
+    NSString *month = [array objectAtIndex:1];
+    int monthInt = [month intValue];
+    NSString *day = [array objectAtIndex:2];
+    int dayInt = [day intValue];
+    NSString *result = [NSString stringWithFormat:@"%d月%d日前有效", monthInt, dayInt];
+    return result;
 }
 
 - (void)awakeFromNib

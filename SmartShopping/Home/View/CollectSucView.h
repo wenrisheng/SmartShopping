@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^FinishCallBack)(void);;
+
 @interface CollectSucView : UIView
+@property (strong, nonatomic) FinishCallBack callBack;
 
 + (void)showCollectSucView;
+
++ (void)showCollectSucViewWithFinishCallBack:(FinishCallBack)callBack;
 
 @end

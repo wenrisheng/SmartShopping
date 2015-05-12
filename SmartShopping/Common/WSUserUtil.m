@@ -31,4 +31,16 @@
     }
 }
 
++ (NSString *)getUserPeasNum
+{
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        return user.beanNumber;
+    } else{
+        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+        return [NSString stringWithFormat:@"%d", appPeasNum];
+
+    }
+}
+
 @end
