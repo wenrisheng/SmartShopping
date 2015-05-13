@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, TableViewType) {
     NSMutableArray *productDataArray;
     NSArray *typeArray;
     BOOL isShowTypeView;
+    WSTableToastView *toastView;
 }
 
 
@@ -51,6 +52,9 @@ typedef NS_ENUM(NSInteger, TableViewType) {
     productDataArray = [[NSMutableArray alloc] init];
     self.historyDataArray = [[NSMutableArray alloc] initWithArray:[USER_DEFAULT objectForKey:SEARCH_HISTORY_KEY]];
     typeArray = @[@"商店", @"商品"];
+    _searchManagerView.searchTypeView.typeButActionCallBack = ^(WSSearchTypeView *searchView) {
+        
+    };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,19 +77,23 @@ typedef NS_ENUM(NSInteger, TableViewType) {
 - (void)setSearchTypeTitle
 {
     WSSearchTypeView *searchView = _searchManagerView.searchTypeView;
-    switch (searchType) {
-        case TableViewTypeStore:
-        {
-           
-        }
-            break;
-        case TableViewTypeProduct:
-        {
-            
-        }
-            break;
-        default:
-            break;
+    NSString *title = [typeArray objectAtIndex:searchType];
+    searchView.typeLabel.text = title;
+}
+
+- (WSTableToastView *)getToastView
+{
+    if (toastView) {
+        return toastView;
+    } else {
+        toastView = [WSTableToastView getView];
+        toastView.titleArray = typeArray;
+        __weak WSSearchHistoryViewController *vc = self;
+        toastView.callBack = ^(NSInteger index) {
+            searchType = index;
+            [vc setSearchTypeTitle];
+        };
+        return toastView;
     }
 }
 

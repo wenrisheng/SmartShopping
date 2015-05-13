@@ -10,6 +10,21 @@
 
 @interface WSShareSDKUtil : NSObject
 
-+ (void)shareWithTitle:(NSString *)title content:(NSString *)content description:(NSString *)description url:(NSString *)url imagePath:(NSString *)imagePath thumbImagePath:(NSString *)thumbImagePath result:(SSPublishContentEventHandler)result;
++ (void)shareWithTitle:(NSString *)title
+               content:(NSString *)content
+           description:(NSString *)description
+                   url:(NSString *)url
+             imagePath:(NSString *)imagePath
+        thumbImagePath:(NSString *)thumbImagePath
+                result:(SSPublishContentEventHandler)result;
+
++ (void)shareWithTitle:(NSString *)title
+               content:(NSString *)content
+           description:(NSString *)description
+                   url:(NSString *)url
+             imagePath:(NSString *)imagePath
+        thumbImagePath:(NSString *)thumbImagePath
+             mediaType:(SSPublishContentMediaType)mediaType
+                result:(SSPublishContentEventHandler)result;
 
 @end

@@ -248,10 +248,7 @@
     // 同步本地用户信息
     [self synchromUserData:user];
     
-    [self.navigationController popViewControllerAnimated:NO];
-    if (_callBack) {
-        _callBack();
-    }
+   
 }
 
 #pragma mark 同步用户数据
@@ -283,6 +280,27 @@
     NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
     [USER_DEFAULT setObject:userdata forKey:USER_KEY];
 
+}
+
+- (void)synchronUserPea
+{
+    [SVProgressHUD showWithStatus:@"正在同步精明豆……"];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        [self popViewController];
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
+        [self popViewController];
+    }];
+}
+
+- (void)popViewController
+{
+    [self.navigationController popViewControllerAnimated:NO];
+    if (_callBack) {
+        _callBack();
+    }
 }
 
 @end

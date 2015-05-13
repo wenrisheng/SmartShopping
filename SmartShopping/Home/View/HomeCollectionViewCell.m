@@ -31,7 +31,7 @@
     NSString *shopLogo = [dic objectForKey:@"shopLogo"];
     NSString *shopLogoURL = [WSInterfaceUtility getImageURLWithStr:shopLogo];
     [_smallImageView sd_setImageWithURL:[NSURL URLWithString:shopLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
+        _smallImageView.contentMode = UIViewContentModeScaleAspectFit;
     }];
     
     NSString *shopName = [dic objectForKey:@"shopName"];

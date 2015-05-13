@@ -34,6 +34,9 @@
 		7C36DFB51B022B190030530C /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C36DFB31B022B190030530C /* TencentOpenAPI.framework */; };
 		7C36DFB61B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C36DFB41B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle */; };
 		7C36DFB91B0235D30030530C /* WSShareSDKUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */; };
+		7C392DDD1B0316DB008AADA5 /* ic_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C392DDC1B0316DB008AADA5 /* ic_list.png */; };
+		7C3B88E51B0382CA008B0951 /* WSCollectHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B88E41B0382CA008B0951 /* WSCollectHeaderView.m */; };
+		7C3B88E71B0382E5008B0951 /* WSCollectHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3B88E61B0382E5008B0951 /* WSCollectHeaderView.xib */; };
 		7C3DFF2C1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2A1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m */; };
 		7C3DFF2D1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2B1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib */; };
 		7C3DFF311AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2F1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m */; };
@@ -471,6 +474,10 @@
 		7C36DFB41B022B190030530C /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		7C36DFB71B0235D30030530C /* WSShareSDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSShareSDKUtil.h; sourceTree = "<group>"; };
 		7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSShareSDKUtil.m; sourceTree = "<group>"; };
+		7C392DDC1B0316DB008AADA5 /* ic_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_list.png; sourceTree = "<group>"; };
+		7C3B88E31B0382CA008B0951 /* WSCollectHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSCollectHeaderView.h; sourceTree = "<group>"; };
+		7C3B88E41B0382CA008B0951 /* WSCollectHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSCollectHeaderView.m; sourceTree = "<group>"; };
+		7C3B88E61B0382E5008B0951 /* WSCollectHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSCollectHeaderView.xib; sourceTree = "<group>"; };
 		7C3DFF291AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPromotionCouponInStoreCollectionReusableView.h; sourceTree = "<group>"; };
 		7C3DFF2A1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPromotionCouponInStoreCollectionReusableView.m; sourceTree = "<group>"; };
 		7C3DFF2B1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSPromotionCouponInStoreCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -1153,6 +1160,9 @@
 				7C249B441ADD6114000712BF /* HomeHeaderCollectionReusableView.h */,
 				7C249B451ADD6114000712BF /* HomeHeaderCollectionReusableView.m */,
 				7C249B461ADD6114000712BF /* HomeHeaderCollectionReusableView.xib */,
+				7C3B88E31B0382CA008B0951 /* WSCollectHeaderView.h */,
+				7C3B88E41B0382CA008B0951 /* WSCollectHeaderView.m */,
+				7C3B88E61B0382E5008B0951 /* WSCollectHeaderView.xib */,
 				7C43C5271AFBD000001FEA64 /* CollectSucView.h */,
 				7C43C5281AFBD000001FEA64 /* CollectSucView.m */,
 				7C43C52C1AFBD01B001FEA64 /* CollectSucView.xib */,
@@ -2125,6 +2135,7 @@
 		7CCAD3181ADEAEB7001D3D8B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7C392DDC1B0316DB008AADA5 /* ic_list.png */,
 				7C4206291AF5B4C9005F9F44 /* location.png */,
 				7CCBF5071AEFE722005321BF /* erweimiao.png */,
 				7CCBF5031AEFE28D005321BF /* pengyouquan.png */,
@@ -3069,6 +3080,7 @@
 				7C9085591ADF756D0073D94C /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
 				7CCD8B2B1ADFD0D5007B86A9 /* switch.png in Resources */,
 				7CCAD33E1ADEB8D7001D3D8B /* map.png in Resources */,
+				7C392DDD1B0316DB008AADA5 /* ic_list.png in Resources */,
 				7C249B5E1ADD6114000712BF /* HomeHeaderCollectionReusableView.xib in Resources */,
 				7C3DFF321AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib in Resources */,
 				7CD0E4681AE2B71E00B78C9C /* WSNoLoginView.xib in Resources */,
@@ -3103,6 +3115,7 @@
 				7CCE4F611AEB7B9F0097DFBB /* WSAdviceBackViewController.xib in Resources */,
 				7C9085461ADF756D0073D94C /* Resource.bundle in Resources */,
 				7CD771511AEE58FC0040E9FD /* choose-02.png in Resources */,
+				7C3B88E71B0382E5008B0951 /* WSCollectHeaderView.xib in Resources */,
 				7CCD8B241ADFD0D5007B86A9 /* head-02.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3198,6 +3211,7 @@
 				7CCA019E1AEC8DFE0081A8CC /* WSOrderFailView.m in Sources */,
 				7CCD11841AD55085005A1429 /* WSPromotionCouponViewController.m in Sources */,
 				7C6DDE5B1ADC1D35007F81A4 /* Reachability.m in Sources */,
+				7C3B88E51B0382CA008B0951 /* WSCollectHeaderView.m in Sources */,
 				7C43C5291AFBD000001FEA64 /* CollectSucView.m in Sources */,
 				7C6DDE481ADC1D35007F81A4 /* ASIFormDataRequest.m in Sources */,
 				7CCBBD5A1AD418AF00EA1F7F /* main.m in Sources */,

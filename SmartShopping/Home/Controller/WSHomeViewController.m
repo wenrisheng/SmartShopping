@@ -21,6 +21,7 @@
 #import "WSInviateFriendViewController.h"
 #import "WSSearchHistoryViewController.h"
 #import "CollectSucView.h"
+#import "WSCollectHeaderView.h"
 
 typedef NS_ENUM(NSInteger, ShopType)
 {
@@ -34,6 +35,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     NSMutableArray *baihuoFuzhuangDataArray;
     NSMutableArray *slideImageArray;
     HomeHeaderCollectionReusableView *headerView;
+    WSCollectHeaderView *collectHeaderView;
     ShopType shopType;
     int supermarketCurPage;
     BOOL supermarketToEndPage;
@@ -47,7 +49,8 @@ typedef NS_ENUM(NSInteger, ShopType)
 @property (assign, nonatomic) double latitude;
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *supermarketCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *baihuofuzhuangCollectView;
 
 @end
 
@@ -73,35 +76,51 @@ typedef NS_ENUM(NSInteger, ShopType)
     baihuoToEndPage = NO;
     
     // 注册
-    [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
-    [_collectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
-    
+    _supermarketCollectionView.hidden = NO;
+    _baihuofuzhuangCollectView.hidden = YES;
+    [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
+    [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
+    [_supermarketCollectionView addFooterWithCallback:^{
+        [self requestGetHomePageGoos];
+    }];
 
-    [_collectionView addHeaderWithCallback:^{
+    [_supermarketCollectionView addHeaderWithCallback:^{
         switch (shopType) {
             case ShopTypeSuperMarket:
             {
                 supermarketCurPage = 0;
-                 [self requestGetHomePageGoos];
             }
                 break;
             case ShopTypeBaihuoFuzhuang:
             {
                 baihuoCurPage = 0;
-                [self requestGetHomePageGoos];
             }
                 break;
             default:
                 break;
         }
-
-    DLog(@"下拉刷新完成！");
-    }];
-    [_collectionView addFooterWithCallback:^{
         [self requestGetHomePageGoos];
+        DLog(@"下拉刷新完成！");
     }];
+//    [_baihuofuzhuangCollectView addHeaderWithCallback:^{
+//        baihuoCurPage = 0;
+//        [self requestGetHomePageGoos];
+//        DLog(@"下拉刷新完成！");
+//    }];
+//    NSArray *collectViews = @[_supermarketCollectionView, _baihuofuzhuangCollectView];
+//    NSInteger viewCount = collectViews.count;
+//    for (int i = 0; i < viewCount; i++) {
+//        UICollectionView *collectView = [collectViews objectAtIndex:i];
+//        [collectView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
+//        [collectView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
+//        collectView.tag = i;
+//
+//        [collectView addFooterWithCallback:^{
+//            [self requestGetHomePageGoos];
+//        }];
+//        
+//    }
     
-   
 }
 
 
@@ -197,82 +216,87 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 - (void)requestGetHomePageGoos
 {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:_city forKey:@"cityName"];
-    [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
-    [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lon"];
-    [params setValue:PAGE_SIZE forKey:@"pageSize"];
-    switch (shopType) {
-        case ShopTypeSuperMarket:
-        {
-            [params setValue:[NSString stringWithFormat:@"%d", supermarketCurPage + 1] forKey:@"pages"];
-            [params setValue:@"1" forKey:@"shopType"];
-        }
-            break;
-         case ShopTypeBaihuoFuzhuang:
-        {
-            [params setValue:[NSString stringWithFormat:@"%d", baihuoCurPage + 1] forKey:@"pages"];
-            [params setValue:@"2" forKey:@"shopType"];
-        }
-            break;
-        default:
-            break;
-    }
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
-    [SVProgressHUD showWithStatus:@"加载中……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
-        [_collectionView headerEndRefreshing];
-        [_collectionView footerEndRefreshing];
-        [SVProgressHUD dismiss];
-        float flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            switch (shopType) {
-                case ShopTypeSuperMarket:
-                {
-                    //  刷新时清楚以前数据
-                    if (supermarketCurPage == 0) {
-                        [superMarketDataArray removeAllObjects];
-                    }
-                    supermarketCurPage ++;
-                    NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
-                    NSInteger count = array.count;
-                    for (int i = 0; i < count; i++) {
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-                        [dic setDictionary:[array objectAtIndex:i]];
-                        [superMarketDataArray addObject:dic];
-                    }
-                  
-                }
-                    break;
-                case ShopTypeBaihuoFuzhuang:
-                {
-                    //  刷新时清楚以前数据
-                    if (baihuoCurPage == 0) {
-                        [baihuoFuzhuangDataArray removeAllObjects];
-                    }
-                    baihuoCurPage++;
-                    NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
-                    NSInteger count = array.count;
-                    for (int i = 0; i < count; i++) {
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-                        [dic setDictionary:[array objectAtIndex:i]];
-                        [baihuoFuzhuangDataArray addObject:dic];
-                    }
-                }
-                    break;
-                default:
-                    break;
+    if (_city.length == 0) {
+        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        
+    } else{
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:_city forKey:@"cityName"];
+        [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
+        [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lon"];
+        [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
+        switch (shopType) {
+            case ShopTypeSuperMarket:
+            {
+                [params setValue:[NSString stringWithFormat:@"%d", supermarketCurPage + 1] forKey:@"pages"];
+                [params setValue:@"1" forKey:@"shopType"];
             }
-            [_collectionView reloadData];
+                break;
+            case ShopTypeBaihuoFuzhuang:
+            {
+                [params setValue:[NSString stringWithFormat:@"%d", baihuoCurPage + 1] forKey:@"pages"];
+                [params setValue:@"2" forKey:@"shopType"];
+            }
+                break;
+            default:
+                break;
         }
-    } failCallBack:^(id error) {
-        [_collectionView headerEndRefreshing];
-        [_collectionView footerEndRefreshing];
-        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
-    }];
+        WSUser *user = [WSRunTime sharedWSRunTime].user;
+        if (user) {
+            [params setValue:user._id forKey:@"uid"];
+        }
+        [SVProgressHUD showWithStatus:@"加载中……"];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
+            [_supermarketCollectionView headerEndRefreshing];
+            [_supermarketCollectionView footerEndRefreshing];
+            [SVProgressHUD dismiss];
+            float flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                switch (shopType) {
+                    case ShopTypeSuperMarket:
+                    {
+                        //  刷新时清楚以前数据
+                        if (supermarketCurPage == 0) {
+                            [superMarketDataArray removeAllObjects];
+                        }
+                        supermarketCurPage ++;
+                        NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
+                        NSInteger count = array.count;
+                        for (int i = 0; i < count; i++) {
+                            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                            [dic setDictionary:[array objectAtIndex:i]];
+                            [superMarketDataArray addObject:dic];
+                        }
+                       
+                    }
+                        break;
+                    case ShopTypeBaihuoFuzhuang:
+                    {
+                        //  刷新时清楚以前数据
+                        if (baihuoCurPage == 0) {
+                            [baihuoFuzhuangDataArray removeAllObjects];
+                        }
+                        baihuoCurPage++;
+                        NSArray *array = [[result objectForKey:@"data"] objectForKey:@"goodsList"];
+                        NSInteger count = array.count;
+                        for (int i = 0; i < count; i++) {
+                            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                            [dic setDictionary:[array objectAtIndex:i]];
+                            [baihuoFuzhuangDataArray addObject:dic];
+                        }
+                    }
+                        break;
+                    default:
+                        break;
+                }
+                [_supermarketCollectionView reloadData];
+            }
+        } failCallBack:^(id error) {
+            [_supermarketCollectionView headerEndRefreshing];
+            [_supermarketCollectionView footerEndRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+        }];
+    }
 }
 
 #pragma mark - 请求幻灯片
@@ -284,7 +308,7 @@ typedef NS_ENUM(NSInteger, ShopType)
             [slideImageArray removeAllObjects];
             NSArray *photoList = [[result objectForKey:@"data"] objectForKey:@"photoList"];
             [slideImageArray addObjectsFromArray:photoList];
-            [_collectionView reloadData];
+            [_supermarketCollectionView reloadData];
         }
     } failCallBack:^(id error) {
         
@@ -355,27 +379,26 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    NSArray *dataArray = nil;
     switch (shopType) {
         case ShopTypeSuperMarket:
         {
-            if (superMarketDataArray.count == 0) {
-               // return 1;
-            }
-            return superMarketDataArray.count;
+            dataArray = superMarketDataArray;
         }
             break;
         case ShopTypeBaihuoFuzhuang:
         {
-            if (baihuoFuzhuangDataArray.count == 0) {
-             //   return 1;
-            }
-            return baihuoFuzhuangDataArray.count;
+            dataArray = baihuoFuzhuangDataArray;
         }
             break;
         default:
             break;
     }
-    return 0;
+    NSInteger count = dataArray.count;
+    if (count == 0) {
+        return 1;
+    }
+    return count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -384,18 +407,12 @@ typedef NS_ENUM(NSInteger, ShopType)
     switch (shopType) {
         case ShopTypeSuperMarket:
         {
-            if (superMarketDataArray.count == 0) {
-//                return cell;
-            }
             array = superMarketDataArray;
             
         }
             break;
         case ShopTypeBaihuoFuzhuang:
         {
-            if (baihuoFuzhuangDataArray.count == 0) {
-                
-            }
             array = baihuoFuzhuangDataArray;
             
         }
@@ -405,10 +422,17 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     NSInteger row = indexPath.row;
     HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
-    cell.tag = row;
-    cell.delegate = self;
-    NSDictionary *dic = [array objectAtIndex:row];
-    [cell setModel:dic];
+    NSInteger count = array.count;
+    if (count == 0) {
+        cell.hidden = YES;
+    } else {
+        cell.hidden = NO;
+        cell.tag = row;
+        cell.delegate = self;
+        NSDictionary *dic = [array objectAtIndex:row];
+        [cell setModel:dic];
+    }
+   
     return cell;
 }
 
@@ -452,7 +476,23 @@ typedef NS_ENUM(NSInteger, ShopType)
 {
     if (indexPath.section == 0) {
         headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
-        ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
+        [headerView clearSubviews];
+        if (!collectHeaderView) {
+            collectHeaderView = GET_XIB_FIRST_OBJECT(@"WSCollectHeaderView");
+            [collectHeaderView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
+            [collectHeaderView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
+            [collectHeaderView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
+            [collectHeaderView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:) forControlEvents:UIControlEventValueChanged];
+            collectHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+        }
+        if (collectHeaderView.superview) {
+            [collectHeaderView removeFromSuperview];
+        }
+        
+        [headerView addSubview:collectHeaderView];
+        [collectHeaderView expandToSuperView];
+        
+        ACImageScrollView *imageScrollView = collectHeaderView.imageScrollManagerView.acImageScrollView;
         NSInteger imageCount = slideImageArray.count;
         NSMutableArray *imageDataArray = [NSMutableArray array];
         for (int i = 0; i < imageCount; i++) {
@@ -468,12 +508,9 @@ typedef NS_ENUM(NSInteger, ShopType)
             advertisementVC.url = [dic objectForKey:@"third_link"];
             [self.navigationController pushViewController:advertisementVC animated:YES];
         };
-        [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
-        [headerView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
-        [headerView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-        [headerView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:) forControlEvents:UIControlEventValueChanged];
-        headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
-        headerView.tag = indexPath.row;
+        
+        collectHeaderView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
+        collectHeaderView.tag = indexPath.row;
         return headerView;
     } else {
         return nil;
@@ -546,7 +583,7 @@ typedef NS_ENUM(NSInteger, ShopType)
                 BOOL flag = [WSInterfaceUtility validRequestResult:result];
                 if (flag) {
                     [dic setValue:@"Y" forKey:@"isCollect"];
-                    [_collectionView reloadData];
+                    [_supermarketCollectionView reloadData];
                     [CollectSucView showCollectSucView];
                 }
             } failCallBack:^(id error) {
@@ -600,20 +637,49 @@ typedef NS_ENUM(NSInteger, ShopType)
             break;
     }
     NSDictionary *dic = [dataArray objectAtIndex:tag];
-    NSString *title = [dic objectForKey:@"goodsName"];
-    NSString *conent = [dic objectForKey:@"shopName"];
-    NSString *url = @"http://www.baidu.com";
-    NSString *description = title;
-    NSString *imagePath = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
-    [WSShareSDKUtil shareWithTitle:title content:conent description:description url:url imagePath:imagePath thumbImagePath:imagePath result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                                if (state == SSResponseStateSuccess)
-                                {
-                                    DLog(@"分享成功");
-                                }
-                                else if (state == SSResponseStateFail)
-                                {
-                                    DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
-                                }
+    NSString *goodsId = [dic stringForKey:@"goodsId"];
+    NSString *shopId = [dic stringForKey:@"shopId"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:goodsId forKey:@"goodsId"];
+    [params setValue:shopId forKey:@"shopid"];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    
+    [SVProgressHUD showWithStatus:@"分享中……"];
+    // 请求分享的url
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSDictionary *goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
+            id h5url  = [goodsDetails objectForKey:@"h5url"];
+            h5url = h5url == nil ? @"" : h5url;
+            BOOL flag = [h5url isKindOfClass:[NSNull class]];
+            h5url =  flag ? @"" : h5url;
+            NSString *title = [dic objectForKey:@"goodsName"];
+            NSString *conent = [dic objectForKey:@"shopName"];
+            NSString *url = h5url;
+            NSString *description = title;
+            NSString *imagePath = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
+            
+            //分享内容
+            [WSShareSDKUtil shareWithTitle:title content:conent description:description url:url imagePath:imagePath thumbImagePath:imagePath result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                if (state == SSResponseStateSuccess)
+                {
+                    DLog(@"分享成功");
+                }
+                else if (state == SSResponseStateFail)
+                {
+                    DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
+                }
+            }];
+
+            
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismissWithError:@"分享失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }
 
@@ -690,10 +756,13 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)typeSegmentControlAction:(UISegmentedControl *)segmentedControl
 {
     NSInteger index = segmentedControl.selectedSegmentIndex;
+    
     shopType = index;
     switch (shopType) {
         case ShopTypeSuperMarket:
         {
+//            _supermarketCollectionView.hidden = NO;
+//            _baihuofuzhuangCollectView.hidden = YES;
             if (superMarketDataArray.count == 0) {
                 [self requestGetHomePageGoos];
             }
@@ -701,6 +770,8 @@ typedef NS_ENUM(NSInteger, ShopType)
             break;
         case ShopTypeBaihuoFuzhuang:
         {
+//            _supermarketCollectionView.hidden = YES;
+//            _baihuofuzhuangCollectView.hidden = NO;
             if (baihuoFuzhuangDataArray.count == 0) {
                 [self requestGetHomePageGoos];
             }
@@ -709,30 +780,7 @@ typedef NS_ENUM(NSInteger, ShopType)
         default:
             break;
     }
-    [_collectionView reloadData];
-    [_collectionView addHeaderWithCallback:^{
-        switch (shopType) {
-            case ShopTypeSuperMarket:
-            {
-                supermarketCurPage = 0;
-                [self requestGetHomePageGoos];
-            }
-                break;
-            case ShopTypeBaihuoFuzhuang:
-            {
-                baihuoCurPage = 0;
-                [self requestGetHomePageGoos];
-            }
-                break;
-            default:
-                break;
-        }
-        
-        DLog(@"下拉刷新完成！");
-    }];
-    [_collectionView addFooterWithCallback:^{
-        [self requestGetHomePageGoos];
-    }];
+    [_supermarketCollectionView reloadData];
 }
 
 #pragma mark - BMKMapViewDelegate

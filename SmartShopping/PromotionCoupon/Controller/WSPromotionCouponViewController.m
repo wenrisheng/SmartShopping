@@ -38,8 +38,8 @@
     int storeFIndex; // 当前选中的一级商店
     int storeSIndex; // 当前选中的二级商店
     
-    NSMutableArray *pinleiFDataArray;
-    NSMutableDictionary *pinleiSDic;
+    NSMutableArray *pinleiFDataArray; // 品类
+    NSMutableDictionary *pinleiSDic; // 二级品类
     int pinleiFIndex;
     int pinleiSIndex;
     BOOL isSelectedPinlei;
@@ -49,10 +49,12 @@
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
 @property (assign, nonatomic) double latitude;
-@property (strong, nonatomic) NSString *districtId;
-@property (strong, nonatomic) NSString *townId;
-@property (strong, nonatomic) NSString *shopTypeId;
-@property (strong, nonatomic) NSString *retailId;
+@property (strong, nonatomic) NSString *districtId; //区id
+@property (strong, nonatomic) NSString *townId;// 商圈id
+@property (strong, nonatomic) NSString *shopTypeId; // 商店类型id
+@property (strong, nonatomic) NSString *retailId; //零售商id
+@property (strong, nonatomic) NSString *categoryId; //品类id
+@property (strong, nonatomic) NSString *brandIds; //品牌id数组
 @property (strong, nonatomic) NSString *distance;
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -92,7 +94,7 @@
     // 初始化视图
     [self initView];
     
-   // [self addTestData];
+    //[self addTestData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,9 +113,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+    [self clearParam];
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeIsInshopByPromotions] data:@{@"lon":[NSString stringWithFormat:@"%f", _longtide], @"lat": [NSString stringWithFormat:@"%f", _latitude]} tag:WSInterfaceTypeIsInshopByPromotions sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        
+    } failCallBack:^(id error) {
+        [SVProgressHUD dismiss];
+    }];
+    isInStore = YES;
     // 在店内
     if (isInStore) {
-        
+        [self toInStoreStatus:@"沃尔玛"];
         // 不在店内
     } else {
         if (outStoreDataArray.count == 0) {
@@ -132,7 +143,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
+- (void)clearParam
+{
+    self.districtId = nil;
+    self.townId = nil;
+    self.shopTypeId = nil;
+    self.retailId = nil;
+    self.categoryId = nil;
+    self.brandIds = nil;
+    self.distance = nil;
+}
 
 #pragma mark - 用户位置更新
 - (void)locationUpdate:(NSNotification *)notification
@@ -251,6 +271,10 @@
 
 - (void)requestOutShopGoodsList
 {
+    if (_city.length == 0) {
+        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [SVProgressHUD showWithStatus:@"加载中……"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
@@ -270,11 +294,17 @@
     if (_retailId) {
         [params setValue:_retailId forKey:@"retailId"];
     }
+    if (!isInStore) {
+        if (_categoryId) {
+            [params setValue:_categoryId forKey:@"categoryId"];
+        }
+    }
+
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
 //    [params setValue:@"2000" forKey:@"distance"];
     [params setValue:[NSString stringWithFormat:@"%d", outStoreCurPage + 1] forKey:@"pages"];
-    [params setValue:PAGE_SIZE forKey:@"pageSize"];
+    [params setValue:@"20" forKey:@"pageSize"];
     [SVProgressHUD showWithStatus:@"加载中……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeOutShopGoodsList] data:params tag:WSInterfaceTypeOutShopGoodsList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
@@ -431,7 +461,7 @@
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
     if (isInStore) {
-         doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 6;
+         doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 3;
     } else {
          doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 4;
     }
@@ -529,6 +559,8 @@
         }
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
+        outStoreCurPage = 0;
+        [self requestOutShopGoodsList];
     };
 
 }
@@ -670,7 +702,7 @@
     NSMutableArray *tempSArray = [NSMutableArray array];
     if (FCount > 0) {
         NSDictionary *dic = [pinleiFDataArray objectAtIndex:0];
-        NSString *mainId = [dic objectForKey:@"mainId"];
+        NSString *mainId = [dic stringForKey:@"mainId"];
         NSArray *secondArray = [storeSDic objectForKey:mainId];
         // 第一个数据的二级品类数据是否为空
         if (secondArray.count == 0) {
@@ -698,8 +730,8 @@
     doubleTable.tableFCallBack = ^(NSInteger index) {
         pinleiFIndex = (int)index;
         NSDictionary *dic = [pinleiFDataArray objectAtIndex:index];
-        NSString *mainId = [dic objectForKey:@"mainId"];
-        NSArray *secondArray = [storeSDic objectForKey:mainId];
+        NSString *mainId = [dic stringForKey:@"mainId"];
+        NSArray *secondArray = [pinleiSDic objectForKey:mainId];
         // 第一个数据的二级数据是否为空
         // 二级数据为空时请求数据
         if (secondArray.count == 0) {
@@ -709,7 +741,7 @@
         } else {
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSDictionary *dic = [pinleiFDataArray objectAtIndex:index];
-            NSArray *tempArray = [pinleiSDic objectForKey:[dic objectForKey:@"mainId"]];
+            NSArray *tempArray = [pinleiSDic objectForKey:[dic stringForKey:@"mainId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -726,10 +758,12 @@
     doubleTable.tableSCallBack = ^(NSInteger index) {
         isSelectedPinlei = YES;
         pinleiSIndex = (int)index;
-        NSDictionary *dic = [storeFDataArray objectAtIndex:pinleiFIndex];
-        NSString *mainId = [dic objectForKey:@"mainId"];
-        NSArray *secondArray = [storeSDic objectForKey:mainId];
-        NSString *title = [[secondArray objectAtIndex:index] objectForKey:@"name"];
+        NSDictionary *dic = [pinleiFDataArray objectAtIndex:pinleiFIndex];
+        NSString *mainId = [dic stringForKey:@"mainId"];
+        NSArray *secondArray = [pinleiSDic objectForKey:mainId];
+        NSDictionary *SDic = [secondArray objectAtIndex:index];
+        self.categoryId = [SDic stringForKey:@"mainId"];
+        NSString *title = [SDic objectForKey:@"name"];
         if (isInStore) {
             [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = title;
         } else {
@@ -759,10 +793,15 @@
 #pragma mark - 请求区域筛选getAreaList
 - (void)requestGetFAreaList
 {
-    [SVProgressHUD showWithStatus:@"加载中……"];
+  
 #ifdef DEBUG
     _city = @"广州";
 #endif
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败!" duration:TOAST_VIEW_TIME];
+        return;
+    }
+    [SVProgressHUD showWithStatus:@"加载中……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAreaList] data:@{@"cityName": _city} tag:WSInterfaceTypeGetAreaList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
@@ -786,6 +825,11 @@
 #pragma mark  请求二级区域筛选getAreaList
 - (void)requestGetSAreaListWithDistrictId:(NSString *)districtId
 {
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败!" duration:TOAST_VIEW_TIME];
+        return;
+    }
+    [SVProgressHUD showWithStatus:@"加载中……"];
     [SVProgressHUD showWithStatus:@"加载中……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAreaList] data:@{@"cityName": _city, @"districtId": districtId} tag:WSInterfaceTypeGetAreaList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
@@ -882,7 +926,7 @@
             NSInteger count = categorys.count;
             if (count > 0) {
                 NSDictionary *dic = [categorys objectAtIndex:0];
-                NSString *mainId = [dic objectForKey:@"mainId"];
+                NSString *mainId = [dic stringForKey:@"mainId"];
                 [self requestGetShopCategoryWithParentId:mainId];
             }
         }
@@ -961,11 +1005,17 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    NSArray *tempArray = nil;
     if (isInStore) {
-        return inStoreDataArray.count;
+        tempArray = inStoreDataArray;
     } else {
-        return outStoreDataArray.count;
+        tempArray = outStoreDataArray;
     }
+    NSInteger count = tempArray.count;
+    if (count == 0) {
+        return 1;
+    }
+    return count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -973,33 +1023,47 @@
     NSInteger row = indexPath.row;
     if (isInStore) { // 在店内
         HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
-        cell.validDateLabel.text = [NSString stringWithFormat:@"%d,%d", (int)indexPath.section, (int)indexPath.row];
-        cell.delegate = self;
-        [cell.bigImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        NSInteger count = inStoreDataArray.count;
+        if (count == 0) {
+            cell.hidden = YES;
+        } else {
+            cell.hidden = NO;
             
-        }];
-        [cell.smallImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042g"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-        }];
+            cell.validDateLabel.text = [NSString stringWithFormat:@"%d,%d", (int)indexPath.section, (int)indexPath.row];
+            cell.delegate = self;
+            [cell.bigImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+            }];
+            [cell.smallImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042g"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+            }];
+        }
         return cell;
     } else { // 不在店内
         WSPromotionCouponOutStoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell" forIndexPath:indexPath];
-        [cell.leftCollectBut addTarget:self action:@selector(outStoreLeftCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.rightCollectBut addTarget:self action:@selector(outStoreRightCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.leftShareBut addTarget:self action:@selector(outStoreLeftShareButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.rightShareBut addTarget:self action:@selector(outStoreRightShareButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.leftProductBut addTarget:self action:@selector(leftProductButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.rightProductBut addTarget:self action:@selector(rightProductButAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        cell.leftCollectBut.tag = row;
-        cell.rightCollectBut.tag = row;
-        cell.leftShareBut.tag = row;
-        cell.rightShareBut.tag = row;
-        cell.leftProductBut.tag = row;
-        cell.rightProductBut.tag = row;
-        
-        NSDictionary *dic = [outStoreDataArray objectAtIndex:row];
-        [cell setModel:dic];
+        NSInteger count = inStoreDataArray.count;
+        if (count == 0) {
+            cell.hidden = YES;
+        } else {
+            cell.hidden = NO;
+            [cell.leftCollectBut addTarget:self action:@selector(outStoreLeftCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.rightCollectBut addTarget:self action:@selector(outStoreRightCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.leftShareBut addTarget:self action:@selector(outStoreLeftShareButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.rightShareBut addTarget:self action:@selector(outStoreRightShareButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.leftProductBut addTarget:self action:@selector(leftProductButAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.rightProductBut addTarget:self action:@selector(rightProductButAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.leftCollectBut.tag = row;
+            cell.rightCollectBut.tag = row;
+            cell.leftShareBut.tag = row;
+            cell.rightShareBut.tag = row;
+            cell.leftProductBut.tag = row;
+            cell.rightProductBut.tag = row;
+            
+            NSDictionary *dic = [outStoreDataArray objectAtIndex:row];
+            [cell setModel:dic];
+        }
+       
         return cell;
     }
 }

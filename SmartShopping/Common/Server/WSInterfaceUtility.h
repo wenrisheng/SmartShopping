@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define BASE_URL    @"http://121.41.86.29:8080/jmg"
-//#define BASE_URL    @"http://121.41.86.29:8080"
+#define BASE_URL    @"http://121.41.86.29:8888/jmg"
+//#define BASE_URL    @"http://121.41.86.29:8888"
 
 
 typedef NS_ENUM(NSInteger, WSInterfaceType) {
+    
+    /***************************登录 | 注册**********************************/
     WSInterfaceTypeLogin = 0,                     // 登陆
     WSInterfaceTypeRegister,                       //注册
     WSInterfaceTypeResetPassword,                 //忘记密码 | 修改密码
@@ -20,36 +22,53 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeUpdatePhone,                   // 修改手机号码
     WSInterfaceTypeGetEmailValidCode,            // 获取邮箱验证码
     WSInterfaceTypeUpdateUser,                   // 用户资料修改
+    
+    /***************************我的**********************************/
     WSInterfaceTypeMytowGift,                    // 我的页面奖励兑换
     WSInterfaceTypeBeanScope,                    // 奖励兑换-豆子范围接口
     WSInterfaceTypeGiftCategory,                 // 奖励兑换-礼品分类条件接口
     WSInterfaceTypeSearchGift,                    // 奖励兑换-礼品查询
     WSInterfaceTypeGetGiftDetails,                // 礼品详情
     WSInterfaceTypeExchangeGift,                 // 礼品兑换
-    
     WSInterfaceTypeMyGiftList,                   // 我的兑换、消费券
     WSInterfaceTypeUserAgreeAbout,               // 用户协议、关于
     WSInterfaceTypeFeedBack,                     // 用户意见反馈
     WSInterfaceTypeCollectGoods,                 //收藏商品
     WSInterfaceTypeMyCollectList,                // 我的收藏列表
     WSInterfaceTypeDeleteCollect,                //删除收藏
+    WSInterfaceTypeSynchroBeanNumber,            //用户登录时同步精明豆
+    
+    /***************************首页**********************************/
     WSInterfaceTypeGetAdsPhoto,                  // 首页广告轮播图片
     WSInterfaceTypeGetHomePageGoods,             // 首页附件精选
     WSInterfaceTypeUserMessage,                  // 消息列表
     WSInterfaceTypeuUpdateMessage,               // 更新用户消息是否已读
     WSInterfaceTypeDelMessage,                   // 删除用户消息
     WSInterfaceTypeGetGoodsDetails,              // 查询商品详情
+    
+    /***************************促销优惠**********************************/
     WSInterfaceTypeGetAreaList,                  //区域筛选条件
     WSInterfaceTypeGetShopTypeList,              //所有商店筛选条件
     WSInterfaceTypeGetShopCategory,              //品类筛选条件
     WSInterfaceTypeOutShopGoodsList,             // 店外查询接口
     WSInterfaceTypeCheckMoreGoodsList,           // 查看更多
+    WSInterfaceTypeIsInshopByPromotions,         // 用户是否在店内
+    
+    /***************************到店签到**********************************/
     WSInterfaceTypeShopSignList,                 // 不在店内（列表）
     WSInterfaceTypeEarnSignBean,                 // 签到获取精明豆
+    WSInterfaceTypeSsInshopBySign,               // 用户是否在店内
+    
+     /***************************商品扫描活动**********************************/
     WSInterfaceTypeGoodsScanList,                // 扫描首页商品列表
     WSInterfaceTypeInShopGoodsScanList,           // 店内扫描商品列表
     WSInterfaceTypeEarnBeanByScanGoods,          // 扫描商品获得精明豆 
-//    WSInterfaceTypeCheckMoreGoodsList,            // 查看更多
+ 
+
+//    WSInterfaceTypeShopSignList,                  // 到店签到
+//    WSInterfaceType
+//    WSInterfaceType
+//    WSInterfaceType
 
 };
 

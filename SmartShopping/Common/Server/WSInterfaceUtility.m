@@ -103,6 +103,11 @@
             return [NSString stringWithFormat:@"%@/app/deleteCollect.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeSynchroBeanNumber:
+        {
+            return [NSString stringWithFormat:@"%@/app/synchroBeanNumber.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeFeedBack:
         {
             return [NSString stringWithFormat:@"%@/app/feedBack.do", BASE_URL];
@@ -183,14 +188,29 @@
             return [NSString stringWithFormat:@"%@/app/earnBeanByScanGoods.do", BASE_URL];
         }
             break;
-//        case WSInterfaceTypeGoodsScanList:
+        case WSInterfaceTypeCheckMoreGoodsList:
+        {
+            return [NSString stringWithFormat:@"%@/app/checkMoreGoodsList.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeIsInshopByPromotions:
+        {
+            return [NSString stringWithFormat:@"%@/app/isInshopByPromotions.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeSsInshopBySign:
+        {
+            return [NSString stringWithFormat:@"%@/app/isInshopBySign.do", BASE_URL];
+        }
+            break;
+//        case WSInterfaceTypeIsInshopByPromotions:
 //        {
-//            return [NSString stringWithFormat:@"%@/app/goodsScanList.do", BASE_URL];
+//            return [NSString stringWithFormat:@"%@/app/isInshopByPromotions.do", BASE_URL];
 //        }
 //            break;
-//        case WSInterfaceTypeGoodsScanList:
+//        case WSInterfaceTypeIsInshopByPromotions:
 //        {
-//            return [NSString stringWithFormat:@"%@/app/goodsScanList.do", BASE_URL];
+//            return [NSString stringWithFormat:@"%@/app/isInshopByPromotions.do", BASE_URL];
 //        }
 //            break;
         default:

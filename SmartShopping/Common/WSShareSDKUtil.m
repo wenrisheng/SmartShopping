@@ -10,7 +10,25 @@
 
 @implementation WSShareSDKUtil
 
-+ (void)shareWithTitle:(NSString *)title content:(NSString *)content description:(NSString *)description url:(NSString *)url imagePath:(NSString *)imagePath thumbImagePath:(NSString *)thumbImagePath result:(SSPublishContentEventHandler)result
++ (void)shareWithTitle:(NSString *)title
+               content:(NSString *)content
+           description:(NSString *)description
+                   url:(NSString *)url
+             imagePath:(NSString *)imagePath
+        thumbImagePath:(NSString *)thumbImagePath
+                result:(SSPublishContentEventHandler)result
+{
+    [WSShareSDKUtil shareWithTitle:title content:content description:description url:url imagePath:imagePath thumbImagePath:thumbImagePath mediaType:SSPublishContentMediaTypeText result:result];
+}
+
++ (void)shareWithTitle:(NSString *)title
+               content:(NSString *)content
+           description:(NSString *)description
+                   url:(NSString *)url
+             imagePath:(NSString *)imagePath
+        thumbImagePath:(NSString *)thumbImagePath
+             mediaType:(SSPublishContentMediaType)mediaType
+                result:(SSPublishContentEventHandler)result
 {
     //构造分享内容
     id<ISSContent> publishContent = [ShareSDK content:content
@@ -19,7 +37,7 @@
                                                 title:title
                                                   url:url
                                           description:description
-                                            mediaType:SSPublishContentMediaTypeNews];
+                                            mediaType:mediaType];
     
     //以下信息为特定平台需要定义分享内容，如果不需要可省略下面的添加方法
     //定制QQ分享信息
@@ -93,7 +111,7 @@
                                 if (result) {
                                     result(type, state,statusInfo, error, end);
                                 }
-    }];
+                            }];
 }
 
 @end

@@ -67,7 +67,7 @@
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="T6r-7h-cPE">
                                     <rect key="frame" x="0.0" y="40" width="320" height="376"/>
-                                    <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3YU-ZW-yhJ">
                                         <size key="itemSize" width="50" height="50"/>
                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -80,7 +80,7 @@
                                     </connections>
                                 </collectionView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="rKf-Z7-V4S" firstAttribute="top" secondItem="cVd-jY-qBd" secondAttribute="top" id="OKI-fN-H9d"/>
                                 <constraint firstAttribute="trailing" secondItem="rKf-Z7-V4S" secondAttribute="trailing" id="SEH-6S-EgG"/>
@@ -92,7 +92,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="cVd-jY-qBd" firstAttribute="leading" secondItem="Bc3-38-pMs" secondAttribute="leading" id="02I-8J-Pw4"/>
                         <constraint firstAttribute="bottom" secondItem="cVd-jY-qBd" secondAttribute="bottom" id="C5K-zZ-FSf"/>
