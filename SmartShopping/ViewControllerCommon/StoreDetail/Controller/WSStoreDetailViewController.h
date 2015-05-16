@@ -9,4 +9,6 @@
 
 @interface WSStoreDetailViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *shopid;
+
 @end

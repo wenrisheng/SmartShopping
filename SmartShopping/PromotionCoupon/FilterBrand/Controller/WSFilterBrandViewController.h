@@ -10,4 +10,8 @@
 
 @interface WSFilterBrandViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *mainId;
+
+@property (copy) void(^callBack)(NSArray *array);
+
 @end

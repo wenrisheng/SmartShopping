@@ -92,24 +92,55 @@
                                         <constraint firstAttribute="width" constant="1" id="MjN-sL-o0H"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2if-nj-VJR">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPe-TI-ina">
                                     <rect key="frame" x="21" y="15" width="40" height="56"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2if-nj-VJR">
+                                            <rect key="frame" x="0.0" y="0.0" width="40" height="56"/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gainpeas_icon-06.png" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-ea-tWQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="MT1-ed-86y"/>
+                                                <constraint firstAttribute="height" constant="40" id="frd-pL-NBD"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="rlS-UJ-u6u"/>
+                                                <constraint firstAttribute="width" constant="40" id="roR-Oc-6KI"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="到店签到" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K29-Vr-7bS">
+                                            <rect key="frame" x="0.0" y="40" width="40" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <color key="textColor" red="0.41960784309999999" green="0.42352941179999998" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="56" id="TOf-xU-9iN"/>
-                                        <constraint firstAttribute="width" constant="40" id="qjE-FB-UaM"/>
+                                        <constraint firstItem="2if-nj-VJR" firstAttribute="leading" secondItem="sPe-TI-ina" secondAttribute="leading" id="8k1-EX-ecY"/>
+                                        <constraint firstItem="K29-Vr-7bS" firstAttribute="leading" secondItem="sPe-TI-ina" secondAttribute="leading" id="8rM-Fa-ZRd"/>
+                                        <constraint firstAttribute="width" constant="40" id="C62-5h-kEB"/>
+                                        <constraint firstAttribute="bottom" secondItem="2if-nj-VJR" secondAttribute="bottom" id="ET5-0i-H93"/>
+                                        <constraint firstItem="ohG-ea-tWQ" firstAttribute="leading" secondItem="sPe-TI-ina" secondAttribute="leading" id="M54-0W-Vh2"/>
+                                        <constraint firstAttribute="trailing" secondItem="2if-nj-VJR" secondAttribute="trailing" id="Pgl-fn-yJD"/>
+                                        <constraint firstAttribute="bottom" secondItem="K29-Vr-7bS" secondAttribute="bottom" id="Vd2-kf-YIe"/>
+                                        <constraint firstAttribute="height" constant="56" id="cer-fd-7hX"/>
+                                        <constraint firstItem="ohG-ea-tWQ" firstAttribute="top" secondItem="sPe-TI-ina" secondAttribute="top" id="gnq-Eq-VAT"/>
+                                        <constraint firstAttribute="trailing" secondItem="K29-Vr-7bS" secondAttribute="trailing" id="jPu-86-FN5"/>
+                                        <constraint firstItem="K29-Vr-7bS" firstAttribute="top" secondItem="ohG-ea-tWQ" secondAttribute="bottom" id="uiE-pa-cAc"/>
+                                        <constraint firstItem="2if-nj-VJR" firstAttribute="top" secondItem="sPe-TI-ina" secondAttribute="top" id="wSo-ZH-oaf"/>
                                     </constraints>
-                                    <state key="normal" backgroundImage="store_signin.png">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Nhx-9V-Cs2" firstAttribute="leading" secondItem="qdQ-fo-ccd" secondAttribute="leading" id="1Jv-qJ-Q0d"/>
-                                <constraint firstAttribute="centerY" secondItem="2if-nj-VJR" secondAttribute="centerY" id="5O1-3a-exk"/>
                                 <constraint firstAttribute="bottom" secondItem="Nhx-9V-Cs2" secondAttribute="bottom" constant="10" id="885-pD-b93"/>
-                                <constraint firstAttribute="centerX" secondItem="2if-nj-VJR" secondAttribute="centerX" id="I03-Nd-bjA"/>
                                 <constraint firstAttribute="width" constant="82" id="RSY-uH-1iB"/>
+                                <constraint firstAttribute="centerX" secondItem="sPe-TI-ina" secondAttribute="centerX" id="pok-iD-a2Q"/>
+                                <constraint firstAttribute="centerY" secondItem="sPe-TI-ina" secondAttribute="centerY" id="t6g-bS-MaY"/>
                                 <constraint firstItem="Nhx-9V-Cs2" firstAttribute="top" secondItem="qdQ-fo-ccd" secondAttribute="top" constant="10" id="y26-q5-98e"/>
                             </constraints>
                         </view>
@@ -173,13 +204,14 @@
                 <outlet property="distanceLabel" destination="cEC-Zk-jn8" id="J1O-EG-8rU"/>
                 <outlet property="loginImageView" destination="PN6-r2-FQG" id="gdh-WJ-IhL"/>
                 <outlet property="signupBut" destination="2if-nj-VJR" id="WgD-oO-1kZ"/>
+                <outlet property="signupImageView" destination="ohG-ea-tWQ" id="EAv-4j-R8v"/>
                 <outlet property="storeNameLabel" destination="rQc-G2-fyS" id="Slc-4X-j66"/>
             </connections>
             <point key="canvasLocation" x="416" y="139.5"/>
         </collectionReusableView>
     </objects>
     <resources>
+        <image name="gainpeas_icon-06.png" width="90" height="90"/>
         <image name="map.png" width="12" height="18"/>
-        <image name="store_signin.png" width="90" height="122"/>
     </resources>
 </document>

@@ -36,10 +36,10 @@
     [_navigationBarManagerView.navigationBarButLabelButView.rightBut setTitle:@"" forState:UIControlStateNormal];
     dataArray = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < 5; i++) {
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{SELECTED_FLAG : @"1"}];
-        [dataArray addObject:dic];
-    }
+//    for (int i = 0; i < 5; i++) {
+//        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{SELECTED_FLAG : @"1"}];
+//        [dataArray addObject:dic];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,12 +47,41 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark 请求二级品类
+- (void)requestGetShopCategory
+{
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopCategory] data:@{@"level": @"2", @"parentId": _mainId} tag:WSInterfaceTypeGetShopTypeList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *categorys = [[result objectForKey:@"data"] objectForKey:@"categorys"];
+            NSInteger SCount = categorys.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [categorys objectAtIndex:i];
+                [datadic setObject:@"1" forKey:SELECTED_FLAG];
+                [dataArray addObject:dic];
+            }
+            [_contentTableView reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
+    
+}
+
+
 #pragma mark - WSNavigationBarButLabelButViewDelegate
 - (void)navigationBarRightButClick:(UIButton *)but
 {
     NSPredicate *allSelectedPred = [NSPredicate predicateWithFormat:@"selected_flag == '1'"];
     NSArray *selectedArray = [dataArray filteredArrayUsingPredicate:allSelectedPred];
-
+    if (_callBack) {
+        _callBack(selectedArray);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -81,6 +110,7 @@
     } else {
         cell.leftImageView.image = [UIImage imageNamed:@"choose-02.png"];
     }
+    cell.rightLabel.text = [dic objectForKey:@"name"];
     return cell;
 }
 

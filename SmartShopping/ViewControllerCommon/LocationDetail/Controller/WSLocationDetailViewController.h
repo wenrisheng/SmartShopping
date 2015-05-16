@@ -10,5 +10,10 @@
 
 @interface WSLocationDetailViewController : WSServiceViewController
 
+@property (assign, nonatomic) double latitude;
+@property (assign, nonatomic) double longitude;
+
+@property (strong, nonatomic) NSString *locTitle;
+@property (strong, nonatomic) NSString *address;
 
 @end

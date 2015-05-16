@@ -13,9 +13,12 @@
 #import "WSMineViewController.h"
 #import <Parse/Parse.h>
 
+//#import "IBSDK.h"
+
 @interface AppDelegate () <BMKGeneralDelegate>
 {
      BMKMapManager* _mapManager;
+//    IBSDK *ibsdk;
 }
 @end
 
@@ -37,8 +40,27 @@
     
     [[WSBMKUtil sharedInstance] startUserLocationService];
     
+   // [self testIbeaCon];
+    
     return YES;
 }
+
+//- (void)testIbeaCon
+//{
+//
+//    ibsdk = [[IBSDK alloc] init];
+//    [ibsdk startLocation];
+//    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(check) userInfo:nil repeats:YES];
+//}
+//
+//- (void)check
+//{
+//    NSArray *ibeacons = ibsdk.beaconsArray;
+//    for (id beacon in ibeacons) {
+//        DLog(@"beacon:%@", beacon);
+//    }
+//    
+//}
 
 #pragma mark - 初始化百度地图 BMK
 - (void)initBMK

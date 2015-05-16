@@ -54,10 +54,10 @@
     _mapView.delegate = self;
     pointAnnotation = [[BMKPointAnnotation alloc]init];
     CLLocationCoordinate2D coor;
-    coor.latitude = 23.12368;
-    coor.longitude = 113.38236;
+    coor.latitude = _latitude;
+    coor.longitude = _longitude;
     pointAnnotation.coordinate = coor;
-    pointAnnotation.title = @"骏景花园";
+    pointAnnotation.title = @"";
     [_mapView addAnnotation:pointAnnotation];
     
 
@@ -71,6 +71,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+   // [[WSBMKUtil sharedInstance] stopUserLocationService];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     _locService.delegate = self;
 }
@@ -79,6 +80,7 @@
     [super viewWillDisappear:animated];
     _mapView.delegate = nil; // 不用时，置nil
     _locService.delegate = nil;
+    //[[WSBMKUtil sharedInstance] startUserLocationService];
 }
 
 #pragma mark - BMKLocationServiceDelegate
@@ -120,8 +122,8 @@
             annotationView.draggable = YES;
             
             PaopaoView *paopaoView = [[PaopaoView alloc] initWithFrame:CGRectMake(0, 0, 80, 60)];
-            paopaoView.titleLabel.text = @"华润万家";
-            paopaoView.addressLabel.text = @"天河区华南师范大学BRT站";
+//            paopaoView.titleLabel.text = _locTitle;
+//            paopaoView.addressLabel.text = _address;
             
             
             UIView *popView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 60)];
@@ -130,14 +132,14 @@
             CGRect bounds = popView.bounds;
             //
             UILabel *driverName = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, bounds.size.width - 2 * 5, 20)];
-            driverName.text = @"华润万家";
+            driverName.text = _locTitle;
             driverName.backgroundColor = [UIColor clearColor];
             driverName.font = [UIFont systemFontOfSize:14];
             driverName.textColor = [UIColor colorWithWhite:0.406 alpha:1.000];
             [popView addSubview:driverName];
             
             UILabel *carName = [[UILabel alloc]initWithFrame:CGRectMake(5, 15, bounds.size.width - 2 * 5, bounds.size.height - 20)];
-            carName.text = @"天河区华南师范大学BRT站";
+            carName.text = _address;
             carName.numberOfLines = 0;
             carName.backgroundColor = [UIColor clearColor];
             carName.font = [UIFont systemFontOfSize:10];

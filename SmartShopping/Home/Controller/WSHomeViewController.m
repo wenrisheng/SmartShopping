@@ -222,8 +222,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     } else{
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_city forKey:@"cityName"];
-        [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
         [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lon"];
+        [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
         [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
         switch (shopType) {
             case ShopTypeSuperMarket:
@@ -663,20 +663,128 @@ typedef NS_ENUM(NSInteger, ShopType)
             NSString *url = h5url;
             NSString *description = title;
             NSString *imagePath = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
+            imagePath = @"http://d.hiphotos.baidu.com/image/h%3D360/sign=8bf2b4c8229759ee555066cd82fa434e/0dd7912397dda1442e3cbc77b6b7d0a20cf4863a.jpg";
             
-            //分享内容
-            [WSShareSDKUtil shareWithTitle:title content:conent description:description url:url imagePath:imagePath thumbImagePath:imagePath result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                if (state == SSResponseStateSuccess)
-                {
-                    DLog(@"分享成功");
+            //1.定制分享的内容
+            NSString* path = [[NSBundle mainBundle]pathForResource:@"ShareSDK" ofType:@"jpg"];
+            id<ISSContent> publishContent = [ShareSDK content:@"Hello,Code4App.com!" defaultContent:nil image:[ShareSDK imageWithPath:path] title:@"This is title" url:@"http://mob.com" description:@"This is description" mediaType:SSPublishContentMediaTypeImage];
+            //2.调用分享菜单分享
+            [ShareSDK showShareActionSheet:nil shareList:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                //如果分享成功
+                if (state == SSResponseStateSuccess) {
+                    NSLog(@"分享成功");
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
                 }
-                else if (state == SSResponseStateFail)
-                {
-                    DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
+                //如果分享失败
+                if (state == SSResponseStateFail) {
+                    NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"分享失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
+                }
+                if (state == SSResponseStateCancel){
+                    NSLog(@"分享取消");
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"进入了分享取消状态" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
                 }
             }];
 
             
+
+//            //定制QQ空间信息
+//            [publishContent addQQSpaceUnitWithTitle:INHERIT_VALUE
+//                                                url:INHERIT_VALUE
+//                                               site:nil
+//                                            fromUrl:nil
+//                                            comment:INHERIT_VALUE
+//                                            summary:INHERIT_VALUE
+//                                              image:INHERIT_VALUE
+//                                               type:INHERIT_VALUE
+//                                            playUrl:nil
+//                                               nswb:nil];
+//            
+//            //定制微信好友信息
+//            [publishContent addWeixinSessionUnitWithType:INHERIT_VALUE
+//                                                 content:INHERIT_VALUE
+//                                                   title:INHERIT_VALUE
+//                                                     url:INHERIT_VALUE
+//                                              thumbImage:INHERIT_VALUE
+//                                                   image:INHERIT_VALUE
+//                                            musicFileUrl:nil
+//                                                 extInfo:nil
+//                                                fileData:nil
+//                                            emoticonData:nil];
+//            
+//            //定制微信朋友圈信息
+//            [publishContent addWeixinTimelineUnitWithType:INHERIT_VALUE
+//                                                  content:INHERIT_VALUE
+//                                                    title:INHERIT_VALUE
+//                                                      url:INHERIT_VALUE
+//                                               thumbImage:INHERIT_VALUE
+//                                                    image:INHERIT_VALUE
+//                                             musicFileUrl:INHERIT_VALUE
+//                                                  extInfo:nil
+//                                                 fileData:nil
+//                                             emoticonData:nil];
+//            [publishContent addSinaWeiboUnitWithContent:INHERIT_VALUE image:INHERIT_VALUE];
+//            
+            
+            //构造分享内容
+//            id<ISSContent> publishContent = [ShareSDK content:@"content"
+//                                               defaultContent:@"defaultContent"
+//                                                        image:[ShareSDK imageWithPath:@"http://d.hiphotos.baidu.com/image/h%3D360/sign=8bf2b4c8229759ee555066cd82fa434e/0dd7912397dda1442e3cbc77b6b7d0a20cf4863a.jpg"]
+//                                                        title:@"title"
+//                                                          url:@"http://www.baidu.com"
+//                                                  description:@"descript"
+//                                                    mediaType:SSPublishContentMediaTypeMusic];
+//            
+//            //以下信息为特定平台需要定义分享内容，如果不需要可省略下面的添加方法
+//            //定制QQ分享信息
+////            [publishContent addQQUnitWithType:INHERIT_VALUE
+////                                      content:INHERIT_VALUE
+////                                        title:INHERIT_VALUE
+////                                          url:INHERIT_VALUE
+////                                        image:INHERIT_VALUE];
+//            
+//            if ([[UIDevice currentDevice].systemVersion versionStringCompare:@"7.0"] != NSOrderedAscending)
+//            {
+//                //7.0以上只允许发文字，定义Line信息
+//                [publishContent addLineUnitWithContent:INHERIT_VALUE
+//                                                 image:nil];
+//            }
+//            
+//            
+//            //创建弹出菜单容器
+//            id<ISSContainer> container = [ShareSDK container];
+//            [container setIPadContainerWithView:nil arrowDirect:UIPopoverArrowDirectionUp];
+//            
+//            //弹出分享菜单
+//            [ShareSDK showShareActionSheet:container
+//                                 shareList:nil
+//                                   content:publishContent
+//                             statusBarTips:YES
+//                               authOptions:nil
+//                              shareOptions:nil
+//                                    result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+//                                        if (result) {
+//                                            if (state == SSResponseStateSuccess) {
+//                                                DLog(@"分享成功");
+//                                            }
+//                                            else if (state == SSResponseStateFail) {
+//                                                DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
+//                                            }
+//                                        }
+//                                    }];
+            
+            //分享内容
+//            [WSShareSDKUtil shareWithTitle:title content:conent description:description url:url imagePath:imagePath thumbImagePath:imagePath result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+//                if (state == SSResponseStateSuccess) {
+//                    DLog(@"分享成功");
+//                }
+//                else if (state == SSResponseStateFail) {
+//                    DLog(@"分享失败,错误码:%d,错误描述:%@", (int)[error errorCode], [error errorDescription]);
+//                }
+//            }];
         }
     } failCallBack:^(id error) {
         [SVProgressHUD dismissWithError:@"分享失败！" afterDelay:TOAST_VIEW_TIME];
@@ -686,7 +794,32 @@ typedef NS_ENUM(NSInteger, ShopType)
 #pragma mark 距离按钮
 - (void)homeCollectionViewCellDidClickDistanceBut:(HomeCollectionViewCell *)cell
 {
+    NSArray *tempArray = nil;
+    switch (shopType) {
+        case ShopTypeSuperMarket:
+        {
+            tempArray = superMarketDataArray;
+        }
+            break;
+        case ShopTypeBaihuoFuzhuang:
+        {
+            tempArray = baihuoFuzhuangDataArray;
+        }
+            break;
+        default:
+            break;
+    }
+    NSInteger tag = cell.tag;
+    NSDictionary *dic = [tempArray objectAtIndex:tag];
+    NSString *lat = [dic stringForKey:@"lat"];
+    NSString *lon = [dic stringForKey:@"lon"];
+    NSString *shopName = [dic stringForKey:@"shopName"];
+    NSString *address = [dic objectForKeyedSubscript:@"address"];
     WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+    locationDetailVC.latitude = [lon doubleValue];
+    locationDetailVC.longitude = [lat doubleValue];
+    locationDetailVC.locTitle = shopName;
+    locationDetailVC.address = address;
     [self.navigationController pushViewController:locationDetailVC animated:YES];
 }
 

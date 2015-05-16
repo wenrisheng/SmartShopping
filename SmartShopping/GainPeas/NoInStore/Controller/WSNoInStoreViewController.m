@@ -96,6 +96,8 @@
     // 1. GPS定位不在店内跳到 不在签到范围页面 WSInStoreNoSignScopeViewController
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
+    
+   
     [self toStoreDetail];
 }
 

@@ -34,4 +34,6 @@ typedef void(^ServiceFailCallBack)(id error);
 
 - (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack;
 
++ (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack showMessage:(BOOL)showMessage;
+
 @end

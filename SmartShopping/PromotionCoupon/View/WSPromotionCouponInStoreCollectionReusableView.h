@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIButton *signupBut;
+@property (weak, nonatomic) IBOutlet UIImageView *signupImageView;
 
 @end

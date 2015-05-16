@@ -24,17 +24,20 @@
                                         <rect key="frame" x="0.0" y="0.0" width="130" height="152"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cm7-hE-gfi">
-                                        <rect key="frame" x="35" y="8" width="95" height="20"/>
+                                        <rect key="frame" x="49" y="8" width="81" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time-clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="Den-Wy-NwI">
-                                                <rect key="frame" x="3" y="3" width="15" height="15"/>
+                                                <rect key="frame" x="2" y="2" width="15" height="15"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="15" id="av6-jy-o1W"/>
-                                                    <constraint firstAttribute="width" constant="15" id="woy-xW-CBf"/>
+                                                    <constraint firstAttribute="width" constant="15" id="6vy-81-PYR"/>
+                                                    <constraint firstAttribute="height" constant="15" id="Xog-IE-52D"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11月10日前有效" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYi-z5-mwh">
-                                                <rect key="frame" x="18" y="0.0" width="77" height="20"/>
+                                                <rect key="frame" x="19" y="0.0" width="58.5" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" priority="250" constant="77" id="NoR-dt-1Ya"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -42,14 +45,14 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.27450980390000002" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="XYi-z5-mwh" secondAttribute="bottom" id="2dv-2A-tQD"/>
-                                            <constraint firstAttribute="trailing" secondItem="XYi-z5-mwh" secondAttribute="trailing" id="50i-gd-vuA"/>
-                                            <constraint firstAttribute="centerY" secondItem="Den-Wy-NwI" secondAttribute="centerY" id="67q-A8-Jcf"/>
-                                            <constraint firstItem="Den-Wy-NwI" firstAttribute="leading" secondItem="cm7-hE-gfi" secondAttribute="leading" constant="3" id="JJE-CZ-n4d"/>
-                                            <constraint firstItem="XYi-z5-mwh" firstAttribute="top" secondItem="cm7-hE-gfi" secondAttribute="top" id="NV4-XU-iii"/>
-                                            <constraint firstAttribute="width" constant="95" id="UXo-6K-9Ah"/>
+                                            <constraint firstAttribute="bottom" secondItem="XYi-z5-mwh" secondAttribute="bottom" id="4HE-Jt-eG9"/>
+                                            <constraint firstAttribute="trailing" secondItem="XYi-z5-mwh" secondAttribute="trailing" constant="3" id="CD6-8l-ybh"/>
+                                            <constraint firstItem="XYi-z5-mwh" firstAttribute="leading" secondItem="Den-Wy-NwI" secondAttribute="trailing" constant="2.5" id="KeY-f1-AjM"/>
+                                            <constraint firstItem="Den-Wy-NwI" firstAttribute="leading" secondItem="cm7-hE-gfi" secondAttribute="leading" constant="2" id="Rgj-BQ-omY"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" priority="250" constant="81" id="UXo-6K-9Ah"/>
+                                            <constraint firstItem="XYi-z5-mwh" firstAttribute="top" secondItem="cm7-hE-gfi" secondAttribute="top" id="aYt-zh-kV8"/>
                                             <constraint firstAttribute="height" constant="20" id="c15-N6-3Ze"/>
-                                            <constraint firstItem="XYi-z5-mwh" firstAttribute="leading" secondItem="Den-Wy-NwI" secondAttribute="trailing" id="kZc-3A-y1U"/>
+                                            <constraint firstAttribute="centerY" secondItem="Den-Wy-NwI" secondAttribute="centerY" id="pin-rT-TeF"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -80,7 +83,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pi-PX-KuG">
-                                                <rect key="frame" x="12.5" y="5" width="20" height="20"/>
+                                                <rect key="frame" x="12" y="5" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="3Et-BM-kZJ"/>
                                                     <constraint firstAttribute="height" constant="20" id="eTy-EE-zXV"/>

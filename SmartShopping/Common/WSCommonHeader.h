@@ -33,7 +33,6 @@
 #import "WXApi.h"
 #import "WeiboSDK.h"
 #import "WeiboApi.h"
-#import "YXApi.h"
 //以下是腾讯QQ和QQ空间
 #import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>

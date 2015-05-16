@@ -76,6 +76,8 @@
 #ifdef DEBUG
     NSString * str = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
     DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
+    DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
+
 #endif
     
     // 请求完成
@@ -181,6 +183,86 @@
     if ([_delegate respondsToSelector:@selector(requestFail:tag:)]) {
         [_delegate requestFail:request.error tag:(int)request.tag];
     }
+}
+
++ (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack showMessage:(BOOL)showMessage;
+{
+    NSURL *nsUrl = [NSURL URLWithString:url];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsUrl];
+    request.tag = tag;
+    [request setTimeOutSeconds:ASIHTTPWRAP_TIMEOUT_DEFAULT];
+    NSArray *allKeys = [dataDic allKeys];
+    
+    // 当入参value为nil时改为@""
+    for(id key in allKeys)
+    {
+        id value = [dataDic valueForKey:key];
+        value = value == nil ? @"" : value;
+        [request setPostValue:value forKey:(NSString *)key];
+    }
+    [request buildPostBody];
+    
+    // 调试 打印请求url及入参
+#ifdef DEBUG
+    NSString * str = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
+    DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
+    DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
+#endif
+    
+    // 请求完成
+    [request setCompletionBlock:^{
+        if (showMessage) {
+            [SVProgressHUD dismiss];
+        }
+        NSData *responseData = [request responseData];
+        NSError *jsonError = nil;
+        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&jsonError];
+        
+        // 调试打印响应数据
+#ifdef DEBUG
+        NSError *requestError = request.error;
+        if (requestError) {
+            DLog(@"requstError:%@", requestError);
+        }
+        if (jsonError) {
+            DLog(@"JSON 解析失败:%@", jsonError);
+        }
+        NSArray *allKeys = [resultDic allKeys];
+        NSMutableString *resultStr = [[NSMutableString alloc] init];
+        [resultStr appendString:@"*********request result:\n"];
+        [resultStr appendString:@"{\n"];
+        for (id key in allKeys) {
+            [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
+        }
+        [resultStr appendString:@"}\n"];
+        [resultStr appendString:@"*********************\n"];
+        DLog(@"%@", resultStr);
+#endif
+        
+        // 成功回调
+        if (sucCallBack) {
+            sucCallBack(resultDic);
+        }
+    }];
+    
+    // 请求失败
+    [request setFailedBlock:^{
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+        // 调试 打印请求错误
+#ifdef  DEBUG
+        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+#endif
+        
+        // 请求错误回调
+        if (failCallBack) {
+            failCallBack(request.error);
+        }
+    }];
+    if (showMessage) {
+        [SVProgressHUD showWithStatus:@"加载中……"];
+    }
+    // 开始异步请求
+    [request startAsynchronous];
 }
 
 
