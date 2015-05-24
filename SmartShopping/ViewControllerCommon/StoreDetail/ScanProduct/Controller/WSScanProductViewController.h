@@ -10,4 +10,9 @@
 
 @interface WSScanProductViewController : WSServiceViewController
 
+@property (copy) void(^scanSucCallBack)(void);
+
+@property (strong, nonatomic) NSString *shopid;
+@property (strong, nonatomic) NSString *goodsId;
+
 @end

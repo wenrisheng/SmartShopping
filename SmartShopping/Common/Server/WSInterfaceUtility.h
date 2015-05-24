@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     
     /***************************登录 | 注册**********************************/
     WSInterfaceTypeLogin = 0,                     // 登陆
+    WSInterfaceTypeThirdlogin,                    // 第三方登录
     WSInterfaceTypeRegister,                       //注册
     WSInterfaceTypeResetPassword,                 //忘记密码 | 修改密码
     WSInterfaceTypeGetValidCode,                  // 获取验证码
@@ -45,6 +46,8 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeuUpdateMessage,               // 更新用户消息是否已读
     WSInterfaceTypeDelMessage,                   // 删除用户消息
     WSInterfaceTypeGetGoodsDetails,              // 查询商品详情
+    WSInterfaceTypeSearchShop,                   // 首页商店搜索
+    WSInterfaceTypeSelectGoods,                  // 首页商品搜索
     
     /***************************促销优惠**********************************/
     WSInterfaceTypeGetAreaList,                  //区域筛选条件

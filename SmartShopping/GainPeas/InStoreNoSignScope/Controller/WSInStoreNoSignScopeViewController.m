@@ -9,6 +9,7 @@
 #import "WSInStoreNoSignScopeViewController.h"
 
 @interface WSInStoreNoSignScopeViewController ()
+@property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 
 @end
 
@@ -17,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"到店签到";
 }
 
 - (void)didReceiveMemoryWarning {

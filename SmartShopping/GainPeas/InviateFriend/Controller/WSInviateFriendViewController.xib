@@ -9,6 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInviateFriendViewController">
             <connections>
                 <outlet property="adImageScrollManagerView" destination="Gbe-Ce-jk6" id="LrU-ie-KtC"/>
+                <outlet property="inviateCodeLabel" destination="q7v-PJ-Esi" id="eUw-Bq-HJs"/>
                 <outlet property="navigationBarManagerView" destination="2RQ-iY-3JB" id="ucd-hV-wlM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

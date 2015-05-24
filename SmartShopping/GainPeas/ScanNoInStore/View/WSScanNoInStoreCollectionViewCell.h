@@ -13,6 +13,8 @@
 
 @interface WSScanNoInStoreCollectionViewCell : UICollectionViewCell
 
+- (void)setModel:(NSDictionary *)dic;
+
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *bigbut;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;

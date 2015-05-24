@@ -11,15 +11,21 @@
 #import "WSScanNoInStoreReusableView.h"
 #import "WSHomeViewController.h"
 #import "WSAdvertisementDetailViewController.h"
+#import "WSProductDetailViewController.h"
+#import "WSStoreDetailViewController.h"
 
 @interface WSScanNoInStoreViewController ()
 {
     WSScanNoInStoreReusableView *headerView;
     NSMutableArray *dataArray;
     NSMutableArray *slideImageArray;
+    int curPage;
 }
 
 @property (strong, nonatomic) NSString *city;
+@property (assign, nonatomic) double longtide;
+@property (assign, nonatomic) double latitude;
+
 @property (weak, nonatomic) IBOutlet UIView *tipView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -34,6 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    curPage = 0;
     dataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     [_tipView setBorderCornerWithBorderWidth:0 borderColor:[UIColor clearColor] cornerRadius:_tipView.bounds.size.height / 2];
@@ -43,25 +50,15 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"WSScanNoInStoreReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView"];
     
     
-    [_collectionView addHeaderWithCallback:^{
-        // 模拟延迟加载数据，因此2秒后才调用）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 结束刷新
-            [_collectionView headerEndRefreshing];
-        });
-        
-        DLog(@"下拉刷新完成！");
+    [_collectionView addLegendHeaderWithRefreshingBlock:^{
+        curPage = 0;
+        [self requestGoodsScanList];
     }];
-    [_collectionView addFooterWithCallback:^{
-        // 模拟延迟加载数据，因此2秒后才调用）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 结束刷新
-            [_collectionView footerEndRefreshing];
-        });
-        
-        DLog(@"下拉刷新完成！");
+    [_collectionView addLegendFooterWithRefreshingBlock:^{
+        [self requestGoodsScanList];
     }];
- [self addTestData];
+    [self requestGoodsScanList];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,6 +96,9 @@
     if (_city.length > 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
+    if (dataArray.count == 0) {
+        [self requestGoodsScanList];
+    }
 }
 
 - (void)setLocationCity:(NSDictionary *)locationDic
@@ -107,6 +107,14 @@
 //    if (deoCodeFalg == 0) {
         NSString *city = [locationDic objectForKey:LOCATION_CITY];
         self.city = city;
+        self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
+        self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
+    if (slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
+    }
+    if (dataArray.count == 0) {
+        [self requestGoodsScanList];
+    }
         DLog(@"定位：%@", city);
 //    }
 }
@@ -127,6 +135,30 @@
     }];
 }
 
+- (void)requestGoodsScanList
+{
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:_city forKey:@"cityName"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
+    [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGoodsScanList] data:params tag:WSInterfaceTypeGoodsScanList sucCallBack:^(id result) {
+        NSArray *goodsScanList = [[result objectForKey:@"data"] objectForKey:@"goodsScanList"];
+        if (curPage == 0) {
+            [dataArray removeAllObjects];
+        }
+        curPage++;
+        [dataArray addObjectsFromArray:goodsScanList];
+        [_collectionView reloadData];
+    } failCallBack:^(id error) {
+        
+    } showMessage:YES];
+}
 
 #pragma mark - 测试数据
 - (void)addTestData
@@ -152,6 +184,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (dataArray.count == 0) {
+        return 1;
+    }
     return dataArray.count;
 }
 
@@ -159,12 +194,14 @@
 {
     NSInteger row = indexPath.row;
     WSScanNoInStoreCollectionViewCell *cell = (WSScanNoInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSScanNoInStoreCollectionViewCell" forIndexPath:indexPath];
-    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
-    [cell.smallImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/bizhi042g"] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
+    if (dataArray.count == 0) {
+        cell.hidden = YES;
+        return cell;
+    } else {
+        cell.hidden = NO;
+        NSDictionary *dic = [dataArray objectAtIndex:row];
+        [cell setModel:dic];
+    }
     [cell.bigbut addTarget:self action:@selector(productButAction:) forControlEvents:UIControlEventTouchUpInside];
     [cell.logoBut addTarget:self action:@selector(storeLogoButAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.bigbut.tag = row;
@@ -238,13 +275,25 @@
 #pragma mark - 产品按钮时间
 - (void)productButAction:(UIButton *)but
 {
-    
+    NSInteger tag = but.tag;
+    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    NSString *goodsId = [dic stringForKey:@"goodsId"];
+    NSString *shopId = [dic stringForKey:@"shopId"];
+    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+    productDetailVC.goodsId = goodsId;
+    productDetailVC.shopId = shopId;
+    [self.navigationController pushViewController:productDetailVC animated:YES];
 }
 
 #pragma mark 商店logo按钮事件
 - (void)storeLogoButAction:(UIButton *)but
 {
-    
+    NSInteger tag = but.tag;
+    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    NSString *shopId = [dic stringForKey:@"shopId"];
+    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+    storeDetailVC.shopid = shopId;
+    [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
 @end

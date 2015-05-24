@@ -51,7 +51,7 @@
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     double longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     double latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    NSDictionary *params = @{@"lat": [NSString stringWithFormat:@"%f", latitude], @"lon": [NSString stringWithFormat:@"%f", longtide]};
+    NSDictionary *params = @{@"lon": [NSString stringWithFormat:@"%f", latitude], @"lat": [NSString stringWithFormat:@"%f", longtide]};
     switch (type) {
             // 促销优惠
         case IsInStoreTypePromotionCoupon:
@@ -64,12 +64,11 @@
                     // 在店内
                     if ([isinshop isEqualToString:@"Y"]) {
                          [resultDic setValue:[NSNumber numberWithBool:YES] forKey:IS_IN_SHOP_FLAG];
-                        [resultDic setValue:isInShopDic forKey:IS_IN_SHOP_DATA];
                         //不在店内
                     } else {
                          [resultDic setValue:[NSNumber numberWithBool:NO] forKey:IS_IN_SHOP_FLAG];
                     }
-                    [resultDic setValue:result forKey:IS_IN_SHOP_DATA];
+                    [resultDic setValue:isInShopDic forKey:IS_IN_SHOP_DATA];
                 // 校验数据有错也表示不在店内
                 } else {
                     [resultDic setValue:[NSNumber numberWithBool:NO] forKey:IS_IN_SHOP_FLAG];
@@ -95,7 +94,7 @@
                 BOOL flag = [WSInterfaceUtility validRequestResult:result];
                 if (flag) {
                     NSDictionary *isInShopDic = [[result objectForKey:@"data"] objectForKey:@"isInShop"];
-                    NSString *isinshop = [isInShopDic stringForKey:@"isInShop"];
+                    NSString *isinshop = [isInShopDic stringForKey:@"isinshop"];
                     // 在店内
                     if ([isinshop isEqualToString:@"Y"]) {
                         [resultDic setValue:[NSNumber numberWithBool:YES] forKey:IS_IN_SHOP_FLAG];
@@ -104,7 +103,7 @@
                     } else {
                         [resultDic setValue:[NSNumber numberWithBool:NO] forKey:IS_IN_SHOP_FLAG];
                     }
-                    [resultDic setValue:result forKey:IS_IN_SHOP_DATA];
+                    [resultDic setValue:isInShopDic forKey:IS_IN_SHOP_DATA];
                     // 校验数据有错也表示不在店内
                 } else {
                     [resultDic setValue:[NSNumber numberWithBool:NO] forKey:IS_IN_SHOP_FLAG];

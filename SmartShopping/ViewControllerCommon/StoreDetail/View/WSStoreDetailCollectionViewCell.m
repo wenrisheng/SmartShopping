@@ -12,7 +12,7 @@
 
 - (void)setModel:(NSDictionary *)dic
 {
-    NSString *goodsLogo= [dic objectForKey:@"shopLogo"];
+    NSString *goodsLogo= [dic objectForKey:@"goodsLogo"];
     [_imageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:goodsLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];

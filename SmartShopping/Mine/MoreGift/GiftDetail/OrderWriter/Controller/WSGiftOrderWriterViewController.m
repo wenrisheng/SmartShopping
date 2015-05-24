@@ -96,7 +96,7 @@
     } else {
         canBuy = NO;
         [self notAdd];
-        _remainPeaLabel.text = [NSString stringWithFormat:@"主任您的精明豆还差%d个", unitNum - currentPeaNum];
+        _remainPeaLabel.text = [NSString stringWithFormat:@"主人您的精明豆还差%d个", unitNum - currentPeaNum];
         _remainPeaLabel.textColor = [UIColor colorWithRed:0.902 green:0.376 blue:0.129 alpha:1.000];
         [self showFailView];
     }

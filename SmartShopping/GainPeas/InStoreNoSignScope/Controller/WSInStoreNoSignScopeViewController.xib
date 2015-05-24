@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInStoreNoSignScopeViewController">
             <connections>
+                <outlet property="navigationBarManagerView" destination="jNY-h4-Ty8" id="upp-dw-d7j"/>
                 <outlet property="view" destination="YNv-Yb-5da" id="dub-fn-XOf"/>
             </connections>
         </placeholder>
@@ -60,7 +61,7 @@
                 <constraint firstItem="jNY-h4-Ty8" firstAttribute="top" secondItem="YNv-Yb-5da" secondAttribute="top" id="uvh-t5-YoV"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="217" y="95"/>
+            <point key="canvasLocation" x="109" y="151"/>
         </view>
     </objects>
     <resources>

@@ -42,6 +42,8 @@ typedef NS_ENUM(NSInteger, UserLoginType) {
 
 @property (strong, nonatomic) NSString *phone;
 
+@property (strong, nonatomic) NSString *thirdid; // 第三方标记
+
 // 推送通知
 @property (assign, nonatomic) BOOL isPushNotification;
 @property (assign, nonatomic) int loginType;

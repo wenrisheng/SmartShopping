@@ -97,7 +97,7 @@
         }
         NSArray *allKeys = [resultDic allKeys];
         NSMutableString *resultStr = [[NSMutableString alloc] init];
-        [resultStr appendString:@"*********request result:\n"];
+        [resultStr appendString:[NSString stringWithFormat:@"*********request  %d result:\n", (int)request.tag]];
         [resultStr appendString:@"{\n"];
         for (id key in allKeys) {
             [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
@@ -208,19 +208,19 @@
     DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
     DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
 #endif
-    
+    __weak ASIFormDataRequest *respRequest = request;
     // 请求完成
     [request setCompletionBlock:^{
         if (showMessage) {
             [SVProgressHUD dismiss];
         }
-        NSData *responseData = [request responseData];
+        NSData *responseData = [respRequest responseData];
         NSError *jsonError = nil;
         NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&jsonError];
         
         // 调试打印响应数据
 #ifdef DEBUG
-        NSError *requestError = request.error;
+        NSError *requestError = respRequest.error;
         if (requestError) {
             DLog(@"requstError:%@", requestError);
         }
@@ -247,7 +247,10 @@
     
     // 请求失败
     [request setFailedBlock:^{
-        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+        if (showMessage) {
+             [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+        }
+       
         // 调试 打印请求错误
 #ifdef  DEBUG
         NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);

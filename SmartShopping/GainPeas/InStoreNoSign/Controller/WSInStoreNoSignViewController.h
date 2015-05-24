@@ -9,4 +9,7 @@
 
 @interface WSInStoreNoSignViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *shopid;
+@property (strong, nonatomic) NSString *shopName;
+
 @end

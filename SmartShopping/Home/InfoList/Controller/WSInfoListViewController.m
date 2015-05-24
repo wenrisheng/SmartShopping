@@ -138,6 +138,8 @@
     } else {
         NSString *goodsNumber = [dic objectForKey:@"goodsNumber"];
         WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+        
+        
         productDetailVC.goodsNumber = goodsNumber;
         [self.navigationController pushViewController:productDetailVC animated:YES];
     }

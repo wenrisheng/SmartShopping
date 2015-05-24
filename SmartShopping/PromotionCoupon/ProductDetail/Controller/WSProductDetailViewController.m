@@ -87,24 +87,7 @@
                 //收藏
             case 0:
             {
-                WSUser *user = [WSRunTime sharedWSRunTime].user;
-                if (user) {
-                    NSDictionary *param = @{@"uid": user._id, @"goodsid": [_goodsDetails objectForKey:@"id"]};
-                    [SVProgressHUD show];
-                    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-                        [SVProgressHUD dismiss];
-                        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-                        if (flag) {
-                            [CollectSucView showCollectSucView];
-                        }
-                    } failCallBack:^(id error) {
-                        
-                    }];
-                } else {
-                    [WSUserUtil actionAfterLogin:^{
-                        
-                    }];
-                }
+                [self collectAction];
             }
                 break;
                 // 扫描或分享

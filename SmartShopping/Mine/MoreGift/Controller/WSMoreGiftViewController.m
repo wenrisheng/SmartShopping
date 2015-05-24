@@ -314,6 +314,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 - (void)showAllCategorySelectView
 {
     WSDoubleTableView *doubleTable= [self getDoubleTableView];
+    doubleTable.topView.hidden = YES;
     doubleTable.tableF.hidden = YES;
     doubleTable.tableS.hidden = NO;
     doubleTable.hidden = NO;
@@ -354,7 +355,12 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         return doubleTableView;
     } else {
         doubleTableView = GET_XIB_FIRST_OBJECT(@"WSDoubleTableView");
-        doubleTableView.topViewHeightCon = 0;
+        doubleTableView.topViewHeightCon.constant = -10;
+        [doubleTableView.topView needsUpdateConstraints];
+        UIView *topView = doubleTableView.topView;
+        for (UIView *subview in topView.subviews) {
+            [subview removeFromSuperview];
+        }
         doubleTableView.bgView.backgroundColor = [UIColor clearColor];
         doubleTableView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:doubleTableView];
@@ -421,7 +427,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
             break;
         case MoreGiftViewTypeFilterView:
         {
-            static NSString *identify = @"";
+            static NSString *identify = @"WSMoreGiftSearchResultCell";
             WSMoreGiftSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
             if (!cell) {
                 cell = GET_XIB_FIRST_OBJECT(identify);
@@ -503,7 +509,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     [self toGiftDetailVC:modelDic];
 }
 
-#pragma mark leftButAction
+#pragma mark rightButAction
 - (void)rightButAction:(UIButton *)but
 {
     NSInteger tag = but.tag;
@@ -530,7 +536,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 - (void)toGiftDetailVC:(id)param
 {
     WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
-    giftDetailVC.giftId = [param objectForKey:@"WSGiftDetailViewController"];
+    giftDetailVC.giftId = [param stringForKey:@"giftId"];
     [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 

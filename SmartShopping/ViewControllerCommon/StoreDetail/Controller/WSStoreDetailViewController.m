@@ -13,6 +13,7 @@
 #import "WSScanProductViewController.h"
 #import "WSScanProductViewController.h"
 #import "WSProductDetailViewController.h"
+#import "WSScanAfterViewController.h"
 
 @interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -40,7 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"珠江新城汇景新城店";
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"--";
     dataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     currentPage = 0;
@@ -52,11 +53,11 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView"];
     
     
-    [_collectionView addHeaderWithCallback:^{
+    [_collectionView addLegendHeaderWithRefreshingBlock:^{
         currentPage = 0;
         [self requestStoreDetail];
     }];
-    [_collectionView addFooterWithCallback:^{
+    [_collectionView addLegendFooterWithRefreshingBlock:^{
         [self requestStoreDetail];
     }];
 
@@ -114,10 +115,13 @@
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
+//    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
     DLog(@"定位：%@", city);
     if (!_shop) {
         [self requestStoreDetail];
+    }
+    if (slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
     }
     //    }
 }
@@ -125,6 +129,10 @@
 #pragma mark - 请求幻灯片
 - (void)requestGetAdsPhoto
 {
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"5"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -150,7 +158,7 @@
     if (user) {
         [params setValue:user._id forKey:@"uid"];
     }
-    [params setValue:@"shopid" forKey:_shopid];
+    [params setValue:_shopid forKey:@"shopid"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%d", currentPage + 1] forKey:@"pages"];
@@ -163,6 +171,8 @@
             if (currentPage == 0) {
                 [dataArray removeAllObjects];
             }
+            NSString *shopName = [_shop objectForKey:@"shopName"];
+            _navigationBarManagerView.navigationBarButLabelView.label.text = shopName;
             NSArray *goodsList = [_shop objectForKey:@"goodsList"];
             NSInteger count = goodsList.count;
             for (int i = 0; i < count; i++) {
@@ -185,6 +195,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (dataArray.count == 0) {
+        return 1;
+    }
     return dataArray.count;
 }
 
@@ -290,13 +303,36 @@
 {
     // 1. 不在店内则提示不在店内
     // 2. 在店内则跳到 WSScanProductViewController
-    [self toScanProduct];
+  
+    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
+        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+        // 在店内
+        if (isInStore) {
+            [WSUserUtil actionAfterLogin:^{
+                NSDictionary *dic = [dataArray objectAtIndex:but.tag];
+                WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+                NSString *shopid = [_shop stringForKey:@"shopid"];
+                NSString *goodsId = [dic stringForKey:@"goodsId"];
+                scanProductVC.scanSucCallBack = ^() {
+                    WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
+                    scanAfterVC.goodsId = goodsId;
+                    scanAfterVC.shopid = shopid;
+                    scanAfterVC.beanNum = [dic stringForKey:@"beannumber"];
+                    [self.navigationController pushViewController:scanAfterVC animated:YES];
+                };
+                scanProductVC.shopid = shopid;
+                scanProductVC.goodsId = goodsId;
+                [self.navigationController pushViewController:scanProductVC animated:YES];
+            }];
+
+            // 不在店内
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"亲，您当前不在店内！" duration:TOAST_VIEW_TIME];
+        }
+        
+    }];
+
 }
 
-- (void)toScanProduct
-{
-    WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
-    [self.navigationController pushViewController:scanProductVC animated:YES];
-}
 
 @end

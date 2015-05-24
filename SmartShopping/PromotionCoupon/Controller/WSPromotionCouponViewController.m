@@ -17,14 +17,24 @@
 #import "CollectSucView.h"
 #import "WSProductDetailViewController.h"
 #import "WSPromotionCouponInStoreCollectionViewCell.h"
+#import "WSInStoreNoSignScopeViewController.h"
+#import "WSLocationDetailViewController.h"
+#import "WSInStoreNoSignViewController.h"
+#import "WSStoreDetailViewController.h"
+#import "WSSearchViewController.h"
+
+typedef NS_ENUM(NSInteger, SearchType) {
+    SearchTypeProduct = 0,
+    SearchTypeStore ,
+};
 
 @interface WSPromotionCouponViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NavigationBarButSearchButViewDelegate, WSPromotionCouponInStoreCollectionViewCellDelegate>
 {
-    NSMutableArray *inStoreDataArray;
-    NSMutableArray *outStoreDataArray;
-    BOOL isInStore;
-    int outStoreCurPage;
-    int inStoreCurPage;
+    NSMutableArray *productDataArray;
+    NSMutableArray *storeDataArray;
+    SearchType searchType;
+    int storeCurPage;
+    int productCurPage;
     
     WSDoubleTableView *doubleTableView;
     NSMutableArray *dataArrayF;
@@ -58,11 +68,12 @@
 @property (strong, nonatomic) NSString *shopTypeId; // 商店类型id
 @property (strong, nonatomic) NSString *retailId; //零售商id
 @property (strong, nonatomic) NSString *categoryId; //品类id
-@property (strong, nonatomic) NSString *brandIds; //品牌id数组
+@property (strong, nonatomic) NSMutableArray *brandIds; //品牌id数组
 @property (strong, nonatomic) NSString *distance;
 
 @property (strong, nonatomic) NSDictionary *isInShop;
 @property (strong, nonatomic) NSDictionary *shop; // 在店内商店信息
+@property (strong, nonatomic) NSString *shopId;
 @property (strong, nonatomic) NSString *mainId;// 一级品类id
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -86,11 +97,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    inStoreDataArray = [[NSMutableArray alloc] init];
-    outStoreDataArray = [[NSMutableArray alloc] init];
-    isInStore = NO;
-    outStoreCurPage = 0;
-    inStoreCurPage = 0;
+    productDataArray = [[NSMutableArray alloc] init];
+    storeDataArray = [[NSMutableArray alloc] init];
+    searchType = SearchTypeStore;
+    productCurPage = 0;
+    storeCurPage= 0;
     
     domainFDataArray = [[NSMutableArray alloc] init];
     domainSDataDic = [[NSMutableDictionary alloc] init];
@@ -116,7 +127,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    searchType = SearchTypeStore;
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
@@ -129,23 +140,25 @@
     // 判断用户是否在店内
     [SVProgressHUD showWithStatus:@"加载中……"];
     [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypePromotionCoupon callback:^(id result) {
-        isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+       BOOL isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
         // 在店内
         if (isInStore) {
             NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
             self.isInShop = isInShop;
+            self.shopId = [isInShop stringForKey:@"shopId"];
             // 请求商店详情
+            productCurPage = 0;
             [self requestStoreDetail];
             // 不在店内
         } else {
             [self toOutStoreStatus];
-            if (outStoreDataArray.count == 0) {
-                if (_city.length > 0) {
-                    [self requestOutShopGoodsList];
-                } else {
-                    [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-                }
+            if (_city.length > 0) {
+                storeCurPage = 0;
+                [self requestOutShopGoodsList];
+            } else {
+                [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
             }
+            
             [_contentCollectionView reloadData];
         }
     }];
@@ -157,52 +170,199 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    if (doubleTableView) {
+        doubleTableView.hidden = YES;
+    }
+}
+
 #pragma mark - 请求商店详情
 - (void)requestStoreDetail
 {
     //请求商店详情接口获取商店名
-    NSString *shopId = [_isInShop stringForKey:@"shopId"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
         [params setValue:user._id forKey:@"uid"];
     }
-    [params setValue:@"shopid" forKey:shopId];
+    [params setValue:_shopId forKey:@"shopid"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
-    [params setValue:[NSString stringWithFormat:@"%d", inStoreCurPage + 1] forKey:@"pages"];
+    [params setValue:[NSString stringWithFormat:@"%d", productCurPage + 1] forKey:@"pages"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
+            _contentCollectionView.backgroundColor = [UIColor whiteColor];
             NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
-            self.shop = shop;
-            NSString *shopName = [shop objectForKey:@"shopName"];
-            isInStore = YES;
-            [self toInStoreStatus:shopName];
-            if (inStoreCurPage == 0) {
-                [inStoreDataArray removeAllObjects];
+//            if (!_shop) {
+                 self.shop = shop;
+                NSString *shopName = [shop objectForKey:@"shopName"];
+                [self toInStoreStatus:shopName];
+//            }
+           
+           
+            if (productCurPage == 0) {
+                [productDataArray removeAllObjects];
             }
-            inStoreCurPage ++;
+            productCurPage ++;
             NSArray *goodsList = [shop objectForKey:@"goodsList"];
             NSInteger count = goodsList.count;
             for (int i = 0; i < count; i++) {
                 NSDictionary *dic = [goodsList objectAtIndex:i];
                 NSMutableDictionary *converDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-                [inStoreDataArray addObject:converDic];
+                [productDataArray addObject:converDic];
             }
+            searchType = SearchTypeProduct;
             [_contentCollectionView reloadData];
         } else {
             //不在店内
-            [self toOutStoreStatus];
+           // [self toOutStoreStatus];
         }
     } failCallBack:^(id error) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         // 不在店内
         [self toOutStoreStatus];
     } showMessage:NO];
+}
+
+#pragma mark 店外查询接口
+- (void)requestOutShopGoodsList
+{
+    if (_city.length == 0) {
+        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_contentCollectionView.header endRefreshing];
+        return;
+    }
+    searchType = SearchTypeStore;
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    [params setValue:_city forKey:@"cityName"];
+    if (_districtId) {
+        [params setValue:_districtId forKey:@"districtId"];
+    }
+    if (_townId) {
+        [params setValue:_townId forKey:@"townId"];
+    }
+    if (_shopTypeId) {
+        [params setValue:_shopTypeId forKey:@"shopTypeId"];
+    }
+    if (_retailId) {
+        [params setValue:_retailId forKey:@"retailId"];
+    }
+    
+    if (_categoryId) {
+        [params setValue:_categoryId forKey:@"categoryId"];
+    }
+    
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    //    [params setValue:@"2000" forKey:@"distance"];
+    [params setValue:[NSString stringWithFormat:@"%d", storeCurPage + 1] forKey:@"pages"];
+    [params setValue:@"20" forKey:@"pageSize"];
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeOutShopGoodsList] data:params tag:WSInterfaceTypeOutShopGoodsList sucCallBack:^(id result) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            _contentCollectionView.backgroundColor = [UIColor colorWithWhite:0.875 alpha:1.000];
+            searchType = SearchTypeStore;
+            NSArray *shopList = [[result objectForKey:@"data"] objectForKey:@"shopList"];
+            NSInteger count = shopList.count;
+            NSMutableArray *shopArray = [NSMutableArray array];
+            for (int i = 0; i < count; i++) {
+                NSDictionary *shop = [shopList objectAtIndex:i];
+                NSMutableDictionary *resultShopDic = [NSMutableDictionary dictionaryWithDictionary:shop];
+                NSArray *goodsList = [shop objectForKey:@"goodsList"];
+                NSInteger goodCount = goodsList.count;
+                NSMutableArray *tempArray = [NSMutableArray array];
+                for (int j = 0; j < goodCount; j++) {
+                    NSDictionary *goodDic = [goodsList objectAtIndex:i];
+                    NSMutableDictionary *resultGoodDic = [NSMutableDictionary dictionaryWithDictionary:goodDic];
+                    [resultGoodDic setValue:[shop stringForKey:@"shopId"] forKey:@"shopId"];
+                    [tempArray addObject:resultGoodDic];
+                }
+                [resultShopDic setValue:tempArray forKey:@"goodsList"];
+                [shopArray addObject:resultShopDic];
+            }
+            if (storeCurPage == 0) {
+                [storeDataArray removeAllObjects];
+            }
+            storeCurPage++;
+            [storeDataArray addObjectsFromArray:shopArray];
+            [_contentCollectionView reloadData];
+        }
+    } failCallBack:^(id error) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
+        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+    }];
+}
+
+#pragma mark  店内品类、品牌搜索搜索
+- (void)requestSelectGoods
+{
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_contentCollectionView endHeaderAndFooterRefresh];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    [params setValue:_city forKey:@"cityName"];
+    [params setValue:_districtId forKey:@"districtId"];
+    [params setValue:_townId forKey:@"townId"];
+    [params setValue:_shopTypeId forKey:@"shopTypeId"];
+    [params setValue:_retailId forKey:@"retailId"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:_categoryId forKey:@"categoryId"];
+    if (_brandIds.count > 0) {
+        [params setValue:_brandIds forKey:@"brandIds"];
+    }
+    
+    [params setValue:[NSString stringWithFormat:@"%d", productCurPage + 1] forKey:@"pages"];
+    [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSelectGoods] data:params tag:WSInterfaceTypeSelectGoods sucCallBack:^(id result) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *shopList = [[result objectForKey:@"data"] objectForKey:@"shopList"] ;
+            if (productCurPage == 0) {
+                [productDataArray removeAllObjects];
+            }
+            
+            // 将不可变字典转变为可变字典
+            NSInteger shopCount = shopList.count;
+            for (int i = 0; i < shopCount; i++) {
+                NSDictionary *shop = [shopList objectAtIndex:i];
+                NSArray *goodsList = [shop objectForKey:@"goodsList"];
+                NSInteger goodsCount = goodsList.count;
+                for (int j = 0; j < goodsCount; j++) {
+                    NSDictionary *goods = [goodsList objectAtIndex:j];
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                    [dic setValuesForKeysWithDictionary:goods];
+                    [dic setValue:[shop stringForKey:@"shopId"] forKey:@"shopId"];
+                    [productDataArray addObject:dic];
+                }
+            }
+            productCurPage ++;
+        }
+        [_contentCollectionView reloadData];
+    } failCallBack:^(id error) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
+    } showMessage:YES];
 }
 
 - (void)clearParam
@@ -214,6 +374,7 @@
     self.categoryId = nil;
     self.brandIds = nil;
     self.distance = nil;
+    self.mainId = nil;
 }
 
 #pragma mark - 用户位置更新
@@ -246,7 +407,7 @@
     [_navigationBarManagerView.navigationBarButSearchButView.leftBut setEnabled:NO];
     
     // tab 切换按钮
-    isInStore = NO;
+    searchType = SearchTypeStore;
     _inStoreTabSlideMnagerView.hidden = YES;
     _outStoreTabSlideManagerView.hidden = NO;
     _outStoreTabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
@@ -283,21 +444,49 @@
 
     // 注册
     [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponOutStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell"];
-    [_contentCollectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
+    [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponInStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell"];
     [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponInStoreCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSPromotionCouponInStoreCollectionReusableView"];
-    [_contentCollectionView addHeaderWithCallback:^{
-        if (isInStore) {
-            inStoreCurPage = 0;
-            [self requestStoreDetail];
-        } else {
-            [self requestOutShopGoodsList];
+    [_contentCollectionView addLegendHeaderWithRefreshingBlock:^{
+        switch (searchType) {
+            case SearchTypeStore:
+            {
+                storeCurPage = 0;
+                [self requestOutShopGoodsList];
+            }
+                break;
+            case SearchTypeProduct:
+            {
+                if (_mainId) {
+                    productCurPage = 0;
+                    [self requestSelectGoods];
+                    return ;
+                }
+                productCurPage = 0;
+                [self requestStoreDetail];
+            }
+                break;
+            default:
+                break;
         }
     }];
-    [_contentCollectionView addFooterWithCallback:^{
-        if (isInStore) {
-            [self requestStoreDetail];
-        } else {
-            [self requestOutShopGoodsList];
+    [_contentCollectionView addLegendFooterWithRefreshingBlock:^{
+        switch (searchType) {
+            case SearchTypeStore:
+            {
+                [self requestOutShopGoodsList];
+            }
+                break;
+            case SearchTypeProduct:
+            {
+                if (_mainId) {
+                    [self requestSelectGoods];
+                    return ;
+                }
+                [self requestStoreDetail];
+            }
+                break;
+            default:
+                break;
         }
     }];
 }
@@ -305,8 +494,8 @@
 #pragma mark - 测试数据
 - (void)addTestData
 {
-    [inStoreDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-    [outStoreDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
+    [productDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
+    [storeDataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
     dataArrayF = [[NSMutableArray alloc] init];
     dataArrayS = [[NSMutableArray alloc] init];
     for (int i = 0; i < 10; i++) {
@@ -328,127 +517,92 @@
     }
 }
 
-- (void)requestSearchShop
-{
-    if (_city.length == 0) {
-        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-        return;
-    }
-    [SVProgressHUD showWithStatus:@"加载中……"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
-    [params setValue:_city forKey:@"cityName"];
-    if (_districtId) {
-        [params setValue:_districtId forKey:@"districtId"];
-    }
-    if (_townId) {
-        [params setValue:_townId forKey:@"townId"];
-    }
-    if (_shopTypeId) {
-        [params setValue:_shopTypeId forKey:@"shopTypeId"];
-    }
-    if (_retailId) {
-        [params setValue:_retailId forKey:@"retailId"];
-    }
-    if (_categoryId) {
-        [params setValue:_categoryId forKey:@"categoryId"];
-    }
-    
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-    //    [params setValue:@"2000" forKey:@"distance"];
-    [params setValue:[NSString stringWithFormat:@"%d", outStoreCurPage + 1] forKey:@"pages"];
-    [params setValue:@"20" forKey:@"pageSize"];
-    [SVProgressHUD showWithStatus:@"加载中……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeOutShopGoodsList] data:params tag:WSInterfaceTypeOutShopGoodsList sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            NSArray *shopList = [[result objectForKey:@"data"] objectForKey:@"shopList"];
-            if (outStoreCurPage == 0) {
-                [outStoreDataArray removeAllObjects];
-            }
-            [outStoreDataArray addObjectsFromArray:shopList];
-            [_contentCollectionView reloadData];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
-    }];
-}
+//- (void)requestSearchShop
+//{
+//    if (_city.length == 0) {
+//        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+//        return;
+//    }
+//    [SVProgressHUD showWithStatus:@"加载中……"];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    WSUser *user = [WSRunTime sharedWSRunTime].user;
+//    if (user) {
+//        [params setValue:user._id forKey:@"uid"];
+//    }
+//    [params setValue:_city forKey:@"cityName"];
+//    if (_districtId) {
+//        [params setValue:_districtId forKey:@"districtId"];
+//    }
+//    if (_townId) {
+//        [params setValue:_townId forKey:@"townId"];
+//    }
+//    if (_shopTypeId) {
+//        [params setValue:_shopTypeId forKey:@"shopTypeId"];
+//    }
+//    if (_retailId) {
+//        [params setValue:_retailId forKey:@"retailId"];
+//    }
+//    if (_categoryId) {
+//        [params setValue:_categoryId forKey:@"categoryId"];
+//    }
+//    
+//    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
+//    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+//    //    [params setValue:@"2000" forKey:@"distance"];
+//    [params setValue:[NSString stringWithFormat:@"%d", storeCurPage + 1] forKey:@"pages"];
+//    [params setValue:@"20" forKey:@"pageSize"];
+//    [SVProgressHUD showWithStatus:@"加载中……"];
+//    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeOutShopGoodsList] data:params tag:WSInterfaceTypeOutShopGoodsList sucCallBack:^(id result) {
+//        [SVProgressHUD dismiss];
+//        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+//        if (flag) {
+//            NSArray *shopList = [[result objectForKey:@"data"] objectForKey:@"shopList"];
+//            if (storeCurPage == 0) {
+//                [storeDataArray removeAllObjects];
+//            }
+//            [storeDataArray addObjectsFromArray:shopList];
+//            [_contentCollectionView reloadData];
+//        }
+//    } failCallBack:^(id error) {
+//        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+//    }];
+//}
 
-- (void)requestOutShopGoodsList
-{
-    if (_city.length == 0) {
-        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-        return;
-    }
-    [SVProgressHUD showWithStatus:@"加载中……"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
-    [params setValue:_city forKey:@"cityName"];
-    if (_districtId) {
-        [params setValue:_districtId forKey:@"districtId"];
-    }
-    if (_townId) {
-        [params setValue:_townId forKey:@"townId"];
-    }
-    if (_shopTypeId) {
-        [params setValue:_shopTypeId forKey:@"shopTypeId"];
-    }
-    if (_retailId) {
-        [params setValue:_retailId forKey:@"retailId"];
-    }
-    if (!isInStore) {
-        if (_categoryId) {
-            [params setValue:_categoryId forKey:@"categoryId"];
-        }
-    }
-
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-//    [params setValue:@"2000" forKey:@"distance"];
-    [params setValue:[NSString stringWithFormat:@"%d", outStoreCurPage + 1] forKey:@"pages"];
-    [params setValue:@"20" forKey:@"pageSize"];
-    [SVProgressHUD showWithStatus:@"加载中……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeOutShopGoodsList] data:params tag:WSInterfaceTypeOutShopGoodsList sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            isInStore = NO;
-            NSArray *shopList = [[result objectForKey:@"data"] objectForKey:@"shopList"];
-            if (outStoreCurPage == 0) {
-                [outStoreDataArray removeAllObjects];
-            }
-            outStoreCurPage++;
-            [outStoreDataArray addObjectsFromArray:shopList];
-            [_contentCollectionView reloadData];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
-    }];
-}
-
-#pragma mark - 在店内搜索按钮事件
+#pragma mark - 品类搜索按钮事件
 - (void)inStoreSearchButAction:(UIButton *)but
 {
-    if (!_mainId) {
+    if (_mainId) {
+        WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
+        filterBrandVC.mainId = self.mainId;
+        filterBrandVC.callBack = ^(NSArray *array) {
+            NSMutableArray *subIdArray = [NSMutableArray array];
+            BOOL hasMain = NO; // 是否选了全部
+            for (NSDictionary *dic in array) {
+                NSString *mainId = [dic stringForKey:@"mainId"];
+                if (mainId) {
+                    hasMain = YES;
+                    self.mainId = mainId;
+                    [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = [dic objectForKey:@"name"];
+                    [_brandIds removeAllObjects];
+                    productCurPage = 0;
+                    [self requestSelectGoods];
+                    break;
+                }
+                NSString *subId = [dic stringForKey:@"subId"];
+                [subIdArray addObject:subId];
+            }
+            if (!hasMain) {
+                self.brandIds = subIdArray;
+                if (_brandIds.count > 0) {
+                    productCurPage = 0;
+                    [self requestSelectGoods];
+                }
+            }
+        };
+        [self.navigationController pushViewController:filterBrandVC animated:YES];
+    } else {
         [SVProgressHUD showErrorWithStatus:@"请先选择品类" duration:TOAST_VIEW_TIME];
-        return;
     }
-    WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
-    filterBrandVC.mainId = _mainId;
-    [self.navigationController pushViewController:filterBrandVC animated:YES];
-//    if (isInStore) {
-//        [self toOutStoreStatus];
-//    } else {
-//        [self toInStoreStatus:@"沃尔玛"];
-//    }
 }
 
 #pragma mark - 切换在不在店内的状态
@@ -457,7 +611,7 @@
     _outStoreTabSlideManagerView.hidden = YES;
     _inStoreTabSlideMnagerView.hidden = NO;
     _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = NO;
-    isInStore = YES;
+    searchType = SearchTypeProduct;
     _inStoreTabSlideMnagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
     _inStoreTabSlideMnagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
     _inStoreTabSlideMnagerView.tabSlideGapTextView.normalImage = @"arrow-down";
@@ -483,7 +637,7 @@
     _outStoreTabSlideManagerView.hidden = NO;
     _inStoreTabSlideMnagerView.hidden = YES;
     _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = YES;
-    isInStore = NO;
+    searchType = SearchTypeStore;
     _contentCollectionView.backgroundColor =  [UIColor colorWithRed:0.878 green:0.882 blue:0.886 alpha:1.000];
     [_contentCollectionView reloadData];
 }
@@ -522,11 +676,16 @@
             // 店名
         case 1:
         {
-            DLog(@"点击了店名");
-            isInStore = YES;
-            if (inStoreDataArray == 0) {
-                [self requestStoreDetail];
+            if (storeFDataArray.count == 0) {
+                [self requestGetShopTypeList];
+            } else {
+                [self showStoreTypeSelectView];
             }
+//            DLog(@"点击了店名");
+//            isInStore = YES;
+//            if (productDataArray == 0) {
+//                [self requestStoreDetail];
+//            }
         }
             break;
             // 所有品类
@@ -543,10 +702,10 @@
 #pragma mark - 点击了附近tab
 - (void)clickNearTab
 {
-    if (isShowDoubleTableView) {
-        doubleTableView.hidden = YES;
-        isShowDoubleTableView = NO;
-    } else {
+//    if (isShowDoubleTableView) {
+//        doubleTableView.hidden = YES;
+//        isShowDoubleTableView = NO;
+//    } else {
         if (domainFDataArray.count == 0) {
             if (_city.length == 0) {
                 [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
@@ -556,38 +715,38 @@
         } else {
             [self showNearDomainSelectView];
         }
-    }
+   // }
 }
 #pragma mark 点击了所有商店
 - (void)clickAllStore
 {
-    if (isShowDoubleTableView) {
-        doubleTableView.hidden = YES;
-        isShowDoubleTableView = NO;
-    } else {
+//    if (isShowDoubleTableView) {
+//        doubleTableView.hidden = YES;
+//        isShowDoubleTableView = NO;
+//    } else {
         if (storeFDataArray.count == 0) {
             [self requestGetShopTypeList];
         } else {
             [self showStoreTypeSelectView];
         }
-    }
+ //   }
 }
 
 #pragma mark 点击了所有品类
 - (void)clickAllType
 {
     
-    if (isShowDoubleTableView) {
-        doubleTableView.hidden = YES;
-        isShowDoubleTableView = NO;
-    } else {
+//    if (isShowDoubleTableView) {
+//        doubleTableView.hidden = YES;
+//        isShowDoubleTableView = NO;
+//    } else {
         if (pinleiFDataArray.count == 0) {
             [self requestDetShopCategory];
         } else {
             [self showPinleiSelectView];
         }
 
-    }
+  //  }
 }
 
 #pragma mark - 显示附近区域选择view
@@ -599,12 +758,20 @@
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    if (isInStore) {
-         doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 3;
-    } else {
-         doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 4;
+    switch (searchType) {
+        case SearchTypeStore:
+        {
+            doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 4;
+        }
+            break;
+        case SearchTypeProduct:
+        {
+            doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 3;
+        }
+            break;
+        default:
+            break;
     }
-   
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -691,15 +858,25 @@
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
         self.townId = [SDic stringForKey:@"townId"];
-        if (isInStore) {
-            [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-        } else {
-            [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+        switch (searchType) {
+            case SearchTypeStore:
+            {
+                [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+            }
+                break;
+            case SearchTypeProduct:
+            {
+                [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+            }
+                break;
+            default:
+                break;
         }
+
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
-        outStoreCurPage = 0;
-        
+        storeCurPage = 0;
+        searchType = SearchTypeStore;
         [self requestOutShopGoodsList];
     };
 
@@ -800,10 +977,23 @@
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
         self.retailId = [SDic stringForKey:@"retailId"];
-        if (isInStore) {
-            [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
-        } else {
-            [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+        self.shopId = _retailId;
+        [self requestStoreDetail];
+        switch (searchType) {
+            case SearchTypeStore:
+            {
+                 [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+                storeCurPage = 0;
+                [self requestOutShopGoodsList];
+            }
+                break;
+            case SearchTypeProduct:
+            {
+                [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+            }
+                break;
+            default:
+                break;
         }
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
@@ -820,7 +1010,7 @@
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 6;
+    doubleTable.indicateImageViewCenterXCon.constant = 2*SCREEN_WIDTH / 6;
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -875,12 +1065,12 @@
         NSDictionary *dic = [pinleiFDataArray objectAtIndex:index];
         NSString *mainId = [dic stringForKey:@"mainId"];
         self.mainId = mainId;
-        NSString *name = [dic stringForKey:@"mainId"];
-        if (isInStore) {
-            [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = name;
-        } else {
-            [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = name;
-        }
+        NSString *name = [dic stringForKey:@"name"];
+        [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = name;
+        productCurPage = 0;
+        [self requestSelectGoods];
+        WSDoubleTableView *doubleTable= [self getDoubleTableView];
+        doubleTable.hidden = YES;
         
 //        NSArray *secondArray = [pinleiSDic objectForKey:mainId];
 //        // 第一个数据的二级数据是否为空
@@ -1117,8 +1307,9 @@
 #pragma mark  NavigationBarButSearchButViewDelegate
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
 {
-    WSPromotionCouponSearchViewController *promotioncouponSearchVC = [[WSPromotionCouponSearchViewController alloc] init];
-    [self.navigationController pushViewController:promotioncouponSearchVC animated:YES];
+    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
+    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+
     return NO;
 }
 
@@ -1151,78 +1342,77 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     NSArray *tempArray = nil;
-    if (isInStore) {
-        tempArray = inStoreDataArray;
-    } else {
-        tempArray = outStoreDataArray;
+    switch (searchType) {
+        case SearchTypeProduct:
+        {
+             tempArray = productDataArray;
+        }
+            break;
+        case SearchTypeStore:
+        {
+            tempArray = storeDataArray;
+        }
+            break;
+        default:
+            break;
     }
     NSInteger count = tempArray.count;
-    if (count == 0) {
-        return 1;
-    }
     return count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    if (isInStore) { // 在店内
-        WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
-        NSInteger count = inStoreDataArray.count;
-        if (count == 0) {
-            cell.hidden = YES;
-        } else {
-            cell.hidden = NO;
-            
-            cell.validDateLabel.text = [NSString stringWithFormat:@"%d,%d", (int)indexPath.section, (int)indexPath.row];
+    switch (searchType) {
+        case SearchTypeStore:
+        {
+            WSPromotionCouponOutStoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell" forIndexPath:indexPath];
+            cell.dealInCell = NO;
+            NSMutableDictionary *dic = [storeDataArray objectAtIndex:row];
+            [cell setModel:dic];
+            [cell.seeMoreBut addTarget:self action:@selector(outStoreSeeMoreButAction:) forControlEvents:UIControlEventTouchUpInside];
+            return cell;
+        }
+            break;
+        case SearchTypeProduct:
+        {
+            WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
             cell.delegate = self;
-            NSDictionary *dic = [inStoreDataArray objectAtIndex:row];
+            NSMutableDictionary *dic = [productDataArray objectAtIndex:row];
             [cell setModel:dic];
+            return cell;
+
         }
-        return cell;
-    } else { // 不在店内
-        WSPromotionCouponOutStoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell" forIndexPath:indexPath];
-        NSInteger count = outStoreDataArray.count;
-        if (count == 0) {
-            cell.hidden = YES;
-        } else {
-            cell.hidden = NO;
-            [cell.leftCollectBut addTarget:self action:@selector(outStoreLeftCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.rightCollectBut addTarget:self action:@selector(outStoreRightCollectButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.leftShareBut addTarget:self action:@selector(outStoreLeftShareButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.rightShareBut addTarget:self action:@selector(outStoreRightShareButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.leftProductBut addTarget:self action:@selector(leftProductButAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.rightProductBut addTarget:self action:@selector(rightProductButAction:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell.leftCollectBut.tag = row;
-            cell.rightCollectBut.tag = row;
-            cell.leftShareBut.tag = row;
-            cell.rightShareBut.tag = row;
-            cell.leftProductBut.tag = row;
-            cell.rightProductBut.tag = row;
-            
-            NSDictionary *dic = [outStoreDataArray objectAtIndex:row];
-            [cell setModel:dic];
-        }
-       
-        return cell;
+            break;
+        default:
+            break;
     }
+            return nil;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (isInStore) { // 在店内
-        NSInteger row =indexPath.row;
-        CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
-        if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
-            return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT);
-        } else {
-            return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL);
+    switch (searchType) {
+        case SearchTypeStore:
+        {
+            return CGSizeMake(collectionView.bounds.size.width, WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT);
         }
-    } else { // 不在店内
-        return CGSizeMake(collectionView.bounds.size.width, WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT);
+            break;
+        case SearchTypeProduct:
+        {
+            NSInteger row =indexPath.row;
+            CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+            if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
+                return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT);
+            } else {
+                return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL);
+            }
+        }
+            break;
+        default:
+            break;
     }
-  
+    return CGSizeZero;
 }
 
 //- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -1242,198 +1432,283 @@
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    if (isInStore) {
-        return CGSizeMake(collectionView.bounds.size.width, WSPROMOTIONCOUPON_INSTORE_COLLECTIONREUSABLEVIEW_HEIGHT);
-    } else {
-        return CGSizeZero;
+    switch (searchType) {
+        case SearchTypeProduct:
+        {
+            return CGSizeMake(collectionView.bounds.size.width, WSPROMOTIONCOUPON_INSTORE_COLLECTIONREUSABLEVIEW_HEIGHT);
+        }
+            break;
+        case SearchTypeStore:
+        {
+            
+            return CGSizeZero;
+        }
+            break;
+        default:
+            break;
     }
+    return CGSizeZero;
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if (isInStore) {
-        WSPromotionCouponInStoreCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSPromotionCouponInStoreCollectionReusableView" forIndexPath:indexPath];
-        [view.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
-        NSString *shopLogo = [_shop objectForKey:@"shopLogo"];
-        NSString *shopName = [_shop objectForKey:@"shopName"];
-        NSString *distance = [_shop objectForKey:@"distance"];
-        NSString *resultDicsance = [WSProjUtil converDistanceWithDistanceStr:distance];
-        NSString *address = [_shop objectForKey:@"address"];
-        [view.loginImageView sd_setImageWithURL:[NSURL URLWithString:shopLogo] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            view.loginImageView.contentMode = UIViewContentModeScaleAspectFit;
-        }];
-        view.storeNameLabel.text = shopName;
-        view.addressLabel.text = address;
-        view.distanceLabel.text = resultDicsance;
-        
-        NSString *isSign = [_shop stringForKey:@"isSign"];
-        
-        // 可以签到
-        if ([isSign isEqualToString:@"1"]) {
-            view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-06"];
-            view.signupBut.enabled = YES;
-        } else {
-            view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-04"];
-            view.signupBut.enabled = NO;
+    switch (searchType) {
+        case SearchTypeStore:
+        {
+            
         }
-        return view;
-    } else {
-        return nil;
+            break;
+        case SearchTypeProduct:
+        {
+            WSPromotionCouponInStoreCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSPromotionCouponInStoreCollectionReusableView" forIndexPath:indexPath];
+            [view.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
+            NSString *shopLogo = [_shop objectForKey:@"shopLogo"];
+            NSString *shopName = [_shop objectForKey:@"shopName"];
+            NSString *distance = [_shop objectForKey:@"distance"];
+            NSString *resultDicsance = [WSProjUtil converDistanceWithDistanceStr:distance];
+            NSString *address = [_shop objectForKey:@"address"];
+            [view.loginImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:shopLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                view.loginImageView.contentMode = UIViewContentModeScaleAspectFit;
+            }];
+            view.storeNameLabel.text = shopName;
+            view.addressLabel.text = address;
+            view.distanceLabel.text = resultDicsance;
+            
+            NSString *isSign = [_shop stringForKey:@"isSign"];
+            
+            // 可以签到
+            if ([isSign isEqualToString:@"1"]) {
+                view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-06"];
+            } else {
+                view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-04"];
+            }
+            return view;
+
+        }
+            break;
+        default:
+            break;
     }
+    return nil;
 }
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if (isInStore) {
+//        NSInteger row = indexPath.row;
+//        NSDictionary *dic = [productDataArray objectAtIndex:row];
+//        NSString *shopId = [_shop stringForKey:@"shopId"];
+//        WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+//        NSString *goodsId = [dic stringForKey:@"goodsId"];
+//        productDetailVC.goodsId = goodsId;
+//        productDetailVC.shopId = shopId;
+//        [self.navigationController pushViewController:productDetailVC animated:YES];
+//    }
 }
 
-#pragma mark - 不在店内 商品详情按钮事件
-- (void)leftProductButAction:(UIButton *)but
+//#pragma mark - 不在店内 商品详情按钮事件
+//- (void)leftProductButAction:(UIButton *)but
+//{
+//    NSInteger tag = but.tag;
+//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+//    NSArray *goodsList = [dic objectForKey:@"goodsList"];
+//    NSDictionary *FDic = [goodsList objectAtIndex:0];
+//    NSString *shopId = [dic stringForKey:@"shopId"];
+//    [self processProductDetailWithDictionary:FDic shopId:shopId];
+//}
+//
+//
+//- (void)rightProductButAction:(UIButton *)but
+//{
+//    NSInteger tag = but.tag;
+//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+//    NSArray *goodsList = [dic objectForKey:@"goodsList"];
+//    NSDictionary *SDic = [goodsList objectAtIndex:1];
+//     NSString *shopId = [dic stringForKey:@"shopId"];
+//    [self processProductDetailWithDictionary:SDic shopId:shopId];
+//}
+//
+//#pragma mark 不在店内 距离按钮事件
+//- (void)outStoreDistanceButAction:(UIButton *)but
+//{
+//    
+//    NSInteger tag = but.tag;
+//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+//    NSString *lat = [dic stringForKey:@"lat"];
+//    NSString *lon = [dic stringForKey:@"lon"];
+//    NSString *shopName = [dic stringForKey:@"shopName"];
+//    NSString *address = [dic objectForKeyedSubscript:@"address"];
+//    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+//    locationDetailVC.latitude = [lon doubleValue];
+//    locationDetailVC.longitude = [lat doubleValue];
+//    locationDetailVC.locTitle = shopName;
+//    locationDetailVC.address = address;
+//    [self.navigationController pushViewController:locationDetailVC animated:YES];
+//}
+//
+//#pragma mark  不在店内签到按钮事件
+//- (void)outStoreSignupButAction:(UIButton *)but
+//{
+//    // 跳到3.3.1 不在签到范围内
+//    WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
+//    [self.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
+//}
+//
+#pragma mark 不在店查看更过按钮事件
+- (void)outStoreSeeMoreButAction:(UIButton *)but
 {
     NSInteger tag = but.tag;
-    NSDictionary *dic = [outStoreDataArray objectAtIndex:tag];
-    NSArray *goodsList = [dic objectForKey:@"goodsList"];
-    NSDictionary *FDic = [goodsList objectAtIndex:0];
-    NSString *shopId = [FDic stringForKey:@"shopId"];
-    [self processProductDetailWithDictionary:FDic shopId:shopId];
+    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+    NSString *shopId = [dic stringForKey:@"shopId"];
+    productCurPage = 0;
+    self.shopId = shopId;
+    [self requestStoreDetail];
 }
-
-- (void)rightProductButAction:(UIButton *)but
-{
-    NSInteger tag = but.tag;
-    NSDictionary *dic = [outStoreDataArray objectAtIndex:tag];
-    NSArray *goodsList = [dic objectForKey:@"goodsList"];
-    NSDictionary *SDic = [goodsList objectAtIndex:1];
-     NSString *shopId = [SDic stringForKey:@"shopId"];
-    [self processProductDetailWithDictionary:SDic shopId:shopId];
-}
-
-#pragma mark - 不在店内收藏按钮事件
-- (void)outStoreLeftCollectButAction:(UIButton *)but
-{
-    NSInteger tag = but.tag;
-    NSDictionary *dic = [outStoreDataArray objectAtIndex:tag];
-     NSArray *goodsList = [dic objectForKey:@"goodsList"];
-     NSDictionary *FDic = [goodsList objectAtIndex:0];
-    [self processCollectWithDictionary:FDic];
-}
-
-- (void)outStoreRightCollectButAction:(UIButton *)but
-{
-    NSInteger tag = but.tag;
-    NSDictionary *dic = [outStoreDataArray objectAtIndex:tag];
-    NSArray *goodsList = [dic objectForKey:@"goodsList"];
-    NSDictionary *SDic = [goodsList objectAtIndex:1];
-    [self processCollectWithDictionary:SDic];
-}
-
-- (void)outStoreLeftShareButAction:(UIButton *)but
-{
-    
-}
-
-- (void)outStoreRightShareButAction:(UIButton *)but
-{
-    
-}
-
-- (void)processCollectWithDictionary:(NSDictionary *)dic
-{
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        NSString *isCollect = [dic stringForKey:@"isCollect"];
-        // 没有收藏  白色安心
-        if ([isCollect isEqualToString:@"N"]) {
-            NSString *goodsid = [dic stringForKey:@"goodsId"];
-            NSString *shopId = [dic stringForKey:@"shopId"];
-            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
-            [SVProgressHUD show];
-            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-                [SVProgressHUD dismiss];
-                BOOL flag = [WSInterfaceUtility validRequestResult:result];
-                if (flag) {
-                    outStoreCurPage = 0;
-                    [self requestOutShopGoodsList];
-                    [CollectSucView showCollectSucView];
-                }
-            } failCallBack:^(id error) {
-                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
-            }];
-            
-            // 已收藏
-        } else {
-            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
-        }
-    } else {
-        [WSUserUtil actionAfterLogin:^{
-        outStoreCurPage = 0;
-        [self requestOutShopGoodsList];
-        }];
-    }
-
-}
-
-- (void)processProductDetailWithDictionary:(NSDictionary *)dic shopId:(NSString *)shopId
-{
-    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
-    NSString *goodsId = [dic stringForKey:@"goodsId"];
-    productDetailVC.goodsId = goodsId;
-    productDetailVC.shopId = shopId;
-    [self.navigationController pushViewController:productDetailVC animated:YES];
-}
-
-#pragma mark - WSPromotionCouponInStoreCollectionViewCellDelegate
-#pragma mark 在店内 收藏
-- (void)WSPromotionCouponInStoreCollectionViewCellDidClickLeftBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
-{
-    NSInteger tag = cell.tag;
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        NSMutableDictionary *dic = [inStoreDataArray objectAtIndex:tag];
-        NSString *isCollect = [dic stringForKey:@"isCollect"];
-        
-        // 没有收藏  白色安心
-        if ([isCollect isEqualToString:@"N"])
-        {
-            NSString *goodsid = [dic stringForKey:@"goodsId"];
-            NSString *shopId = [dic stringForKey:@"shopId"];
-            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
-            [SVProgressHUD show];
-            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-                [SVProgressHUD dismiss];
-                BOOL flag = [WSInterfaceUtility validRequestResult:result];
-                if (flag) {
-                    [dic setValue:@"Y" forKey:@"isCollect"];
-                    [_contentCollectionView reloadData];
-                    [CollectSucView showCollectSucView];
-                }
-            } failCallBack:^(id error) {
-                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
-            }];
-            
-            // 已收藏
-        } else {
-            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
-        }
-    } else {
-        [WSUserUtil actionAfterLogin:^{
-            inStoreCurPage = 0;
-            [self requestStoreDetail];
-        }];
-    }
-}
-
-#pragma mark 在店内 分享
-- (void)WSPromotionCouponInStoreCollectionViewCellDidClickRightBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
-{
-    NSInteger tag = cell.tag;
-    DLog(@"分享：%d", (int)tag);
-}
+//
+//#pragma mark 不在店内收藏按钮事件
+//- (void)outStoreLeftCollectButAction:(UIButton *)but
+//{
+//    NSInteger tag = but.tag;
+//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+//     NSArray *goodsList = [dic objectForKey:@"goodsList"];
+//     NSDictionary *FDic = [goodsList objectAtIndex:0];
+//    [self processCollectWithDictionary:FDic shopId:[dic stringForKey:@"shopId"]];
+//}
+//
+//- (void)outStoreRightCollectButAction:(UIButton *)but
+//{
+//    NSInteger tag = but.tag;
+//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
+//    NSArray *goodsList = [dic objectForKey:@"goodsList"];
+//    NSDictionary *SDic = [goodsList objectAtIndex:1];
+//    [self processCollectWithDictionary:SDic shopId:[dic stringForKey:@"shopId"]];
+//}
+//
+//- (void)outStoreLeftShareButAction:(UIButton *)but
+//{
+//    
+//}
+//
+//- (void)outStoreRightShareButAction:(UIButton *)but
+//{
+//    
+//}
+//
+//- (void)processCollectWithDictionary:(NSDictionary *)dic shopId:(NSString *)shopId
+//{
+//    WSUser *user = [WSRunTime sharedWSRunTime].user;
+//    if (user) {
+//        NSString *isCollect = [dic stringForKey:@"isCollect"];
+//        // 没有收藏  白色安心
+//        if ([isCollect isEqualToString:@"N"]) {
+//            NSString *goodsid = [dic stringForKey:@"goodsId"];
+//            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
+//            [SVProgressHUD show];
+//            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+//                [SVProgressHUD dismiss];
+//                BOOL flag = [WSInterfaceUtility validRequestResult:result];
+//                if (flag) {
+//                    outStoreCurPage = 0;
+//                    [self requestOutShopGoodsList];
+//                    [CollectSucView showCollectSucView];
+//                }
+//            } failCallBack:^(id error) {
+//                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
+//            }];
+//            
+//            // 已收藏
+//        } else {
+//            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
+//        }
+//    } else {
+//        [WSUserUtil actionAfterLogin:^{
+//        outStoreCurPage = 0;
+//        [self requestOutShopGoodsList];
+//        }];
+//    }
+//
+//}
+//
+//- (void)processProductDetailWithDictionary:(NSDictionary *)dic shopId:(NSString *)shopId
+//{
+//    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+//    NSString *goodsId = [dic stringForKey:@"goodsId"];
+//    productDetailVC.goodsId = goodsId;
+//    productDetailVC.shopId = shopId;
+//    [self.navigationController pushViewController:productDetailVC animated:YES];
+//}
+//
+//#pragma mark - WSPromotionCouponInStoreCollectionViewCellDelegate
+//#pragma mark 在店内 收藏
+//- (void)WSPromotionCouponInStoreCollectionViewCellDidClickLeftBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
+//{
+//    NSInteger tag = cell.tag;
+//    WSUser *user = [WSRunTime sharedWSRunTime].user;
+//    if (user) {
+//        NSMutableDictionary *dic = [productDataArray objectAtIndex:tag];
+//        NSString *isCollect = [dic stringForKey:@"isCollect"];
+//        
+//        // 没有收藏  白色安心
+//        if ([isCollect isEqualToString:@"N"])
+//        {
+//            NSString *goodsid = [dic stringForKey:@"goodsId"];
+//            NSString *shopId = [dic stringForKey:@"shopId"];
+//            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
+//            [SVProgressHUD show];
+//            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+//                [SVProgressHUD dismiss];
+//                BOOL flag = [WSInterfaceUtility validRequestResult:result];
+//                if (flag) {
+//                    [dic setValue:@"Y" forKey:@"isCollect"];
+//                    [_contentCollectionView reloadData];
+//                    [CollectSucView showCollectSucView];
+//                }
+//            } failCallBack:^(id error) {
+//                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
+//            }];
+//            
+//            // 已收藏
+//        } else {
+//            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
+//        }
+//    } else {
+//        [WSUserUtil actionAfterLogin:^{
+//            inStoreCurPage = 0;
+//            [self requestStoreDetail];
+//        }];
+//    }
+//}
+//
+//#pragma mark 在店内 分享
+//- (void)WSPromotionCouponInStoreCollectionViewCellDidClickRightBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
+//{
+//    NSInteger tag = cell.tag;
+//    DLog(@"分享：%d", (int)tag);
+//}
 
 #pragma mark - 在店内 到店签到按钮事件
 - (void)signupButAction:(UIButton *)but
 {
     //如果商店支持到店签到，则有到店签到图标按钮，点击到店签到图标按钮，因为已经在店内，所以跳到4.3.4，如果已完成签到，跳到4.3.6
+    NSString *isSign = [_shop stringForKey:@"isSign"];
+    NSString *shopId = [_shop stringForKey:@"shopId"];
+    // 可以签到
+    if ([isSign isEqualToString:@"1"]) {
+        [WSUserUtil actionAfterLogin:^{
+            WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+            inStoreNoSignVC.shopid = shopId;
+            inStoreNoSignVC.shopName = [_shop objectForKey:@"shopName"];
+            [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+        }];
+
+    } else {
+        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+        storeDetailVC.shopid = shopId;
+        [self.navigationController pushViewController:storeDetailVC animated:YES];
+    }
+
+  
 
 }
 

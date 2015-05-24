@@ -14,7 +14,7 @@
 
 typedef NS_ENUM(NSInteger, IsInStoreType) {
     IsInStoreTypePromotionCoupon = 0,   // 促销优惠
-    IsInStoreTypeGainPea             // 赚取精明都
+    IsInStoreTypeGainPea               // 赚取精明都
 };
 @interface WSProjUtil : NSObject
 

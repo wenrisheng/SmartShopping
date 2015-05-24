@@ -62,14 +62,27 @@
                                             <constraint firstAttribute="width" constant="30" id="iUx-Ib-VRn"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l92-KS-TNo">
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="131"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="productButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="mxj-N9-Bxi"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="mNp-nN-iw6" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" id="0as-TO-PmI"/>
+                                    <constraint firstItem="l92-KS-TNo" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" id="Eyf-DT-EHD"/>
                                     <constraint firstAttribute="trailing" secondItem="mNp-nN-iw6" secondAttribute="trailing" id="Jde-NG-NaW"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="height" secondItem="l92-KS-TNo" secondAttribute="height" id="Kuw-AH-8rR"/>
                                     <constraint firstItem="B8L-zZ-K2N" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" id="LIz-S9-wvn"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="width" secondItem="l92-KS-TNo" secondAttribute="width" id="Yj2-6h-vxv"/>
                                     <constraint firstItem="mNp-nN-iw6" firstAttribute="leading" secondItem="YXG-BM-qSo" secondAttribute="leading" id="aV5-kA-Za5"/>
                                     <constraint firstItem="B8L-zZ-K2N" firstAttribute="leading" secondItem="YXG-BM-qSo" secondAttribute="leading" id="dvP-H1-Yua"/>
+                                    <constraint firstItem="l92-KS-TNo" firstAttribute="leading" secondItem="YXG-BM-qSo" secondAttribute="leading" id="n3r-Fb-c6o"/>
                                     <constraint firstAttribute="bottom" secondItem="mNp-nN-iw6" secondAttribute="bottom" id="nWF-ZY-NlD"/>
                                     <constraint firstItem="KNo-kw-LMX" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" constant="8" id="sdt-Ep-78Y"/>
                                     <constraint firstAttribute="trailing" secondItem="KNo-kw-LMX" secondAttribute="trailing" id="vbr-Py-3VO"/>
@@ -102,7 +115,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cww-IG-85m">
-                                        <rect key="frame" x="50" y="31.5" width="80" height="17.5"/>
+                                        <rect key="frame" x="50" y="31" width="80" height="17.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map.png" translatesAutoresizingMaskIntoConstraints="NO" id="kPi-CF-LjK">
                                                 <rect key="frame" x="27" y="4" width="9" height="11"/>
@@ -143,7 +156,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="distanceButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="D18-Hq-krE"/>
+                                            <action selector="distanceButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="V40-ZV-1H2"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -187,6 +200,9 @@
                                                 <state key="normal" backgroundImage="collected.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="collectButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="iQW-9A-OFp"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -207,6 +223,9 @@
                                                 <state key="normal" backgroundImage="share.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="shareButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Svd-5L-Yo9"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -286,7 +305,7 @@
                 <outlet property="smallImageView" destination="XrE-ST-FQL" id="fIK-wR-hL1"/>
                 <outlet property="validDateLabel" destination="ch0-wB-FWM" id="jeS-Xd-JvR"/>
             </connections>
-            <point key="canvasLocation" x="-57" y="205.5"/>
+            <point key="canvasLocation" x="-77" y="207.5"/>
         </collectionViewCell>
     </objects>
     <resources>

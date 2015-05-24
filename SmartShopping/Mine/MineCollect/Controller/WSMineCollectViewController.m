@@ -32,7 +32,8 @@
     // 注册
     [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSMineCollectCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSMineCollectCollectionViewCell"];
     
-    [_contentCollectionView addHeaderWithCallback:^{
+    [_contentCollectionView addLegendHeaderWithRefreshingBlock:^{
+        
         [self requestMineCollect];
     }];
 //    [_contentCollectionView addFooterWithCallback:^{
@@ -65,7 +66,6 @@
             NSArray *myCollectList = [result objectForKey:@"myCollectList"];
             [dataArray addObjectsFromArray:myCollectList];
             
-            [dataArray addObjectsFromArray:@[@"", @"", @""]];
             [_contentCollectionView reloadData];
         }
     } failCallBack:^(id error) {
@@ -93,7 +93,7 @@
     NSInteger row = indexPath.row;
     cell.tag = row;
     NSDictionary *dic = [dataArray objectAtIndex:row];
-   // [cell setModel:dic];
+    [cell setModel:dic];
     return cell;
 }
 

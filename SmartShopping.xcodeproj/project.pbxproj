@@ -11,6 +11,8 @@
 		7C0789ED1AE69672003ADA36 /* WSInterfaceUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0789EC1AE69672003ADA36 /* WSInterfaceUtility.m */; };
 		7C0789F61AE6A00F003ADA36 /* WSServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0789F51AE6A00F003ADA36 /* WSServiceViewController.m */; };
 		7C0C89701AF8CECF00F5C93C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C0C896F1AF8CECF00F5C93C /* Default-568h@2x.png */; };
+		7C1CE3A71B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1CE3A51B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m */; };
+		7C1CE3A81B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1CE3A61B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib */; };
 		7C1FCF7F1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FCF7D1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m */; };
 		7C1FCF801B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1FCF7E1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.xib */; };
 		7C249B471ADD6114000712BF /* WSHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C249B161ADD6114000712BF /* WSHomeViewController.m */; };
@@ -60,8 +62,12 @@
 		7C46E43C1AF0614100EBDCDC /* WSScanProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E43A1AF0614100EBDCDC /* WSScanProductViewController.m */; };
 		7C46E43D1AF0614100EBDCDC /* WSScanProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C46E43B1AF0614100EBDCDC /* WSScanProductViewController.xib */; };
 		7C46E4491AF07DD000EBDCDC /* WSProjUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */; };
+		7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */; };
+		7C4BB99A1B0AF3D8007293C3 /* WSSearchHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */; };
 		7C55073A1B07A12000DE0126 /* BaiduMapAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */; };
 		7C55073B1B07A12000DE0126 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C5507391B07A12000DE0126 /* mapapi.bundle */; };
+		7C5507421B08C67600DE0126 /* WSScanInStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55073F1B08C67600DE0126 /* WSScanInStoreViewController.m */; };
+		7C5507431B08C67600DE0126 /* WSScanInStoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5507401B08C67600DE0126 /* WSScanInStoreViewController.xib */; };
 		7C6558991B07975800D832C2 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6557DA1B07975800D832C2 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7C65589A1B07975800D832C2 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6557DD1B07975800D832C2 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7C65589B1B07975800D832C2 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6557DF1B07975800D832C2 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -155,10 +161,11 @@
 		7C6558FC1B07975900D832C2 /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C65587F1B07975800D832C2 /* ShareSDKShareActionSheet.framework */; };
 		7C6558FD1B07975900D832C2 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6558971B07975800D832C2 /* libzbar.a */; };
 		7C6559011B0798B500D832C2 /* WSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6559001B0798B500D832C2 /* WSService.m */; };
+		7C67B7001B0E21FA00E5F340 /* nodata.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C67B6FF1B0E21FA00E5F340 /* nodata.png */; };
 		7C6983071AE67B7700CBE843 /* WSMineConsumeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6983051AE67B7700CBE843 /* WSMineConsumeDetailViewController.m */; };
 		7C6983081AE67B7700CBE843 /* WSMineConsumeDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6983061AE67B7700CBE843 /* WSMineConsumeDetailViewController.xib */; };
-		7C6AD53C1AEF4713000B6CB1 /* WSSearchHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6AD53A1AEF4713000B6CB1 /* WSSearchHistoryViewController.m */; };
-		7C6AD53D1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6AD53B1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib */; };
+		7C6AD53C1AEF4713000B6CB1 /* WSSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6AD53A1AEF4713000B6CB1 /* WSSearchViewController.m */; };
+		7C6AD53D1AEF4713000B6CB1 /* WSSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6AD53B1AEF4713000B6CB1 /* WSSearchViewController.xib */; };
 		7C6AD5411AEF48B3000B6CB1 /* WSSearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6AD53F1AEF48B3000B6CB1 /* WSSearchHistoryCell.m */; };
 		7C6AD5421AEF48B3000B6CB1 /* WSSearchHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6AD5401AEF48B3000B6CB1 /* WSSearchHistoryCell.xib */; };
 		7C6AD5461AEF49AD000B6CB1 /* WSClearHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6AD5441AEF49AD000B6CB1 /* WSClearHistoryCell.m */; };
@@ -443,6 +450,9 @@
 		7C0789F41AE6A00F003ADA36 /* WSServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSServiceViewController.h; sourceTree = "<group>"; };
 		7C0789F51AE6A00F003ADA36 /* WSServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSServiceViewController.m; sourceTree = "<group>"; };
 		7C0C896F1AF8CECF00F5C93C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7C1CE3A41B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchNoDataCollectionViewCell.h; sourceTree = "<group>"; };
+		7C1CE3A51B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchNoDataCollectionViewCell.m; sourceTree = "<group>"; };
+		7C1CE3A61B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchNoDataCollectionViewCell.xib; sourceTree = "<group>"; };
 		7C1FCF7C1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPromotionCouponInStoreCollectionViewCell.h; sourceTree = "<group>"; };
 		7C1FCF7D1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPromotionCouponInStoreCollectionViewCell.m; sourceTree = "<group>"; };
 		7C1FCF7E1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSPromotionCouponInStoreCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -516,8 +526,14 @@
 		7C46E43B1AF0614100EBDCDC /* WSScanProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSScanProductViewController.xib; sourceTree = "<group>"; };
 		7C46E4471AF07DD000EBDCDC /* WSProjUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSProjUtil.h; sourceTree = "<group>"; };
 		7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSProjUtil.m; sourceTree = "<group>"; };
+		7C4BB9961B0AF3C5007293C3 /* WSSearchHistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchHistoryView.h; sourceTree = "<group>"; };
+		7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchHistoryView.m; sourceTree = "<group>"; };
+		7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchHistoryView.xib; sourceTree = "<group>"; };
 		7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI.framework; sourceTree = "<group>"; };
 		7C5507391B07A12000DE0126 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
+		7C55073E1B08C67600DE0126 /* WSScanInStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSScanInStoreViewController.h; sourceTree = "<group>"; };
+		7C55073F1B08C67600DE0126 /* WSScanInStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSScanInStoreViewController.m; sourceTree = "<group>"; };
+		7C5507401B08C67600DE0126 /* WSScanInStoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSScanInStoreViewController.xib; sourceTree = "<group>"; };
 		7C6557D91B07975800D832C2 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		7C6557DA1B07975800D832C2 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		7C6557DB1B07975800D832C2 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -668,12 +684,13 @@
 		7C6558971B07975800D832C2 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
 		7C6558FF1B0798B500D832C2 /* WSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSService.h; sourceTree = "<group>"; };
 		7C6559001B0798B500D832C2 /* WSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSService.m; sourceTree = "<group>"; };
+		7C67B6FF1B0E21FA00E5F340 /* nodata.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodata.png; sourceTree = "<group>"; };
 		7C6983041AE67B7700CBE843 /* WSMineConsumeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMineConsumeDetailViewController.h; sourceTree = "<group>"; };
 		7C6983051AE67B7700CBE843 /* WSMineConsumeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMineConsumeDetailViewController.m; sourceTree = "<group>"; };
 		7C6983061AE67B7700CBE843 /* WSMineConsumeDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMineConsumeDetailViewController.xib; sourceTree = "<group>"; };
-		7C6AD5391AEF4713000B6CB1 /* WSSearchHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchHistoryViewController.h; sourceTree = "<group>"; };
-		7C6AD53A1AEF4713000B6CB1 /* WSSearchHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchHistoryViewController.m; sourceTree = "<group>"; };
-		7C6AD53B1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchHistoryViewController.xib; sourceTree = "<group>"; };
+		7C6AD5391AEF4713000B6CB1 /* WSSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchViewController.h; sourceTree = "<group>"; };
+		7C6AD53A1AEF4713000B6CB1 /* WSSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchViewController.m; sourceTree = "<group>"; };
+		7C6AD53B1AEF4713000B6CB1 /* WSSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchViewController.xib; sourceTree = "<group>"; };
 		7C6AD53E1AEF48B3000B6CB1 /* WSSearchHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchHistoryCell.h; sourceTree = "<group>"; };
 		7C6AD53F1AEF48B3000B6CB1 /* WSSearchHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchHistoryCell.m; sourceTree = "<group>"; };
 		7C6AD5401AEF48B3000B6CB1 /* WSSearchHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchHistoryCell.xib; sourceTree = "<group>"; };
@@ -1194,9 +1211,9 @@
 		7C249B621ADD6298000712BF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7C6AD5391AEF4713000B6CB1 /* WSSearchHistoryViewController.h */,
-				7C6AD53A1AEF4713000B6CB1 /* WSSearchHistoryViewController.m */,
-				7C6AD53B1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib */,
+				7C6AD5391AEF4713000B6CB1 /* WSSearchViewController.h */,
+				7C6AD53A1AEF4713000B6CB1 /* WSSearchViewController.m */,
+				7C6AD53B1AEF4713000B6CB1 /* WSSearchViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1217,6 +1234,12 @@
 				7C6AD5431AEF49AD000B6CB1 /* WSClearHistoryCell.h */,
 				7C6AD5441AEF49AD000B6CB1 /* WSClearHistoryCell.m */,
 				7C6AD5451AEF49AD000B6CB1 /* WSClearHistoryCell.xib */,
+				7C4BB9961B0AF3C5007293C3 /* WSSearchHistoryView.h */,
+				7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */,
+				7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */,
+				7C1CE3A41B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.h */,
+				7C1CE3A51B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m */,
+				7C1CE3A61B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1380,6 +1403,32 @@
 				7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C55073C1B08C67600DE0126 /* ScanInStore */ = {
+			isa = PBXGroup;
+			children = (
+				7C55073D1B08C67600DE0126 /* Controller */,
+				7C5507411B08C67600DE0126 /* View */,
+			);
+			path = ScanInStore;
+			sourceTree = "<group>";
+		};
+		7C55073D1B08C67600DE0126 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C55073E1B08C67600DE0126 /* WSScanInStoreViewController.h */,
+				7C55073F1B08C67600DE0126 /* WSScanInStoreViewController.m */,
+				7C5507401B08C67600DE0126 /* WSScanInStoreViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C5507411B08C67600DE0126 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		7C6557D31B07975800D832C2 /* ProjectCommon */ = {
@@ -2145,6 +2194,7 @@
 		7CCAD3181ADEAEB7001D3D8B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7C67B6FF1B0E21FA00E5F340 /* nodata.png */,
 				7C392DDC1B0316DB008AADA5 /* ic_list.png */,
 				7C4206291AF5B4C9005F9F44 /* location.png */,
 				7CCBF5071AEFE722005321BF /* erweimiao.png */,
@@ -2364,6 +2414,7 @@
 				7CD0E49C1AE3A3D300B78C9C /* InStoreNoSign */,
 				7CD0E49E1AE3A3D300B78C9C /* InStoreNoSignScope */,
 				7CCBF4EA1AEFC518005321BF /* ScanNoInStore */,
+				7C55073C1B08C67600DE0126 /* ScanInStore */,
 				7CCBF4FC1AEFDDC5005321BF /* InviateFriend */,
 			);
 			path = GainPeas;
@@ -2988,7 +3039,7 @@
 				7C013EF21AD5699E00E74C78 /* BaseStaticLibraryResource.bundle in Resources */,
 				7CD0E4A91AE3A40E00B78C9C /* WSInStoreNoSignViewController.xib in Resources */,
 				7CD0E4661AE2B63900B78C9C /* WSLoginedView.xib in Resources */,
-				7C6AD53D1AEF4713000B6CB1 /* WSSearchHistoryViewController.xib in Resources */,
+				7C6AD53D1AEF4713000B6CB1 /* WSSearchViewController.xib in Resources */,
 				7C42063D1AF60F7E005F9F44 /* glass.wav in Resources */,
 				7CCA18B81AEBDC9500714EA0 /* middle.png in Resources */,
 				7CEEB2A61AE3C8DE005CB218 /* gainpeas_dou.png in Resources */,
@@ -3030,6 +3081,7 @@
 				7CCA01C61AED2FB50081A8CC /* scanning.png in Resources */,
 				7CCAD3431ADEBA1C001D3D8B /* store_signin.png in Resources */,
 				7CCD11801AD54FFE005A1429 /* WSMineViewController.xib in Resources */,
+				7C5507431B08C67600DE0126 /* WSScanInStoreViewController.xib in Resources */,
 				7CCD8B191ADFD0D5007B86A9 /* 06.png in Resources */,
 				7C6558F31B07975900D832C2 /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
 				7C6E57121AE15E9C00D020D5 /* weixin.png in Resources */,
@@ -3047,6 +3099,7 @@
 				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
 				7CEEB2AB1AE3C8DE005CB218 /* gainpeas_.png in Resources */,
 				7C4206321AF5BC4C005F9F44 /* PaopaoView.xib in Resources */,
+				7C1CE3A81B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib in Resources */,
 				7C6E57101AE15E9C00D020D5 /* verification.png in Resources */,
 				7CCD8B1A1ADFD0D5007B86A9 /* 07.png in Resources */,
 				7CD0E4B71AE3A78500B78C9C /* WSInStoreNoSignScopeViewController.xib in Resources */,
@@ -3099,6 +3152,7 @@
 				7C6AD5421AEF48B3000B6CB1 /* WSSearchHistoryCell.xib in Resources */,
 				7C1FCF801B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.xib in Resources */,
 				7CCA18B61AEBDC9500714EA0 /* left-.png in Resources */,
+				7C4BB99A1B0AF3D8007293C3 /* WSSearchHistoryView.xib in Resources */,
 				7CD771561AEE61000040E9FD /* WSDoubleTableView.xib in Resources */,
 				7CCD8B1E1ADFD0D5007B86A9 /* bj.png in Resources */,
 				7CC0859B1AEF0D420095F52B /* WSPromotionCouponSearchViewController.xib in Resources */,
@@ -3122,6 +3176,7 @@
 				7C6558E91B07975900D832C2 /* RennSDK.bundle in Resources */,
 				7CCA01B81AECCADD0081A8CC /* WSConfirmClearCacheView.xib in Resources */,
 				7CA484441AEA578A00116BBC /* WSLogoutCell.xib in Resources */,
+				7C67B7001B0E21FA00E5F340 /* nodata.png in Resources */,
 				7C0C89701AF8CECF00F5C93C /* Default-568h@2x.png in Resources */,
 				7CCBF5081AEFE722005321BF /* erweimiao.png in Resources */,
 				7CCA01981AEC7C650081A8CC /* buttom.png in Resources */,
@@ -3153,6 +3208,7 @@
 				7C6558A71B07975800D832C2 /* ASICloudFilesObjectRequest.m in Sources */,
 				7C4206201AF5A5F9005F9F44 /* WSAdvertisementDetailViewController.m in Sources */,
 				7CCA018B1AEC69490081A8CC /* WSConsumeOrderWriterViewController.m in Sources */,
+				7C1CE3A71B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m in Sources */,
 				7C65589E1B07975800D832C2 /* ASIHTTPRequest.m in Sources */,
 				7C6559011B0798B500D832C2 /* WSService.m in Sources */,
 				7CD0E4C11AE3AC6C00B78C9C /* WSStoreDetailViewController.m in Sources */,
@@ -3180,7 +3236,7 @@
 				7C249B491ADD6114000712BF /* WSInfoListViewController.m in Sources */,
 				7C65589A1B07975800D832C2 /* ASIDataCompressor.m in Sources */,
 				7C6558AC1B07975800D832C2 /* ASIS3ObjectRequest.m in Sources */,
-				7C6AD53C1AEF4713000B6CB1 /* WSSearchHistoryViewController.m in Sources */,
+				7C6AD53C1AEF4713000B6CB1 /* WSSearchViewController.m in Sources */,
 				7C2D76C31AF7D30B00126328 /* WSForgetPasswordViewController.m in Sources */,
 				7C426B5C1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.m in Sources */,
 				7C6558B01B07975800D832C2 /* Reachability.m in Sources */,
@@ -3205,6 +3261,7 @@
 				7CD0E4BB1AE3A8BC00B78C9C /* WSSignupSucView.m in Sources */,
 				7C6558A51B07975800D832C2 /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,
 				7C1FCF7F1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m in Sources */,
+				7C5507421B08C67600DE0126 /* WSScanInStoreViewController.m in Sources */,
 				7C6558AA1B07975800D832C2 /* ASIS3BucketObject.m in Sources */,
 				7C6558A01B07975800D832C2 /* ASINetworkQueue.m in Sources */,
 				7CCA18AF1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m in Sources */,
@@ -3237,6 +3294,7 @@
 				7C4206371AF5FECC005F9F44 /* WSScanAfterViewController.m in Sources */,
 				7CCA01D51AED37930081A8CC /* WSProductDetailViewController.m in Sources */,
 				7C6558991B07975800D832C2 /* ASIAuthenticationDialog.m in Sources */,
+				7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */,
 				7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */,
 				7CD8F3241AE54CAB0039CE0F /* WSMineCollectViewController.m in Sources */,
 				7C3DFF2C1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m in Sources */,
@@ -3412,7 +3470,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
+				PROVISIONING_PROFILE = "b78d74fb-52d5-4d52-870f-2de5d7131116";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3464,7 +3522,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a04e51fb-5415-438f-aa6f-96769d56d409";
+				PROVISIONING_PROFILE = "b78d74fb-52d5-4d52-870f-2de5d7131116";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

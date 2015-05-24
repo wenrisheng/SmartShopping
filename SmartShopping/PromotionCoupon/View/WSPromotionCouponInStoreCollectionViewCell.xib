@@ -62,17 +62,30 @@
                                             <constraint firstAttribute="width" constant="30" id="iUx-Ib-VRn"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xjd-ZS-r9o">
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="131"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="prodcutButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Wud-Q7-SnA"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="mNp-nN-iw6" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" id="0as-TO-PmI"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="centerX" secondItem="Xjd-ZS-r9o" secondAttribute="centerX" id="Idz-NJ-ofE"/>
                                     <constraint firstAttribute="trailing" secondItem="mNp-nN-iw6" secondAttribute="trailing" id="Jde-NG-NaW"/>
                                     <constraint firstItem="B8L-zZ-K2N" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" id="LIz-S9-wvn"/>
                                     <constraint firstItem="mNp-nN-iw6" firstAttribute="leading" secondItem="YXG-BM-qSo" secondAttribute="leading" id="aV5-kA-Za5"/>
                                     <constraint firstItem="B8L-zZ-K2N" firstAttribute="leading" secondItem="YXG-BM-qSo" secondAttribute="leading" id="dvP-H1-Yua"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="centerY" secondItem="Xjd-ZS-r9o" secondAttribute="centerY" id="eTu-Mc-0oG"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="width" secondItem="Xjd-ZS-r9o" secondAttribute="width" id="mjK-7E-4mx"/>
                                     <constraint firstAttribute="bottom" secondItem="mNp-nN-iw6" secondAttribute="bottom" id="nWF-ZY-NlD"/>
                                     <constraint firstItem="KNo-kw-LMX" firstAttribute="top" secondItem="YXG-BM-qSo" secondAttribute="top" constant="8" id="sdt-Ep-78Y"/>
                                     <constraint firstAttribute="trailing" secondItem="KNo-kw-LMX" secondAttribute="trailing" id="vbr-Py-3VO"/>
+                                    <constraint firstItem="mNp-nN-iw6" firstAttribute="height" secondItem="Xjd-ZS-r9o" secondAttribute="height" id="x6n-G5-Qss"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Snl-Ja-O3j">
@@ -90,6 +103,9 @@
                                                 <state key="normal" backgroundImage="collected.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="collectButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="hFf-bj-OJg"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -110,6 +126,9 @@
                                                 <state key="normal" backgroundImage="share.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="shareButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="hl7-Aj-m0s"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

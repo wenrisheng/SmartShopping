@@ -27,6 +27,19 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ng1-O1-CEJ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQo-jA-SSe">
+                                        <rect key="frame" x="10" y="2" width="45" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="45" id="2mR-ag-KOZ"/>
+                                            <constraint firstAttribute="height" constant="45" id="ADJ-Bm-JBh"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="logoButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="xmE-K4-YFN"/>
+                                        </connections>
+                                    </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eVd-yN-CUd">
                                         <rect key="frame" x="10" y="2" width="45" height="45"/>
                                         <constraints>
@@ -68,6 +81,9 @@
                                         <state key="normal" backgroundImage="qiandao.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="signupButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="vir-OL-Th5"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.2km" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ouk-6x-Ckw">
                                         <rect key="frame" x="225" y="28" width="32" height="21"/>
@@ -79,20 +95,35 @@
                                         <color key="textColor" red="0.0" green="0.39215686274509803" blue="0.792156862745098" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5PA-NJ-Saf">
+                                        <rect key="frame" x="212" y="29" width="61" height="18"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="distanceButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="63l-RC-pBb"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="ecy-a7-9m4" firstAttribute="leading" secondItem="5PA-NJ-Saf" secondAttribute="trailing" constant="6" id="3Pp-6I-EVN"/>
                                     <constraint firstAttribute="bottom" secondItem="ouk-6x-Ckw" secondAttribute="bottom" constant="1" id="A7A-Ju-Sy3"/>
                                     <constraint firstItem="2Sg-TD-O7B" firstAttribute="leading" secondItem="eVd-yN-CUd" secondAttribute="trailing" constant="3" id="B7E-VN-nW7"/>
                                     <constraint firstAttribute="centerY" secondItem="eVd-yN-CUd" secondAttribute="centerY" id="DHN-Hm-boY"/>
+                                    <constraint firstItem="sQo-jA-SSe" firstAttribute="leading" secondItem="Ng1-O1-CEJ" secondAttribute="leading" constant="10" id="Fec-g6-2NJ"/>
                                     <constraint firstItem="ecy-a7-9m4" firstAttribute="top" secondItem="Ng1-O1-CEJ" secondAttribute="top" id="K7w-hS-jcO"/>
                                     <constraint firstAttribute="height" constant="50" id="MUO-1r-eCM"/>
+                                    <constraint firstAttribute="bottom" secondItem="5PA-NJ-Saf" secondAttribute="bottom" constant="3" id="NG5-L5-EHJ"/>
                                     <constraint firstAttribute="bottom" secondItem="W9M-DT-FqU" secondAttribute="bottom" constant="3" id="PB8-ho-VSq"/>
+                                    <constraint firstAttribute="centerY" secondItem="sQo-jA-SSe" secondAttribute="centerY" id="VoH-2S-sfm"/>
                                     <constraint firstItem="ecy-a7-9m4" firstAttribute="leading" secondItem="fj8-Z2-Wxu" secondAttribute="trailing" constant="23" id="XJS-l9-7X5"/>
                                     <constraint firstItem="eVd-yN-CUd" firstAttribute="leading" secondItem="Ng1-O1-CEJ" secondAttribute="leading" constant="10" id="adY-10-7u5"/>
                                     <constraint firstAttribute="bottom" secondItem="2Sg-TD-O7B" secondAttribute="bottom" constant="5" id="jD3-bY-KeG"/>
+                                    <constraint firstItem="5PA-NJ-Saf" firstAttribute="leading" secondItem="2Sg-TD-O7B" secondAttribute="trailing" constant="1" id="l8b-SX-Xgq"/>
                                     <constraint firstItem="fj8-Z2-Wxu" firstAttribute="leading" secondItem="eVd-yN-CUd" secondAttribute="trailing" constant="3" id="nJu-7d-REq"/>
                                     <constraint firstItem="W9M-DT-FqU" firstAttribute="leading" secondItem="2Sg-TD-O7B" secondAttribute="trailing" constant="1.5" id="oZV-Ar-6T5"/>
+                                    <constraint firstItem="5PA-NJ-Saf" firstAttribute="top" secondItem="fj8-Z2-Wxu" secondAttribute="bottom" constant="2" id="qUc-5D-Hwh"/>
                                     <constraint firstItem="ouk-6x-Ckw" firstAttribute="leading" secondItem="W9M-DT-FqU" secondAttribute="trailing" constant="1" id="s00-eD-utI"/>
                                     <constraint firstItem="ecy-a7-9m4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ouk-6x-Ckw" secondAttribute="trailing" constant="5" id="sIi-Am-HpX"/>
                                     <constraint firstAttribute="trailing" secondItem="ecy-a7-9m4" secondAttribute="trailing" id="sdW-6i-HKT"/>
@@ -129,6 +160,9 @@
                                         <state key="normal" title="查看更多&gt;">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="lookMoreButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="q01-4h-gfW"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,6 +191,9 @@
                                                 <state key="normal">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="leftProductButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Zxe-gJ-awW"/>
+                                                </connections>
                                             </button>
                                             <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juo-dE-3HM">
                                                 <rect key="frame" x="59" y="8" width="86" height="20"/>
@@ -212,6 +249,9 @@
                                                                 <state key="normal" backgroundImage="collected.png">
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="leftCollectButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Mgh-W5-xj4"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -232,6 +272,9 @@
                                                                 <state key="normal" backgroundImage="share.png">
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="leftShareButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="AjU-iF-bBS"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -323,6 +366,9 @@
                                                                 <state key="normal" backgroundImage="collected.png">
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="rightCollectButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="43n-of-iIQ"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -343,6 +389,9 @@
                                                                 <state key="normal" backgroundImage="share.png">
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="rightShareButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="fMY-hq-4qg"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -390,9 +439,12 @@
                                                 <state key="normal">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="rightProductButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="zrJ-o0-9bk"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uve-lp-dED">
-                                                <rect key="frame" x="60.5" y="8" width="84.5" height="20"/>
+                                                <rect key="frame" x="60" y="8" width="84.5" height="20"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time-clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="stp-qZ-Zpp">
                                                         <rect key="frame" x="3" y="3" width="15" height="15"/>
@@ -486,6 +538,7 @@
             <connections>
                 <outlet property="addressLabel" destination="2Sg-TD-O7B" id="hph-2Z-NP9"/>
                 <outlet property="couponNumLabel" destination="BdC-Wq-3M3" id="y5V-Ho-PQf"/>
+                <outlet property="distanceBut" destination="5PA-NJ-Saf" id="JLh-Hh-4BB"/>
                 <outlet property="distanceLabel" destination="ouk-6x-Ckw" id="5zd-Uo-Sro"/>
                 <outlet property="leftCollectBut" destination="yGr-31-9cK" id="LdJ-ci-oVy"/>
                 <outlet property="leftImageView" destination="VXy-Zx-Vbz" id="Drf-kr-Pat"/>
@@ -495,6 +548,7 @@
                 <outlet property="leftShareBut" destination="ofX-g6-pF8" id="5TA-wN-3Uf"/>
                 <outlet property="leftValidDateLabel" destination="Y0e-rM-ehn" id="dGj-me-6zF"/>
                 <outlet property="loginImageView" destination="eVd-yN-CUd" id="UXD-Mq-CIZ"/>
+                <outlet property="logoBut" destination="sQo-jA-SSe" id="SoC-be-iL7"/>
                 <outlet property="rightCollectBut" destination="9dY-TC-EAY" id="gD8-5C-p3c"/>
                 <outlet property="rightImageView" destination="98g-Fv-eYH" id="Hw9-jY-2Wv"/>
                 <outlet property="rightProductBut" destination="go7-uH-Ti5" id="nKr-JP-3Ye"/>
@@ -506,7 +560,7 @@
                 <outlet property="signupBut" destination="ecy-a7-9m4" id="1UP-Rt-3qu"/>
                 <outlet property="storeNameLabel" destination="fj8-Z2-Wxu" id="m7t-EJ-C6N"/>
             </connections>
-            <point key="canvasLocation" x="280" y="202"/>
+            <point key="canvasLocation" x="124" y="253"/>
         </collectionViewCell>
     </objects>
     <resources>

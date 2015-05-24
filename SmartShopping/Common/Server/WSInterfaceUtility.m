@@ -18,6 +18,11 @@
             return [NSString stringWithFormat:@"%@/app/login.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeThirdlogin:
+        {
+             return [NSString stringWithFormat:@"%@/app/thirdlogin.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeRegister:
         {
             return [NSString stringWithFormat:@"%@/app/register.do", BASE_URL];
@@ -143,6 +148,16 @@
             return [NSString stringWithFormat:@"%@/app/getGoodsDetails.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeSearchShop:
+        {
+             return [NSString stringWithFormat:@"%@/app/searchShop.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeSelectGoods:
+        {
+           return [NSString stringWithFormat:@"%@/app/selectGoods.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeGetAreaList:
         {
             return [NSString stringWithFormat:@"%@/app/getAreaList.do", BASE_URL];
@@ -243,6 +258,7 @@
         statusDesc = @"其他自定义状态消息";
     }
     if (!flag) {
+        msg = msg == nil ? @"加载失败！" : msg;
          [SVProgressHUD showErrorWithStatus:msg duration:TOAST_VIEW_TIME];
     }
    

@@ -8,7 +8,7 @@
 
 #import "CollectSucView.h"
 
-#define DURATION_TIME    3
+#define DURATION_TIME    5
 
 @implementation CollectSucView
 

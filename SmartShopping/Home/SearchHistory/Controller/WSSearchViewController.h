@@ -8,6 +8,6 @@
 
 #import "WSServiceViewController.h"
 
-@interface WSSearchHistoryViewController : WSServiceViewController
+@interface WSSearchViewController : WSServiceViewController
 
 @end

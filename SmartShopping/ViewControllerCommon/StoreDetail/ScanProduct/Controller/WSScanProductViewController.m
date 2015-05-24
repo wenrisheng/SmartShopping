@@ -116,6 +116,7 @@
     [player play];
     [_readerView stop];
     [timer invalidate];
+    [self requestEarnBeanByScanGoodsWithBarcode:str];
 }
 
 - (void) readerViewDidStart: (ZBarReaderView*) readerView
@@ -129,12 +130,34 @@
    
 }
 
+- (void)requestEarnBeanByScanGoodsWithBarcode:(NSString *)barcode
+{
+    barcode = barcode == nil ? @"" : barcode;
+    NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnBeanByScanGoods] data:@{@"uid": userId, @"barcode": barcode} tag:WSInterfaceTypeEarnBeanByScanGoods sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            [self.navigationController popViewControllerAnimated:YES];
+            if (_scanSucCallBack) {
+                _scanSucCallBack();
+            }
+        } else {
+             [_readerView start];
+            timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation) userInfo:nil repeats:YES];
+        }
+    } failCallBack:^(id error) {
+        [_readerView start];
+        timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation) userInfo:nil repeats:YES];
+    } showMessage:YES];
+}
+
 - (IBAction)shanButAction:(id)sender
 {
-    if (_readerView.torchMode == 1) {
-        _readerView.torchMode = 0;
+    NSString *barcode = _textField.text;
+    if (barcode.length > 0) {
+        [self requestEarnBeanByScanGoodsWithBarcode:barcode];
     } else {
-        _readerView.torchMode = 1;
+        [SVProgressHUD showErrorWithStatus:@"请输入条形码！" duration:TOAST_VIEW_TIME];
     }
 }
 

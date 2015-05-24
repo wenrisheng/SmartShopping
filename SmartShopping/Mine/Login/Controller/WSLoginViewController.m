@@ -15,6 +15,7 @@
 
 @interface WSLoginViewController () <UITextFieldDelegate, WSNavigationBarButLabelButViewDelegate>
 
+@property (strong, nonatomic) NSString *city;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarView;
 @property (weak, nonatomic) IBOutlet UIView *telView;
 @property (weak, nonatomic) IBOutlet UITextField *telTextField;
@@ -45,6 +46,24 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -54,6 +73,21 @@
 {
     [super touchesBegan:touches withEvent:event];
     [self.view endEditing:YES];
+}
+
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
+{
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+}
+
+
+- (void)setLocationCity:(NSDictionary *)locationDic
+{
+    //int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
+    //if (deoCodeFalg == 0) {
+    self.city = [locationDic objectForKey:LOCATION_CITY];
 }
 
 #pragma mark - WSNavigationBarButLabelButViewDelegate
@@ -160,6 +194,10 @@
 #pragma mark  微信登陆
 - (IBAction)weixinLoginButAction:(id)sender
 {
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [self loginWithType:ShareTypeWeixiSession];
     // 注销
     //  [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
@@ -168,6 +206,10 @@
 #pragma mark  微博登陆
 - (IBAction)weiboLoginButAction:(id)sender
 {
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [self loginWithType:ShareTypeSinaWeibo];
     // 注销
 //    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
@@ -176,6 +218,10 @@
 #pragma mark  qq登陆
 - (IBAction)qqLoginButAction:(id)sender
 {
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [self loginWithType:ShareTypeQQSpace];
     // 注销
 //        [ShareSDK cancelAuthWithType:ShareTypeQQ];
@@ -186,57 +232,60 @@
     [ShareSDK getUserInfoWithType:shareType authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
         if (result) {
             //打印输出用户uid：
+            NSString *uid = [userInfo uid];
             NSLog(@"uid = %@",[userInfo uid]);
             //打印输出用户昵称：
+            NSString *nickname = [userInfo nickname];
             NSLog(@"name = %@",[userInfo nickname]);
             //打印输出用户头像地址：
             NSLog(@"icon = %@",[userInfo profileImage]);
             UserLoginType loginType;
+            NSString *type = nil;
             switch (shareType) {
                 case ShareTypeWeixiSession:
                 {
                     loginType = UserLoginTypeWechat;
+                    type = @"4";
                 }
                     break;
                 case ShareTypeSinaWeibo:
                 {
                     loginType = UserLoginTypeWeibo;
+                    type = @"5";
                 }
                     break;
                 case ShareTypeQQ:
                 {
                     loginType = UserLoginTypeQQ;
+                    type = @"3";
                 }
                     break;
                 default:
                     break;
             }
-            WSUser *user = [[WSUser alloc] init];
-            user.loginType = loginType;
-            user.uid = [userInfo uid];
-            user.nickname = [userInfo nickname];
-            user.profileImage = [userInfo profileImage];
-            
-            [self doAfterLoginSucWithUser:user];
-            
-            //            PFQuery *query = [PFQuery queryWithClassName:@"UserInfo"];
-            //            [query whereKey:@"uid" equalTo:[userInfo uid]];
-            //            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            //                if ([objects count] == 0)
-            //                {
-            //                    PFObject *newUser = [PFObject objectWithClassName:@"UserInfo"];
-            //                    [newUser setObject:[userInfo uid] forKey:@"uid"];
-            //                    [newUser setObject:[userInfo nickname] forKey:@"name"];
-            //                    [newUser setObject:[userInfo profileImage] forKey:@"icon"];
-            //                    [newUser saveInBackground];
-            //                    // 欢迎注册
-            //
-            //                } else {
-            //                    // 欢迎回来
-            //
-            //                }
-            //            }];
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:_city forKey:@"cityName"];
+            [params setValue:uid forKey:@"thirdid"];
+            [params setValue:nickname forKey:@"nickname"];
+            [params setValue:type forKey:@"type"];
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeThirdlogin] data:params tag:WSInterfaceTypeThirdlogin sucCallBack:^(id result) {
+                BOOL flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    NSDictionary *data = [result valueForKey:@"data"];
+                    NSDictionary *userDic = [data valueForKey:@"user"];
+                    
+                    NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
+                    WSUser *user = [[WSUser alloc] init];
+                    [user setValuesForKeysWithDictionary:tempDic];
+                    user.phone = _telTextField.text;
+                    user.loginType = UserLoginTypePhone;
+                    [self doAfterLoginSucWithUser:user];
+                }
+            }failCallBack:^(id error) {
+                [SVProgressHUD showErrorWithStatus:@"登陆失败！" duration:TOAST_VIEW_TIME];
+            }showMessage:YES];
         } else {
+           
             DLog(@"error code:%d description:%@ level:%d", (int)error.errorCode, error.errorDescription, error.errorLevel);
         }
     }];
@@ -247,7 +296,10 @@
 {
     // 同步本地用户信息
     [self synchromUserData:user];
-    
+
+    // 同步精明豆
+    [self synchronUserPea];
+
    
 }
 

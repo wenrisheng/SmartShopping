@@ -24,7 +24,7 @@
                         <constraint firstAttribute="height" constant="64" id="IWm-6y-fAV"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="摇一摇签到，马上赚取10精明豆" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8UW-e1-EYg">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="摇一摇签到，马上赚取100精明豆" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8UW-e1-EYg">
                     <rect key="frame" x="0.0" y="102" width="320" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="v6k-Pt-ZGh"/>

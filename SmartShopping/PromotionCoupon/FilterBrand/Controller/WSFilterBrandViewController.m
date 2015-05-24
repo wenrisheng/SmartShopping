@@ -36,6 +36,8 @@
     [_navigationBarManagerView.navigationBarButLabelButView.rightBut setTitle:@"" forState:UIControlStateNormal];
     dataArray = [[NSMutableArray alloc] init];
     
+    [self requestGetShopCategory];
+    
 //    for (int i = 0; i < 5; i++) {
 //        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{SELECTED_FLAG : @"1"}];
 //        [dataArray addObject:dic];
@@ -61,8 +63,9 @@
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
                 NSDictionary *dic = [categorys objectAtIndex:i];
+                [datadic setDictionary:dic];
                 [datadic setObject:@"1" forKey:SELECTED_FLAG];
-                [dataArray addObject:dic];
+                [dataArray addObject:datadic];
             }
             [_contentTableView reloadData];
         }

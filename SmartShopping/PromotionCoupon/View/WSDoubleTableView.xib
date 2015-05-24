@@ -107,6 +107,7 @@
                 <outlet property="indicateImageViewCenterXCon" destination="a7R-xG-VMI" id="j4o-CS-ULL"/>
                 <outlet property="tableF" destination="6nK-iu-595" id="MvW-M5-5Xs"/>
                 <outlet property="tableS" destination="Q5o-lB-C0X" id="zFk-IQ-WFZ"/>
+                <outlet property="topView" destination="QMD-PD-CEW" id="WvZ-jl-kDr"/>
                 <outlet property="topViewHeightCon" destination="eGv-gb-Eth" id="lk8-l2-88v"/>
             </connections>
             <point key="canvasLocation" x="201" y="241"/>

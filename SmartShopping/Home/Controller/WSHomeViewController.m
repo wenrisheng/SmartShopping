@@ -19,9 +19,10 @@
 #import "WSStoreDetailViewController.h"
 #import "WSScanNoInStoreViewController.h"
 #import "WSInviateFriendViewController.h"
-#import "WSSearchHistoryViewController.h"
+#import "WSSearchViewController.h"
 #import "CollectSucView.h"
 #import "WSCollectHeaderView.h"
+#import "WSScanInStoreViewController.h"
 
 typedef NS_ENUM(NSInteger, ShopType)
 {
@@ -29,7 +30,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     ShopTypeBaihuoFuzhuang
 };
 
-@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, BMKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableArray *superMarketDataArray;
     NSMutableArray *baihuoFuzhuangDataArray;
@@ -50,7 +51,9 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navBarManagerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *supermarketCollectionView;
-@property (weak, nonatomic) IBOutlet UICollectionView *baihuofuzhuangCollectView;
+
+@property (strong, nonatomic) NSDictionary *isInShop;
+@property (strong, nonatomic) NSDictionary *shop;
 
 @end
 
@@ -76,15 +79,14 @@ typedef NS_ENUM(NSInteger, ShopType)
     baihuoToEndPage = NO;
     
     // 注册
-    _supermarketCollectionView.hidden = NO;
-    _baihuofuzhuangCollectView.hidden = YES;
+
     [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
-    [_supermarketCollectionView addFooterWithCallback:^{
+    [_supermarketCollectionView addLegendFooterWithRefreshingBlock:^{
         [self requestGetHomePageGoos];
     }];
 
-    [_supermarketCollectionView addHeaderWithCallback:^{
+    [_supermarketCollectionView addLegendHeaderWithRefreshingBlock:^{
         switch (shopType) {
             case ShopTypeSuperMarket:
             {
@@ -102,24 +104,12 @@ typedef NS_ENUM(NSInteger, ShopType)
         [self requestGetHomePageGoos];
         DLog(@"下拉刷新完成！");
     }];
-//    [_baihuofuzhuangCollectView addHeaderWithCallback:^{
-//        baihuoCurPage = 0;
-//        [self requestGetHomePageGoos];
-//        DLog(@"下拉刷新完成！");
-//    }];
-//    NSArray *collectViews = @[_supermarketCollectionView, _baihuofuzhuangCollectView];
-//    NSInteger viewCount = collectViews.count;
-//    for (int i = 0; i < viewCount; i++) {
-//        UICollectionView *collectView = [collectViews objectAtIndex:i];
-//        [collectView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
-//        [collectView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
-//        collectView.tag = i;
-//
-//        [collectView addFooterWithCallback:^{
-//            [self requestGetHomePageGoos];
-//        }];
-//        
-//    }
+    
+    
+    
+    
+    
+    [superMarketDataArray addObject:[NSDictionary dictionary]];
     
 }
 
@@ -217,7 +207,8 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)requestGetHomePageGoos
 {
     if (_city.length == 0) {
-        [SVProgressHUD showSuccessWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_supermarketCollectionView endHeaderAndFooterRefresh];
         
     } else{
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -247,8 +238,7 @@ typedef NS_ENUM(NSInteger, ShopType)
         }
         [SVProgressHUD showWithStatus:@"加载中……"];
         [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
-            [_supermarketCollectionView headerEndRefreshing];
-            [_supermarketCollectionView footerEndRefreshing];
+            [_supermarketCollectionView endHeaderAndFooterRefresh];
             [SVProgressHUD dismiss];
             float flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
@@ -292,8 +282,7 @@ typedef NS_ENUM(NSInteger, ShopType)
                 [_supermarketCollectionView reloadData];
             }
         } failCallBack:^(id error) {
-            [_supermarketCollectionView headerEndRefreshing];
-            [_supermarketCollectionView footerEndRefreshing];
+            [_supermarketCollectionView endHeaderAndFooterRefresh];
             [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
         }];
     }
@@ -356,7 +345,7 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
 {
-    WSSearchHistoryViewController *searchHistoryVC =[[WSSearchHistoryViewController alloc] init];
+    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
     [self.navigationController pushViewController:searchHistoryVC animated:YES];
     return NO;
 }
@@ -396,7 +385,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     NSInteger count = dataArray.count;
     if (count == 0) {
-        return 1;
+        return 0;
     }
     return count;
 }
@@ -422,13 +411,16 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     NSInteger row = indexPath.row;
     HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
+    cell.refreshPage = ^() {
+        [self refreshPage];
+    };
     NSInteger count = array.count;
     if (count == 0) {
         cell.hidden = YES;
     } else {
         cell.hidden = NO;
         cell.tag = row;
-        cell.delegate = self;
+        //cell.delegate = self;
         NSDictionary *dic = [array objectAtIndex:row];
         [cell setModel:dic];
     }
@@ -517,6 +509,18 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
 }
 
+#pragma mark - 
+- (void)refreshPage
+{
+    if (superMarketDataArray.count != 0) {
+        supermarketCurPage = 0;
+        [self requestGetHomePageGoos];
+    }
+    if (baihuoFuzhuangDataArray.count != 0) {
+        [self requestGetHomePageGoos];
+    }
+}
+
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -542,6 +546,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = [dic stringForKey:@"shopId"];
     [self.navigationController pushViewController:productDetailVC animated:YES];
+
+
 }
 
 
@@ -836,8 +842,23 @@ typedef NS_ENUM(NSInteger, ShopType)
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
     
-    [self toNoInStoreVC];
-    DLog(@"到店签到");
+    [WSUserUtil actionAfterLogin:^{
+        [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
+            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+            // 在店内
+            if (isInStore) {
+                NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
+                self.isInShop = isInShop;
+                // 请求商店详情
+                [self requestStoreDetail];
+                
+                // 不在店内
+            } else {
+                [self toNoInStoreVC];
+            }
+            
+        }];
+    }];
 }
 
 #pragma mark 扫描产品
@@ -845,17 +866,77 @@ typedef NS_ENUM(NSInteger, ShopType)
 {
     // 1. 在店内跳到 WSStoreDetailViewController
     // 2. 不在店内跳到 WSScanNoInStoreViewController
-    [self toScanNoInStore];
-     DLog(@"扫描产品");
+    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
+        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+        // 在店内
+        if (isInStore) {
+            [WSUserUtil actionAfterLogin:^{
+                NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                NSString *shopId = [dic stringForKey:@"shopId"];
+                WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+                scanInStoreVC.shopid = shopId;
+                [self.navigationController pushViewController:scanInStoreVC animated:YES];
+            }];
+            
+            // 不在店内
+        } else {
+            [self toScanNoInStore];
+        }
+        
+    }];
 }
 
 #pragma mark 邀请好友
 - (void)invateFriendAction:(id)sender
 {
-    WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
-    [self.navigationController pushViewController:inviateFriendVC animated:YES];
-    DLog(@"邀请好友");
+    [WSUserUtil actionAfterLogin:^{
+        WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
+        [self.navigationController pushViewController:inviateFriendVC animated:YES];
+    }];
 }
+
+#pragma mark - 请求商店详情
+- (void)requestStoreDetail
+{
+    //请求商店详情接口获取商店名
+    NSString *shopId = [_isInShop stringForKey:@"shopId"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    [params setValue:shopId forKey:@"shopid"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];
+    [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
+    [params setValue:[NSString stringWithFormat:@"%d", 1] forKey:@"pages"];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            
+            //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
+            //  3. 在店内已签到 跳到 WSStoreDetailViewController
+            NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
+            self.shop = shop;
+            NSString *isSign = [shop stringForKey:@"isSign"];
+            // 没有签到
+            if ([isSign isEqualToString:@"1"]) {
+                [self toInStoreNoSign];
+                // 已经签到
+            } else {
+                [self toStoreDetail];
+            }
+        } else {
+            //不在店内
+            [self toNoInStoreVC];
+        }
+    } failCallBack:^(id error) {
+        [self toNoInStoreVC];
+    } showMessage:NO];
+}
+
 
 #pragma mark - 到店签到 不在店内
 - (void)toNoInStoreVC
@@ -914,12 +995,6 @@ typedef NS_ENUM(NSInteger, ShopType)
             break;
     }
     [_supermarketCollectionView reloadData];
-}
-
-#pragma mark - BMKMapViewDelegate
-- (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
-{
-    DLog(@"regionDidChangeAnimated");
 }
 
 @end

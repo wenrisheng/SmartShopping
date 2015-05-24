@@ -15,6 +15,7 @@
 }
 
 @property (strong, nonatomic) NSString *city;
+@property (weak, nonatomic) IBOutlet UILabel *inviateCodeLabel;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet ACImageScrollManagerView *adImageScrollManagerView;
 
@@ -33,7 +34,8 @@
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"邀请好友";
     slideImageArray = [[NSMutableArray alloc] init];
-
+    NSString *inviateCode = [WSRunTime sharedWSRunTime].user.inviteCode;
+    _inviateCodeLabel.text = inviateCode;
 }
 
 - (void)didReceiveMemoryWarning {

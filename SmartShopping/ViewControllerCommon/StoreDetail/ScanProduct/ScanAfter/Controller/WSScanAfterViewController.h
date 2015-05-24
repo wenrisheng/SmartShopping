@@ -10,4 +10,8 @@
 
 @interface WSScanAfterViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *shopid;
+@property (strong, nonatomic) NSString *goodsId;
+@property (strong, nonatomic) NSString *beanNum;
+
 @end

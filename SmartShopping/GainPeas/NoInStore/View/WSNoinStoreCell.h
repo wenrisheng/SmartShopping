@@ -14,6 +14,8 @@
 
 + (instancetype)getCell;
 
+- (void)setModel:(NSDictionary *)dic;
+
 @property (weak, nonatomic) IBOutlet UIImageView *leftImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *titleBut;

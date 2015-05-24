@@ -457,7 +457,7 @@
 {
     WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
     NSDictionary *dic = [_giftList objectAtIndex:0];
-    giftDetailVC.giftId = [dic objectForKey:@"giftId"];
+    giftDetailVC.giftId = [dic stringForKey:@"giftId"];
     [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
@@ -466,7 +466,7 @@
 {
     WSGiftDetailViewController *giftDetailVC = [[WSGiftDetailViewController alloc] init];
     NSDictionary *dic = [_giftList objectAtIndex:1];
-    giftDetailVC.giftId = [dic objectForKey:@"giftId"];
+    giftDetailVC.giftId = [dic stringForKey:@"giftId"];
     [self.navigationController pushViewController:giftDetailVC animated:YES];
 }
 
@@ -571,9 +571,10 @@
     // 清除缓存
     if (tag == 101) {
         if (buttonIndex == 1) {
+            [USER_DEFAULT removeObjectForKey:USER_KEY];
             [[SDImageCache sharedImageCache] clearMemory];
             [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
-                [SVProgressHUD showSuccessWithStatus:@"缓存已清除完！" duration:TOAST_VIEW_TIME];
+                [SVProgressHUD showSuccessWithStatus:@"缓存已清除！" duration:TOAST_VIEW_TIME];
             }];
             
         }

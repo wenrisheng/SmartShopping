@@ -30,6 +30,8 @@
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
 
+    [self synchronUserData];
+    
     // 百度地图
     [self initBMK];
     
@@ -61,6 +63,16 @@
 //    }
 //    
 //}
+
+- (void)synchronUserData
+{
+    NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
+    if (beforeData) { // 同步是否推动消息
+        WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
+        WSRunTime *runtime = [WSRunTime sharedWSRunTime];
+        runtime.user = beforeUser;
+    }
+}
 
 #pragma mark - 初始化百度地图 BMK
 - (void)initBMK
