@@ -13,6 +13,9 @@
 #import "WSMineViewController.h"
 #import <Parse/Parse.h>
 
+
+#define APP_NOT_FIRST_OPEN     @"APP_NOT_FIRST_OPEN"
+
 //#import "IBSDK.h"
 
 @interface AppDelegate () <BMKGeneralDelegate>
@@ -30,7 +33,7 @@
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
 
-    [self synchronUserData];
+    [self synchronUserDataAndPeaNum];
     
     // 百度地图
     [self initBMK];
@@ -64,8 +67,28 @@
 //    
 //}
 
-- (void)synchronUserData
+- (void)synchronUserDataAndPeaNum
 {
+    //  安装后第一次启动
+    NSNumber *notFirstOpen = [USER_DEFAULT objectForKey:APP_NOT_FIRST_OPEN];
+    if (!notFirstOpen) {
+        [USER_DEFAULT setValue:[NSNumber numberWithInt:100] forKey:APP_PEAS_NUM];
+        [USER_DEFAULT setValue:[NSNumber numberWithBool:NO] forKey:APP_NOT_FIRST_OPEN];
+    }
+    //
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        
+    } else {
+        
+    }
+    int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+    if (user.beanNumber.length > 0) {
+        user.beanNumber = [NSString stringWithFormat:@"%d", [user.beanNumber intValue] + appPeasNum];
+    } else {
+        user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
+    }
+    
     NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
     if (beforeData) { // 同步是否推动消息
         WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];

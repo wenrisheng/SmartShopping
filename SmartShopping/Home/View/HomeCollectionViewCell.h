@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#define HOMECOLLECTIONVIEWCELL_HEIGHT          270
-#define HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL    232
+#define HOMECOLLECTIONVIEWCELL_HEIGHT          230
+#define HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL    211
+
+#define HOMECOLLECTIONVIEWCELL_IMAGE_HEIGHT_SMALL    131
 
 @class HomeCollectionViewCell;
 @protocol HomeCollectionViewCellDelegate <NSObject>

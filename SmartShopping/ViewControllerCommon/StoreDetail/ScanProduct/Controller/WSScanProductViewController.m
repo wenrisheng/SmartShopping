@@ -17,6 +17,7 @@
     BOOL isUp;
     NSTimer * timer;
     AVAudioPlayer *player;
+    BOOL lampOn;
 }
 
 
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *tiaoImageView;
 @property (weak, nonatomic) IBOutlet ZBarReaderView *readerView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+
+- (IBAction)lampButAction:(id)sender;
 
 - (IBAction)shanButAction:(id)sender;
 
@@ -38,7 +41,7 @@
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"扫描产品";
     _readerView.readerDelegate = self;
     _readerView.allowsPinchZoom = NO;
-    
+    lampOn = NO;
     //闪光灯
      _readerView.torchMode = 0;
     _readerView.scanCrop = [self getScanCrop:_readerView.bounds readerViewBounds:self.readerView.bounds];
@@ -149,6 +152,19 @@
         [_readerView start];
         timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation) userInfo:nil repeats:YES];
     } showMessage:YES];
+}
+
+- (IBAction)lampButAction:(id)sender {
+    if (lampOn) {
+        //闪光灯
+        _readerView.torchMode = 0;
+        lampOn = !lampOn;
+    } else {
+        //闪光灯
+        _readerView.torchMode = 1;
+        lampOn = !lampOn;
+
+    }
 }
 
 - (IBAction)shanButAction:(id)sender

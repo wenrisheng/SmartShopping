@@ -150,6 +150,7 @@
 {
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_collectionView endHeaderAndFooterRefresh];
         return;
     }
     [SVProgressHUD showWithStatus:@"加载中……"];
@@ -164,6 +165,7 @@
     [params setValue:[NSString stringWithFormat:@"%d", currentPage + 1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
+         [_collectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -183,6 +185,7 @@
             [_collectionView reloadData];
         }
     } failCallBack:^(id error) {
+         [_collectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }

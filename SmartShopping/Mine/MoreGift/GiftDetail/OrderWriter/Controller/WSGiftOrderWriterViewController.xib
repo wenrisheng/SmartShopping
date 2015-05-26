@@ -28,13 +28,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HBp-Bi-cV2" customClass="WSNavigationBarManagerView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="64" id="kIN-bT-Cnp"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1iZ-KF-MY9">
                     <rect key="frame" x="0.0" y="64" width="320" height="306"/>
                     <subviews>
@@ -51,7 +44,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmS-li-5qF">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3iP-ir-fcb">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3iP-ir-fcb">
                                             <rect key="frame" x="10" y="10" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="5CH-NL-SgV"/>
@@ -461,6 +454,13 @@
                         <constraint firstAttribute="height" constant="50" id="tQz-NY-lfj"/>
                         <constraint firstAttribute="centerY" secondItem="UK2-Be-O53" secondAttribute="centerY" id="txu-By-8Qd"/>
                         <constraint firstItem="JKj-zQ-8By" firstAttribute="leading" secondItem="dwK-7Q-EfT" secondAttribute="leading" id="usn-BJ-2V5"/>
+                    </constraints>
+                </view>
+                <view tag="102" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HBp-Bi-cV2" customClass="WSNavigationBarManagerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="kIN-bT-Cnp"/>
                     </constraints>
                 </view>
             </subviews>

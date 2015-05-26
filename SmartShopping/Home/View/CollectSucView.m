@@ -19,12 +19,16 @@
     collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
     [windown addSubview:collectSucView];
     [collectSucView expandToSuperView];
-    [NSTimer scheduledTimerWithTimeInterval:3 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
+    //[NSTimer scheduledTimerWithTimeInterval:1 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
 }
 
 - (void)dismissCollsecSucView
 {
-    [self removeFromSuperview];
+    [UIView animateWithDuration:DURATION_TIME animations:^{
+      //  self.alpha = 0;
+    } completion:^(BOOL finished) {
+        //[self removeFromSuperview];
+    }];
     if (_callBack) {
         _callBack();
     }

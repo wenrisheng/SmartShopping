@@ -63,6 +63,10 @@
 - (void)initView
 {
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"订单填写";
+    
+    [_subBut setEnlargeEdgeWithTop:20 right:20 bottom:20 left:20];
+    [_addBut setEnlargeEdge:20];
+    
     NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[_gift objectForKey:@"logoPath"]];;
     [_productImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
@@ -158,7 +162,14 @@
     } else {
         [self notAdd];
     }
-    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", [curNum intValue] * unitNum];
+    int totalConsume = [curNum intValue] * unitNum;
+    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", totalConsume];
+    // 当前用户的精明豆
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    int currentPeaNum = [user.beanNumber intValue];
+    int remainPeaNum = currentPeaNum - totalConsume;
+    
+    [self setRemainPeaValueWithRemainValue:[NSString stringWithFormat:@"%d", remainPeaNum]];
 }
 
 #pragma mark 加精明豆
@@ -185,7 +196,14 @@
     } else {
           [self canSub];
     }
-    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", [curNum intValue] * unitNum];
+    int totalConsume = [curNum intValue] * unitNum;
+    _totalAmountPeaLabel.text = [NSString stringWithFormat:@"%d个精明豆", totalConsume];
+    // 当前用户的精明豆
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    int currentPeaNum = [user.beanNumber intValue];
+    int remainPeaNum = currentPeaNum - totalConsume;
+
+    [self setRemainPeaValueWithRemainValue:[NSString stringWithFormat:@"%d", remainPeaNum]];
 }
 
 - (void)canSub
@@ -237,7 +255,7 @@
     if (flag) {
         NSString *userId = [WSRunTime sharedWSRunTime].user._id;
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:[_gift objectForKey:@"giftId"] forKey:@"giftId"];
+        [params setValue:[_gift objectForKey:@"id"] forKey:@"giftId"];
         [params setValue:[_gift objectForKey:@"giftType"] forKey:@"giftType"];
         [params setValue:_telTextField.text forKey:@"contactNumber"];
         [params setValue:_addressTextField.text forKey:@"deliveryAddress"];

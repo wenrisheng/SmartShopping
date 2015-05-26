@@ -282,7 +282,15 @@
     if (indexPath.section == 0) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = reusableView.imageScrollManagerView.acImageScrollView;
-        [imageScrollView setImageData:slideImageArray];
+        NSInteger imageCount = slideImageArray.count;
+        NSMutableArray *imageDataArray = [NSMutableArray array];
+        for (int i = 0; i < imageCount; i++) {
+            NSDictionary *dic = [slideImageArray objectAtIndex:i];
+            NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+            [imageDataArray addObject:imageURL];
+        }
+
+        [imageScrollView setImageData:imageDataArray];
         if (_shop) {
             NSString *isSign = [_shop stringForKey:@"isSign"];
             NSString *signImage = nil;

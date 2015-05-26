@@ -12,12 +12,27 @@
 
 - (void)setModel:(NSDictionary *)dic
 {
-    NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodlogo"]];
+    NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
     [_bigImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
-    NSString *enddate = [dic objectForKey:@"enddate"];
-    _validateDateLabel.text = [NSString stringWithFormat:@"%@前有效", enddate];
+    NSString *goodsEndDate = [dic objectForKey:@"goodsEndDate"];
+    NSString *formatDate = [WSProjUtil converDateWithDateStr:goodsEndDate];
+    _validateDateLabel.text = formatDate;
+    
+    NSString *distance = [dic stringForKey:@"distance"];
+    NSString *restultDistance = [WSProjUtil converDistanceWithDistanceStr:distance];
+    _distanceLabel.text = restultDistance;
+    
+    NSString *shopLogo = [dic objectForKey:@"shopLogo"];
+    NSString *shopLogoURL = [WSInterfaceUtility getImageURLWithStr:shopLogo];
+    [_smallImageView sd_setImageWithURL:[NSURL URLWithString:shopLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        if (image) {
+            _smallImageView.contentMode = UIViewContentModeScaleAspectFit;
+        } else {
+            _smallImageView.contentMode = UIViewContentModeScaleToFill;
+        }
+    }];
 }
 
 - (void)awakeFromNib

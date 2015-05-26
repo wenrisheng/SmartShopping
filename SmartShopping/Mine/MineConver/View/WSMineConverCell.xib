@@ -62,7 +62,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15-04-01 18:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1O-0r-ASc">
                                 <rect key="frame" x="209" y="39" width="91" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="91" id="Hw2-02-yrC"/>
+                                    <constraint firstAttribute="width" priority="250" constant="91" id="Hw2-02-yrC"/>
                                     <constraint firstAttribute="height" constant="21" id="boY-K7-hOo"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>

@@ -124,5 +124,43 @@
 
 - (IBAction)shareButAction:(id)sender
 {
+    NSString *goodsId = [dic stringForKey:@"goodsId"];
+    NSString *shopId = [dic stringForKey:@"shopId"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:goodsId forKey:@"goodsId"];
+    [params setValue:shopId forKey:@"shopid"];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [params setValue:user._id forKey:@"uid"];
+    }
+    
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSDictionary *goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
+            NSString *goodsName = [dic objectForKey:@"goodsName"];
+            NSString *shopName = [dic objectForKey:@"shopName"];
+            NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
+            id url = [goodsDetails objectForKey:@"h5Url"];
+            
+            NSMutableDictionary *shareDic = [NSMutableDictionary dictionaryWithDictionary:goodsDetails];
+            
+            [shareDic setValue:goodsName forKey:GOODS_NAME];
+            [shareDic setValue:shopName forKey:SHOP_NAME];
+            [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
+            [shareDic setValue:url forKey:GOODS_URL];
+            [self performSelector:@selector(shareProduct:) withObject:goodsDetails afterDelay:1];
+            //[self performSelectorInBackground:@selector(shareProduct:) withObject:goodsDetails ];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"分享失败！" duration:TOAST_VIEW_TIME];
+    } showMessage:YES];
+
 }
+
+- (void)shareProduct:(NSDictionary *)shareDic
+{
+    [WSProjShareUtil shareGoodsDetails:shareDic];
+}
+
 @end

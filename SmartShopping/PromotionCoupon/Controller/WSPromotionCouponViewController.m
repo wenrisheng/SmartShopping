@@ -287,7 +287,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
                 NSInteger goodCount = goodsList.count;
                 NSMutableArray *tempArray = [NSMutableArray array];
                 for (int j = 0; j < goodCount; j++) {
-                    NSDictionary *goodDic = [goodsList objectAtIndex:i];
+                    NSDictionary *goodDic = [goodsList objectAtIndex:j];
                     NSMutableDictionary *resultGoodDic = [NSMutableDictionary dictionaryWithDictionary:goodDic];
                     [resultGoodDic setValue:[shop stringForKey:@"shopId"] forKey:@"shopId"];
                     [tempArray addObject:resultGoodDic];
@@ -758,19 +758,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    switch (searchType) {
-        case SearchTypeStore:
-        {
-            doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 4;
-        }
-            break;
-        case SearchTypeProduct:
-        {
-            doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 3;
-        }
-            break;
-        default:
-            break;
+    if (_outStoreTabSlideManagerView.hidden) {
+        doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 3;
+    } else {
+        doubleTable.indicateImageViewCenterXCon.constant = - SCREEN_WIDTH / 4;
     }
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
@@ -858,21 +849,12 @@ typedef NS_ENUM(NSInteger, SearchType) {
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
         self.townId = [SDic stringForKey:@"townId"];
-        switch (searchType) {
-            case SearchTypeStore:
-            {
-                [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-            }
-                break;
-            case SearchTypeProduct:
-            {
-                [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-            }
-                break;
-            default:
-                break;
+        if (_outStoreTabSlideManagerView.hidden) {
+             [_inStoreTabSlideMnagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+        } else {
+           [_outStoreTabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
         }
-
+       
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
         storeCurPage = 0;

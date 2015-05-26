@@ -64,6 +64,7 @@
 		7C46E4491AF07DD000EBDCDC /* WSProjUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */; };
 		7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */; };
 		7C4BB99A1B0AF3D8007293C3 /* WSSearchHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */; };
+		7C4C7F7C1B139552002A264A /* WSProjShareUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */; };
 		7C55073A1B07A12000DE0126 /* BaiduMapAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */; };
 		7C55073B1B07A12000DE0126 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C5507391B07A12000DE0126 /* mapapi.bundle */; };
 		7C5507421B08C67600DE0126 /* WSScanInStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55073F1B08C67600DE0126 /* WSScanInStoreViewController.m */; };
@@ -529,6 +530,8 @@
 		7C4BB9961B0AF3C5007293C3 /* WSSearchHistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchHistoryView.h; sourceTree = "<group>"; };
 		7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchHistoryView.m; sourceTree = "<group>"; };
 		7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchHistoryView.xib; sourceTree = "<group>"; };
+		7C4C7F7A1B139552002A264A /* WSProjShareUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSProjShareUtil.h; sourceTree = "<group>"; };
+		7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSProjShareUtil.m; sourceTree = "<group>"; };
 		7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI.framework; sourceTree = "<group>"; };
 		7C5507391B07A12000DE0126 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
 		7C55073E1B08C67600DE0126 /* WSScanInStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSScanInStoreViewController.h; sourceTree = "<group>"; };
@@ -2037,6 +2040,8 @@
 				7C2E385E1AF8C24900EF54B0 /* WSUserUtil.m */,
 				7C36DFB71B0235D30030530C /* WSShareSDKUtil.h */,
 				7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */,
+				7C4C7F7A1B139552002A264A /* WSProjShareUtil.h */,
+				7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3274,6 +3279,7 @@
 				7C2E385F1AF8C24900EF54B0 /* WSUserUtil.m in Sources */,
 				7C0789ED1AE69672003ADA36 /* WSInterfaceUtility.m in Sources */,
 				7C6AD5461AEF49AD000B6CB1 /* WSClearHistoryCell.m in Sources */,
+				7C4C7F7C1B139552002A264A /* WSProjShareUtil.m in Sources */,
 				7C6558AB1B07975800D832C2 /* ASIS3BucketRequest.m in Sources */,
 				7CD0E4611AE2B61B00B78C9C /* WSLoginedView.m in Sources */,
 				7C249B721ADD6B7A000712BF /* WSInfoListCell.m in Sources */,
@@ -3470,7 +3476,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b78d74fb-52d5-4d52-870f-2de5d7131116";
+				PROVISIONING_PROFILE = "cdd09d63-2f8d-4d46-a469-8e96eaeed343";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3522,7 +3528,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b78d74fb-52d5-4d52-870f-2de5d7131116";
+				PROVISIONING_PROFILE = "cdd09d63-2f8d-4d46-a469-8e96eaeed343";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

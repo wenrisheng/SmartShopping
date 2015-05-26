@@ -150,54 +150,14 @@ typedef NS_ENUM(NSInteger, SearchType) {
         }
     };
     
+    _searchManagerView.searchTypeView.shouldReturnCallback =  ^ (WSSearchTypeView *searchView) {
+        [self doSearch];
+        return YES;
+    };
+    
     _searchManagerView.searchTypeView.searchButCallback = ^(WSSearchTypeView *searchView) {
-        _tabContainerView.hidden = NO;
-        [searchView.centerTextField resignFirstResponder];
-        switch (searchType) {
-            case SearchTypeProduct:
-            {
-                if (_searchname.length > 0) {
-                    NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
-                    NSMutableArray *curHistoryArray = [NSMutableArray array];
-                    [curHistoryArray addObject:_searchname];
-                    [curHistoryArray addObjectsFromArray:historyArray];
-                    NSInteger count = curHistoryArray.count;
-                    if (count > HISTORY_COUNT) {
-                        int subCount = (int)count - HISTORY_COUNT;
-                        for (int i = 0; i < subCount; i ++) {
-                            [curHistoryArray removeLastObject];
-                        }
-                    }
-                    [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_PRODUCT_HISTORY_KEY];
-                }
-              
-                productCutPage = 0;
-                [self requestSelectGoods];
-            }
-                break;
-            case SearchTypeStore:
-            {
-                if (_searchname.length > 0) {
-                    NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_STORE_HISTORY_KEY];
-                    NSMutableArray *curHistoryArray = [NSMutableArray array];
-                    [curHistoryArray addObject:_searchname];
-                    [curHistoryArray addObjectsFromArray:historyArray];
-                    NSInteger count = curHistoryArray.count;
-                    if (count > HISTORY_COUNT) {
-                        int subCount = (int)count - HISTORY_COUNT;
-                        for (int i = 0; i < subCount; i ++) {
-                            [curHistoryArray removeLastObject];
-                        }
-                    }
-                    [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_STORE_HISTORY_KEY];
-                }
-                storeCurPage = 0;
-                [self requestSearchShop];
-            }
-                break;
-            default:
-                break;
-        }
+       
+        [self doSearch];
     };
     
     // 注册
@@ -263,6 +223,63 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)doSearch
+{
+    _tabContainerView.hidden = NO;
+    [self changeTopTabView];
+    if (historyView) {
+        historyView.hidden = YES;
+    }
+    [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
+    switch (searchType) {
+        case SearchTypeProduct:
+        {
+            if (_searchname.length > 0) {
+                NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
+                NSMutableArray *curHistoryArray = [NSMutableArray array];
+                [curHistoryArray addObject:_searchname];
+                [curHistoryArray addObjectsFromArray:historyArray];
+                NSInteger count = curHistoryArray.count;
+                if (count > HISTORY_COUNT) {
+                    int subCount = (int)count - HISTORY_COUNT;
+                    for (int i = 0; i < subCount; i ++) {
+                        [curHistoryArray removeLastObject];
+                    }
+                }
+                [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_PRODUCT_HISTORY_KEY];
+            }
+            
+            productCutPage = 0;
+            [self requestSelectGoods];
+        }
+            break;
+        case SearchTypeStore:
+        {
+            if (_searchname.length > 0) {
+                NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_STORE_HISTORY_KEY];
+                NSMutableArray *curHistoryArray = [NSMutableArray array];
+                [curHistoryArray addObject:_searchname];
+                [curHistoryArray addObjectsFromArray:historyArray];
+                NSInteger count = curHistoryArray.count;
+                if (count > HISTORY_COUNT) {
+                    int subCount = (int)count - HISTORY_COUNT;
+                    for (int i = 0; i < subCount; i ++) {
+                        [curHistoryArray removeLastObject];
+                    }
+                }
+                [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_STORE_HISTORY_KEY];
+            }
+            storeCurPage = 0;
+            [self requestSearchShop];
+        }
+            break;
+        default:
+            break;
+    }
+
+}
+
 
 #pragma mark - 现实历史纪录
 - (void)showHistoryView
@@ -596,16 +613,30 @@ typedef NS_ENUM(NSInteger, SearchType) {
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
        
-        if (searchType == SearchTypeProduct) {
-            [_productTabView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-             self.townId = [SDic stringForKey:@"townId"];
-        } else {
-            [_storeTabView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-            self.store_townId = [SDic stringForKey:@"townId"];
+        switch (searchType) {
+            case SearchTypeProduct:
+            {
+                [_productTabView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+                self.townId = [SDic stringForKey:@"townId"];
+                productCutPage = 0;
+                [self requestSelectGoods];
+            }
+                break;
+            case SearchTypeStore:
+            {
+                [_storeTabView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+                self.store_townId = [SDic stringForKey:@"townId"];
+                storeCurPage = 0;
+                 [self requestSearchShop];
+            }
+                break;
+            default:
+                break;
         }
+       
+        
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
-        
       
     };
     
@@ -619,21 +650,12 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    switch (searchType) {
-        case SearchTypeProduct:
-        {
-             doubleTable.indicateImageViewCenterXCon.constant = 0;
-        }
-            break;
-        case SearchTypeStore:
-        {
-             doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
-        }
-            break;
-        default:
-            break;
+    if (_productTabView.hidden) {
+        doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
+    } else {
+         doubleTable.indicateImageViewCenterXCon.constant = 0;
     }
-   
+    
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -686,7 +708,22 @@ typedef NS_ENUM(NSInteger, SearchType) {
         storeFIndex = (int)index;
         NSDictionary *dic = [storeFDataArray objectAtIndex:index];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
-        self.shopTypeId = shopTypeId;
+        switch (searchType) {
+            case SearchTypeProduct:
+            {
+                self.shopTypeId = shopTypeId;
+            }
+                break;
+            case SearchTypeStore:
+            {
+                self.store_shopTypeId = shopTypeId;
+            }
+                break;
+            default:
+                break;
+        }
+
+       
         NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
         // 第一个数据的二级数据是否为空
         // 二级数据为空时请求数据
@@ -718,11 +755,31 @@ typedef NS_ENUM(NSInteger, SearchType) {
         NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
-        self.retailId = [SDic stringForKey:@"retailId"];
-        if (searchType == SearchTypeProduct) {
-            [_productTabView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+        switch (searchType) {
+            case SearchTypeProduct:
+            {
+                 [_productTabView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+                self.retailId = [SDic stringForKey:@"retailId"];
+                productCutPage = 0;
+                [self requestSelectGoods];
+            }
+                break;
+            case SearchTypeStore:
+            {
+                [_storeTabView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+                self.store_retailId = [SDic stringForKey:@"retailId"];
+                storeCurPage = 0;
+                [self requestSearchShop];
+            }
+                break;
+            default:
+                break;
+        }
+
+        if (_productTabView.hidden) {
+            
         } else {
-            [_storeTabView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+            
         }
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
@@ -1103,6 +1160,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             [vc setSearchTypeTitle];
             [self changeTopTabView];
             [self showHistoryView];
+            hasRequestData = NO;
             [_collectionView reloadData];
         };
         [self.view addSubview:toastView];
@@ -1308,7 +1366,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             cell.leftProductBut.tag = row;
             cell.rightProductBut.tag = row;
 
-            NSDictionary *dic = [storeDataArray objectAtIndex:row];
+            NSMutableDictionary *dic = [storeDataArray objectAtIndex:row];
             [cell setModel:dic];
             return cell;
 
@@ -1316,14 +1374,15 @@ typedef NS_ENUM(NSInteger, SearchType) {
             break;
         case SearchTypeProduct:
         {
-            if (storeDataArray.count == 0) {
+            if (productDataArray.count == 0) {
                 WSSearchNoDataCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSSearchNoDataCollectionViewCell" forIndexPath:indexPath];
                 return cell;
             }
             WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
             cell.delegate = self;
-            NSDictionary *dic = [productDataArray objectAtIndex:row];
+            NSMutableDictionary *dic = [productDataArray objectAtIndex:row];
             [cell setModel:dic];
+            return cell;
         }
             break;
         default:

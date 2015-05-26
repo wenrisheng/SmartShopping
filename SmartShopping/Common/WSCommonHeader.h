@@ -25,6 +25,7 @@
 #import "WSProjUtil.h"
 #import "WSBMKUtil.h"
 #import "WSUserUtil.h"
+#import "WSProjShareUtil.h"
 
 // 分享
 #import <ShareSDK/ShareSDK.h>

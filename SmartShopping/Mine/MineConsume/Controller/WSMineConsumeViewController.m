@@ -25,27 +25,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的消费卷";
-    _contentTableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
+  //  _contentTableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     dataArray = [[NSMutableArray alloc] init];
     
+    [_contentTableView addLegendHeaderWithRefreshingBlock:^{
+        [self requestMyGiftList];
+    }];
+    [self requestMyGiftList];
+}
+
+- (void)requestMyGiftList
+{
     NSString *userId = [WSRunTime sharedWSRunTime].user._id;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:userId forKey:@"userId"];
     [param setValue:@"2" forKey:@"giftType"];
     [SVProgressHUD showWithStatus:@"加载中……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyGiftList] data:param tag:WSInterfaceTypeMyGiftList sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyGiftList] data:param tag:WSInterfaceTypeMyGiftList sucCallBack:^(id result) {
+        [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *userGiftList = [[result objectForKey:@"data"] objectForKey:@"userGiftList"];
+            [dataArray removeAllObjects];
             [dataArray addObjectsFromArray:userGiftList];
             [_contentTableView reloadData];
         }
     } failCallBack:^(id error) {
-        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
-    }];
-
-   // [dataArray addObjectsFromArray:@[@"", @"", @"", @""]];
+        [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+        [_contentTableView endHeaderAndFooterRefresh];
+    } showMessage:YES];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -79,16 +79,20 @@
     DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
 
 #endif
-    
+    __weak ASIFormDataRequest *respRequest = request;
     // 请求完成
     [request setCompletionBlock:^{
-        NSData *responseData = [request responseData];
+        
+        NSData *responseData = [respRequest responseData];
         NSError *jsonError = nil;
         NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&jsonError];
         
         // 调试打印响应数据
 #ifdef DEBUG
-        NSError *requestError = request.error;
+        NSString * str = [[NSString alloc] initWithData:[respRequest postBody] encoding:NSUTF8StringEncoding];
+        DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
+        DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
+        NSError *requestError = respRequest.error;
         if (requestError) {
             DLog(@"requstError:%@", requestError);
         }
@@ -97,7 +101,7 @@
         }
         NSArray *allKeys = [resultDic allKeys];
         NSMutableString *resultStr = [[NSMutableString alloc] init];
-        [resultStr appendString:[NSString stringWithFormat:@"*********request  %d result:\n", (int)request.tag]];
+        [resultStr appendString:[NSString stringWithFormat:@"*********request  %d result:\n", (int)respRequest.tag]];
         [resultStr appendString:@"{\n"];
         for (id key in allKeys) {
             [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
@@ -118,7 +122,7 @@
         
     // 调试 打印请求错误
 #ifdef  DEBUG
-        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:respRequest.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, respRequest.error);
 #endif
         
         // 请求错误回调
@@ -220,6 +224,9 @@
         
         // 调试打印响应数据
 #ifdef DEBUG
+        NSString * str = [[NSString alloc] initWithData:[respRequest postBody] encoding:NSUTF8StringEncoding];
+        DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
+        DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
         NSError *requestError = respRequest.error;
         if (requestError) {
             DLog(@"requstError:%@", requestError);
@@ -241,7 +248,10 @@
         
         // 成功回调
         if (sucCallBack) {
-            sucCallBack(resultDic);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 sucCallBack(resultDic);
+            });
+           
         }
     }];
     
@@ -253,12 +263,12 @@
        
         // 调试 打印请求错误
 #ifdef  DEBUG
-        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
+        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:respRequest.url encoding:NSUTF8StringEncoding error:nil], (int)respRequest.tag, respRequest.error);
 #endif
         
         // 请求错误回调
         if (failCallBack) {
-            failCallBack(request.error);
+            failCallBack(respRequest.error);
         }
     }];
     if (showMessage) {

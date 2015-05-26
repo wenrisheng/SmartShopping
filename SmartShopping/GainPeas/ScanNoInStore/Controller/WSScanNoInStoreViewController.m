@@ -14,20 +14,34 @@
 #import "WSProductDetailViewController.h"
 #import "WSStoreDetailViewController.h"
 
+#import "WSDoubleTableView.h"
+
 @interface WSScanNoInStoreViewController ()
 {
     WSScanNoInStoreReusableView *headerView;
     NSMutableArray *dataArray;
     NSMutableArray *slideImageArray;
     int curPage;
+    
+    WSDoubleTableView *doubleTableView;
+    
+    NSMutableArray *storeFDataArray;// 商店一级数据
+    NSMutableDictionary *storeSDic;// 商店二级数据
+    int storeFIndex; // 当前选中的一级商店
+    int storeSIndex; // 当前选中的二级商店
 }
 
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
 @property (assign, nonatomic) double latitude;
 
+@property (strong, nonatomic) NSString *shopTypeId; // 商店类型id
+@property (strong, nonatomic) NSString *retailId; //零售商id
+
 @property (weak, nonatomic) IBOutlet UIView *tipView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UIButton *allStoreBut;
 
 - (IBAction)backButAction:(id)sender;
 - (IBAction)allStoreButAction:(id)sender;
@@ -40,6 +54,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    storeFDataArray = [[NSMutableArray alloc] init];
+    storeSDic = [[NSMutableDictionary alloc] init];
+    
     curPage = 0;
     dataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
@@ -119,6 +136,25 @@
 //    }
 }
 
+- (WSDoubleTableView *)getDoubleTableView
+{
+    if (doubleTableView) {
+        return doubleTableView;
+    } else {
+        doubleTableView = GET_XIB_FIRST_OBJECT(@"WSDoubleTableView");
+        doubleTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:doubleTableView];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_topView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+        [self.view addConstraints:@[top, bottom, left, right]];
+       
+        return doubleTableView;
+    }
+}
+
+
 #pragma mark - 请求幻灯片
 - (void)requestGetAdsPhoto
 {
@@ -139,6 +175,7 @@
 {
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_collectionView endHeaderAndFooterRefresh];
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -148,6 +185,7 @@
     [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGoodsScanList] data:params tag:WSInterfaceTypeGoodsScanList sucCallBack:^(id result) {
+        [_collectionView endHeaderAndFooterRefresh];
         NSArray *goodsScanList = [[result objectForKey:@"data"] objectForKey:@"goodsScanList"];
         if (curPage == 0) {
             [dataArray removeAllObjects];
@@ -156,7 +194,7 @@
         [dataArray addObjectsFromArray:goodsScanList];
         [_collectionView reloadData];
     } failCallBack:^(id error) {
-        
+        [_collectionView endHeaderAndFooterRefresh];
     } showMessage:YES];
 }
 
@@ -174,7 +212,168 @@
 
 - (IBAction)allStoreButAction:(id)sender
 {
+    if (storeFDataArray.count == 0) {
+        [self requestGetShopTypeList];
+    } else {
+        [self showStoreTypeSelectView];
+    }
 }
+
+#pragma mark - 所有商店筛选
+- (void)requestGetShopTypeList
+{
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopTypeList] data:nil tag:WSInterfaceTypeGetShopTypeList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *shopTypes = [[result objectForKey:@"data"] objectForKey:@"shopTypes"];
+            [storeFDataArray removeAllObjects];
+            [storeFDataArray addObjectsFromArray:shopTypes];
+            [self showStoreTypeSelectView];
+            NSInteger count = shopTypes.count;
+            if (count > 0) {
+                NSDictionary *dic = [shopTypes objectAtIndex:0];
+                NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+                [self requestGetShopTypeListWithShopTypeId:shopTypeId];
+            }
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
+}
+
+#pragma mark 显示商店选择view
+- (void)showStoreTypeSelectView
+{
+    WSDoubleTableView *doubleTable= [self getDoubleTableView];
+    doubleTable.dataArrayF = nil;
+    doubleTable.dataArrayS = nil;
+    [doubleTable.tableF reloadData];
+    [doubleTable.tableS reloadData];
+    doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
+    doubleTable.hidden = NO;
+    doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
+    doubleTable.cellSSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.cellSUnSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
+    doubleTable.isLeftToRight = YES;
+    NSMutableArray *tempFArray = [NSMutableArray array];
+    NSInteger FCount = storeFDataArray.count;
+    for (int i = 0; i < FCount; i++) {
+        NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+        NSDictionary *dic = [storeFDataArray objectAtIndex:i];
+        [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+        if (i == 0) {
+            [datadic setValue:@"0" forKey:DOUBLE_TABLE_SELECTED_FLAG];
+        } else {
+            [datadic setValue:@"1" forKey:DOUBLE_TABLE_SELECTED_FLAG];
+        }
+        [tempFArray addObject:datadic];
+    }
+    
+    NSMutableArray *tempSArray = [NSMutableArray array];
+    if (FCount > 0) {
+        NSDictionary *dic = [storeFDataArray objectAtIndex:0];
+        NSString *shopTypeId = [dic stringForKey:@"shopTypeId"];
+        NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
+        // 第一个商店数据的二级商店数据是否为空
+        if (secondArray.count == 0) {
+            // 请求二级商店数据
+            [self requestGetShopTypeListWithShopTypeId:shopTypeId];
+            // 添加二级商店数据源
+        } else {
+            NSDictionary *dic = [storeFDataArray objectAtIndex:0];
+            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSInteger SCount = tempArray.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [tempArray objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+        }
+    }
+    
+    doubleTable.dataArrayF = tempFArray;
+    doubleTable.dataArrayS = tempSArray;
+    [doubleTable.tableF reloadData];
+    [doubleTable.tableS reloadData];
+    doubleTable.tableFCallBack = ^(NSInteger index) {
+        storeFIndex = (int)index;
+        NSDictionary *dic = [storeFDataArray objectAtIndex:index];
+        NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+        self.shopTypeId = shopTypeId;
+        NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
+        // 第一个数据的二级数据是否为空
+        // 二级数据为空时请求数据
+        if (secondArray.count == 0) {
+            [self requestGetShopTypeListWithShopTypeId:shopTypeId];
+            
+            // 二级数据不为空时刷新二级表格
+        } else {
+            NSMutableArray *tempSArray = [NSMutableArray array];
+            NSDictionary *dic = [storeFDataArray objectAtIndex:index];
+            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSInteger SCount = tempArray.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [tempArray objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+            WSDoubleTableView *doubleTable= [self getDoubleTableView];
+            doubleTable.dataArrayS = tempSArray;
+            [doubleTable.tableS reloadData];
+        }
+    };
+    doubleTable.tableSCallBack = ^(NSInteger index) {
+        storeSIndex = (int)index;
+        NSDictionary *dic = [storeFDataArray objectAtIndex:storeFIndex];
+        NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+        NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
+        NSDictionary *SDic = [secondArray objectAtIndex:index];
+        NSString *title = [SDic objectForKey:@"name"];
+        self.retailId = [SDic stringForKey:@"retailId"];
+        [_allStoreBut setTitle:title forState:UIControlStateNormal];
+        WSDoubleTableView *doubleTable= [self getDoubleTableView];
+        doubleTable.hidden = YES;
+    };
+    
+}
+
+#pragma mark  请求二级商店
+- (void)requestGetShopTypeListWithShopTypeId:(NSString *)shopTypeId
+{
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopTypeList] data:@{@"shopTypeId": shopTypeId} tag:WSInterfaceTypeGetShopTypeList sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *saleRetails = [[result objectForKey:@"data"] objectForKey:@"saleRetails"];
+            [storeSDic setValue:saleRetails forKey:shopTypeId];
+            NSMutableArray *tempSArray = [NSMutableArray array];
+            NSInteger SCount = saleRetails.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [saleRetails objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [datadic setValue:[dic objectForKey:@"1"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+            
+            WSDoubleTableView *doubleTable= [self getDoubleTableView];
+            doubleTable.dataArrayS = tempSArray;
+            [doubleTable.tableS reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
+}
+
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

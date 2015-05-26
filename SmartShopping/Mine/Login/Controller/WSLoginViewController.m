@@ -254,7 +254,7 @@
                     type = @"5";
                 }
                     break;
-                case ShareTypeQQ:
+                case ShareTypeQQSpace:
                 {
                     loginType = UserLoginTypeQQ;
                     type = @"3";
@@ -278,7 +278,7 @@
                     WSUser *user = [[WSUser alloc] init];
                     [user setValuesForKeysWithDictionary:tempDic];
                     user.phone = _telTextField.text;
-                    user.loginType = UserLoginTypePhone;
+                    user.loginType = loginType;
                     [self doAfterLoginSucWithUser:user];
                 }
             }failCallBack:^(id error) {
@@ -339,6 +339,8 @@
     [SVProgressHUD showWithStatus:@"正在同步精明豆……"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+        
+        
         [SVProgressHUD dismiss];
         [self popViewController];
     } failCallBack:^(id error) {

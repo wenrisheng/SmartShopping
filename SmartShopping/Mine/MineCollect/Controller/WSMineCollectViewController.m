@@ -12,10 +12,17 @@
 #define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
 #define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
-@interface WSMineCollectViewController ()
+@interface WSMineCollectViewController () <UIAlertViewDelegate>
 {
     NSMutableArray *dataArray;
+    int curPage;
+    UIAlertView *alertView;
 }
+
+@property (strong, nonatomic) NSDictionary *delectDic;
+@property (strong, nonatomic) NSString *city;
+@property (assign, nonatomic) double longtide;
+@property (assign, nonatomic) double latitude;
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *contentCollectionView;
@@ -26,25 +33,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    dataArray = [[NSMutableArray alloc] init];
+    curPage = 0;
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的收藏";
-    _contentCollectionView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
+  //  _contentCollectionView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     
     // 注册
     [_contentCollectionView registerNib:[UINib nibWithNibName:@"WSMineCollectCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSMineCollectCollectionViewCell"];
     
     [_contentCollectionView addLegendHeaderWithRefreshingBlock:^{
-        
+        curPage = 0;
         [self requestMineCollect];
     }];
-//    [_contentCollectionView addFooterWithCallback:^{
-//        // 模拟延迟加载数据，因此2秒后才调用）
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            // 结束刷新
-//            [_contentCollectionView footerEndRefreshing];
-//        });
-//        
-//        DLog(@"下拉刷新完成！");
-//    }];
+    [_contentCollectionView addLegendFooterWithRefreshingBlock:^{
+        [self requestMineCollect];
+    }];
     dataArray = [[NSMutableArray alloc] init];
     [self requestMineCollect];
 }
@@ -54,21 +57,64 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(locationUpdate:)
+                                                 name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+}
+
+#pragma mark - 用户位置更新
+- (void)locationUpdate:(NSNotification *)notification
+{
+    NSDictionary *locationDic = [notification object];
+    [self setLocationCity:locationDic];
+}
+
+- (void)setLocationCity:(NSDictionary *)locationDic
+{
+    self.city = [locationDic objectForKey:LOCATION_CITY];
+    self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
+    self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
+
+    DLog(@"定位：%@", _city);
+    if (_city.length > 0) {
+        if (self.city.length > 0 && dataArray.count == 0) {
+            [self requestMineCollect];
+        }
+    }
+}
+
 - (void)requestMineCollect
 {
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败!" duration:TOAST_VIEW_TIME];
+        [_contentCollectionView endHeaderAndFooterRefresh];
+        return;
+    }
     [SVProgressHUD showWithStatus:@"加载中……"];
     NSString *userId = [WSRunTime sharedWSRunTime].user._id;
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyCollectList] data:@{@"uid": userId} tag:WSInterfaceTypeMyCollectList sucCallBack:^(id result) {
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyCollectList] data:@{@"uid": userId,  @"lon": [NSString stringWithFormat:@"%f", _latitude], @"lat": [NSString stringWithFormat:@"%f", _longtide], @"pages": [NSString stringWithFormat:@"%d", curPage + 1], @"pageSize":WSPAGE_SIZE } tag:WSInterfaceTypeMyCollectList sucCallBack:^(id result) {
+        [_contentCollectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            [dataArray removeAllObjects];
-            NSArray *myCollectList = [result objectForKey:@"myCollectList"];
+            if (curPage == 0) {
+                [dataArray removeAllObjects];
+            }
+            curPage ++;
+            NSArray *myCollectList = [[result objectForKey:@"data"]objectForKey:@"myCollectList"];
             [dataArray addObjectsFromArray:myCollectList];
             
             [_contentCollectionView reloadData];
         }
     } failCallBack:^(id error) {
+         [_contentCollectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }
@@ -132,23 +178,44 @@
 #pragma mark - swipeGestAction
 - (void)swipeGestAction:(UISwipeGestureRecognizer *)swipeGest
 {
+    if (!alertView) {
+      alertView  = [[UIAlertView alloc] initWithTitle:@"操作" message:@"确定删除？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+    }
+   
+    [alertView show];
+    
     UIView *view = [swipeGest view];
     NSInteger tag = view.tag;
     NSDictionary *dic = [dataArray objectAtIndex:tag];
-    NSString *goodsid = [dic objectForKey:@"goodsid"];
-    NSString *uid = [WSRunTime sharedWSRunTime].user._id;
-    [SVProgressHUD showWithStatus:@"正在删除……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:@{@"uid": uid, @"goodsid": goodsid} tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            [dataArray removeObjectAtIndex:tag];
-            [_contentCollectionView reloadData];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD dismissWithError:@"删除失败！" afterDelay:TOAST_VIEW_TIME];
-    }];
-    DLog(@"tag:%d", (int)tag);
+    self.delectDic = dic;
+      DLog(@"tag:%d", (int)tag);
 }
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+    if (buttonIndex==1) {
+        NSString *goodsid = [_delectDic stringForKey:@"goodsId"];
+        NSString *shopId = [_delectDic stringForKey:@"shopId"];
+        NSString *uid = [WSRunTime sharedWSRunTime].user._id;
+        [SVProgressHUD showWithStatus:@"正在删除……"];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:@{@"uid": uid, @"goodsid": goodsid, @"shopid": shopId} tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [dataArray removeObject:_delectDic];
+                self.delectDic = nil;
+                [_contentCollectionView reloadData];
+            }
+        } failCallBack:^(id error) {
+            [SVProgressHUD dismissWithError:@"删除失败！" afterDelay:TOAST_VIEW_TIME];
+        }];
+
+    }
+    
+
+}
+
 
 @end

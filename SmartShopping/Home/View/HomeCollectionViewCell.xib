@@ -104,7 +104,7 @@
                                             <constraint firstAttribute="height" priority="250" constant="27" id="BhM-5U-Qrr"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                        <color key="textColor" red="0.64705882349999999" green="0.65098039220000004" blue="0.65490196079999996" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.41960784309999999" green="0.42352941179999998" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hl5-zw-ol6">
@@ -305,7 +305,7 @@
                 <outlet property="smallImageView" destination="XrE-ST-FQL" id="fIK-wR-hL1"/>
                 <outlet property="validDateLabel" destination="ch0-wB-FWM" id="jeS-Xd-JvR"/>
             </connections>
-            <point key="canvasLocation" x="-77" y="207.5"/>
+            <point key="canvasLocation" x="-15" y="240.5"/>
         </collectionViewCell>
     </objects>
     <resources>

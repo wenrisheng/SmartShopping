@@ -7,8 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSScanNoInStoreViewController">
             <connections>
+                <outlet property="allStoreBut" destination="HQ2-SD-nwd" id="XsJ-vF-PoQ"/>
                 <outlet property="collectionView" destination="hOZ-IR-V7d" id="LcK-Rf-nNy"/>
                 <outlet property="tipView" destination="hGA-gi-kO2" id="Rli-Xb-ltO"/>
+                <outlet property="topView" destination="u4c-2X-dJy" id="zOe-ao-Ddi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -47,7 +49,7 @@
                             <rect key="frame" x="214" y="25" width="95" height="32"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQ2-SD-nwd">
-                                    <rect key="frame" x="0.0" y="0.0" width="87" height="32"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="85" height="32"/>
                                     <state key="normal" title="全部门店">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,8 +58,8 @@
                                         <action selector="allStoreButAction:" destination="-1" eventType="touchUpInside" id="jaa-AV-rjJ"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Yh-eJV">
-                                    <rect key="frame" x="75" y="11" width="10" height="10"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-down.png" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Yh-eJV">
+                                    <rect key="frame" x="80" y="17" width="10" height="10"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="10" id="Guk-DS-yi3"/>
                                         <constraint firstAttribute="height" constant="10" id="s2h-nh-k6o"/>
@@ -66,14 +68,14 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="uFD-Yh-eJV" secondAttribute="trailing" constant="10" id="EKe-Aq-17i"/>
+                                <constraint firstAttribute="trailing" secondItem="uFD-Yh-eJV" secondAttribute="trailing" constant="5" id="EKe-Aq-17i"/>
                                 <constraint firstAttribute="height" constant="32" id="IzO-mv-gOP"/>
                                 <constraint firstItem="HQ2-SD-nwd" firstAttribute="top" secondItem="htf-qF-GeI" secondAttribute="top" id="Lxf-Ia-WlM"/>
                                 <constraint firstItem="HQ2-SD-nwd" firstAttribute="leading" secondItem="htf-qF-GeI" secondAttribute="leading" id="PPP-CF-FvA"/>
-                                <constraint firstAttribute="trailing" secondItem="HQ2-SD-nwd" secondAttribute="trailing" constant="8" id="YD0-Qb-zSF"/>
-                                <constraint firstAttribute="centerY" secondItem="uFD-Yh-eJV" secondAttribute="centerY" id="cF9-yr-elH"/>
-                                <constraint firstAttribute="width" constant="95" id="f73-1y-cc3"/>
+                                <constraint firstAttribute="trailing" secondItem="HQ2-SD-nwd" secondAttribute="trailing" constant="10" id="YD0-Qb-zSF"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="95" id="f73-1y-cc3"/>
                                 <constraint firstAttribute="bottom" secondItem="HQ2-SD-nwd" secondAttribute="bottom" id="hjr-5l-BEj"/>
+                                <constraint firstAttribute="bottom" secondItem="uFD-Yh-eJV" secondAttribute="bottom" constant="5" id="sjM-VE-GaF"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -144,11 +146,11 @@
                 <constraint firstAttribute="bottom" secondItem="hGA-gi-kO2" secondAttribute="bottom" constant="17" id="fKf-wt-Prh"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="142" y="464"/>
+            <point key="canvasLocation" x="-126" y="467"/>
         </view>
     </objects>
     <resources>
-        <image name="arrow-01.png" width="14" height="26"/>
+        <image name="arrow-down.png" width="12" height="6"/>
         <image name="back.png" width="50" height="50"/>
     </resources>
 </document>

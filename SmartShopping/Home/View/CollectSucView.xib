@@ -16,7 +16,7 @@
                     <subviews>
                         <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJK-2F-7qo">
                             <rect key="frame" x="0.0" y="0.0" width="90" height="67"/>
-                            <color key="backgroundColor" red="0.41960784313725491" green="0.42352941176470588" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="colleation-011.png" translatesAutoresizingMaskIntoConstraints="NO" id="0mc-kY-cQL">
                             <rect key="frame" x="30" y="8" width="30" height="30"/>

@@ -381,13 +381,19 @@
             break;
         case UserLoginTypeQQ:
         {
-           [ShareSDK cancelAuthWithType:ShareTypeQQ]; 
+           [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
         }
             break;
         default:
             break;
     }
+    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
+    
+    
     [WSRunTime sharedWSRunTime].user = nil;
+    [_contentTableView reloadData];
 }
 
 #pragma mark - WSMineFirstCellDelegate
@@ -571,6 +577,9 @@
     // 清除缓存
     if (tag == 101) {
         if (buttonIndex == 1) {
+            [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+            [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+            [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
             [USER_DEFAULT removeObjectForKey:USER_KEY];
             [[SDImageCache sharedImageCache] clearMemory];
             [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
