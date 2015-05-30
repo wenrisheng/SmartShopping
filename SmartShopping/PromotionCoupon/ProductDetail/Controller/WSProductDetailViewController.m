@@ -115,7 +115,16 @@
                 //分享
             case 2:
             {
-                
+                if (_goodsDetails) {
+                    NSString *title = [_goodsDetails objectForKey:@"productname"];
+                    NSString *promotion= [_goodsDetails objectForKey:@"promotion"];
+                    NSString *h5url = [_goodsDetails objectForKey:@"h5url"];
+                    [WSShareSDKUtil shareWithTitle:title content:promotion description:promotion url:h5url imagePath:@"" thumbImagePath:@"" result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                        
+                    }];
+                } else {
+                    [SVProgressHUD showErrorWithStatus:@"商品查询错误！" duration:TOAST_VIEW_TIME];
+                }
             }
                 break;
             default:

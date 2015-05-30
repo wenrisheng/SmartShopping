@@ -190,9 +190,18 @@
 		7C6E571B1AE167BF00D020D5 /* WSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */; };
 		7C6E571C1AE167BF00D020D5 /* WSRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */; };
 		7C6E571E1AE171F100D020D5 /* choose-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6E571D1AE171F100D020D5 /* choose-01.png */; };
+		7C74B7CC1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C74B7CB1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.m */; };
+		7C74B7CE1B19E7F400CB7FE2 /* icon-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C74B7CD1B19E7F400CB7FE2 /* icon-04.png */; };
+		7C74B7D01B19E80700CB7FE2 /* icon-06.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C74B7CF1B19E80700CB7FE2 /* icon-06.png */; };
+		7C74B7D21B19E80B00CB7FE2 /* icon-05.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C74B7D11B19E80B00CB7FE2 /* icon-05.png */; };
 		7C7C9F851AF28C370011485C /* WSBMKUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7C9F841AF28C370011485C /* WSBMKUtil.m */; };
 		7C7E26D21AF4DC0600EC6598 /* redmobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E26D11AF4DC0600EC6598 /* redmobile.png */; };
-		7C8ABD131B04D5890079A21E /* ShareSDK.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C8ABD121B04D5890079A21E /* ShareSDK.jpg */; };
+		7C7E889C1B17ECF900E48B93 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E889B1B17ECF800E48B93 /* logo.png */; };
+		7C7E88A11B17EDDB00E48B93 /* guide-01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E889E1B17EDDB00E48B93 /* guide-01.jpg */; };
+		7C7E88A21B17EDDB00E48B93 /* guide-02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E889F1B17EDDB00E48B93 /* guide-02.jpg */; };
+		7C7E88A31B17EDDB00E48B93 /* guide-03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E88A01B17EDDB00E48B93 /* guide-03.jpg */; };
+		7C7E88A91B17EE6300E48B93 /* WSGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7E88A71B17EE6300E48B93 /* WSGuideViewController.m */; };
+		7C7E88AA1B17EE6300E48B93 /* WSGuideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C7E88A81B17EE6300E48B93 /* WSGuideViewController.xib */; };
 		7C90842E1ADF723A0073D94C /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */; };
 		7C9084301ADF729E0073D94C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C90842F1ADF729E0073D94C /* ImageIO.framework */; };
 		7C9085641ADF759B0073D94C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9085631ADF759B0073D94C /* Accounts.framework */; };
@@ -722,10 +731,21 @@
 		7C6E57191AE167BF00D020D5 /* WSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSRegisterViewController.m; sourceTree = "<group>"; };
 		7C6E571A1AE167BF00D020D5 /* WSRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSRegisterViewController.xib; sourceTree = "<group>"; };
 		7C6E571D1AE171F100D020D5 /* choose-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose-01.png"; sourceTree = "<group>"; };
+		7C74B7CA1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallLayout.h; sourceTree = "<group>"; };
+		7C74B7CB1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallLayout.m; sourceTree = "<group>"; };
+		7C74B7CD1B19E7F400CB7FE2 /* icon-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-04.png"; sourceTree = "<group>"; };
+		7C74B7CF1B19E80700CB7FE2 /* icon-06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-06.png"; sourceTree = "<group>"; };
+		7C74B7D11B19E80B00CB7FE2 /* icon-05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-05.png"; sourceTree = "<group>"; };
 		7C7C9F831AF28C370011485C /* WSBMKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSBMKUtil.h; sourceTree = "<group>"; };
 		7C7C9F841AF28C370011485C /* WSBMKUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSBMKUtil.m; sourceTree = "<group>"; };
 		7C7E26D11AF4DC0600EC6598 /* redmobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redmobile.png; sourceTree = "<group>"; };
-		7C8ABD121B04D5890079A21E /* ShareSDK.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ShareSDK.jpg; sourceTree = "<group>"; };
+		7C7E889B1B17ECF800E48B93 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../../logo.png; sourceTree = "<group>"; };
+		7C7E889E1B17EDDB00E48B93 /* guide-01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "guide-01.jpg"; sourceTree = "<group>"; };
+		7C7E889F1B17EDDB00E48B93 /* guide-02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "guide-02.jpg"; sourceTree = "<group>"; };
+		7C7E88A01B17EDDB00E48B93 /* guide-03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "guide-03.jpg"; sourceTree = "<group>"; };
+		7C7E88A61B17EE6300E48B93 /* WSGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSGuideViewController.h; sourceTree = "<group>"; };
+		7C7E88A71B17EE6300E48B93 /* WSGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSGuideViewController.m; sourceTree = "<group>"; };
+		7C7E88A81B17EE6300E48B93 /* WSGuideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSGuideViewController.xib; sourceTree = "<group>"; };
 		7C90842D1ADF723A0073D94C /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		7C90842F1ADF729E0073D94C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		7C9085631ADF759B0073D94C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -1120,6 +1140,8 @@
 				7C249B151ADD6114000712BF /* WSHomeViewController.h */,
 				7C249B161ADD6114000712BF /* WSHomeViewController.m */,
 				7C249B171ADD6114000712BF /* WSHomeViewController.xib */,
+				7C74B7CA1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.h */,
+				7C74B7CB1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1846,6 +1868,34 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		7C7E889D1B17EDDB00E48B93 /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				7C7E889E1B17EDDB00E48B93 /* guide-01.jpg */,
+				7C7E889F1B17EDDB00E48B93 /* guide-02.jpg */,
+				7C7E88A01B17EDDB00E48B93 /* guide-03.jpg */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
+		7C7E88A41B17EE3400E48B93 /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				7C7E88A51B17EE3400E48B93 /* Controller */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
+		7C7E88A51B17EE3400E48B93 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C7E88A61B17EE6300E48B93 /* WSGuideViewController.h */,
+				7C7E88A71B17EE6300E48B93 /* WSGuideViewController.m */,
+				7C7E88A81B17EE6300E48B93 /* WSGuideViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		7C9085711ADF7CD20073D94C /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -2200,7 +2250,9 @@
 			isa = PBXGroup;
 			children = (
 				7C67B6FF1B0E21FA00E5F340 /* nodata.png */,
+				7C74B7D11B19E80B00CB7FE2 /* icon-05.png */,
 				7C392DDC1B0316DB008AADA5 /* ic_list.png */,
+				7C74B7CF1B19E80700CB7FE2 /* icon-06.png */,
 				7C4206291AF5B4C9005F9F44 /* location.png */,
 				7CCBF5071AEFE722005321BF /* erweimiao.png */,
 				7CCBF5031AEFE28D005321BF /* pengyouquan.png */,
@@ -2225,6 +2277,7 @@
 				7CCFCD621AE9CCD20096152F /* arrow-up.png */,
 				7CD0E4951AE3978D00B78C9C /* qiandao.png */,
 				7CD0E45B1AE2A75000B78C9C /* radio_choose-01.png */,
+				7C74B7CD1B19E7F400CB7FE2 /* icon-04.png */,
 				7CD0E45C1AE2A75000B78C9C /* radio_choose-02.png */,
 				7C6E571D1AE171F100D020D5 /* choose-01.png */,
 				7CCAD3481ADEBD4C001D3D8B /* arrow-right.png */,
@@ -2264,7 +2317,6 @@
 			children = (
 				7C6557D31B07975800D832C2 /* ProjectCommon */,
 				7C0C896F1AF8CECF00F5C93C /* Default-568h@2x.png */,
-				7C8ABD121B04D5890079A21E /* ShareSDK.jpg */,
 				7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */,
 				7CCBBD561AD418AF00EA1F7F /* SmartShopping */,
 				7CCD11611AD542EF005A1429 /* Framework */,
@@ -2283,6 +2335,7 @@
 		7CCBBD561AD418AF00EA1F7F /* SmartShopping */ = {
 			isa = PBXGroup;
 			children = (
+				7C7E88A41B17EE3400E48B93 /* Guide */,
 				7CD0E4991AE3A3BE00B78C9C /* ViewControllerCommon */,
 				7CC5A9721ADDF8BB00D3C892 /* Common */,
 				7CCD11621AD54FA9005A1429 /* GainPeas */,
@@ -2518,6 +2571,8 @@
 		7CCD118C1AD5575E005A1429 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7C7E889D1B17EDDB00E48B93 /* Guide */,
+				7C7E889B1B17ECF800E48B93 /* logo.png */,
 				7CC827B31AF1311B00A837F8 /* scan */,
 				7CA484481AEA83B000116BBC /* radom */,
 				7CEEB29F1AE3C8DE005CB218 /* GainPeas */,
@@ -3012,12 +3067,14 @@
 				7CCA01B31AECC4C70081A8CC /* WSAboutViewController.xib in Resources */,
 				7CEEB2A71AE3C8DE005CB218 /* gainpeas_icon-02.png in Resources */,
 				7C42062A1AF5B4C9005F9F44 /* location.png in Resources */,
+				7C74B7D01B19E80700CB7FE2 /* icon-06.png in Resources */,
 				7CCAD33F1ADEB8D7001D3D8B /* time-clock.png in Resources */,
 				7CCA01C81AED30380081A8CC /* scan_green.png in Resources */,
 				7CCD8B281ADFD0D5007B86A9 /* line.png in Resources */,
 				7CCD8B251ADFD0D5007B86A9 /* icon-01.png in Resources */,
 				7CCD8B2A1ADFD0D5007B86A9 /* switch-off.png in Resources */,
 				7CCAD3451ADEBA1C001D3D8B /* invate_friend.png in Resources */,
+				7C7E88AA1B17EE6300E48B93 /* WSGuideViewController.xib in Resources */,
 				7CD0E4B11AE3A63100B78C9C /* shake-02.png in Resources */,
 				7CCE4F5A1AEB73480097DFBB /* WSGiftDetailViewController.xib in Resources */,
 				7CCD8B271ADFD0D5007B86A9 /* icon-03.png in Resources */,
@@ -3064,6 +3121,7 @@
 				7C55073B1B07A12000DE0126 /* mapapi.bundle in Resources */,
 				7CD0E4BD1AE3A8C800B78C9C /* WSSignupSucView.xib in Resources */,
 				7CD7715B1AEE61DE0040E9FD /* WSDoubleTableCell.xib in Resources */,
+				7C7E889C1B17ECF900E48B93 /* logo.png in Resources */,
 				7CCFCD651AE9CCD20096152F /* arrow-up.png in Resources */,
 				7CCAD32B1ADEB0C1001D3D8B /* b_normal.png in Resources */,
 				7CCBF5061AEFE28D005321BF /* qqkongjian.png in Resources */,
@@ -3102,6 +3160,7 @@
 				7CCD8B1B1ADFD0D5007B86A9 /* arrow-01.png in Resources */,
 				7CCAD3291ADEB0C1001D3D8B /* a_normal.png in Resources */,
 				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
+				7C7E88A31B17EDDB00E48B93 /* guide-03.jpg in Resources */,
 				7CEEB2AB1AE3C8DE005CB218 /* gainpeas_.png in Resources */,
 				7C4206321AF5BC4C005F9F44 /* PaopaoView.xib in Resources */,
 				7C1CE3A81B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib in Resources */,
@@ -3119,6 +3178,7 @@
 				7CD8F32A1AE54E240039CE0F /* WSMineCollectCollectionViewCell.xib in Resources */,
 				7CCD8B1C1ADFD0D5007B86A9 /* arrow-02.png in Resources */,
 				7C36DFA11B00DF6C0030530C /* screening.png in Resources */,
+				7C74B7D21B19E80B00CB7FE2 /* icon-05.png in Resources */,
 				7CCBF4F01AEFC53E005321BF /* WSScanNoInStoreViewController.xib in Resources */,
 				7CD0E45A1AE2A51B00B78C9C /* WSMineInfoViewController.xib in Resources */,
 				7CCD8B151ADFD0D5007B86A9 /* 02.png in Resources */,
@@ -3131,10 +3191,13 @@
 				7CCD8B221ADFD0D5007B86A9 /* doudou.png in Resources */,
 				7CCFCD641AE9CCD20096152F /* arrow-down.png in Resources */,
 				7C6E57131AE15E9C00D020D5 /* get-01.png in Resources */,
+				7C7E88A11B17EDDB00E48B93 /* guide-01.jpg in Resources */,
 				7C6E571E1AE171F100D020D5 /* choose-01.png in Resources */,
 				7C43C52D1AFBD01B001FEA64 /* CollectSucView.xib in Resources */,
+				7C74B7CE1B19E7F400CB7FE2 /* icon-04.png in Resources */,
 				7C6E57111AE15E9C00D020D5 /* weibo.png in Resources */,
 				7CCA01A01AEC8E0D0081A8CC /* WSOrderFailView.xib in Resources */,
+				7C7E88A21B17EDDB00E48B93 /* guide-02.jpg in Resources */,
 				7CD7714F1AEE554E0040E9FD /* WSFilterBandCell.xib in Resources */,
 				7CCD8B141ADFD0D5007B86A9 /* 01.png in Resources */,
 				7C6558EC1B07975900D832C2 /* WeiboSDK.bundle in Resources */,
@@ -3151,7 +3214,6 @@
 				7C249B5E1ADD6114000712BF /* HomeHeaderCollectionReusableView.xib in Resources */,
 				7C3DFF321AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.xib in Resources */,
 				7CD0E4681AE2B71E00B78C9C /* WSNoLoginView.xib in Resources */,
-				7C8ABD131B04D5890079A21E /* ShareSDK.jpg in Resources */,
 				7C6558F81B07975900D832C2 /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7CCD11851AD55085005A1429 /* WSPromotionCouponViewController.xib in Resources */,
 				7C6AD5421AEF48B3000B6CB1 /* WSSearchHistoryCell.xib in Resources */,
@@ -3285,6 +3347,7 @@
 				7C249B721ADD6B7A000712BF /* WSInfoListCell.m in Sources */,
 				7C2D76BC1AF7D2BD00126328 /* WSResetPasswordViewController.m in Sources */,
 				7CC0859A1AEF0D420095F52B /* WSPromotionCouponSearchViewController.m in Sources */,
+				7C7E88A91B17EE6300E48B93 /* WSGuideViewController.m in Sources */,
 				7CD0E48D1AE3939600B78C9C /* WSNoInStoreSectionView.m in Sources */,
 				7CD0E4A81AE3A40E00B78C9C /* WSInStoreNoSignViewController.m in Sources */,
 				7CCA019E1AEC8DFE0081A8CC /* WSOrderFailView.m in Sources */,
@@ -3299,6 +3362,7 @@
 				7CCE4F591AEB73480097DFBB /* WSGiftDetailViewController.m in Sources */,
 				7C4206371AF5FECC005F9F44 /* WSScanAfterViewController.m in Sources */,
 				7CCA01D51AED37930081A8CC /* WSProductDetailViewController.m in Sources */,
+				7C74B7CC1B19DABE00CB7FE2 /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				7C6558991B07975800D832C2 /* ASIAuthenticationDialog.m in Sources */,
 				7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */,
 				7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */,
@@ -3438,6 +3502,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3476,7 +3541,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cdd09d63-2f8d-4d46-a469-8e96eaeed343";
+				PROVISIONING_PROFILE = "a87f5e58-6d7f-47b0-a50c-2aa23ae4b346";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3490,6 +3555,7 @@
 					arm64,
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3528,7 +3594,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cdd09d63-2f8d-4d46-a469-8e96eaeed343";
+				PROVISIONING_PROFILE = "a87f5e58-6d7f-47b0-a50c-2aa23ae4b346";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

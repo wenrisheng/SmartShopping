@@ -109,6 +109,7 @@
             } showMessage:YES];
             // 已收藏 取消收藏
         } else {
+            [self.viewController.view makeToast:@"已取消收藏！"];
             [dic setValue:@"N" forKey:@"isCollect"];
             [_leftBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
         }

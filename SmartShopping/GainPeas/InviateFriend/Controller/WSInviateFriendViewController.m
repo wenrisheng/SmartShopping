@@ -118,18 +118,90 @@
 }
 
 
-- (IBAction)weixinButAction:(id)sender {
+- (IBAction)weixinButAction:(id)sender
+{
+    [self inviateFriendWithType:ShareTypeWeixiSession];
 }
 
-- (IBAction)pengyouquanButAction:(id)sender {
+- (IBAction)pengyouquanButAction:(id)sender
+{
+      [self inviateFriendWithType:ShareTypeWeixiTimeline];
 }
 
-- (IBAction)weiboButAction:(id)sender {
+- (IBAction)weiboButAction:(id)sender
+{
+      [self inviateFriendWithType:ShareTypeSinaWeibo];
 }
 
-- (IBAction)qqkongjianButAction:(id)sender {
+- (IBAction)qqkongjianButAction:(id)sender
+{
+      [self inviateFriendWithType:ShareTypeQQSpace];
 }
 
-- (IBAction)qqButAction:(id)sender {
+- (IBAction)qqButAction:(id)sender
+{
+      [self inviateFriendWithType:ShareTypeQQ];
 }
+
+- (void)inviateFriendWithType:(ShareType)shareType
+{
+    NSString *title = @"亲，快来下载精明购";
+    NSString *content = [NSString stringWithFormat:@"好友邀请码：%@", [WSRunTime sharedWSRunTime].user.inviteCode];
+    NSString *appURL = APP_URL;
+    //创建分享内容
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"];
+    id<ISSContent> publishContent = [ShareSDK content:content
+                                       defaultContent:@""
+                                                image:[ShareSDK imageWithPath:imagePath]
+                                                title:title
+                                                  url:appURL
+                                          description:nil
+                                            mediaType:SSPublishContentMediaTypeNews];
+    
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                         allowCallback:YES
+                                                         authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                          viewDelegate:nil
+                                               authManagerViewDelegate:nil];
+    
+    //在授权页面中添加关注官方微博
+    [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                    SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                                    [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                    SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                                    nil]];
+    
+    //显示分享菜单
+    [ShareSDK showShareViewWithType:shareType
+                          container:nil
+                            content:publishContent
+                      statusBarTips:YES
+                        authOptions:authOptions
+                       shareOptions:[ShareSDK defaultShareOptionsWithTitle:nil
+                                                           oneKeyShareList:[NSArray defaultOneKeyShareList]
+                                                            qqButtonHidden:NO
+                                                     wxSessionButtonHidden:NO
+                                                    wxTimelineButtonHidden:NO
+                                                      showKeyboardOnAppear:NO
+                                                         shareViewDelegate:nil
+                                                       friendsViewDelegate:nil
+                                                     picViewerViewDelegate:nil]
+                             result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                 
+                                 if (state == SSPublishContentStateSuccess)
+                                 {
+                                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"邀请成功!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                     [alert show];
+                                 }
+                                 else if (state == SSPublishContentStateFail)
+                                 {
+                                     NSLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"发布失败!error code == %d, error code == %@"), [error errorCode], [error errorDescription]);
+                                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"邀请失败!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                     [alert show];
+                                 }
+                             }];
+
+}
+
 @end

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSGuideViewController">
+            <connections>
+                <outlet property="containerView" destination="b3h-Rh-45q" id="NRI-RL-Jyb"/>
+                <outlet property="containerViewWithCon" destination="n71-OX-btK" id="Bdh-rf-sIU"/>
+                <outlet property="contentScrollView" destination="QQV-Lb-JeY" id="Qeo-Zw-CO7"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QQV-Lb-JeY">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3h-Rh-45q">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="480" id="Ms1-xO-AKK"/>
+                                <constraint firstAttribute="width" constant="320" id="n71-OX-btK"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="b3h-Rh-45q" firstAttribute="leading" secondItem="QQV-Lb-JeY" secondAttribute="leading" id="1Ih-uI-FOn"/>
+                        <constraint firstItem="b3h-Rh-45q" firstAttribute="top" secondItem="QQV-Lb-JeY" secondAttribute="top" id="1PX-V2-QwS"/>
+                        <constraint firstAttribute="bottom" secondItem="b3h-Rh-45q" secondAttribute="bottom" id="mOm-u5-8gI"/>
+                        <constraint firstAttribute="trailing" secondItem="b3h-Rh-45q" secondAttribute="trailing" priority="250" id="oOS-0M-LLO"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="cuC-0R-eW4"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="QQV-Lb-JeY" secondAttribute="bottom" id="IiF-1D-4mT"/>
+                <constraint firstItem="QQV-Lb-JeY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="SHt-Ha-BNP"/>
+                <constraint firstItem="QQV-Lb-JeY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dMC-yi-pNr"/>
+                <constraint firstAttribute="trailing" secondItem="QQV-Lb-JeY" secondAttribute="trailing" id="mYb-wd-9dB"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="124" y="128"/>
+        </view>
+    </objects>
+</document>

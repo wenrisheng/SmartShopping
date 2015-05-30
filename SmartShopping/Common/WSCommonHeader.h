@@ -17,6 +17,8 @@
 #import "WSAudioUtil.h"
 #import <BaiduMapAPI/BMapKit.h>
 
+#import "CHTCollectionViewWaterfallLayout.h"
+
 #import "WSRunTime.h"
 #import "WSService.h"
 #import "WSInterfaceUtility.h"

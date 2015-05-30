@@ -37,6 +37,7 @@
 
 @property (strong, nonatomic) NSString *shopTypeId; // 商店类型id
 @property (strong, nonatomic) NSString *retailId; //零售商id
+@property (weak, nonatomic) IBOutlet UILabel *topRightLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *tipView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -136,6 +137,14 @@
 //    }
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    if (doubleTableView) {
+        doubleTableView.hidden = YES;
+    }
+}
+
 - (WSDoubleTableView *)getDoubleTableView
 {
     if (doubleTableView) {
@@ -158,6 +167,10 @@
 #pragma mark - 请求幻灯片
 - (void)requestGetAdsPhoto
 {
+    if (!_city) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"2"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -182,6 +195,8 @@
     [params setValue:_city forKey:@"cityName"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:_shopTypeId forKey:@"shopTypeId"];
+    [params setValue:_retailId forKey:@"retailId"];
     [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGoodsScanList] data:params tag:WSInterfaceTypeGoodsScanList sucCallBack:^(id result) {
@@ -215,7 +230,13 @@
     if (storeFDataArray.count == 0) {
         [self requestGetShopTypeList];
     } else {
-        [self showStoreTypeSelectView];
+
+        if (doubleTableView && doubleTableView.hidden == NO) {
+            doubleTableView.hidden = YES;
+            
+        } else {
+               [self showStoreTypeSelectView];
+        }
     }
 }
 
@@ -337,9 +358,12 @@
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
         self.retailId = [SDic stringForKey:@"retailId"];
-        [_allStoreBut setTitle:title forState:UIControlStateNormal];
+
+        _topRightLabel.text = title;
         WSDoubleTableView *doubleTable= [self getDoubleTableView];
         doubleTable.hidden = YES;
+        curPage = 0;
+        [self requestGoodsScanList];
     };
     
 }

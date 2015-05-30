@@ -14,4 +14,6 @@
 
 + (NSString *)getUserPeasNum;
 
++ (void)synchronUserPeaToServe;
+
 @end

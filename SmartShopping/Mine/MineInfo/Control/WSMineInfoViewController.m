@@ -162,6 +162,7 @@
     }
     NSString *byInviteCode = _inviateTextField.text.length == 0 ? @"" : _inviateTextField.text;
     NSDictionary *dic = @{@"id" : [NSNumber numberWithInt:[userID intValue]], @"nickname": _nicknameTextField.text, @"Email" : _emailTextField.text, @"byInviteCode": byInviteCode};
+
     [SVProgressHUD showWithStatus:@"正在提交……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdateUser] data:dic tag:WSInterfaceTypeUpdateUser];
 }
@@ -209,6 +210,7 @@
 #pragma mark - ServiceDelegate
 - (void)requestSucess:(id)result tag:(int)tag
 {
+    [SVProgressHUD dismiss];
     switch (tag) {
         case WSInterfaceTypeGetEmailValidCode:
         {
@@ -222,10 +224,9 @@
             break;
         case WSInterfaceTypeUpdatePhone:
         {
-            [SVProgressHUD dismiss];
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
-                [SVProgressHUD showSuccessWithStatus:@"提交成功！" duration:TOAST_VIEW_TIME];
+                [SVProgressHUD showSuccessWithStatus:@"修改成功！" duration:TOAST_VIEW_TIME];
                 [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(doSucAfter) userInfo:nil repeats:NO];
             }
         }
@@ -245,13 +246,12 @@
     switch (tag) {
         case WSInterfaceTypeGetEmailValidCode:
         {
-            
+            [SVProgressHUD dismiss];
         }
             break;
         case WSInterfaceTypeUpdateUser:
         {
-            [SVProgressHUD dismiss];
-            [SVProgressHUD showErrorWithStatus:@"提交失败！" duration:TOAST_VIEW_TIME];
+            [SVProgressHUD dismissWithError:@"修改失败！" afterDelay:TOAST_VIEW_TIME];
         }
             break;
         default:

@@ -117,7 +117,7 @@
                                         <constraint firstAttribute="width" constant="35" id="Jsx-JG-5k9"/>
                                         <constraint firstAttribute="height" constant="47" id="KhB-eX-3PC"/>
                                     </constraints>
-                                    <state key="normal" backgroundImage="store_signin.png">
+                                    <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -284,6 +284,5 @@
         <image name="dou.png" width="57" height="49"/>
         <image name="invate_friend.png" width="90" height="122"/>
         <image name="scan_product.png" width="90" height="122"/>
-        <image name="store_signin.png" width="90" height="122"/>
     </resources>
 </document>

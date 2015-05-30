@@ -29,6 +29,8 @@
 
 @property (copy) void(^refreshPage)(void); // 点击收藏时没登陆时登陆后刷新页面
 
+@property (copy) void(^downloadImageFinish)(void);
+
 - (void)setModel:(NSDictionary *)modelDic;
 
 @property (weak, nonatomic) id<HomeCollectionViewCellDelegate> delegate;

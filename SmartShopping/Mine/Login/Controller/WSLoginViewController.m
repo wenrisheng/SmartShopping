@@ -339,8 +339,6 @@
     [SVProgressHUD showWithStatus:@"正在同步精明豆……"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
-        
-        
         [SVProgressHUD dismiss];
         [self popViewController];
     } failCallBack:^(id error) {

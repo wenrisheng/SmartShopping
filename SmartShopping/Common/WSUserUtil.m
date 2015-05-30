@@ -43,4 +43,15 @@
     }
 }
 
++ (void)synchronUserPeaToServe
+{
+    [SVProgressHUD showWithStatus:@"正在同步精明豆……"];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+    } failCallBack:^(id error) {
+          [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
+    } showMessage:NO];
+}
+
 @end

@@ -112,9 +112,9 @@
         [_locationDic setValue:addressCom.province forKey:LOCATION_PROVINCE];
         NSString *city = addressCom.city;
         NSString *shi = @"市";
-        if ([city containsString:shi]) {
-            city = [city substringToIndex:city.length - shi.length];
-        }
+//        if ([city containsString:shi]) {
+//            city = [city substringToIndex:city.length - shi.length];
+//        }
         [_locationDic setValue:city forKey:LOCATION_CITY];
         [_locationDic setValue:addressCom.district forKey:LOCATION_DISTRICT];
         [_locationDic setValue:addressCom.streetName forKey:LOCATION_STREET];

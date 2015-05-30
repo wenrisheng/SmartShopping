@@ -12,9 +12,14 @@
 #import "WSGainPeasViewController.h"
 #import "WSMineViewController.h"
 #import <Parse/Parse.h>
+#import "WSGuideViewController.h"
 
+#define APP_NOT_FIRST_OPEN         @"APP_NOT_FIRST_OPEN"
+#define APP_DAY_PEA                @"APP_DAY_PEA"
+#define APP_DAY_PEA_IS_GET         @"APP_DAY_PEA_IS_GET"
+#define APP_DAY_PEA_IS_GET_DAY     @"APP_DAY_PEA_IS_GET_DAY"
 
-#define APP_NOT_FIRST_OPEN     @"APP_NOT_FIRST_OPEN"
+#define APP_GUIDE                  @"APP_GUIDE"
 
 //#import "IBSDK.h"
 
@@ -33,6 +38,7 @@
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
 
+    // 同步用户信息与精明豆
     [self synchronUserDataAndPeaNum];
     
     // 百度地图
@@ -41,11 +47,27 @@
     // ShareSDK
     [self initShareSDK];
     
+    // 首页
     [self initTabbarViewController];
+    
+    // 引导页
+    NSNumber *guideFlag = [USER_DEFAULT objectForKey:APP_GUIDE];
+    if (!guideFlag) {
+        WSGuideViewController *guideVC = [[WSGuideViewController alloc] init];
+        NSArray *guideImage = @[@"guide-01", @"guide-02", @"guide-03"];
+        guideVC.imageArray = guideImage;
+        guideVC.endCallBack = ^() {
+            [_nav popViewControllerAnimated:NO];
+        };
+        [_nav pushViewController:guideVC animated:NO];
+        [USER_DEFAULT setValue:[NSNumber numberWithInt:1] forKey:APP_GUIDE];
+    }
     
     [[WSBMKUtil sharedInstance] startUserLocationService];
     
    // [self testIbeaCon];
+    
+
     
     return YES;
 }
@@ -74,26 +96,53 @@
     if (!notFirstOpen) {
         [USER_DEFAULT setValue:[NSNumber numberWithInt:100] forKey:APP_PEAS_NUM];
         [USER_DEFAULT setValue:[NSNumber numberWithBool:NO] forKey:APP_NOT_FIRST_OPEN];
+        [USER_DEFAULT setObject:[NSNumber numberWithInt:1] forKey:APP_NOT_FIRST_OPEN];
     }
-    //
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        
+
+    NSString *dateStr = [WSCalendarUtil getDateStrWithDate:[NSDate date] format:@"yyyyMMdd"];
+    NSDictionary *dayPeaNumDic = [USER_DEFAULT objectForKey:APP_DAY_PEA];
+    
+    // 首次没有对象说明没有领取的精明豆，所有领取精明豆
+    if (!dayPeaNumDic) {
+        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+        int allPeaNum = appPeasNum + 2;
+        [USER_DEFAULT setObject:[NSNumber numberWithInt:allPeaNum] forKey:APP_PEAS_NUM];
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setObject:[NSNumber numberWithBool:YES] forKey:APP_DAY_PEA_IS_GET];
+        [dic setObject:dateStr forKey:APP_DAY_PEA_IS_GET_DAY];
+        [USER_DEFAULT setObject:dic forKey:APP_DAY_PEA];
     } else {
+        NSString *tempStr = [dayPeaNumDic objectForKey:APP_DAY_PEA_IS_GET_DAY];
         
-    }
-    int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-    if (user.beanNumber.length > 0) {
-        user.beanNumber = [NSString stringWithFormat:@"%d", [user.beanNumber intValue] + appPeasNum];
-    } else {
-        user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
+        // 如果今天没有领取精明豆则领取
+        if (![dateStr isEqualToString:tempStr]) {
+            int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+            int allPeaNum = appPeasNum + 2;
+            [USER_DEFAULT setObject:[NSNumber numberWithInt:allPeaNum] forKey:APP_PEAS_NUM];
+            
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            [dic setObject:[NSNumber numberWithBool:YES] forKey:APP_DAY_PEA_IS_GET];
+            [dic setObject:dateStr forKey:APP_DAY_PEA_IS_GET_DAY];
+            [USER_DEFAULT setObject:dic forKey:APP_DAY_PEA];
+        }
     }
     
+    
+
+    // 自动登录时同步用户数据
     NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
-    if (beforeData) { // 同步是否推动消息
+    if (beforeData) { // 同步是否推送消息
+        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+        
         WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
         WSRunTime *runtime = [WSRunTime sharedWSRunTime];
         runtime.user = beforeUser;
+        
+        // 领取本机存储的精明豆
+        runtime.user.beanNumber = [NSString stringWithFormat:@"%d", [runtime.user.beanNumber intValue] + appPeasNum];
+        
+        // 领取本机精明豆后清空本机精明豆
+        [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
     }
 }
 

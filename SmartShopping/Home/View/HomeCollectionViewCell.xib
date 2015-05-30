@@ -18,10 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="130" height="211"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YXG-BM-qSo">
-                                <rect key="frame" x="0.0" y="0.0" width="130" height="131"/>
+                                <rect key="frame" x="0.0" y="0.0" width="130" height="141"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mNp-nN-iw6">
-                                        <rect key="frame" x="0.0" y="0.0" width="130" height="131"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="141"/>
                                     </imageView>
                                     <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNo-kw-LMX">
                                         <rect key="frame" x="43" y="8" width="87" height="20"/>
@@ -63,7 +63,7 @@
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l92-KS-TNo">
-                                        <rect key="frame" x="0.0" y="0.0" width="130" height="131"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="141"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -89,7 +89,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaL-2s-GVf">
-                                <rect key="frame" x="0.0" y="131" width="130" height="50"/>
+                                <rect key="frame" x="0.0" y="141" width="130" height="40"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmD-uq-YRc">
                                         <rect key="frame" x="0.0" y="0.0" width="130" height="1"/>
@@ -98,8 +98,14 @@
                                             <constraint firstAttribute="height" constant="1" id="2dK-Fg-8bG"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="体育中心东路店体育中心东路店" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uL2-TQ-SI7">
-                                        <rect key="frame" x="50" y="5" width="78" height="26.5"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XrE-ST-FQL">
+                                        <rect key="frame" x="0.0" y="1" width="50" height="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="SaR-9V-IDi"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="体育中心东路店" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uL2-TQ-SI7">
+                                        <rect key="frame" x="50" y="5" width="78" height="13.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" priority="250" constant="27" id="BhM-5U-Qrr"/>
                                         </constraints>
@@ -108,14 +114,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hl5-zw-ol6">
-                                        <rect key="frame" x="0.0" y="49" width="130" height="1"/>
+                                        <rect key="frame" x="0.0" y="39" width="130" height="1"/>
                                         <color key="backgroundColor" red="0.87843137250000003" green="0.88235294119999996" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="zo0-6d-pmE"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cww-IG-85m">
-                                        <rect key="frame" x="50" y="31" width="80" height="17.5"/>
+                                        <rect key="frame" x="50" y="18.5" width="80" height="20.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map.png" translatesAutoresizingMaskIntoConstraints="NO" id="kPi-CF-LjK">
                                                 <rect key="frame" x="27" y="4" width="9" height="11"/>
@@ -125,7 +131,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.2km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPJ-Ii-alm">
-                                                <rect key="frame" x="42" y="3" width="32" height="11"/>
+                                                <rect key="frame" x="42" y="5" width="32" height="11"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="0sf-Wt-4Gh"/>
                                                     <constraint firstAttribute="height" constant="11" id="xAg-3b-Zzm"/>
@@ -144,14 +150,8 @@
                                             <constraint firstAttribute="centerY" secondItem="CPJ-Ii-alm" secondAttribute="centerY" id="wcs-LJ-ak9"/>
                                         </constraints>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XrE-ST-FQL">
-                                        <rect key="frame" x="0.0" y="1" width="50" height="48"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="SaR-9V-IDi"/>
-                                        </constraints>
-                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P2n-vZ-8J6">
-                                        <rect key="frame" x="50" y="0.0" width="80" height="50"/>
+                                        <rect key="frame" x="50" y="0.0" width="80" height="40"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -166,7 +166,7 @@
                                     <constraint firstItem="Hl5-zw-ol6" firstAttribute="top" secondItem="XrE-ST-FQL" secondAttribute="bottom" id="5DY-P9-xdn"/>
                                     <constraint firstAttribute="trailing" secondItem="WmD-uq-YRc" secondAttribute="trailing" id="77L-DM-ZOe"/>
                                     <constraint firstAttribute="bottom" secondItem="P2n-vZ-8J6" secondAttribute="bottom" id="8UV-Nd-pcX"/>
-                                    <constraint firstAttribute="height" constant="50" id="AQ0-vf-G6C"/>
+                                    <constraint firstAttribute="height" constant="40" id="AQ0-vf-G6C"/>
                                     <constraint firstItem="uL2-TQ-SI7" firstAttribute="top" secondItem="iaL-2s-GVf" secondAttribute="top" constant="5" id="CtP-EO-6Ep"/>
                                     <constraint firstAttribute="trailing" secondItem="P2n-vZ-8J6" secondAttribute="trailing" id="Fzl-y5-6T1"/>
                                     <constraint firstItem="P2n-vZ-8J6" firstAttribute="leading" secondItem="XrE-ST-FQL" secondAttribute="trailing" id="Gss-bd-KbB"/>

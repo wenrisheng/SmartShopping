@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     ShopTypeBaihuoFuzhuang
 };
 
-@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate,CHTCollectionViewDelegateWaterfallLayout>
 {
     NSMutableArray *superMarketDataArray;
     NSMutableArray *baihuoFuzhuangDataArray;
@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     BOOL baihuoToEndPage;
 }
 
+@property (strong, nonatomic) UIImage *downloadAcImage;
 @property (strong, nonatomic) NSArray *messages;
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
@@ -58,6 +59,12 @@ typedef NS_ENUM(NSInteger, ShopType)
 @end
 
 @implementation WSHomeViewController
+
+- (void)dealloc
+{
+    _supermarketCollectionView.dataSource = nil;
+    _supermarketCollectionView.delegate = nil;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -81,7 +88,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     // 注册
 
     [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
-    [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
+    [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
     [_supermarketCollectionView addLegendFooterWithRefreshingBlock:^{
         [self requestGetHomePageGoos];
     }];
@@ -104,8 +111,15 @@ typedef NS_ENUM(NSInteger, ShopType)
         [self requestGetHomePageGoos];
         DLog(@"下拉刷新完成！");
     }];
-
     
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    
+    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    layout.headerHeight = HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT;
+    layout.footerHeight = 0;
+    layout.minimumColumnSpacing = 20;
+    layout.minimumInteritemSpacing = 20;
+   _supermarketCollectionView.collectionViewLayout = layout;
 }
 
 
@@ -136,26 +150,26 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     
     // 请求消息列表
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-            if (flag) {
-                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead CONTAINS %@", @"2"];
-                NSArray *temp = [_messages filteredArrayUsingPredicate:predicate];
-                NSInteger count= temp.count;
-                if (count == 0) {
-                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
-                } else {
-                    _navBarManagerView.navigationBarButSearchButView.rightLabel.text = [NSString stringWithFormat:@"%d", (int)count];
-                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = NO;
-                }
-            }
-        } failCallBack:^(id error) {
-            
-        }];
-    }
+//    WSUser *user = [WSRunTime sharedWSRunTime].user;
+//    if (user) {
+//        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+//            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+//            if (flag) {
+//                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
+//                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead CONTAINS %@", @"2"];
+//                NSArray *temp = [_messages filteredArrayUsingPredicate:predicate];
+//                NSInteger count= temp.count;
+//                if (count == 0) {
+//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
+//                } else {
+//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.text = [NSString stringWithFormat:@"%d", (int)count];
+//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = NO;
+//                }
+//            }
+//        } failCallBack:^(id error) {
+//            
+//        }];
+//    }
     
     if (headerView) {
         headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
@@ -167,7 +181,6 @@ typedef NS_ENUM(NSInteger, ShopType)
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - 用户位置更新
 - (void)locationUpdate:(NSNotification *)notification
@@ -415,7 +428,11 @@ typedef NS_ENUM(NSInteger, ShopType)
     } else {
         cell.hidden = NO;
         cell.tag = row;
-        //cell.delegate = self;
+        cell.downloadImageFinish = ^() {
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        };
         NSDictionary *dic = [array objectAtIndex:row];
         [cell setModel:dic];
     }
@@ -426,7 +443,7 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
-    CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
     NSArray *array = nil;
     switch (shopType) {
         case ShopTypeSuperMarket:
@@ -454,7 +471,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     if (image) {
         float height = image.size.height * width / image.size.width;
-      //  return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL - HOMECOLLECTIONVIEWCELL_IMAGE_HEIGHT_SMALL + height);
+        return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL - HOMECOLLECTIONVIEWCELL_IMAGE_HEIGHT_SMALL + height);
     }
     
   
@@ -465,52 +482,12 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 5;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return CELLECTIONVIEW_CELL_SPACE;
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-         return CGSizeMake(collectionView.bounds.size.width, HOMEHEADERCOLLECTIONREUSABLEVIEW);
-    } else {
-        return CGSizeZero;
-    }
-   
-}
-
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
-        [headerView clearSubviews];
-        if (!collectHeaderView) {
-            collectHeaderView = GET_XIB_FIRST_OBJECT(@"WSCollectHeaderView");
-            [collectHeaderView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
-            [collectHeaderView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
-            [collectHeaderView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-            [collectHeaderView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:) forControlEvents:UIControlEventValueChanged];
-            collectHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
-        }
-        if (collectHeaderView.superview) {
-            [collectHeaderView removeFromSuperview];
-        }
-        
-        [headerView addSubview:collectHeaderView];
-        [collectHeaderView expandToSuperView];
-        
-        ACImageScrollView *imageScrollView = collectHeaderView.imageScrollManagerView.acImageScrollView;
+    if ([kind isEqualToString:CHTCollectionElementKindSectionHeader]) {
+        headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
+        ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
         NSInteger imageCount = slideImageArray.count;
         NSMutableArray *imageDataArray = [NSMutableArray array];
         for (int i = 0; i < imageCount; i++) {
@@ -519,6 +496,20 @@ typedef NS_ENUM(NSInteger, ShopType)
             [imageDataArray addObject:imageURL];
         }
         [imageScrollView setImageData:imageDataArray];
+        __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+        imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+            float height = 0;
+            CGSize imageSize = image.size;
+            height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
+            height =  height + HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT - HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT + 100;
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            layout.headerHeight = height;
+            [layout invalidateLayout];
+            //[weekImageScrollView layoutIfNeeded];
+            [weekImageScrollView updateConstraintsIfNeeded];
+            [weekImageScrollView updateConstraints];
+        };
         imageScrollView.callback = ^(int index) {
             DLog(@"广告：%d", index);
             NSDictionary *dic = [slideImageArray objectAtIndex:index];
@@ -530,12 +521,15 @@ typedef NS_ENUM(NSInteger, ShopType)
         collectHeaderView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
         collectHeaderView.tag = indexPath.row;
         return headerView;
+    }
+        return nil;
+       
     } else {
         return nil;
     }
 }
 
-#pragma mark - 
+#pragma mark -
 - (void)refreshPage
 {
     if (superMarketDataArray.count != 0) {

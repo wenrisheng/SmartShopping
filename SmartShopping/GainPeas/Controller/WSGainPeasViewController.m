@@ -19,6 +19,8 @@
 #define TITLE_HEIGHT    20.0   // 标题label高度
 #define IMAGE_WIDTH     30.0   // 导航条图片宽度
 
+#define BOTTOMVIEW_HEIGHT   300
+
 @interface WSGainPeasViewController ()
 {
     NSMutableArray *slideImageArray;
@@ -27,11 +29,13 @@
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
 @property (assign, nonatomic) double latitude;
+@property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet ACImageScrollManagerView *imageSlideView;
 @property (weak, nonatomic) IBOutlet UIView *storeSignupView;
 @property (weak, nonatomic) IBOutlet UIView *scanProductView;
 @property (weak, nonatomic) IBOutlet UIView *inviateFriendView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *acimageScorllViewHeightCon;
 
 // 到店签到时保存数据
 @property (strong, nonatomic) NSDictionary *isInShop;
@@ -123,6 +127,15 @@
             }
             ACImageScrollView *imageScrollView = _imageSlideView.acImageScrollView;
             [imageScrollView setImageData:imageDataArray];
+            __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+            imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+                float width = weekImageScrollView.bounds.size.width;
+                float height = width * image.size.height / image.size.width;
+                _acimageScorllViewHeightCon.constant = height;
+                CGSize size = _contentScrollView.contentSize;
+                size.height = height + BOTTOMVIEW_HEIGHT;
+                _contentScrollView.contentSize = size;
+            };
             imageScrollView.callback = ^(int index) {
                 DLog(@"广告：%d", index);
                 NSDictionary *dic = [slideImageArray objectAtIndex:index];
@@ -194,6 +207,7 @@
     for (UIView *view in array) {
         [view setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     }
+    _contentScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 100 + BOTTOMVIEW_HEIGHT);
 }
 
 
