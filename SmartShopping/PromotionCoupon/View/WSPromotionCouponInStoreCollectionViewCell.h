@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSPromotionCouponInStoreCollectionViewCell_HEIGHT          200
-#define WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL    160
+#define WSPromotionCouponInStoreCollectionViewCell_HEIGHT             200
+#define WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL       161
+#define WS_PROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT  131
 
 @class WSPromotionCouponInStoreCollectionViewCell;
 @protocol WSPromotionCouponInStoreCollectionViewCellDelegate <NSObject>
@@ -24,7 +25,7 @@
 
 @property (strong, nonatomic) NSMutableDictionary *dic;
 @property (copy) void(^refreshPage)(void); // 点击收藏时没登陆时登陆后刷新页面
-
+@property (copy) void(^downloadImageFinish)(void);
 - (void)setModel:(NSMutableDictionary *)modelDic;
 
 @property (weak, nonatomic) id<WSPromotionCouponInStoreCollectionViewCellDelegate> delegate;

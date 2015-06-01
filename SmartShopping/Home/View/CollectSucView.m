@@ -8,26 +8,26 @@
 
 #import "CollectSucView.h"
 
-#define DURATION_TIME    5
+#define DURATION_TIME    2
+static CollectSucView *collectSucView;
 
 @implementation CollectSucView
 
-+ (void)showCollectSucView
++ (void)showCollectSucViewInView:(UIView *)view
 {
-    UIWindow *windown = [UIApplication sharedApplication].keyWindow;
     CollectSucView *collectSucView = GET_XIB_FIRST_OBJECT(@"CollectSucView");
     collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
-    [windown addSubview:collectSucView];
+    [view addSubview:collectSucView];
     [collectSucView expandToSuperView];
-    //[NSTimer scheduledTimerWithTimeInterval:1 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:DURATION_TIME target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
 }
 
 - (void)dismissCollsecSucView
 {
     [UIView animateWithDuration:DURATION_TIME animations:^{
-      //  self.alpha = 0;
+        self.alpha = 0;
     } completion:^(BOOL finished) {
-        //[self removeFromSuperview];
+        [self removeFromSuperview];
     }];
     if (_callBack) {
         _callBack();
@@ -36,12 +36,12 @@
 
 + (void)showCollectSucViewWithFinishCallBack:(FinishCallBack)callBack
 {
-    UIWindow *windown = [UIApplication sharedApplication].keyWindow;
-    CollectSucView *collectSucView = GET_XIB_FIRST_OBJECT(@"CollectSucView");
-    collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
-    [windown addSubview:collectSucView];
-    [collectSucView expandToSuperView];
-    [NSTimer scheduledTimerWithTimeInterval:3 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
+//    UIWindow *windown = [UIApplication sharedApplication].keyWindow;
+//    CollectSucView *collectSucView = GET_XIB_FIRST_OBJECT(@"CollectSucView");
+//    collectSucView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [windown addSubview:collectSucView];
+//    [collectSucView expandToSuperView];
+//    [NSTimer scheduledTimerWithTimeInterval:3 target:collectSucView selector:@selector(dismissCollsecSucView) userInfo:nil repeats:NO];
 }
 
 @end

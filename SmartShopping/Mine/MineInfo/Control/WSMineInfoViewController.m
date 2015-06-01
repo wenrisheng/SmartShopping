@@ -78,8 +78,13 @@
     _nicknameTextField.text = user.nickname;
     _emailTextField.text = user.email;
     _birdthDayTextField.text = user.birthday;
+    // 男性
     if ([user.sex isEqualToString:@"1"]) {
+        isLady = NO;
         [self manButAction:nil];
+    } else {
+        isLady = YES;
+        [self ladyButAction:nil];
     }
 }
 
@@ -164,7 +169,29 @@
     NSDictionary *dic = @{@"id" : [NSNumber numberWithInt:[userID intValue]], @"nickname": _nicknameTextField.text, @"Email" : _emailTextField.text, @"byInviteCode": byInviteCode};
 
     [SVProgressHUD showWithStatus:@"正在提交……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdateUser] data:dic tag:WSInterfaceTypeUpdateUser];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdateUser] data:dic tag:WSInterfaceTypeUpdateUser sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            user.nickname = _nicknameTextField.text;
+            user.email = _emailTextField.text;
+            user.birthday = _birdthDayTextField.text;
+            if (isLady) {
+                user.sex = @"0";
+            } else {
+                user.sex = @"1";
+            }
+            // 本地存储用户信息
+            NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+            [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+            [SVProgressHUD showSuccessWithStatus:@"修改成功！" duration:TOAST_VIEW_TIME];
+            [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(doSucAfter) userInfo:nil repeats:NO];
+        }
+
+    } failCallBack:^(id error) {
+        
+    } showMessage:YES];
+
 }
 
 - (BOOL)valiData
@@ -226,8 +253,7 @@
         {
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
-                [SVProgressHUD showSuccessWithStatus:@"修改成功！" duration:TOAST_VIEW_TIME];
-                [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(doSucAfter) userInfo:nil repeats:NO];
+               
             }
         }
             break;

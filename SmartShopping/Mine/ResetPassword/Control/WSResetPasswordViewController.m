@@ -55,6 +55,13 @@
 {
     BOOL flag = [self validData];
     if (flag) {
+        
+//        WSUser *user = [WSRunTime sharedWSRunTime].user;
+//        NSString *nwsPwd = [_nwePasswordTextField.text encodeMD5_32_lowercase];
+//        if ([user.password isEqualToString:nwsPwd]) {
+//            [SVProgressHUD showErrorWithStatus:@"新密码与原密码一致，请重新输入!" duration:TOAST_VIEW_TIME];
+//            return;
+//        }
         [self requestResetPassword];
     }
 }
@@ -88,6 +95,7 @@
 - (void)requestResetPassword
 {
     NSString *phone = [WSRunTime sharedWSRunTime].user.phone;
+    phone = phone.length > 0 ? phone : [WSRunTime sharedWSRunTime].user._id;
     NSDictionary *dic = @{@"phone" : phone, @"password": [_oldPasswordTextField.text encodeMD5_32_lowercase], @"newPassword" : [_nwePasswordTextField.text encodeMD5_32_lowercase], @"type" : @"2"};
     [SVProgressHUD showWithStatus:@"正在修改……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeResetPassword] data:dic tag:WSInterfaceTypeResetPassword];

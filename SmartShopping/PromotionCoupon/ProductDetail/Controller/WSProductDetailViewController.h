@@ -10,6 +10,8 @@
 
 @interface WSProductDetailViewController : WSServiceViewController
 
+@property (copy) void(^CollectCallBack)(NSDictionary *dic);
+
 @property (strong, nonatomic) NSString *goodsNumber;
 @property (strong, nonatomic) NSString *shopId;
 

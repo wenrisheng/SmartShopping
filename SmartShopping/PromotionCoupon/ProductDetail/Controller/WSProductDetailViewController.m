@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet WSTabSlideManagerView *tabSlideManagerView;
-@property (strong, nonatomic) NSDictionary *goodsDetails;
+@property (strong, nonatomic) NSMutableDictionary *goodsDetails;
 
 @end
 
@@ -48,7 +48,11 @@
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            self.goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
+            if (!_goodsDetails) {
+                self.goodsDetails = [[NSMutableDictionary alloc] init];
+            }
+            NSDictionary *dic = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
+            [self.goodsDetails setValuesForKeysWithDictionary:dic];
             [self initView];
         }
     } failCallBack:^(id error) {
@@ -65,12 +69,13 @@
     if ([Isscan isEqualToString:@"1"]) {
         _hasScan = YES;
         titleArray = @[@"收藏", @"扫描", @"分享"];
-        imageArray = @[@"colleation-011", @"scanning", @"share"];
+        imageArray = @[@"", @"scanning", @"share"];
     } else {
         _hasScan = NO;
         titleArray = @[@"收藏", @"分享"];
-        imageArray = @[@"colleation-011", @"share"];
+        imageArray = @[@"", @"share"];
     }
+    
     NSMutableArray *dataArray = [NSMutableArray array];
     NSInteger  count = titleArray.count;
     for (int i = 0; i < count; i++) {
@@ -80,13 +85,34 @@
         [dic setValue:[imageArray objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_SELECTED];
         [dataArray addObject:dic];
     }
+   
     _tabSlideManagerView.tabSlideGapTextView.titleSelectedColor = [UIColor colorWithWhite:0.427 alpha:1.000];
     [_tabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:dataArray];
+    NSString *isCollect = [_goodsDetails stringForKey:@"isCollect"];
+    // 已经收藏
+    NSString *collectImage = nil;
+    if ([isCollect isEqualToString:@"Y"]) {
+      collectImage = @"collected";
+    } else {
+        collectImage = @"uncollect";
+    }
+     WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+    itemView.rightImageView.image = [UIImage imageNamed:collectImage];
     _tabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
         switch (index) {
                 //收藏
             case 0:
             {
+                NSString *isCollect = [_goodsDetails stringForKey:@"isCollect"];
+                // 已经收藏
+                NSString *collectImage = nil;
+                if ([isCollect isEqualToString:@"Y"]) {
+                    collectImage = @"collected";
+                } else {
+                    collectImage = @"uncollect";
+                }
+                WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+                itemView.rightImageView.image = [UIImage imageNamed:collectImage];
                 [self collectAction];
             }
                 break;
@@ -145,21 +171,50 @@
 {
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
-        NSString *goodsid = [_goodsDetails objectForKey:@"id"];
-        NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": _shopId};
-        [SVProgressHUD show];
-        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-            [SVProgressHUD dismiss];
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-            if (flag) {
-                [CollectSucView showCollectSucView];
-            }
-        } failCallBack:^(id error) {
-            [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
-        }];
+        NSString *isCollect = [_goodsDetails stringForKey:@"isCollect"];
+        // 没有收藏  白色安心
+        if ([isCollect isEqualToString:@"N"]) {
+            NSString *goodsid = [_goodsDetails stringForKey:@"id"];
+            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": _shopId};
+            [SVProgressHUD show];
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
+                BOOL flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    [_goodsDetails setValue:@"Y" forKey:@"isCollect"];
+                    WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+                    itemView.rightImageView.image = [UIImage imageNamed:@"collected"];
+                    [CollectSucView showCollectSucViewInView:self.view];
+                    if (_CollectCallBack) {
+                        _CollectCallBack(_goodsDetails);
+                    }
+                }
+                
+            } failCallBack:^(id error) {
+                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
+            } showMessage:YES];
+            // 已收藏 取消收藏
+        } else {
+            NSString *goodsid = [_goodsDetails stringForKey:@"id"];
+            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": _shopId};
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:param tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
+                float flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    [self.view makeToast:@"已取消收藏！"];
+                    [_goodsDetails setValue:@"N" forKey:@"isCollect"];
+                    WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+                    itemView.rightImageView.image = [UIImage imageNamed:@"uncollect"];
+                    if (_CollectCallBack) {
+                        _CollectCallBack(_goodsDetails);
+                    }
+                }
+            } failCallBack:^(id error) {
+                [SVProgressHUD showErrorWithStatus:@"操作失败！" duration:TOAST_VIEW_TIME];
+            } showMessage:YES];
+            
+        }
     } else {
         [WSUserUtil actionAfterLogin:^{
-          
+            [self requestProductDetail];
         }];
     }
 

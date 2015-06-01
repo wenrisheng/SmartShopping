@@ -32,7 +32,6 @@
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_list.png" translatesAutoresizingMaskIntoConstraints="NO" id="lh5-B9-u9n">
                                     <rect key="frame" x="150" y="0.0" width="20" height="10"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="10" id="SMD-lt-Zed"/>
                                         <constraint firstAttribute="width" constant="20" id="hbJ-lZ-1eN"/>
                                     </constraints>
                                 </imageView>
@@ -45,6 +44,8 @@
                                 <constraint firstItem="wfy-6y-vij" firstAttribute="leading" secondItem="QMD-PD-CEW" secondAttribute="leading" id="iAR-Xw-UkK"/>
                                 <constraint firstAttribute="bottom" secondItem="wfy-6y-vij" secondAttribute="bottom" id="kVT-5X-wVh"/>
                                 <constraint firstAttribute="trailing" secondItem="wfy-6y-vij" secondAttribute="trailing" id="nWp-jm-IgQ"/>
+                                <constraint firstItem="lh5-B9-u9n" firstAttribute="top" secondItem="QMD-PD-CEW" secondAttribute="top" id="qvP-ez-Olp"/>
+                                <constraint firstAttribute="bottom" secondItem="lh5-B9-u9n" secondAttribute="bottom" id="yhX-2G-ZWI"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-VB-6CV">
@@ -101,6 +102,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bgView" destination="y5F-qm-1Fb" id="X8Z-vT-7ja"/>
+                <outlet property="bottomViewTopCon" destination="8Ui-Er-5dJ" id="4TY-Mx-Vvb"/>
                 <outlet property="contentView" destination="Kb6-es-xe4" id="whC-wH-MRZ"/>
                 <outlet property="contentViewTopCon" destination="8Ui-Er-5dJ" id="MdN-HL-DEY"/>
                 <outlet property="indicateImageView" destination="lh5-B9-u9n" id="zKn-jz-lpA"/>

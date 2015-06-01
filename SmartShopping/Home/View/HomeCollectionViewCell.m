@@ -30,10 +30,9 @@
     
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
     NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
-     _bigImageView.contentMode = UIViewContentModeScaleToFill;
+   
     [_bigImageView sd_setImageWithURL:[NSURL URLWithString:goodsLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (image) {
-        _bigImageView.contentMode = UIViewContentModeScaleAspectFit;
             if (_downloadImageFinish) {
                 _downloadImageFinish();
             }
@@ -124,9 +123,7 @@
                 if (flag) {
                     [dic setValue:@"Y" forKey:@"isCollect"];
                     [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                         [CollectSucView showCollectSucView];
-                    });
+                   [CollectSucView showCollectSucViewInView:self.viewController.view];
                 }
                 
             } failCallBack:^(id error) {
@@ -180,6 +177,17 @@
     NSString *goodsId = [dic stringForKey:@"goodsId"];
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = [dic stringForKey:@"shopId"];
+    productDetailVC.CollectCallBack = ^ (NSDictionary *goodDic) {
+        NSString *isCollect = [goodDic stringForKey:@"isCollect"];
+        [dic setValue:isCollect forKey:@"isCollect"];
+        // 没有收藏  白色安心
+        if ([isCollect isEqualToString:@"N"]) {
+            [_leftBut setBackgroundImage:[UIImage imageNamed:@"colleation-011"] forState:UIControlStateNormal];
+            // 已收藏
+        } else {
+            [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
+        }
+    };
     [self.viewController.navigationController pushViewController:productDetailVC animated:YES];
 
 }

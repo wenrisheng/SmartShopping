@@ -9,6 +9,7 @@
 
 @interface WSScanInStoreViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *shopName;
 @property (strong, nonatomic) NSString *shopid;
 
 @end

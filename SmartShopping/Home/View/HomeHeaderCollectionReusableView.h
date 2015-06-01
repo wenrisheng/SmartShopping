@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT                             230
+#define HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT                     250
+
 #define HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT  100
 
 @interface HomeHeaderCollectionReusableView : UICollectionReusableView

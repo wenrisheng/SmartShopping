@@ -182,7 +182,7 @@
         return flag;
     }
     if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
-        [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
+        [SVProgressHUD showErrorWithStatus:@"请输入正确格式的手机号码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
@@ -230,16 +230,21 @@
 #pragma mark － 获取验证码
 - (IBAction)gainVarificateButAction:(id)sender
 {
-    if (_telTextField.text.length > 0) {
-        UIButton *but = (UIButton *)sender;
-        [but setEnabled:NO];
-        varificateTime = VARIFICATE_TIME;
-        timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-        but.alpha = 0.7;
-        [self requestValidCode];
-    } else {
-        
+    if (_telTextField.text.length == 0) {
+         [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:TOAST_VIEW_TIME];
+        return;
     }
+    if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"请输入正确格式的手机号码！" duration:TOAST_VIEW_TIME];
+        return;
+    }
+    UIButton *but = (UIButton *)sender;
+    [but setEnabled:NO];
+    varificateTime = VARIFICATE_TIME;
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+    but.alpha = 0.7;
+    [self requestValidCode];
+
 }
 
 #pragma mark 请求验证吗

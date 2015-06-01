@@ -501,9 +501,11 @@
                                 <constraints>
                                     <constraint firstItem="Tw7-2O-elZ" firstAttribute="leading" secondItem="l4M-Vw-yA9" secondAttribute="leading" constant="10" id="8sb-Qy-vZz"/>
                                     <constraint firstItem="FSb-A0-NMA" firstAttribute="top" secondItem="l4M-Vw-yA9" secondAttribute="top" id="A4r-fS-JX3"/>
+                                    <constraint firstAttribute="bottom" secondItem="FSb-A0-NMA" secondAttribute="bottom" id="DlK-gi-XQ6"/>
                                     <constraint firstItem="Tw7-2O-elZ" firstAttribute="width" secondItem="FSb-A0-NMA" secondAttribute="width" id="H0S-l2-Ybp"/>
                                     <constraint firstItem="Tw7-2O-elZ" firstAttribute="width" secondItem="l4M-Vw-yA9" secondAttribute="width" multiplier="145/320" id="VZ8-2x-3Bg"/>
                                     <constraint firstAttribute="trailing" secondItem="FSb-A0-NMA" secondAttribute="trailing" constant="10" id="a0E-Vp-KS6"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tw7-2O-elZ" secondAttribute="bottom" id="hNT-u2-yiR"/>
                                     <constraint firstAttribute="height" constant="172" id="utZ-zz-6fu"/>
                                     <constraint firstItem="Tw7-2O-elZ" firstAttribute="top" secondItem="l4M-Vw-yA9" secondAttribute="top" id="yj4-jO-80N"/>
                                 </constraints>
@@ -520,6 +522,7 @@
                             <constraint firstAttribute="trailing" secondItem="Ng1-O1-CEJ" secondAttribute="trailing" id="cmp-7t-moc"/>
                             <constraint firstItem="Ng1-O1-CEJ" firstAttribute="leading" secondItem="0dJ-jK-Ej2" secondAttribute="leading" id="gdi-J0-srj"/>
                             <constraint firstAttribute="trailing" secondItem="l4M-Vw-yA9" secondAttribute="trailing" id="hZa-JZ-buO"/>
+                            <constraint firstAttribute="bottom" secondItem="l4M-Vw-yA9" secondAttribute="bottom" constant="10" id="pIe-h3-3aq"/>
                             <constraint firstAttribute="trailing" secondItem="LCv-o0-AsT" secondAttribute="trailing" id="rsa-Yl-IhZ"/>
                         </constraints>
                     </view>
@@ -527,6 +530,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="0dJ-jK-Ej2" secondAttribute="bottom" id="5DD-o5-5DP"/>
                 <constraint firstItem="z77-PL-cRv" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="DcG-gw-h9l"/>
                 <constraint firstAttribute="trailing" secondItem="z77-PL-cRv" secondAttribute="trailing" id="Lhc-fX-ZMf"/>
                 <constraint firstAttribute="trailing" secondItem="0dJ-jK-Ej2" secondAttribute="trailing" id="PoR-hI-jia"/>

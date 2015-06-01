@@ -9,11 +9,15 @@
 #import "WSInviateFriendViewController.h"
 #import "WSAdvertisementDetailViewController.h"
 
+#define BOTTOMVIEW_HEIGHT 285
+
 @interface WSInviateFriendViewController ()
 {
      NSMutableArray *slideImageArray;
 }
+@property (weak, nonatomic) IBOutlet UIScrollView *contntScrollView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *acimageHeightCon;
 @property (strong, nonatomic) NSString *city;
 @property (weak, nonatomic) IBOutlet UILabel *inviateCodeLabel;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -103,6 +107,16 @@
             }
             ACImageScrollView *imageScrollView = _adImageScrollManagerView.acImageScrollView;
             [imageScrollView setImageData:imageDataArray];
+             __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+            imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+                float width = weekImageScrollView.bounds.size.width;
+                float height = width * image.size.height / image.size.width;
+                _acimageHeightCon.constant = height;
+                CGSize size = _contntScrollView.contentSize;
+                size.height = height + BOTTOMVIEW_HEIGHT;
+             
+                _contntScrollView.contentSize = size;
+            };
             imageScrollView.callback = ^(int index) {
                 DLog(@"广告：%d", index);
                 NSDictionary *dic = [slideImageArray objectAtIndex:index];

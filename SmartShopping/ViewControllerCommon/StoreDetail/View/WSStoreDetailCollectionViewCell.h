@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT          182
-#define WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT_SMAIL    152
+#define WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT             182
+#define WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT_SMAIL       152
+#define WS_STORE_DETAIL_COLLECTION_VIEW_CELL_IMAGE_HEIGHT  152
 
 @interface WSStoreDetailCollectionViewCell : UICollectionViewCell
+
+@property (copy) void(^downloadImageFinish)(void);
 
 - (void)setModel:(NSDictionary *)dic;
 

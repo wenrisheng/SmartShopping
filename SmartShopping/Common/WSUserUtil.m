@@ -35,9 +35,14 @@
 {
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
+        int beanNum = [user.beanNumber intValue];
+        if (beanNum < 0) {
+            return @"0";
+        }
         return user.beanNumber;
     } else{
         int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
+        appPeasNum = appPeasNum < 0 ? 0 : appPeasNum;
         return [NSString stringWithFormat:@"%d", appPeasNum];
 
     }

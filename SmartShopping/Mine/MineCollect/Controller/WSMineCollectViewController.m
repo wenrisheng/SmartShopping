@@ -12,7 +12,7 @@
 #define CELLECTIONVIEW_CELL_SPACE       10   //cell与cell的间距
 #define CELLECTIONVIEW_CONTENT_INSET    10   //CollectionView 左右下三边的内容边距
 
-@interface WSMineCollectViewController () <UIAlertViewDelegate>
+@interface WSMineCollectViewController () <UIAlertViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
     NSMutableArray *dataArray;
     int curPage;
@@ -48,6 +48,14 @@
     [_contentCollectionView addLegendFooterWithRefreshingBlock:^{
         [self requestMineCollect];
     }];
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    
+    layout.sectionInset = UIEdgeInsetsMake(20, 10, 10, 10);
+    layout.headerHeight = 0;
+    layout.footerHeight = 0;
+    layout.minimumColumnSpacing = 20;
+    layout.minimumInteritemSpacing = 20;
+    _contentCollectionView.collectionViewLayout = layout;
     dataArray = [[NSMutableArray alloc] init];
     [self requestMineCollect];
 }
@@ -136,6 +144,11 @@
     UISwipeGestureRecognizer *swipeGest = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestAction:)];
     swipeGest.direction = UISwipeGestureRecognizerDirectionLeft;
     [cell addGestureRecognizer:swipeGest];
+    cell.downloadImageFinish = ^() {
+        CHTCollectionViewWaterfallLayout *layout =
+        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+        [layout invalidateLayout];
+    };
     NSInteger row = indexPath.row;
     cell.tag = row;
     NSDictionary *dic = [dataArray objectAtIndex:row];
@@ -147,6 +160,15 @@
 {
     NSInteger row =indexPath.row;
     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+    NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+    UIImage *image = nil;
+    image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:goodsLogoURL];
+    if (image) {
+        float height = image.size.height * width / image.size.width;
+        return CGSizeMake(width, WSMINECOLLECTCOLLECTIONVIEWCELL_HEIGHT - WSMINE_COLLECT_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
+    }
     if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
         return CGSizeMake(width, WSMINECOLLECTCOLLECTIONVIEWCELL_HEIGHT);
     } else {
@@ -159,15 +181,15 @@
 //    return -20;
 //}
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return CELLECTIONVIEW_CELL_SPACE;
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
-}
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+//{
+//    return CELLECTIONVIEW_CELL_SPACE;
+//}
+//
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+//{
+//    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
+//}
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

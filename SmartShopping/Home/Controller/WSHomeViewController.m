@@ -23,6 +23,7 @@
 #import "CollectSucView.h"
 #import "WSCollectHeaderView.h"
 #import "WSScanInStoreViewController.h"
+#import "WSSearchCommonViewController.h"
 
 typedef NS_ENUM(NSInteger, ShopType)
 {
@@ -30,7 +31,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     ShopTypeBaihuoFuzhuang
 };
 
-@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate,CHTCollectionViewDelegateWaterfallLayout>
+@interface WSHomeViewController () <NavigationBarButSearchButViewDelegate, WSSlideSwitchViewDelegate, HomeCollectionViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
     NSMutableArray *superMarketDataArray;
     NSMutableArray *baihuoFuzhuangDataArray;
@@ -113,7 +114,6 @@ typedef NS_ENUM(NSInteger, ShopType)
     }];
     
     CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
-    
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.headerHeight = HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT;
     layout.footerHeight = 0;
@@ -353,8 +353,10 @@ typedef NS_ENUM(NSInteger, ShopType)
 
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
 {
-    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
-    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+//    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
+//    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+    WSSearchCommonViewController *searchCommon = [[WSSearchCommonViewController alloc] init];
+    [self.navigationController pushViewController:searchCommon animated:YES];
     return NO;
 }
 
@@ -501,7 +503,7 @@ typedef NS_ENUM(NSInteger, ShopType)
             float height = 0;
             CGSize imageSize = image.size;
             height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
-            height =  height + HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT - HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT + 100;
+            height =  height + HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT - HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT;
             CHTCollectionViewWaterfallLayout *layout =
             (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
             layout.headerHeight = height;
@@ -517,9 +519,9 @@ typedef NS_ENUM(NSInteger, ShopType)
             advertisementVC.url = [dic objectForKey:@"third_link"];
             [self.navigationController pushViewController:advertisementVC animated:YES];
         };
-        
-        collectHeaderView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];
-        collectHeaderView.tag = indexPath.row;
+        NSString *beanNum = [WSUserUtil getUserPeasNum];
+        headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
+        headerView.tag = indexPath.row;
         return headerView;
     }
         return nil;

@@ -120,14 +120,8 @@
         [view setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     }
     // 设置用户精明豆数量
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    NSString *peaNum = nil;
-    if (user) {
-        peaNum = user.beanNumber;
-    } else {
-        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-        peaNum = [NSString stringWithFormat:@"%d", appPeasNum];
-    }
+    NSString *peaNum = [WSUserUtil getUserPeasNum];
+   
     NSString *str = @"个精明豆";
     NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", peaNum, str]];
     [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.890 green:0.380 blue:0.090 alpha:1.000] range:NSMakeRange(0, peaNum.length)];

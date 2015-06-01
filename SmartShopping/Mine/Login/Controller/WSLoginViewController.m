@@ -340,6 +340,11 @@
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
+        NSDictionary *user = [[result objectForKey:@"data"] objectForKey:@"user"];
+        [WSRunTime sharedWSRunTime].user.beanNumber = [user stringForKey:@"beanNumber"];
+        // 本地存储用户信息
+        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
         [self popViewController];
     } failCallBack:^(id error) {
         [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];

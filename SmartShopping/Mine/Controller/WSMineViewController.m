@@ -142,7 +142,8 @@
                 [loginStatusView addSubview:loginedView];
                 [loginedView expandToSuperView];
 
-                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", user.beanNumber];
+                 NSString *beanNum = [WSUserUtil getUserPeasNum];
+                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
                 
             } else {
                 if (!noLoginView) {
@@ -151,8 +152,8 @@
                 }
                 [loginStatusView addSubview:noLoginView];
                 [noLoginView expandToSuperView];
-                int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%d豆", appPeasNum];
+                NSString *beanNum = [WSUserUtil getUserPeasNum];
+                firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
             }
         }
     }
@@ -531,7 +532,7 @@
 {
     [SVProgressHUD showWithStatus:@"检查更新中……"];
     NSURL *url = [NSURL URLWithString:APP_URL];
-   __weak ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    __weak ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request setTimeOutSeconds:ASIHTTPWRAP_TIMEOUT_DEFAULT];
     [request setCompletionBlock:^{
         [SVProgressHUD dismiss];
@@ -557,8 +558,7 @@
         }
     }];
     [request setFailedBlock:^{
-        [SVProgressHUD dismiss];
-        [SVProgressHUD showErrorWithStatus:@"检查更新失败！" duration:TOAST_VIEW_TIME];
+        [SVProgressHUD dismissWithError:@"检查更新失败！" afterDelay:TOAST_VIEW_TIME];
     }];
     [request startAsynchronous];
 }

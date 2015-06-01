@@ -9,6 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSGainPeasViewController">
             <connections>
                 <outlet property="acimageScorllViewHeightCon" destination="wI2-oy-ore" id="rhq-1V-ZDb"/>
+                <outlet property="containerView" destination="M3l-74-ynG" id="ddl-EP-ijA"/>
                 <outlet property="contentScrollView" destination="9y4-5B-d2m" id="pco-Jc-2FU"/>
                 <outlet property="imageSlideView" destination="Wwb-SQ-30B" id="Hzv-72-wet"/>
                 <outlet property="inviateFriendView" destination="5vN-eu-Ip7" id="hiw-fr-SMG"/>
@@ -34,11 +35,11 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3l-74-ynG">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="415"/>
                             <subviews>
                                 <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wwb-SQ-30B" customClass="ACImageScrollManagerView">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
-                                    <color key="backgroundColor" red="0.89138637789999997" green="0.60122364839999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="100" id="wI2-oy-ore"/>
                                     </constraints>
@@ -274,7 +275,7 @@
                                                                 <constraint firstAttribute="height" constant="40" id="aQ0-7E-0Qw"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="扫描产品" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-Kz-lb3">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请好友" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-Kz-lb3">
                                                             <rect key="frame" x="0.0" y="45" width="70" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -356,7 +357,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="RXw-ZL-lU8" firstAttribute="top" secondItem="Wwb-SQ-30B" secondAttribute="bottom" id="0my-gD-fqV"/>
-                                <constraint firstAttribute="height" constant="600" id="DTP-cp-x8J"/>
+                                <constraint firstAttribute="height" constant="415" id="DTP-cp-x8J"/>
                                 <constraint firstItem="Wwb-SQ-30B" firstAttribute="leading" secondItem="M3l-74-ynG" secondAttribute="leading" id="L4N-xy-XHw"/>
                                 <constraint firstAttribute="trailing" secondItem="Wwb-SQ-30B" secondAttribute="trailing" id="RF2-3b-C6D"/>
                                 <constraint firstItem="Wwb-SQ-30B" firstAttribute="top" secondItem="M3l-74-ynG" secondAttribute="top" id="gML-e6-AXN"/>

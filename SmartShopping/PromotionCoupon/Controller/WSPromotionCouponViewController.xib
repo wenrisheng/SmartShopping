@@ -80,8 +80,8 @@
                                         <outlet property="delegate" destination="-1" id="gO6-Fl-VUS"/>
                                     </connections>
                                 </collectionView>
-                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="vi6-Nx-bEo" userLabel="InStoreCollection View">
-                                    <rect key="frame" x="0.0" y="20" width="320" height="376"/>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="vi6-Nx-bEo" userLabel="InStoreCollection View">
+                                    <rect key="frame" x="0.0" y="40" width="320" height="376"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EZo-zB-3HE">
                                         <size key="itemSize" width="50" height="50"/>
@@ -97,11 +97,15 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="vi6-Nx-bEo" secondAttribute="trailing" id="B0a-AX-Mip"/>
                                 <constraint firstItem="rKf-Z7-V4S" firstAttribute="top" secondItem="cVd-jY-qBd" secondAttribute="top" id="OKI-fN-H9d"/>
                                 <constraint firstAttribute="trailing" secondItem="rKf-Z7-V4S" secondAttribute="trailing" id="SEH-6S-EgG"/>
+                                <constraint firstAttribute="bottom" secondItem="vi6-Nx-bEo" secondAttribute="bottom" id="SUH-vH-1lf"/>
                                 <constraint firstItem="T6r-7h-cPE" firstAttribute="top" secondItem="rKf-Z7-V4S" secondAttribute="bottom" id="eqb-wE-tMf"/>
                                 <constraint firstAttribute="bottom" secondItem="T6r-7h-cPE" secondAttribute="bottom" id="lAU-di-a72"/>
+                                <constraint firstItem="vi6-Nx-bEo" firstAttribute="top" secondItem="rKf-Z7-V4S" secondAttribute="bottom" id="sDY-ft-Pgs"/>
                                 <constraint firstAttribute="trailing" secondItem="T6r-7h-cPE" secondAttribute="trailing" id="uCe-j7-bbI"/>
+                                <constraint firstItem="vi6-Nx-bEo" firstAttribute="leading" secondItem="cVd-jY-qBd" secondAttribute="leading" id="v4d-BN-6ut"/>
                                 <constraint firstItem="T6r-7h-cPE" firstAttribute="leading" secondItem="cVd-jY-qBd" secondAttribute="leading" id="vkQ-Iu-9IQ"/>
                                 <constraint firstItem="rKf-Z7-V4S" firstAttribute="leading" secondItem="cVd-jY-qBd" secondAttribute="leading" id="vzW-pq-1Jh"/>
                             </constraints>
@@ -127,7 +131,7 @@
                 <constraint firstItem="hD1-HC-K4C" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jg0-I3-L0q"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="194" y="131"/>
+            <point key="canvasLocation" x="5" y="97"/>
         </view>
     </objects>
 </document>

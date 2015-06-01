@@ -40,6 +40,7 @@
 // 到店签到时保存数据
 @property (strong, nonatomic) NSDictionary *isInShop;
 @property (strong, nonatomic) NSDictionary *shop;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 - (IBAction)storeSignupButAction:(id)sender;
 - (IBAction)scanProductButAction:(id)sender;
@@ -135,6 +136,9 @@
                 CGSize size = _contentScrollView.contentSize;
                 size.height = height + BOTTOMVIEW_HEIGHT;
                 _contentScrollView.contentSize = size;
+                CGRect rect = _containerView.frame;
+                rect.size.height = size.height;
+                _containerView.frame = rect;
             };
             imageScrollView.callback = ^(int index) {
                 DLog(@"广告：%d", index);
@@ -153,15 +157,8 @@
 #pragma mark - 调整导航条标题位置
 - (void)fitNavigationBar
 {
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    NSString *peaNum = nil;
-    if (user) {
-        peaNum = user.beanNumber;
-    } else {
-        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-       peaNum = [NSString stringWithFormat:@"%d豆", appPeasNum];
-    }
-    NSString *title = [NSString stringWithFormat:@"%@精明豆", peaNum];
+    NSString *beanNum = [WSUserUtil getUserPeasNum];
+    NSString *title = [NSString stringWithFormat:@"%@精明豆", beanNum];
     WSNavigationBarCenterImageViewLabelView *barView = _navigationBarManagerView.navigationBarCenterImageViewLabelView;
     UILabel *titleLabel = barView.centerLabel;
     UIView *supView = titleLabel.superview;
@@ -247,8 +244,11 @@
         if (isInStore) {
             [WSUserUtil actionAfterLogin:^{
                 NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
                 NSString *shopId = [dic stringForKey:@"shopId"];
+                NSString *shopName = [shop objectForKey:@"shopName"];
                 WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+                scanInStoreVC.shopName = shopName;
                 scanInStoreVC.shopid = shopId;
                 [self.navigationController pushViewController:scanInStoreVC animated:YES];
             }];

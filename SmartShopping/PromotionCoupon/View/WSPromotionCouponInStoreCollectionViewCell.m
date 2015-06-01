@@ -32,11 +32,10 @@
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
     NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
     [_bigImageView sd_setImageWithURL:[NSURL URLWithString:goodsLogoURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        if (image) {
-            _bigImageView.contentMode = UIViewContentModeScaleAspectFit;
-        } else {
-            _bigImageView.contentMode = UIViewContentModeScaleToFill;
+        if (_downloadImageFinish) {
+            _downloadImageFinish();
         }
+        
     }];
 
     
@@ -101,7 +100,7 @@
                 if (flag) {
                     [dic setValue:@"Y" forKey:@"isCollect"];
                     [_leftBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
-                    [CollectSucView showCollectSucView];
+                    [CollectSucView showCollectSucViewInView:self.viewController.view];
                 }
                 
             } failCallBack:^(id error) {

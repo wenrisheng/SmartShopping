@@ -23,6 +23,7 @@
 #import "WSStoreDetailViewController.h"
 #import "WSSearchViewController.h"
 #import "CHTCollectionViewWaterfallLayout.h"
+#import "WSSearchCommonViewController.h"
 
 typedef NS_ENUM(NSInteger, SearchType) {
     SearchTypeInStore = 0,
@@ -146,6 +147,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [_instoreCollectionView reloadData];
     _instoreCollectionView.hidden = YES;
     _outStoreCollectionView.hidden = NO;
+    _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = YES;
     
     NSArray *titleArray = @[@"附近", @"所有商店"];
     NSMutableArray *dataArray = [NSMutableArray array];
@@ -181,6 +183,9 @@ typedef NS_ENUM(NSInteger, SearchType) {
             // 不在店内
         } else {
             [self toOutStoreStatus];
+#if DEBUG
+            self.city = @"广州";
+#endif
             if (_city.length > 0) {
                 inStoreCurPage = 0;
                 [self requestOutShopGoodsList];
@@ -216,12 +221,19 @@ typedef NS_ENUM(NSInteger, SearchType) {
     if (user) {
         [params setValue:user._id forKey:@"uid"];
     }
+    
+    self.inStore_shopId = self.inStore_shopId.length > 0 ? self.inStore_shopId : @"";
+    self.inStore_categoryId = self.inStore_categoryId.length > 0 ? self.inStore_categoryId : @"";
+
+    
     [params setValue:_inStore_shopId forKey:@"shopid"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
     [params setValue:_inStore_categoryId forKey:@"categoryId"];
     if (_inStore_brandIds.count != 0) {
         [params setValue:_inStore_brandIds forKey:@"brandIds"];
+    } else {
+        [params setValue:@"" forKey:@"brandIds"];
     }
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [params setValue:[NSString stringWithFormat:@"%d", inStoreCurPage + 1] forKey:@"pages"];
@@ -271,7 +283,14 @@ typedef NS_ENUM(NSInteger, SearchType) {
     if (user) {
         [params setValue:user._id forKey:@"uid"];
     }
+    self.outStore_districtId = self.outStore_districtId.length > 0 ? self.outStore_districtId : @"";
+    self.outStore_townId = self.outStore_townId.length > 0 ? self.outStore_townId : @"";
+    self.outStore_shopTypeId = self.outStore_shopTypeId.length > 0 ? self.outStore_shopTypeId : @"";
+    self.outStore_retailId = self.outStore_retailId.length > 0 ? self.outStore_retailId : @"";
+    self.outStore_categoryId = self.outStore_categoryId.length > 0 ? self.outStore_categoryId : @"";
+    self.outStore_distance = self.outStore_distance.length > 0 ? self.outStore_distance : @"";
     [params setValue:_city forKey:@"cityName"];
+   
     [params setValue:_outStore_districtId forKey:@"districtId"];
     [params setValue:_outStore_townId forKey:@"townId"];
     [params setValue:_outStore_shopTypeId forKey:@"shopTypeId"];
@@ -279,10 +298,12 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [params setValue:_outStore_categoryId forKey:@"categoryId"];
     if (_outStore_brandIds.count != 0) {
         [params setValue:_outStore_brandIds forKey:@"brandIds"];
+    } else {
+         [params setValue:@"" forKey:@"brandIds"];
     }
     
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
     //    [params setValue:@"2000" forKey:@"distance"];
     [params setValue:[NSString stringWithFormat:@"%d", outStoreCurPage + 1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
@@ -322,6 +343,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     } showMessage:YES];
 }
+
 
 - (void)clearParam
 {
@@ -380,7 +402,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [_outStoreCollectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponOutStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell"];
     [_outStoreCollectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponInStoreCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSPromotionCouponInStoreCollectionReusableView"];
     CHTCollectionViewWaterfallLayout *outStoreLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
-    outStoreLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    outStoreLayout.sectionInset = UIEdgeInsetsMake(10, 0, 10, 0);
     outStoreLayout.headerHeight = 0;
     outStoreLayout.footerHeight = 0;
     outStoreLayout.minimumColumnSpacing = 20;
@@ -1037,8 +1059,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
 #pragma mark  NavigationBarButSearchButViewDelegate
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
 {
-    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
-    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+//    WSSearchViewController *searchHistoryVC =[[WSSearchViewController alloc] init];
+//    [self.navigationController pushViewController:searchHistoryVC animated:YES];
+    WSSearchCommonViewController *searchCommon = [[WSSearchCommonViewController alloc] init];
+    [self.navigationController pushViewController:searchCommon animated:YES];
 
     return NO;
 }
@@ -1104,8 +1128,14 @@ typedef NS_ENUM(NSInteger, SearchType) {
             WSPromotionCouponOutStoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponOutStoreCollectionViewCell" forIndexPath:indexPath];
             cell.dealInCell = NO;
             NSMutableDictionary *dic = [outStoreDataArray objectAtIndex:row];
+            cell.downloadImageFinish = ^() {
+                CHTCollectionViewWaterfallLayout *layout =
+                (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+                [layout invalidateLayout];
+            };
             [cell setModel:dic];
             [cell.seeMoreBut addTarget:self action:@selector(outStoreSeeMoreButAction:) forControlEvents:UIControlEventTouchUpInside];
+
             return cell;
         }
             break;
@@ -1115,7 +1145,13 @@ typedef NS_ENUM(NSInteger, SearchType) {
             WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
             cell.delegate = self;
             NSMutableDictionary *dic = [inStoreDataArray objectAtIndex:row];
+            cell.downloadImageFinish = ^() {
+                CHTCollectionViewWaterfallLayout *layout =
+                (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+                [layout invalidateLayout];
+            };
             [cell setModel:dic];
+           
             return cell;
         }
             break;
@@ -1133,7 +1169,28 @@ typedef NS_ENUM(NSInteger, SearchType) {
             // 店外
         case 0:
         {
-             return CGSizeMake(collectionView.bounds.size.width, WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT);
+            NSMutableDictionary *dic = [outStoreDataArray objectAtIndex:row];
+            NSArray *goodsList = [dic objectForKey:@"goodsList"];
+            float width = collectionView.bounds.size.width;
+            UIImage *image = nil;
+            for (NSDictionary * dic in goodsList) {
+                NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+                NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+                if (!image) {
+                    image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:goodsLogoURL];
+                    if (!image) {
+                        image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:goodsLogoURL];
+                    }
+                }
+            }
+            if (image) {
+                width = WS_PROMOTION_COUPON_OUTSTORE_COLLECTION_VIEW_CELL_IMAGE_WIDTH_PERCENG * SCREEN_WIDTH;
+                float height = image.size.height * width / image.size.width;
+                return CGSizeMake(collectionView.bounds.size.width, WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT - WS_PROMOTION_COUPON_OUTSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
+
+            }
+            
+            return CGSizeMake(width, WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT);
         }
             break;
         // 店内
@@ -1152,6 +1209,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
                 float height = image.size.height * width / image.size.width;
                 return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL - HOMECOLLECTIONVIEWCELL_IMAGE_HEIGHT_SMALL + height);
             }
+            return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL);
         }
             break;
         default:

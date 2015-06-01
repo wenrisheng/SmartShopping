@@ -13,7 +13,7 @@ typedef void(^FinishCallBack)(void);;
 @interface CollectSucView : UIView
 @property (strong, nonatomic) FinishCallBack callBack;
 
-+ (void)showCollectSucView;
++ (void)showCollectSucViewInView:(UIView *)view;
 
 + (void)showCollectSucViewWithFinishCallBack:(FinishCallBack)callBack;
 

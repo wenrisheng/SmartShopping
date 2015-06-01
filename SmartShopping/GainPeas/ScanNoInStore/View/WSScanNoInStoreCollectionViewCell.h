@@ -12,7 +12,7 @@
 #define WSSCANNOINSTORECOLLECTIONVIEWCELL_HEIGHT_SMALL     158
 
 @interface WSScanNoInStoreCollectionViewCell : UICollectionViewCell
-
+@property (copy) void(^downloadImageFinish)(void);
 - (void)setModel:(NSDictionary *)dic;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

@@ -70,9 +70,19 @@
 {
     if (_gift) {
         [WSUserUtil actionAfterLogin:^{
-            WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
-            orderWriterVC.gift = self.gift;
-            [self.navigationController pushViewController:orderWriterVC animated:YES];
+            // 礼品所需的精明豆
+           int unitNum = [[_gift stringForKey:@"amount"] intValue];
+            
+            // 当前用户的精明豆
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            int currentPeaNum = [user.beanNumber intValue];
+            if (unitNum > currentPeaNum) {
+                [SVProgressHUD showErrorWithStatus:@"亲，您当前的精明豆不够兑换哦！" duration:TOAST_VIEW_TIME];
+            } else {
+                WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
+                orderWriterVC.gift = self.gift;
+                [self.navigationController pushViewController:orderWriterVC animated:YES];
+            }
         }];
     } else {
         [SVProgressHUD showErrorWithStatus:@"数据加载错误！" duration:TOAST_VIEW_TIME];

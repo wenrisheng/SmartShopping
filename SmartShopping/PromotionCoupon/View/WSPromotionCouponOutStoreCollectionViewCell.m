@@ -65,7 +65,9 @@
 
     _leftValidDateLabel.text = [self getValidateWithDateStr:FgoodsEndDate];
     [_leftImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:FgoodsLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
+        if (_downloadImageFinish) {
+            _downloadImageFinish();
+        }
     }];
     // 没有收藏
     if ([FisCollect isEqualToString:@"N"]) {
@@ -78,7 +80,9 @@
     
     _rightValidDateLabel.text = [self getValidateWithDateStr:SgoodsEndDate];
     [_rightImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:SgoodsLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
+        if (_downloadImageFinish) {
+            _downloadImageFinish();
+        }
     }];
     // 没有收藏
     if ([SisCollect isEqualToString:@"N"]) {
@@ -205,7 +209,7 @@
                 if (flag) {
                     [goodDic setValue:@"Y" forKey:@"isCollect"];
                     [_leftCollectBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
-                    [CollectSucView showCollectSucView];
+                    [CollectSucView showCollectSucViewInView:self.viewController.view];
                 }
 
             } failCallBack:^(id error) {
@@ -308,7 +312,7 @@
                 if (flag) {
                     [goodDic setValue:@"Y" forKey:@"isCollect"];
                     [_leftCollectBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
-                    [CollectSucView showCollectSucView];
+                    [CollectSucView showCollectSucViewInView:self.viewController.view];
                 }
                 
             } failCallBack:^(id error) {

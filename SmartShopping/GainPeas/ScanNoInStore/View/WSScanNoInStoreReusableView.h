@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSSCANNOINSTOREREUSABLEVIEW_HEIGHT       150
+#define WSSCANNOINSTOREREUSABLEVIEW_HEIGHT              150
+
+#define WS_SCAN_NOINSTORE_REUSABLE_BOTTOM_VIEW_HEIGHT   50
 
 @interface WSScanNoInStoreReusableView : UICollectionReusableView
 

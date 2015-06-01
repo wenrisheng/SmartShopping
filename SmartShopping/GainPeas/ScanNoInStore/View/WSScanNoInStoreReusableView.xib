@@ -14,10 +14,6 @@
                 <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1dd-iv-GZt" customClass="ACImageScrollManagerView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="100" id="4iu-zD-FuD"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="Sns-w1-gHt"/>
-                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hfr-aL-6Hx">
                     <rect key="frame" x="0.0" y="100" width="320" height="50"/>
@@ -44,6 +40,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="hfr-aL-6Hx" secondAttribute="trailing" id="8Q2-tS-jrs"/>
+                <constraint firstAttribute="bottom" secondItem="hfr-aL-6Hx" secondAttribute="bottom" id="BY6-2E-l1I"/>
                 <constraint firstItem="hfr-aL-6Hx" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="OXb-QX-8fB"/>
                 <constraint firstAttribute="trailing" secondItem="1dd-iv-GZt" secondAttribute="trailing" id="b7F-Hg-B6Z"/>
                 <constraint firstItem="1dd-iv-GZt" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="m3p-gE-dAO"/>
@@ -53,7 +50,7 @@
             <connections>
                 <outlet property="acImageScrollManagaerView" destination="1dd-iv-GZt" id="g17-HJ-mWb"/>
             </connections>
-            <point key="canvasLocation" x="137" y="148.5"/>
+            <point key="canvasLocation" x="302" y="163"/>
         </collectionReusableView>
     </objects>
 </document>

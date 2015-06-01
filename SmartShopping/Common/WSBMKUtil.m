@@ -112,6 +112,10 @@
         [_locationDic setValue:addressCom.province forKey:LOCATION_PROVINCE];
         NSString *city = addressCom.city;
         NSString *shi = @"市";
+        NSRange range = [city rangeOfString:shi];
+        if (range.length > 0 && range.location == (city.length - shi.length)) {
+            city = [city substringToIndex:city.length - 1];
+        }
 //        if ([city containsString:shi]) {
 //            city = [city substringToIndex:city.length - shi.length];
 //        }

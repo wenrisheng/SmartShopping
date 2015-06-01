@@ -15,7 +15,7 @@
 #import "WSProductDetailViewController.h"
 #import "WSScanAfterViewController.h"
 
-@interface WSScanInStoreViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface WSScanInStoreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
     WSStoreDetailCollectionReusableView *reusableView;
     NSMutableArray *dataArray;
@@ -48,9 +48,16 @@
     toEndPage = NO;
     canSign = NO;
     
+    NSString *commitName = @"而而而而而而而";
+    if (_shopName.length > commitName.length) {
+        _shopName = [NSString stringWithFormat:@"%@…", [_shopName substringToIndex:commitName.length]];
+    }
+    
+    _navigationBarManagerView.navigationBarButLabelView.label.text = _shopName;
+    
     // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell"];
-    [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView"];
+    [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView"];
     
     
     [_collectionView addLegendHeaderWithRefreshingBlock:^{
@@ -60,14 +67,21 @@
     [_collectionView addLegendFooterWithRefreshingBlock:^{
         [self requestInShopGoodsScanList];
     }];
+    
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    
+    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    layout.headerHeight = WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT;
+    layout.footerHeight = 0;
+    layout.minimumColumnSpacing = 20;
+    layout.minimumInteritemSpacing = 20;
+    _collectionView.collectionViewLayout = layout;
+
 
     [self requestGetAdsPhoto];
     
     // 请求店内扫描产品
     [self requestInShopGoodsScanList];
-    
-    //[dataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-     //[slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
 
 }
 
@@ -83,7 +97,7 @@
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
     
-    if (_city) {
+    if (_city && dataArray.count == 0) {
         [self requestStoreDetail];
     } else {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
@@ -118,9 +132,9 @@
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    NSString *title = _navigationBarManagerView.navigationBarButLabelView.label.text;
-    if (title.length == 0) {
-        [self requestStoreDetail];
+
+    if (dataArray.count == 0) {
+        [self requestInShopGoodsScanList];
     }
     if (slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
@@ -160,6 +174,7 @@
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeInShopGoodsScanList] data:params tag:WSInterfaceTypeInShopGoodsScanList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
+        [_collectionView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             if (currentPage == 0) {
@@ -175,6 +190,7 @@
             [_collectionView reloadData];
         }
     } failCallBack:^(id error) {
+        [_collectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }
@@ -183,6 +199,7 @@
 {
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_collectionView endHeaderAndFooterRefresh];
         return;
     }
     [SVProgressHUD showWithStatus:@"加载中……"];
@@ -198,6 +215,7 @@
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
+        [_collectionView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             self.shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
@@ -205,6 +223,7 @@
             _navigationBarManagerView.navigationBarButLabelView.label.text = shopName;
         }
     } failCallBack:^(id error) {
+        [_collectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }
@@ -218,9 +237,6 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (dataArray.count == 0) {
-        return 1;
-    }
     return dataArray.count;
 }
 
@@ -228,13 +244,14 @@
 {
     WSStoreDetailCollectionViewCell *cell = (WSStoreDetailCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell" forIndexPath:indexPath];
     NSInteger row = indexPath.row;
-    if (dataArray.count == 0) {
-        cell.hidden = YES;
-    } else {
-        cell.hidden = NO;
-        NSDictionary *dic = [dataArray objectAtIndex:row];
-        [cell setModel:dic];
-    }
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    [cell setModel:dic];
+    cell.downloadImageFinish = ^() {
+        CHTCollectionViewWaterfallLayout *layout =
+        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+        [layout invalidateLayout];
+    };
+
 
     cell.scanBut.tag = row;
     [cell.scanBut addTarget:self action:@selector(scanButActioin:) forControlEvents:UIControlEventTouchUpInside];
@@ -245,6 +262,20 @@
 {
     NSInteger row =indexPath.row;
     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+     NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+    NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+    UIImage *image = nil;
+    image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:goodsLogoURL];
+    if (!image) {
+        image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:goodsLogoURL];
+    }
+    if (image) {
+        float height = image.size.height * width / image.size.width;
+        return CGSizeMake(width, WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT - WS_STORE_DETAIL_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
+    }
+
+    
     if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
         return CGSizeMake(width, WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT);
     } else {
@@ -280,7 +311,7 @@
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView" forIndexPath:indexPath];
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = reusableView.imageScrollManagerView.acImageScrollView;
         NSInteger imageCount = slideImageArray.count;
         NSMutableArray *imageDataArray = [NSMutableArray array];
@@ -291,6 +322,21 @@
         }
 
         [imageScrollView setImageData:imageDataArray];
+        __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+        imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+            float height = 0;
+            CGSize imageSize = image.size;
+            height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
+            DLog(@"IMAGE height:%.1f", height);
+            height =  height + WS_STORE_DETAIL_COLLECTION_RESUSABLE_VIEW_BOTTOMVIEW_HEIGHT + 30;
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            layout.headerHeight = height;
+            [layout invalidateLayout];
+
+        };
+
+        
         if (_shop) {
             NSString *isSign = [_shop stringForKey:@"isSign"];
             NSString *signImage = nil;

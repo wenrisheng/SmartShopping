@@ -83,7 +83,7 @@
 
 - (void)clearHistoryButAction:(UIButton *)but
 {
-    self.hidden = YES;
+    //self.hidden = YES;
     if (_clearCallback) {
         _clearCallback();
     }

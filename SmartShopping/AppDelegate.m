@@ -143,6 +143,26 @@
         
         // 领取本机精明豆后清空本机精明豆
         [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
+        
+        // 同步服务器精明豆
+        WSUser *user = [WSRunTime sharedWSRunTime].user;
+        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            NSDictionary *userDic = [[result objectForKey:@"data"] objectForKey:@"user"];
+            NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
+            WSUser *nweUser = [[WSUser alloc] init];
+            nweUser.phone = user.phone;
+            [nweUser setValuesForKeysWithDictionary:tempDic];
+            [WSRunTime sharedWSRunTime].user = nweUser;
+            // 本地存储用户信息
+            NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+            [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+            
+        } failCallBack:^(id error) {
+            [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
+           
+        } showMessage:YES];
+        
     }
 }
 
@@ -203,10 +223,19 @@
     // 加上以下代码微信登陆收授权失败
    // [ShareSDK connectWeChatWithAppId:WECHAT_APPID
         //                   wechatCls:[WXApi class]];
-    //微信登陆的时候需要初始化
-    [ShareSDK connectWeChatWithAppId:WECHAT_APPID
-                           appSecret:WECHAT_APPSECRET
-                           wechatCls:[WXApi class]];
+    //微信好友
+    [ShareSDK connectWeChatSessionWithAppId: WECHAT_APPID
+                                  appSecret: WECHAT_APPSECRET
+                                  wechatCls: [WXApi class]];
+    //微信朋友圈
+    [ShareSDK connectWeChatTimelineWithAppId: WECHAT_APPID
+                                   appSecret: WECHAT_APPSECRET
+                                   wechatCls: [WXApi class]];
+    
+    // 如果用下面这个总的方法默认会有微信收藏
+    //[ShareSDK connectWeChatWithAppId:WECHAT_APPID
+//                           appSecret:WECHAT_APPSECRET
+//                           wechatCls:[WXApi class]];
     
     //开启QQ空间网页授权开关(optional)
     id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];

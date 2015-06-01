@@ -290,7 +290,8 @@ typedef NS_ENUM(NSInteger, SearchType) {
         case SearchTypeProduct:
         {
             NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
-            if (historyArray.count != 0) {WSSearchHistoryView *hisView = [self getSearchHistoryView];
+            if (historyArray.count != 0) {
+                WSSearchHistoryView *hisView = [self getSearchHistoryView];
                 hisView.dataArray = historyArray;
                 [hisView.contentTableView reloadData];
                 hisView.hidden = NO;
@@ -1627,7 +1628,8 @@ typedef NS_ENUM(NSInteger, SearchType) {
                 if (flag) {
                     [dic setValue:@"Y" forKey:@"isCollect"];
                     [_collectionView reloadData];
-                    [CollectSucView showCollectSucView];
+                    [CollectSucView showCollectSucViewInView:self.view];
+                
                 }
             } failCallBack:^(id error) {
                 [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT     220
+#define WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT                  220
+
+#define WS_STORE_DETAIL_COLLECTION_RESUSABLE_VIEW_BOTTOMVIEW_HEIGHT 120
 
 @interface WSStoreDetailCollectionReusableView : UICollectionReusableView
 

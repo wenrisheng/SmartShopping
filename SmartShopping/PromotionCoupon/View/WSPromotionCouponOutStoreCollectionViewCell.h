@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 
 
-#define WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT    272
+#define WSPROMOTION_COUPON_OUTSTORE_COLLECTIONVIEW_CELL_HEIGHT                272
+#define WS_PROMOTION_COUPON_OUTSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT        142
+#define WS_PROMOTION_COUPON_OUTSTORE_COLLECTION_VIEW_CELL_IMAGE_WIDTH_PERCENG (145.0/320)
 
 @interface WSPromotionCouponOutStoreCollectionViewCell : UICollectionViewCell
 
 @property (assign, nonatomic) BOOL dealInCell;
 @property (strong, nonatomic) NSMutableDictionary *dic;
 
+@property (copy) void(^downloadImageFinish)(void);
 @property (copy) void(^refreshPage)(void); // 点击收藏时没登陆时登陆后刷新页面
 
 - (void)setModel:(NSMutableDictionary *)modelDic;

@@ -16,7 +16,7 @@
 
 #import "WSDoubleTableView.h"
 
-@interface WSScanNoInStoreViewController ()
+@interface WSScanNoInStoreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
     WSScanNoInStoreReusableView *headerView;
     NSMutableArray *dataArray;
@@ -65,8 +65,14 @@
     
     // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"WSScanNoInStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSScanNoInStoreCollectionViewCell"];
-    [_collectionView registerNib:[UINib nibWithNibName:@"WSScanNoInStoreReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView"];
-    
+    [_collectionView registerNib:[UINib nibWithNibName:@"WSScanNoInStoreReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView"];
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    layout.headerHeight = WSSCANNOINSTOREREUSABLEVIEW_HEIGHT;
+    layout.footerHeight = 0;
+    layout.minimumColumnSpacing = 20;
+    layout.minimumInteritemSpacing = 20;
+    _collectionView.collectionViewLayout = layout;
     
     [_collectionView addLegendHeaderWithRefreshingBlock:^{
         curPage = 0;
@@ -106,6 +112,14 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    if (doubleTableView && !doubleTableView.hidden) {
+        doubleTableView.hidden = YES;
+    }
+}
+
 #pragma mark - 用户位置更新
 - (void)locationUpdate:(NSNotification *)notification
 {
@@ -137,13 +151,6 @@
 //    }
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesBegan:touches withEvent:event];
-    if (doubleTableView) {
-        doubleTableView.hidden = YES;
-    }
-}
 
 - (WSDoubleTableView *)getDoubleTableView
 {
@@ -152,6 +159,11 @@
     } else {
         doubleTableView = GET_XIB_FIRST_OBJECT(@"WSDoubleTableView");
         doubleTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        [doubleTableView.topView clearSubviews];
+        doubleTableView.topViewHeightCon = 0;
+        doubleTableView.topView.hidden = YES;
+        doubleTableView.bottomViewTopCon.constant = -10;
+        [doubleTableView updateConstraintsIfNeeded];
         [self.view addSubview:doubleTableView];
         NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_topView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
         NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
@@ -407,9 +419,6 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (dataArray.count == 0) {
-        return 1;
-    }
     return dataArray.count;
 }
 
@@ -417,14 +426,15 @@
 {
     NSInteger row = indexPath.row;
     WSScanNoInStoreCollectionViewCell *cell = (WSScanNoInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSScanNoInStoreCollectionViewCell" forIndexPath:indexPath];
-    if (dataArray.count == 0) {
-        cell.hidden = YES;
-        return cell;
-    } else {
-        cell.hidden = NO;
-        NSDictionary *dic = [dataArray objectAtIndex:row];
-        [cell setModel:dic];
-    }
+
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    cell.downloadImageFinish = ^() {
+        CHTCollectionViewWaterfallLayout *layout =
+        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+        [layout invalidateLayout];
+    };
+    [cell setModel:dic];
+    
     [cell.bigbut addTarget:self action:@selector(productButAction:) forControlEvents:UIControlEventTouchUpInside];
     [cell.logoBut addTarget:self action:@selector(storeLogoButAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.bigbut.tag = row;
@@ -436,6 +446,20 @@
 {
     NSInteger row =indexPath.row;
     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+    NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+    UIImage *image = nil;
+    image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:goodsLogoURL];
+    if (!image) {
+        image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:goodsLogoURL];
+    }
+    if (image) {
+        float height = image.size.height * width / image.size.width;
+        return CGSizeMake(width, WSSCANNOINSTOREREUSABLEVIEW_HEIGHT - WS_SCAN_NOINSTORE_REUSABLE_BOTTOM_VIEW_HEIGHT + height);
+    }
+    
     if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
         return CGSizeMake(width, WSSCANNOINSTORECOLLECTIONVIEWCELL_HEIGHT);
     } else {
@@ -448,30 +472,12 @@
 //    return -20;
 //}
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return CELLECTIONVIEW_CELL_SPACE;
-}
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return CGSizeMake(collectionView.bounds.size.width, WSSCANNOINSTOREREUSABLEVIEW_HEIGHT);
-    } else {
-        return CGSizeZero;
-    }
-    
-}
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView" forIndexPath:indexPath];
+        headerView = [collectionView dequeueReusableSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSScanNoInStoreReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = headerView.acImageScrollManagaerView.acImageScrollView;
         NSInteger imageCount = slideImageArray.count;
         NSMutableArray *imageDataArray = [NSMutableArray array];
@@ -481,6 +487,20 @@
             [imageDataArray addObject:imageURL];
         }
         [imageScrollView setImageData:imageDataArray];
+         __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+        imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+            float height = 0;
+            CGSize imageSize = image.size;
+            height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
+            height =  height + WSSCANNOINSTOREREUSABLEVIEW_HEIGHT - WS_SCAN_NOINSTORE_REUSABLE_BOTTOM_VIEW_HEIGHT;
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            layout.headerHeight = height;
+            [layout invalidateLayout];
+            //[weekImageScrollView layoutIfNeeded];
+            [weekImageScrollView updateConstraintsIfNeeded];
+            [weekImageScrollView updateConstraints];
+        };
         imageScrollView.callback = ^(int index) {
             DLog(@"广告：%d", index);
             NSDictionary *dic = [slideImageArray objectAtIndex:index];

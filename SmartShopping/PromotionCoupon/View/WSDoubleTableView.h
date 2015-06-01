@@ -35,5 +35,6 @@ typedef void(^DoubleTableSCallBack)(NSInteger idnex);
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightCon;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *indicateImageViewCenterXCon;
 @property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomViewTopCon;
 
 @end
