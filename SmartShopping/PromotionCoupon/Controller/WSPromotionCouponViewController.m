@@ -60,6 +60,8 @@ typedef NS_ENUM(NSInteger, SearchType) {
 
     
     BOOL isShowDoubleTableView;
+    
+    int curTabIndex;
 }
 
 @property (strong, nonatomic) NSString *city;
@@ -131,6 +133,8 @@ typedef NS_ENUM(NSInteger, SearchType) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    curTabIndex = -1;
      [self clearParam];
     // 开始初始化数据在店外
     searchType = SearchTypeOutStore;
@@ -148,6 +152,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
     _instoreCollectionView.hidden = YES;
     _outStoreCollectionView.hidden = NO;
     _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = YES;
+    
+    if (doubleTableView && !doubleTableView.hidden) {
+        doubleTableView.hidden = YES;
+    }
     
     NSArray *titleArray = @[@"附近", @"所有商店"];
     NSMutableArray *dataArray = [NSMutableArray array];
@@ -457,7 +465,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
 #pragma mark - 品类搜索按钮事件
 - (void)inStoreSearchButAction:(UIButton *)but
 {
-    if (_inStore_categoryId) {
+    if (_inStore_categoryId.length > 0) {
         WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
         filterBrandVC.mainId = self.inStore_categoryId;
         filterBrandVC.callBack = ^(NSArray *array) {
@@ -539,18 +547,28 @@ typedef NS_ENUM(NSInteger, SearchType) {
             // 附近
         case 0:
         {
-            [self clickNearTab];
+            if (curTabIndex == index && !doubleTableView.hidden) {
+                doubleTableView.hidden = YES;
+            } else {
+                [self clickNearTab];
+            }
         }
             break;
             // 所有商店
         case 1:
         {
-            [self clickAllStore];
+            if (curTabIndex == index && !doubleTableView.hidden) {
+                doubleTableView.hidden = YES;
+            } else {
+                 [self clickAllStore];
+            }
+           
         }
             break;
         default:
             break;
     }
+    curTabIndex = index;
 }
 
 #pragma mark 在商店内点击tab
@@ -560,28 +578,43 @@ typedef NS_ENUM(NSInteger, SearchType) {
             // 附近
         case 0:
         {
-            [self clickNearTab];
+            if (curTabIndex == index && !doubleTableView.hidden) {
+                doubleTableView.hidden = YES;
+            } else {
+                [self clickNearTab];
+            }
+            
         }
             break;
             // 店名
         case 1:
         {
-            if (storeFDataArray.count == 0) {
-                [self requestGetShopTypeList];
+            if (curTabIndex == index && !doubleTableView.hidden) {
+                doubleTableView.hidden = YES;
             } else {
-                [self showStoreTypeSelectView];
+                if (storeFDataArray.count == 0) {
+                    [self requestGetShopTypeList];
+                } else {
+                    [self showStoreTypeSelectView];
+                }
             }
         }
             break;
             // 所有品类
         case 2:
         {
-            [self clickAllType];
+            if (curTabIndex == index && !doubleTableView.hidden) {
+                doubleTableView.hidden = YES;
+            } else {
+                [self clickAllType];
+            }
+           
         }
             break;
         default:
             break;
     }
+    curTabIndex = index;
 }
 
 #pragma mark - 点击了附近tab
@@ -681,6 +714,9 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [doubleTable.tableS reloadData];
     doubleTable.tableFCallBack = ^(NSInteger index) {
         domainFIndex = (int)index;
+        WSDoubleTableView *doubleTable= [self getDoubleTableView];
+        doubleTable.dataArrayS = nil;
+        [doubleTable.tableS reloadData];
         NSDictionary *dic = [domainFDataArray objectAtIndex:index];
         NSString *districtId = [dic stringForKey:@"districtId"];
         self.outStore_districtId = districtId;
@@ -751,7 +787,21 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-     doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
+    switch (searchType) {
+        case SearchTypeInStore:
+        {
+             doubleTable.indicateImageViewCenterXCon.constant = 0;
+        }
+            break;
+        case SearchTypeOutStore:
+        {
+             doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
+        }
+            break;
+        default:
+            break;
+    }
+   
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -802,6 +852,9 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [doubleTable.tableS reloadData];
     doubleTable.tableFCallBack = ^(NSInteger index) {
         storeFIndex = (int)index;
+        WSDoubleTableView *doubleTable= [self getDoubleTableView];
+        doubleTable.dataArrayS = nil;
+        [doubleTable.tableS reloadData];
         NSDictionary *dic = [storeFDataArray objectAtIndex:index];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
         self.outStore_shopTypeId = shopTypeId;

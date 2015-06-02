@@ -35,6 +35,7 @@
     NSMutableArray *dataArray;
     
     BOOL hasRequest;
+    int curTabIndex;
 }
 
 @property (strong, nonatomic) NSString *searchname;
@@ -64,7 +65,7 @@
     hasRequest = NO;
     curPage = 0;
     dataArray = [[NSMutableArray alloc] init];
-    
+    curTabIndex = -1;
     domainFDataArray = [[NSMutableArray alloc] init];
     domainSDataDic = [[NSMutableDictionary alloc] init];
     storeFDataArray = [[NSMutableArray alloc] init];
@@ -157,19 +158,30 @@
                 // 附近
             case 0:
             {
-                [self clickNearTab];
+                if (curTabIndex == index && !_doubleTableView.hidden) {
+                    _doubleTableView.hidden = YES;
+                } else {
+                    [self clickNearTab];
+                }
+                
             }
                 break;
                 // 所有商店
             case 1:
             {
-                [self clickAllStore];
+                if (curTabIndex == index && !_doubleTableView.hidden) {
+                    _doubleTableView.hidden = YES;
+                } else {
+                    [self clickAllStore];
+                }
+                
+               
             }
                 break;
             default:
                 break;
         }
-        
+        curTabIndex = index;
     };
 
     
@@ -267,6 +279,7 @@
 #if DEBUG
     self.city = @"广州";
 #endif
+     _tabSlideManagerView.hidden = NO;
     hasRequest = YES;
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
@@ -345,9 +358,9 @@
         UIView *relativeview = _searchManagerView.searchTypeView.leftView;
         NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:-10];
         NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_searchManagerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
         
-        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:titlArray.count * WSCLEARHISTORYCELL_HEIGHT];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:titlArray.count * WSCLEARHISTORYCELL_HEIGHT + self.toastView.tableViewTopCon.constant];
         [self.view addConstraints:@[left, right, top, height]];
     }
     return _toastView;
@@ -579,6 +592,8 @@
     
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
         domainFIndex = (int)index;
+        _doubleTableView.dataArrayS = nil;
+        [_doubleTableView.tableS reloadData];
         NSDictionary *dic = [domainFDataArray objectAtIndex:index];
         NSString *districtId = [dic stringForKey:@"districtId"];
         self.districtId = districtId;
@@ -685,6 +700,8 @@
     [self.doubleTableView.tableS reloadData];
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
         storeFIndex = (int)index;
+        _doubleTableView.dataArrayS = nil;
+        [_doubleTableView.tableS reloadData];
         NSDictionary *dic = [storeFDataArray objectAtIndex:index];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
         self.shopTypeId = shopTypeId;

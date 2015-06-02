@@ -12,6 +12,7 @@
 
 @interface WSProductDetailViewController () <UIWebViewDelegate>
 
+
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet WSTabSlideManagerView *tabSlideManagerView;
@@ -24,7 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"商品详情";
     [self requestProductDetail];
 }
@@ -119,6 +119,17 @@
                 // 扫描或分享
             case 1:
             {
+                NSString *isCollect = [_goodsDetails stringForKey:@"isCollect"];
+                // 已经收藏
+                NSString *collectImage = nil;
+                if ([isCollect isEqualToString:@"Y"]) {
+                    collectImage = @"collected";
+                } else {
+                    collectImage = @"uncollect";
+                }
+                WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+                itemView.rightImageView.image = [UIImage imageNamed:collectImage];
+
                 // 扫描
                 if (_hasScan) {
                     WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
@@ -141,6 +152,17 @@
                 //分享
             case 2:
             {
+                NSString *isCollect = [_goodsDetails stringForKey:@"isCollect"];
+                // 已经收藏
+                NSString *collectImage = nil;
+                if ([isCollect isEqualToString:@"Y"]) {
+                    collectImage = @"collected";
+                } else {
+                    collectImage = @"uncollect";
+                }
+                WSTabSlideGapTextItemView *itemView = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0];
+                itemView.rightImageView.image = [UIImage imageNamed:collectImage];
+
                 if (_goodsDetails) {
                     NSString *title = [_goodsDetails objectForKey:@"productname"];
                     NSString *promotion= [_goodsDetails objectForKey:@"promotion"];

@@ -316,6 +316,8 @@
         [params setValue:user._id forKey:@"uid"];
     }
     [params setValue:shopId forKey:@"shopid"];
+    [params setValue:@"" forKey:@"categoryId"];
+    [params setValue:@"" forKey:@"brandIds"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];

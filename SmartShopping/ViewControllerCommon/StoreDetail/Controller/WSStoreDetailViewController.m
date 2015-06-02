@@ -15,7 +15,7 @@
 #import "WSProductDetailViewController.h"
 #import "WSScanAfterViewController.h"
 
-@interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
     WSStoreDetailCollectionReusableView *reusableView;
     NSMutableArray *dataArray;
@@ -50,8 +50,15 @@
     
     // 注册
     [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell"];
-    [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView"];
-    
+    [_collectionView registerNib:[UINib nibWithNibName:@"WSStoreDetailCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView"];
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    layout.headerHeight = WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT;
+    layout.footerHeight = 0;
+    layout.minimumColumnSpacing = 20;
+    layout.minimumInteritemSpacing = 20;
+    _collectionView.collectionViewLayout = layout;
+
     
     [_collectionView addLegendHeaderWithRefreshingBlock:^{
         currentPage = 0;
@@ -160,6 +167,8 @@
         [params setValue:user._id forKey:@"uid"];
     }
     [params setValue:_shopid forKey:@"shopid"];
+    [params setValue:@"" forKey:@"categoryId"];
+    [params setValue:@"" forKey:@"brandIds"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%d", currentPage + 1] forKey:@"pages"];
@@ -198,9 +207,6 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (dataArray.count == 0) {
-        return 1;
-    }
     return dataArray.count;
 }
 
@@ -208,13 +214,14 @@
 {
     WSStoreDetailCollectionViewCell *cell = (WSStoreDetailCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell" forIndexPath:indexPath];
     NSInteger row = indexPath.row;
-    if (dataArray.count == 0) {
-        cell.hidden = YES;
-    } else {
-        cell.hidden = NO;
-        NSDictionary *dic = [dataArray objectAtIndex:row];
-        [cell setModel:dic];
-    }
+
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    cell.downloadImageFinish = ^() {
+        CHTCollectionViewWaterfallLayout *layout =
+        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+        [layout invalidateLayout];
+    };
+    [cell setModel:dic];
 
     cell.scanBut.tag = row;
     [cell.scanBut addTarget:self action:@selector(scanButActioin:) forControlEvents:UIControlEventTouchUpInside];
@@ -225,26 +232,26 @@
 {
     NSInteger row =indexPath.row;
     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    
+    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
+    NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
+    UIImage *image = nil;
+    image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:goodsLogoURL];
+    if (!image) {
+        image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:goodsLogoURL];
+    }
+    if (image) {
+        float height = image.size.height * width / image.size.width;
+        return CGSizeMake(width, WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT - WS_STORE_DETAIL_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
+    }
+
+    
     if ((row % 4 == 0) || ((row + 1) % 4 == 0)) {
         return CGSizeMake(width, WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT);
     } else {
         return CGSizeMake(width, WSSTOREDETAILCOLLECTIONVIEWCELL_HEIGHT_SMAIL);
     }
-}
-
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-//{
-//    return -20;
-//}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return CELLECTIONVIEW_CELL_SPACE;
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
@@ -260,9 +267,28 @@
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView" forIndexPath:indexPath];
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"WSStoreDetailCollectionReusableView" forIndexPath:indexPath];
         ACImageScrollView *imageScrollView = reusableView.imageScrollManagerView.acImageScrollView;
-        [imageScrollView setImageData:slideImageArray];
+        __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+        imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+            float height = 0;
+            CGSize imageSize = image.size;
+            height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
+            height =  height + WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT - WS_STORE_DETAIL_COLLECTION_RESUSABLE_VIEW_BOTTOMVIEW_HEIGHT;
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            layout.headerHeight = height;
+            [layout invalidateLayout];
+        };
+         NSInteger imageCount = slideImageArray.count;
+        NSMutableArray *imageDataArray = [NSMutableArray array];
+        for (int i = 0; i < imageCount; i++) {
+            NSDictionary *dic = [slideImageArray objectAtIndex:i];
+            NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+            [imageDataArray addObject:imageURL];
+        }
+
+        [imageScrollView setImageData:imageDataArray];
         if (_shop) {
             NSString *isSign = [_shop stringForKey:@"isSign"];
             NSString *signImage = nil;

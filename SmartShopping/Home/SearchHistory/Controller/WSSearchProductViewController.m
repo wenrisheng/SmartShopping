@@ -41,6 +41,8 @@
     NSMutableArray *dataArray;
     
     BOOL hasRequest;
+    
+    int curTabIndex;
 }
 
 @property (strong, nonatomic) NSString *searchname;
@@ -70,6 +72,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    curTabIndex = -1;
     hasRequest = NO;
     curPage = 0;
     dataArray = [[NSMutableArray alloc] init];
@@ -120,7 +123,7 @@
                 [self requestSelectGoods];
             };
            self.historyView.clearCallback = ^() {
-               self.historyView.dataArray = nil;
+               _historyView.dataArray = nil;
                [ self.historyView.contentTableView reloadData];
                 [USER_DEFAULT removeObjectForKey:SEARCH_PRODUCT_HISTORY_KEY];
             };
@@ -168,24 +171,39 @@
                 // 附近
             case 0:
             {
-                [self clickNearTab];
+                if (curTabIndex == index && !_doubleTableView.hidden) {
+                    _doubleTableView.hidden = YES;
+                } else {
+                   [self clickNearTab];
+                }
             }
                 break;
                 // 所有商店
             case 1:
             {
-                [self clickAllStore];
+                if (curTabIndex == index && !_doubleTableView.hidden) {
+                    _doubleTableView.hidden = YES;
+                } else {
+                  [self clickAllStore];
+                }
+                
             }
                 break;
                 // 品类
             case 2:
             {
-                [self clickAllType];
+                if (curTabIndex == index && !_doubleTableView.hidden) {
+                    _doubleTableView.hidden = YES;
+                } else {
+                   [self clickAllType];
+                }
+                
             }
                 break;
             default:
                 break;
         }
+        curTabIndex = index;
     };
     
     [_collectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponInStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell"];
@@ -256,6 +274,7 @@
     if (_historyView && !_historyView.hidden) {
         _historyView.hidden = YES;
     }
+    _tabSlideManagerView.hidden = NO;
     [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
     if (_searchname.length > 0) {
         NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
@@ -289,9 +308,9 @@
         UIView *relativeview = _searchManagerView.searchTypeView.leftView;
         NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:-10];
         NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_searchManagerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
         
-        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:titlArray.count * WSCLEARHISTORYCELL_HEIGHT];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:titlArray.count * WSCLEARHISTORYCELL_HEIGHT + self.toastView.tableViewTopCon.constant];
         [self.view addConstraints:@[left, right, top, height]];
     }
     return _toastView;
@@ -554,6 +573,9 @@
 
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
         domainFIndex = (int)index;
+        
+        _doubleTableView.dataArrayS = nil;
+        [_doubleTableView.tableS reloadData];
         NSDictionary *dic = [domainFDataArray objectAtIndex:index];
         NSString *districtId = [dic stringForKey:@"districtId"];
         self.districtId = districtId;
@@ -660,6 +682,8 @@
     [self.doubleTableView.tableS reloadData];
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
         storeFIndex = (int)index;
+        _doubleTableView.dataArrayS = nil;
+        [_doubleTableView.tableS reloadData];
         NSDictionary *dic = [storeFDataArray objectAtIndex:index];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
         self.shopTypeId = shopTypeId;
@@ -739,6 +763,8 @@
     self.doubleTableView.tableSCallBack = nil;
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
         pinleiFIndex = (int)index;
+        _doubleTableView.dataArrayS = nil;
+        [_doubleTableView.tableS reloadData];
         NSDictionary *dic = [pinleiFDataArray objectAtIndex:index];
         NSString *mainId = [dic stringForKey:@"mainId"];
         self.categoryId = mainId;
@@ -755,6 +781,7 @@
 #if DEBUG
     self.city = @"广州";
 #endif
+     _tabSlideManagerView.hidden = NO;
     hasRequest = YES;
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
