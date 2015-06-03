@@ -12,13 +12,11 @@
 #import "WSNoInStoreViewController.h"
 #import "WSInStoreNoSignViewController.h"
 #import "WSStoreDetailViewController.h"
+#import "WSScanInStoreViewController.h"
+#import "WSScanNoInStoreViewController.h"
+#import "WSInviateFriendViewController.h"
 
 @interface WSMinePeasViewController ()
-
-// 到店签到时保存数据
-@property (strong, nonatomic) NSDictionary *isInShop;
-@property (strong, nonatomic) NSDictionary *shop;
-
 
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
@@ -225,16 +223,23 @@
             BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
             // 在店内
             if (isInStore) {
-                NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
-                self.isInShop = isInShop;
-                // 请求商店详情
-                [self requestStoreDetail];
-                
+                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                NSString *isSign = [shop stringForKey:@"isSign"];
+                //  没签到
+                if ([isSign isEqualToString:@"N"]) {
+                    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                    inStoreNoSignVC.shop = shop;
+                    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                } else {
+                    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                    storeDetailVC.shop = shop;
+                    [self.navigationController pushViewController:storeDetailVC animated:YES];
+                }
                 // 不在店内
             } else {
-                [self toNoInStoreVC];
+                WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+                [self.navigationController pushViewController:noInstoreVC animated:YES];
             }
-            
         }];
     }];
 }
@@ -242,13 +247,38 @@
 #pragma mark 扫描按钮事件
 - (IBAction)scanProductButAction:(id)sender
 {
-    
+    // 1. 在店内跳到 WSStoreDetailViewController
+    // 2. 不在店内跳到 WSScanInStoreViewController
+    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
+        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+        // 在店内
+        if (isInStore) {
+            [WSUserUtil actionAfterLogin:^{
+                NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                NSString *shopId = [dic stringForKey:@"shopId"];
+                NSString *shopName = [shop objectForKey:@"shopName"];
+                WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+                scanInStoreVC.shopName = shopName;
+                scanInStoreVC.shopid = shopId;
+                [self.navigationController pushViewController:scanInStoreVC animated:YES];
+            }];
+            
+            // 不在店内
+        } else {
+            WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+            [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
+        }
+    }];
 }
 
 #pragma mark 邀请好友按钮事件
 - (IBAction)inviateFriendButAction:(id)sender
 {
-    
+    [WSUserUtil actionAfterLogin:^{
+        WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
+        [self.navigationController pushViewController:inviateFriendVC animated:YES];
+    }];
 }
 
 #pragma mark - 到店签到 不在店内
@@ -258,66 +288,6 @@
         WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
         [self.navigationController pushViewController:noInstoreVC animated:YES];
     }];
-}
-
-
-#pragma mark - 请求商店详情
-- (void)requestStoreDetail
-{
-    //请求商店详情接口获取商店名
-    NSString *shopId = [_isInShop stringForKey:@"shopId"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
-    [params setValue:shopId forKey:@"shopid"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];
-    [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
-    [params setValue:[NSString stringWithFormat:@"%d", 1] forKey:@"pages"];
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            
-            //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
-            //  3. 在店内已签到 跳到 WSStoreDetailViewController
-            NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
-            self.shop = shop;
-            NSString *isSign = [shop stringForKey:@"isSign"];
-            // 没有签到
-            if ([isSign isEqualToString:@"1"]) {
-                [self toInStoreNoSign];
-                // 已经签到
-            } else {
-                [self toStoreDetail];
-            }
-        } else {
-            //不在店内
-            [self toNoInStoreVC];
-        }
-    } failCallBack:^(id error) {
-        [self toNoInStoreVC];
-    } showMessage:NO];
-}
-
-#pragma mark 在店内没签到
-- (void)toInStoreNoSign
-{
-    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-    inStoreNoSignVC.shopid = [_shop stringForKey:@"shopId"];
-    inStoreNoSignVC.shopName = [_shop objectForKey:@"shopName"];
-    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-}
-
-#pragma mark 在店内已签到
-- (void)toStoreDetail
-{
-    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shopid = [_shop stringForKey:@"shopid"];
-    [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
 @end

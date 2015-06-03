@@ -41,7 +41,7 @@
 + (NSString *)converDistanceWithDistanceStr:(NSString *)distance
 {
     float distanceFloat = [distance floatValue];
-    NSString *resultStr = [NSString stringWithFormat:@"%.1fm", distanceFloat];
+    NSString *resultStr = [NSString stringWithFormat:@"%.1fkm", distanceFloat];
     return resultStr;
 }
 

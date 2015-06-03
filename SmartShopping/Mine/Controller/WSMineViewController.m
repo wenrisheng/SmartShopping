@@ -213,6 +213,8 @@
             }
             [cell.leftImageView sd_setImageWithURL:[NSURL URLWithString:leftImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
+                
+                
             }];
             cell.leftLabel.text = leftName;
             cell.leftPeasLabel.text = leftPeaNum;
@@ -329,6 +331,21 @@
             break;
         case 1:
         {
+            UIImage *image = nil;
+            for (int i = 0 ; i < _giftList.count; i++) {
+                NSDictionary *dic = [_giftList objectAtIndex:i];
+                 NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"giftLogo"]];
+                image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:imageURL];
+                if (!image) {
+                    image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageURL];
+                }
+            }
+            if (image) {
+                float imageWidth = tableView.bounds.size.width * WS_MINE_SECONDE_CELL_IMAGE_WIDTH / 320;
+                float height = imageWidth * image.size.width / image.size.height;
+                return height + WSMINESECONDCELL_HEIGHT - WS_MINE_SECONDE_CELL_IMAGE_HEIGHT;
+                
+            }
             return WSMINESECONDCELL_HEIGHT;
         }
             break;

@@ -342,6 +342,7 @@
         [SVProgressHUD dismiss];
         NSDictionary *user = [[result objectForKey:@"data"] objectForKey:@"user"];
         [WSRunTime sharedWSRunTime].user.beanNumber = [user stringForKey:@"beanNumber"];
+        DLog(@"同步服务器用户返回的精明豆：%@",[WSRunTime sharedWSRunTime].user.beanNumber);
         // 本地存储用户信息
         NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
         [USER_DEFAULT setObject:userdata forKey:USER_KEY];

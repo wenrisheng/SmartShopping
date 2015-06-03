@@ -533,9 +533,8 @@
 {
     NSInteger tag = but.tag;
     NSDictionary *dic = [dataArray objectAtIndex:tag];
-    NSString *shopId = [dic stringForKey:@"shopId"];
     WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shopid = shopId;
+    storeDetailVC.shop = dic;
     [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 

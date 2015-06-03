@@ -120,7 +120,7 @@
 
 - (IBAction)logoButAction:(id)sender {
     WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shopid = [dic stringForKey:@"shopId"];
+    storeDetailVC.shop = dic;
     [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
@@ -167,7 +167,7 @@
 {
     if (_dealInCell) {
         WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-        storeDetailVC.shopid = [dic stringForKey:@"shopId"];
+        storeDetailVC.shop = dic;
         [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
     }
 
@@ -412,13 +412,12 @@
             // 没有签到
             if ([isSign isEqualToString:@"1"]) {
                 WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                inStoreNoSignVC.shopid = [shop stringForKey:@"shopId"];
-                inStoreNoSignVC.shopName = [shop objectForKey:@"shopName"];
+                inStoreNoSignVC.shop = shop;
                 [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
                 // 已经签到
             } else {
                 WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                storeDetailVC.shopid = [shop stringForKey:@"shopid"];
+                storeDetailVC.shop = shop;
                 [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
             }
         } else {

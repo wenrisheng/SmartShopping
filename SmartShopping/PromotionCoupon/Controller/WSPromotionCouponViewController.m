@@ -62,6 +62,9 @@ typedef NS_ENUM(NSInteger, SearchType) {
     BOOL isShowDoubleTableView;
     
     int curTabIndex;
+    
+    BOOL outStoreToInStore;
+    UIButton *backBut;
 }
 
 @property (strong, nonatomic) NSString *city;
@@ -133,6 +136,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    outStoreToInStore = NO;
     
     curTabIndex = -1;
      [self clearParam];
@@ -151,7 +155,11 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [_instoreCollectionView reloadData];
     _instoreCollectionView.hidden = YES;
     _outStoreCollectionView.hidden = NO;
+    _inStoreTabSlideMnagerView.hidden = YES;
+    _outStoreTabSlideManagerView.hidden = NO;
     _navigationBarManagerView.navigationBarButSearchButView.rightView.hidden = YES;
+    backBut.hidden = YES;
+    
     
     if (doubleTableView && !doubleTableView.hidden) {
         doubleTableView.hidden = YES;
@@ -255,7 +263,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             self.shop = shop;
             NSString *shopName = [shop objectForKey:@"shopName"];
             shopName = shopName == nil ? @"" : shopName;
-            [self toInStoreStatus:shopName];
+           // [self toInStoreStatus:shopName];
             if (inStoreCurPage == 0) {
                 [inStoreDataArray removeAllObjects];
             }
@@ -381,7 +389,9 @@ typedef NS_ENUM(NSInteger, SearchType) {
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
+    if (!outStoreToInStore) {
+        _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
+    }
     DLog(@"定位：%@", city);
 }
 
@@ -391,7 +401,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
     //   导航条
     _navigationBarManagerView.navigationBarButSearchButView.delegate = self;
     _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = @"--";
-    [_navigationBarManagerView.navigationBarButSearchButView.leftBut setEnabled:NO];
+   [_navigationBarManagerView.navigationBarButSearchButView.leftBut setEnabled:NO];
     
     // 店外
     //tab 切换按钮
@@ -425,6 +435,19 @@ typedef NS_ENUM(NSInteger, SearchType) {
         [self requestOutShopGoodsList];
     }];
 
+    backBut = [[UIButton alloc] init];
+    [backBut setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [backBut addTarget:self action:@selector(backButAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIView *leftView = _navigationBarManagerView.navigationBarButSearchButView.leftview;
+    [leftView addSubview:backBut];
+    backBut.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *lwidth = [NSLayoutConstraint constraintWithItem:backBut attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:30];
+    NSLayoutConstraint *lheight = [NSLayoutConstraint constraintWithItem:backBut attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:30];
+    NSLayoutConstraint *lcenterX = [NSLayoutConstraint constraintWithItem:backBut attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:leftView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+    NSLayoutConstraint *lcenterY = [NSLayoutConstraint constraintWithItem:backBut attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:leftView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
+    [leftView addConstraints:@[lwidth, lheight, lcenterX, lcenterY]];
+
+    
     
     // 添加在店内搜索框右边的搜索按钮
     UIButton *but = [[UIButton alloc] init];
@@ -460,6 +483,21 @@ typedef NS_ENUM(NSInteger, SearchType) {
     [_instoreCollectionView addLegendFooterWithRefreshingBlock:^{
         [self requestStoreDetail];
     }];
+}
+
+#pragma mark - backButAction
+- (void)backButAction:(UIButton *)but
+{
+    if (outStoreToInStore) {
+        _outStoreCollectionView.hidden = NO;
+        _instoreCollectionView.hidden = YES;
+        _outStoreTabSlideManagerView.hidden = NO;
+        _inStoreTabSlideMnagerView.hidden = YES;
+        [_navigationBarManagerView.navigationBarButSearchButView.leftBut setBackgroundImage:nil forState:UIControlStateNormal];
+        _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = _city;
+        outStoreToInStore = NO;
+        backBut.hidden = YES;
+    }
 }
 
 #pragma mark - 品类搜索按钮事件
@@ -1358,157 +1396,43 @@ typedef NS_ENUM(NSInteger, SearchType) {
 #pragma mark 不在店查看更过按钮事件
 - (void)outStoreSeeMoreButAction:(UIButton *)but
 {
+    backBut.hidden = NO;
+    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = nil;
+    outStoreToInStore = YES;
+    _outStoreTabSlideManagerView.hidden = YES;
+    _outStoreCollectionView.hidden = YES;
+    
+    inStoreCurPage = 0;
+    [inStoreDataArray removeAllObjects];
+    [_instoreCollectionView reloadData];
+    
+    
     NSInteger tag = but.tag;
     NSDictionary *dic = [outStoreDataArray objectAtIndex:tag];
     NSString *shopId = [dic stringForKey:@"shopId"];
-    outStoreCurPage = 0;
+   [self toInStoreStatus:[dic objectForKey:@"shopName"]];
     self.inStore_shopId = shopId;
     [self requestStoreDetail];
 }
-//
-//#pragma mark 不在店内收藏按钮事件
-//- (void)outStoreLeftCollectButAction:(UIButton *)but
-//{
-//    NSInteger tag = but.tag;
-//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
-//     NSArray *goodsList = [dic objectForKey:@"goodsList"];
-//     NSDictionary *FDic = [goodsList objectAtIndex:0];
-//    [self processCollectWithDictionary:FDic shopId:[dic stringForKey:@"shopId"]];
-//}
-//
-//- (void)outStoreRightCollectButAction:(UIButton *)but
-//{
-//    NSInteger tag = but.tag;
-//    NSDictionary *dic = [storeDataArray objectAtIndex:tag];
-//    NSArray *goodsList = [dic objectForKey:@"goodsList"];
-//    NSDictionary *SDic = [goodsList objectAtIndex:1];
-//    [self processCollectWithDictionary:SDic shopId:[dic stringForKey:@"shopId"]];
-//}
-//
-//- (void)outStoreLeftShareButAction:(UIButton *)but
-//{
-//    
-//}
-//
-//- (void)outStoreRightShareButAction:(UIButton *)but
-//{
-//    
-//}
-//
-//- (void)processCollectWithDictionary:(NSDictionary *)dic shopId:(NSString *)shopId
-//{
-//    WSUser *user = [WSRunTime sharedWSRunTime].user;
-//    if (user) {
-//        NSString *isCollect = [dic stringForKey:@"isCollect"];
-//        // 没有收藏  白色安心
-//        if ([isCollect isEqualToString:@"N"]) {
-//            NSString *goodsid = [dic stringForKey:@"goodsId"];
-//            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
-//            [SVProgressHUD show];
-//            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-//                [SVProgressHUD dismiss];
-//                BOOL flag = [WSInterfaceUtility validRequestResult:result];
-//                if (flag) {
-//                    outStoreCurPage = 0;
-//                    [self requestOutShopGoodsList];
-//                    [CollectSucView showCollectSucView];
-//                }
-//            } failCallBack:^(id error) {
-//                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
-//            }];
-//            
-//            // 已收藏
-//        } else {
-//            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
-//        }
-//    } else {
-//        [WSUserUtil actionAfterLogin:^{
-//        outStoreCurPage = 0;
-//        [self requestOutShopGoodsList];
-//        }];
-//    }
-//
-//}
-//
-//- (void)processProductDetailWithDictionary:(NSDictionary *)dic shopId:(NSString *)shopId
-//{
-//    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
-//    NSString *goodsId = [dic stringForKey:@"goodsId"];
-//    productDetailVC.goodsId = goodsId;
-//    productDetailVC.shopId = shopId;
-//    [self.navigationController pushViewController:productDetailVC animated:YES];
-//}
-//
-//#pragma mark - WSPromotionCouponInStoreCollectionViewCellDelegate
-//#pragma mark 在店内 收藏
-//- (void)WSPromotionCouponInStoreCollectionViewCellDidClickLeftBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
-//{
-//    NSInteger tag = cell.tag;
-//    WSUser *user = [WSRunTime sharedWSRunTime].user;
-//    if (user) {
-//        NSMutableDictionary *dic = [productDataArray objectAtIndex:tag];
-//        NSString *isCollect = [dic stringForKey:@"isCollect"];
-//        
-//        // 没有收藏  白色安心
-//        if ([isCollect isEqualToString:@"N"])
-//        {
-//            NSString *goodsid = [dic stringForKey:@"goodsId"];
-//            NSString *shopId = [dic stringForKey:@"shopId"];
-//            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
-//            [SVProgressHUD show];
-//            [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCollectGoods] data:param tag:WSInterfaceTypeCollectGoods sucCallBack:^(id result) {
-//                [SVProgressHUD dismiss];
-//                BOOL flag = [WSInterfaceUtility validRequestResult:result];
-//                if (flag) {
-//                    [dic setValue:@"Y" forKey:@"isCollect"];
-//                    [_contentCollectionView reloadData];
-//                    [CollectSucView showCollectSucView];
-//                }
-//            } failCallBack:^(id error) {
-//                [SVProgressHUD dismissWithError:@"收藏失败！" afterDelay:TOAST_VIEW_TIME];
-//            }];
-//            
-//            // 已收藏
-//        } else {
-//            [SVProgressHUD showErrorWithStatus:@"亲，您已收藏！" duration:TOAST_VIEW_TIME];
-//        }
-//    } else {
-//        [WSUserUtil actionAfterLogin:^{
-//            inStoreCurPage = 0;
-//            [self requestStoreDetail];
-//        }];
-//    }
-//}
-//
-//#pragma mark 在店内 分享
-//- (void)WSPromotionCouponInStoreCollectionViewCellDidClickRightBut:(WSPromotionCouponInStoreCollectionViewCell *)cell
-//{
-//    NSInteger tag = cell.tag;
-//    DLog(@"分享：%d", (int)tag);
-//}
 
 #pragma mark - 在店内 到店签到按钮事件
 - (void)signupButAction:(UIButton *)but
 {
     //如果商店支持到店签到，则有到店签到图标按钮，点击到店签到图标按钮，因为已经在店内，所以跳到4.3.4，如果已完成签到，跳到4.3.6
     NSString *isSign = [_shop stringForKey:@"isSign"];
-    NSString *shopId = [_shop stringForKey:@"shopId"];
     // 可以签到
     if ([isSign isEqualToString:@"1"]) {
         [WSUserUtil actionAfterLogin:^{
             WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-            inStoreNoSignVC.shopid = shopId;
-            inStoreNoSignVC.shopName = [_shop objectForKey:@"shopName"];
+            inStoreNoSignVC.shop = _shop;
             [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
         }];
 
     } else {
         WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-        storeDetailVC.shopid = shopId;
+        storeDetailVC.shop = _shop;
         [self.navigationController pushViewController:storeDetailVC animated:YES];
     }
-
-  
 
 }
 

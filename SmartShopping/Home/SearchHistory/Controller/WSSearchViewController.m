@@ -1659,19 +1659,17 @@ typedef NS_ENUM(NSInteger, SearchType) {
 {
     //如果商店支持到店签到，则有到店签到图标按钮，点击到店签到图标按钮，因为已经在店内，所以跳到4.3.4，如果已完成签到，跳到4.3.6
     NSString *isSign = [_shop stringForKey:@"isSign"];
-    NSString *shopId = [_shop stringForKey:@"shopId"];
     // 可以签到
     if ([isSign isEqualToString:@"1"]) {
         [WSUserUtil actionAfterLogin:^{
             WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-            inStoreNoSignVC.shopid = shopId;
-            inStoreNoSignVC.shopName = [_shop objectForKey:@"shopName"];
+            inStoreNoSignVC.shop = _shop;
             [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
         }];
         
     } else {
         WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-        storeDetailVC.shopid = shopId;
+        storeDetailVC.shop = _shop;
         [self.navigationController pushViewController:storeDetailVC animated:YES];
     }
 }

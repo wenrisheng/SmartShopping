@@ -40,8 +40,14 @@
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"到店签到";
     dataArray = [[NSMutableArray alloc] init];
-   // [dataArray addObjectsFromArray:@[@"AA", @"aa", @"aa", @"aa", @"aa", @"aa"]];
     curPage = 0;
+    [_contentTableView addLegendHeaderWithRefreshingBlock:^{
+        curPage = 0;
+        [self requestShopSignList];
+    }];
+    [_contentTableView addLegendFooterWithRefreshingBlock:^{
+        [self requestShopSignList];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,7 +61,9 @@
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
-
+    if (dataArray.count == 0) {
+         [self requestShopSignList];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                          selector:@selector(locationUpdate:)
                                              name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
@@ -70,24 +78,27 @@
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    //    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    //    if (deoCodeFalg == 0) {
-    DLog(@"city:%@", _city);
+
     NSString *city = [locationDic objectForKey:LOCATION_CITY];
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
-    DLog(@"定位：%@", city);
-    //    }
+    if (dataArray.count == 0) {
+        [self requestShopSignList];
+    }
 }
 
 - (void)requestShopSignList
 {
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        [_contentTableView endHeaderAndFooterRefresh];
+        return;
+    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     [params setValue:user._id forKey:@"uid"];
-    [params setValue:_city forKey:@"cityname"];
+    [params setValue:_city forKey:@"cityName"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
@@ -99,6 +110,7 @@
             if (curPage == 0) {
                 [dataArray removeAllObjects];
             }
+            curPage ++;
             [dataArray addObjectsFromArray:shopSignList];
             [_contentTableView reloadData];
         }
@@ -125,7 +137,7 @@
         cell = [WSNoinStoreCell getCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.titleBut addTarget:self action:@selector(storeNameButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.signupBut addTarget:self action:@selector(storeNameButAction:) forControlEvents:UIControlEventTouchUpInside];
         [cell.distanceBut addTarget:self action:@selector(distanceButAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     NSInteger row = indexPath.row;
@@ -167,7 +179,7 @@
     NSInteger tag = but.tag;
     NSDictionary *dic = [dataArray objectAtIndex:tag];
     WSStoreDetailViewController *storeDetail = [[WSStoreDetailViewController alloc] init];
-    storeDetail.shopid = [dic stringForKey:@"shopid"];
+    storeDetail.shop = dic;
     [self.navigationController pushViewController:storeDetail animated:YES];
 }
 
@@ -177,20 +189,27 @@
     // 1. GPS定位不在店内跳到 不在签到范围页面 WSInStoreNoSignScopeViewController
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
-    NSInteger tag = but.tag;
-    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    
     [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
         BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
         // 在店内
         if (isInStore) {
-            NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
-            self.isInShop = isInShop;
-            // 请求商店详情
-            [self requestStoreDetail];
-            
-            // 不在店内
+            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+            NSString *isSign = [shop stringForKey:@"isSign"];
+            //  没签到
+            if ([isSign isEqualToString:@"N"]) {
+                WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                inStoreNoSignVC.shop = shop;
+                [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+            } else {
+                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                storeDetailVC.shop = shop;
+                [self.navigationController pushViewController:storeDetailVC animated:YES];
+            }
+        // 不在店内跳到 不在签到范围内
         } else {
-            [self toNoInStoreVC];
+            WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
+            [self.navigationController pushViewController:noSignScopeVC animated:YES];
         }
         
     }];
@@ -213,83 +232,6 @@
     locationDetailVC.locTitle = shopName;
     locationDetailVC.address = address;
     [self.navigationController pushViewController:locationDetailVC animated:YES];
-}
-
-
-#pragma mark － 在店内不在签到范围
-- (void)toInStoreNoScope
-{
-    WSInStoreNoSignScopeViewController *inStoreNoSignScoprVC = [[WSInStoreNoSignScopeViewController alloc] init];
-    [self.navigationController pushViewController:inStoreNoSignScoprVC animated:YES];
-}
-
-#pragma mark 在店内没签到
-- (void)toInStoreNoSign
-{
-    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-    inStoreNoSignVC.shopid = [_shop stringForKey:@"shopid"];
-    inStoreNoSignVC.shopName = [_shop objectForKey:@"shopName"];
-    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-    
-}
-
-#pragma mark 在店内已签到
-- (void)toStoreDetail
-{
-    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shopid = [_shop stringForKey:@"shopid"];
-    [self.navigationController pushViewController:storeDetailVC animated:YES];
-}
-
-#pragma mark - 请求商店详情
-- (void)requestStoreDetail
-{
-    //请求商店详情接口获取商店名
-    NSString *shopId = [_isInShop stringForKey:@"shopId"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
-    [params setValue:@"shopid" forKey:shopId];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];
-    [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
-    [params setValue:[NSString stringWithFormat:@"%d", 1] forKey:@"pages"];
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
-        [SVProgressHUD dismiss];
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            
-            //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
-            //  3. 在店内已签到 跳到 WSStoreDetailViewController
-            NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
-            self.shop = shop;
-            NSString *isSign = [shop stringForKey:@"isSign"];
-            // 没有签到
-            if ([isSign isEqualToString:@"1"]) {
-                [self toInStoreNoSign];
-                // 已经签到
-            } else {
-                [self toStoreDetail];
-            }
-        } else {
-            //不在店内
-            [self toNoInStoreVC];
-        }
-    } failCallBack:^(id error) {
-        [self toNoInStoreVC];
-    } showMessage:NO];
-}
-
-#pragma mark - 到店签到 不在店内
-- (void)toNoInStoreVC
-{
-    [WSUserUtil actionAfterLogin:^{
-        WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-        [self.navigationController pushViewController:noInstoreVC animated:YES];
-    }];
 }
 
 

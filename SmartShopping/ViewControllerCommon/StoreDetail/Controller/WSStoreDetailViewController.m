@@ -31,7 +31,6 @@
 @property (assign, nonatomic) double longtide;
 @property (assign, nonatomic) double latitude;
 
-@property (strong, nonatomic) NSDictionary *shop;
 
 @end
 
@@ -41,7 +40,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"--";
+    NSString *commitName = @"而而而而而而而";
+    NSString *shopName = [_shop objectForKey:@"shopName"];
+    if (shopName.length > commitName.length) {
+        shopName = [NSString stringWithFormat:@"%@…", [shopName substringToIndex:commitName.length]];
+    }
+    
+    _navigationBarManagerView.navigationBarButLabelView.label.text = shopName;
     dataArray = [[NSMutableArray alloc] init];
     slideImageArray = [[NSMutableArray alloc] init];
     currentPage = 0;
@@ -62,16 +67,15 @@
     
     [_collectionView addLegendHeaderWithRefreshingBlock:^{
         currentPage = 0;
-        [self requestStoreDetail];
+        [self requestInShopGoodsScanList];
     }];
     [_collectionView addLegendFooterWithRefreshingBlock:^{
-        [self requestStoreDetail];
+        [self requestInShopGoodsScanList];
     }];
 
     [self requestGetAdsPhoto];
     
-    //[dataArray addObjectsFromArray:@[@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"",@"", @"", @"", @"", @""]];
-     //[slideImageArray addObjectsFromArray: @[@"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg", @"http://img0.bdstatic.com/img/image/shouye/bizhi0424.jpg"]];
+    [self requestInShopGoodsScanList];
 
 }
 
@@ -87,12 +91,9 @@
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
     
-    if (_city) {
-        [self requestStoreDetail];
-    } else {
-        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+    if (_city && slideImageArray.count == 0) {
+        [self requestGetAdsPhoto];
     }
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
@@ -115,22 +116,16 @@
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-    //    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-    //    if (deoCodeFalg == 0) {
     DLog(@"city:%@", _city);
     NSString *city = [locationDic objectForKey:LOCATION_CITY];
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-//    _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = city;
-    DLog(@"定位：%@", city);
-    if (!_shop) {
-        [self requestStoreDetail];
-    }
+
     if (slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
-    //    }
+
 }
 
 #pragma mark - 请求幻灯片
@@ -153,48 +148,37 @@
     }];
 }
 
-- (void)requestStoreDetail
+- (void)requestInShopGoodsScanList
 {
-    if (!_city) {
-        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-        [_collectionView endHeaderAndFooterRefresh];
-        return;
-    }
     [SVProgressHUD showWithStatus:@"加载中……"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
         [params setValue:user._id forKey:@"uid"];
     }
-    [params setValue:_shopid forKey:@"shopid"];
-    [params setValue:@"" forKey:@"categoryId"];
-    [params setValue:@"" forKey:@"brandIds"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
+    NSString *shopId = [_shop stringForKey:@"shopId"];
+    [params setValue:shopId forKey:@"shopid"];
     [params setValue:[NSString stringWithFormat:@"%d", currentPage + 1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeCheckMoreGoodsList] data:params tag:WSInterfaceTypeCheckMoreGoodsList sucCallBack:^(id result) {
-         [_collectionView endHeaderAndFooterRefresh];
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeInShopGoodsScanList] data:params tag:WSInterfaceTypeInShopGoodsScanList sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
+        [_collectionView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            self.shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
             if (currentPage == 0) {
                 [dataArray removeAllObjects];
             }
-            NSString *shopName = [_shop objectForKey:@"shopName"];
-            _navigationBarManagerView.navigationBarButLabelView.label.text = shopName;
-            NSArray *goodsList = [_shop objectForKey:@"goodsList"];
-            NSInteger count = goodsList.count;
+            NSArray *goodslist = [[[result objectForKey:@"data"] objectForKey:@"goodsscanlist"] objectForKey:@"goodslist"];
+            NSInteger count = goodslist.count;
             for (int i = 0; i < count; i++) {
-                NSDictionary *dic = [goodsList objectAtIndex:i];
+                NSDictionary *dic = [goodslist objectAtIndex:i];
                 NSMutableDictionary *converDic = [NSMutableDictionary dictionaryWithDictionary:dic];
                 [dataArray addObject:converDic];
             }
             [_collectionView reloadData];
         }
     } failCallBack:^(id error) {
-         [_collectionView endHeaderAndFooterRefresh];
+        [_collectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
     }];
 }
@@ -294,14 +278,14 @@
             NSString *signImage = nil;
             NSString *scanImage = nil;
             // 可以签到
-            if ([isSign isEqualToString:@"1"]) {
+            if ([isSign isEqualToString:@"Y"]) {
                 signImage = @"gainpeas_icon-06";
-                scanImage = @"gainpeas_";
+                scanImage = @"gainpeas_icon-02";
                 canSign = YES;
             // 不可以签到
             } else {
                 signImage = @"gainpeas_icon-04";
-                scanImage = @"icon-05";
+                scanImage = @"gainpeas_icon-05";
                 canSign = NO;
             }
             reusableView.signupImageView.image = [UIImage imageNamed:signImage];
@@ -322,7 +306,8 @@
         NSString *goodsId = [dic stringForKey:@"goodsId"];
         WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
         productDetailVC.goodsId = goodsId;
-        productDetailVC.shopId = _shopid;
+        NSString *shopid = [_shop stringForKey:@"shopid"];
+        productDetailVC.shopId = shopid;
         [self.navigationController pushViewController:productDetailVC animated:YES];
     }
 }

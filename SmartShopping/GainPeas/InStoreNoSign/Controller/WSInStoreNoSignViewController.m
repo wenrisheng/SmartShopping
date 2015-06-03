@@ -33,7 +33,7 @@
     // Do any additional setup after loading the view from its nib.
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"到店签到";
-    _addressLabel.text = _shopName;
+    _addressLabel.text = [_shop objectForKey:@"shopName"];
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     
     [self becomeFirstResponder];
@@ -55,8 +55,8 @@
 - (void)requestEarnSignBean
 {
     NSString *userId = [WSRunTime sharedWSRunTime].user._id;
-    _shopid = _shopid == nil ? @"" : _shopid;
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnSignBean] data:@{@"uid": userId, @"shopid": _shopid} tag:WSInterfaceTypeEarnSignBean sucCallBack:^(id result) {
+    NSString *shopid = [_shop stringForKey:@"shopId"];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnSignBean] data:@{@"uid": userId, @"shopid": shopid} tag:WSInterfaceTypeEarnSignBean sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             WSUser *user = [WSRunTime sharedWSRunTime].user;
@@ -72,7 +72,7 @@
         }
     } failCallBack:^(id error) {
         
-    } showMessage:NO];
+    } showMessage:YES];
 
 }
 
@@ -140,7 +140,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
     WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shopid = _shopid;
+    storeDetailVC.shop = _shop;
     [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 

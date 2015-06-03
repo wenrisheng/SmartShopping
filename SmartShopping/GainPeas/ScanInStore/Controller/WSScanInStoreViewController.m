@@ -98,7 +98,7 @@
     [self setLocationCity:locationDic];
     
     if (_city && dataArray.count == 0) {
-        [self requestStoreDetail];
+        [self requestInShopGoodsScanList];
     } else {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
     }
@@ -209,6 +209,8 @@
         [params setValue:user._id forKey:@"uid"];
     }
     [params setValue:_shopid forKey:@"shopid"];
+    [params setValue:@"" forKey:@"categoryId"];
+    [params setValue:@"" forKey:@"brandIds"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%d", 1] forKey:@"pages"];
@@ -245,12 +247,12 @@
     WSStoreDetailCollectionViewCell *cell = (WSStoreDetailCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSStoreDetailCollectionViewCell" forIndexPath:indexPath];
     NSInteger row = indexPath.row;
     NSDictionary *dic = [dataArray objectAtIndex:row];
-    [cell setModel:dic];
     cell.downloadImageFinish = ^() {
         CHTCollectionViewWaterfallLayout *layout =
         (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
         [layout invalidateLayout];
     };
+    [cell setModel:dic];
 
 
     cell.scanBut.tag = row;
@@ -288,15 +290,15 @@
 //    return -20;
 //}
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return CELLECTIONVIEW_CELL_SPACE;
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
-}
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+//{
+//    return CELLECTIONVIEW_CELL_SPACE;
+//}
+//
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+//{
+//    return UIEdgeInsetsMake(0, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET, CELLECTIONVIEW_CONTENT_INSET);
+//}
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {

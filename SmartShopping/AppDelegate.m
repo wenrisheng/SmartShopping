@@ -102,7 +102,7 @@
     NSString *dateStr = [WSCalendarUtil getDateStrWithDate:[NSDate date] format:@"yyyyMMdd"];
     NSDictionary *dayPeaNumDic = [USER_DEFAULT objectForKey:APP_DAY_PEA];
     
-    // 首次没有对象说明没有领取的精明豆，所有领取精明豆
+    // 首次没有对象说明没有领取精明豆，可以领取精明豆
     if (!dayPeaNumDic) {
         int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
         int allPeaNum = appPeasNum + 2;
@@ -143,7 +143,7 @@
         
         // 领取本机精明豆后清空本机精明豆
         [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
-        
+        DLog(@"本机用户保存的精明豆：%@",beforeUser.beanNumber);
         // 同步服务器精明豆
         WSUser *user = [WSRunTime sharedWSRunTime].user;
         [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
@@ -151,8 +151,13 @@
             NSDictionary *userDic = [[result objectForKey:@"data"] objectForKey:@"user"];
             NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
             WSUser *nweUser = [[WSUser alloc] init];
-            nweUser.phone = user.phone;
+
             [nweUser setValuesForKeysWithDictionary:tempDic];
+            
+            DLog(@"同步服务器用户返回的精明豆：%@",nweUser.beanNumber);
+            nweUser.phone = user.phone;
+            nweUser.isPushNotification = user.isPushNotification;
+            
             [WSRunTime sharedWSRunTime].user = nweUser;
             // 本地存储用户信息
             NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
@@ -294,6 +299,13 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        // 本地存储用户信息
+        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
