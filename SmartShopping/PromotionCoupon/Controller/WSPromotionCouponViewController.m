@@ -193,11 +193,16 @@ typedef NS_ENUM(NSInteger, SearchType) {
             NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
             self.isInShop = isInShop;
             self.inStore_shopId = [isInShop stringForKey:@"shopId"];
+            NSString *shopName = [isInShop objectForKey:@"shopName"];
+            [self toInStoreStatus:shopName];
+            [inStoreDataArray removeAllObjects];
+            [_instoreCollectionView reloadData];
             // 请求商店详情
-            outStoreCurPage = 0;
+            inStoreCurPage = 0;
             [self requestStoreDetail];
             // 不在店内
         } else {
+            
             [self toOutStoreStatus];
 #if DEBUG
             self.city = @"广州";
@@ -208,7 +213,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             } else {
                 [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
             }
-            
+            [outStoreDataArray removeAllObjects];
             [_outStoreCollectionView reloadData];
         }
     }];
@@ -734,7 +739,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         // 添加二级区域数据源
         } else {
             NSDictionary *dic = [domainFDataArray objectAtIndex:0];
-            NSArray *tempArray = [domainSDataDic objectForKey:[dic objectForKey:@"districtId"]];
+            NSArray *tempArray = [domainSDataDic objectForKey:[dic stringForKey:@"districtId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -825,21 +830,12 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    switch (searchType) {
-        case SearchTypeInStore:
-        {
-             doubleTable.indicateImageViewCenterXCon.constant = 0;
-        }
-            break;
-        case SearchTypeOutStore:
-        {
-             doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
-        }
-            break;
-        default:
-            break;
+    if (_outStoreTabSlideManagerView.hidden) {
+        doubleTable.indicateImageViewCenterXCon.constant = 0;
+    } else {
+         doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 4;
     }
-   
+    
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -872,7 +868,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             // 添加二级商店数据源
         } else {
             NSDictionary *dic = [storeFDataArray objectAtIndex:0];
-            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSArray *tempArray = [storeSDic objectForKey:[dic stringForKey:@"shopTypeId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -894,7 +890,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         doubleTable.dataArrayS = nil;
         [doubleTable.tableS reloadData];
         NSDictionary *dic = [storeFDataArray objectAtIndex:index];
-        NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+        NSString *shopTypeId = [dic stringForKey:@"shopTypeId"];
         self.outStore_shopTypeId = shopTypeId;
         NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
         // 第一个数据的二级数据是否为空
@@ -906,7 +902,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         } else {
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSDictionary *dic = [storeFDataArray objectAtIndex:index];
-            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSArray *tempArray = [storeSDic objectForKey:[dic stringForKey:@"shopTypeId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -923,7 +919,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.tableSCallBack = ^(NSInteger index) {
         storeSIndex = (int)index;
         NSDictionary *dic = [storeFDataArray objectAtIndex:storeFIndex];
-        NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+        NSString *shopTypeId = [dic stringForKey:@"shopTypeId"];
         NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
@@ -960,7 +956,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
     doubleTable.dataArrayS = nil;
     [doubleTable.tableF reloadData];
     [doubleTable.tableS reloadData];
-    doubleTable.indicateImageViewCenterXCon.constant = 2*SCREEN_WIDTH / 6;
+    doubleTable.indicateImageViewCenterXCon.constant = SCREEN_WIDTH / 3;
     doubleTable.hidden = NO;
     doubleTable.cellFSelectColor = [UIColor colorWithRed:0.996 green:1.000 blue:1.000 alpha:1.000];
     doubleTable.cellFUnSelectColor = [UIColor colorWithRed:0.929 green:0.937 blue:0.941 alpha:1.000];
@@ -1030,6 +1026,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *districts = [[result objectForKey:@"data"] objectForKey:@"districts"];
+            districts = [districts converDictionaryNumToStr];
             [domainFDataArray removeAllObjects];
             [domainFDataArray addObjectsFromArray:districts];
             [self showNearDomainSelectView];
@@ -1057,6 +1054,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *towns = [[[result objectForKey:@"data"] objectForKey:@"district"] objectForKey:@"towns"];
+            towns = [towns converDictionaryNumToStr];
             [domainSDataDic setValue:towns forKey:districtId];
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSInteger SCount = towns.count;
@@ -1085,13 +1083,14 @@ typedef NS_ENUM(NSInteger, SearchType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *shopTypes = [[result objectForKey:@"data"] objectForKey:@"shopTypes"];
+            shopTypes = [shopTypes converDictionaryNumToStr];
             [storeFDataArray removeAllObjects];
             [storeFDataArray addObjectsFromArray:shopTypes];
             [self showStoreTypeSelectView];
             NSInteger count = shopTypes.count;
             if (count > 0) {
                 NSDictionary *dic = [shopTypes objectAtIndex:0];
-                NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+                NSString *shopTypeId = [dic stringForKey:@"shopTypeId"];
                 [self requestGetShopTypeListWithShopTypeId:shopTypeId];
             }
         }
@@ -1108,6 +1107,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *saleRetails = [[result objectForKey:@"data"] objectForKey:@"saleRetails"];
+            saleRetails= [saleRetails converDictionaryNumToStr];
             [storeSDic setValue:saleRetails forKey:shopTypeId];
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSInteger SCount = saleRetails.count;
@@ -1136,6 +1136,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *categorys = [[result objectForKey:@"data"] objectForKey:@"categorys"];
+            categorys = [categorys converDictionaryNumToStr];
             [pinleiFDataArray removeAllObjects];
             [pinleiFDataArray addObjectsFromArray:categorys];
             [self showPinleiSelectView];

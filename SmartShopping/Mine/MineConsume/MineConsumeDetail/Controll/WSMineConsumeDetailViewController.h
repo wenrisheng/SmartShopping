@@ -9,4 +9,6 @@
 
 @interface WSMineConsumeDetailViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSDictionary *dic;
+
 @end

@@ -150,26 +150,36 @@ typedef NS_ENUM(NSInteger, ShopType)
     }
     
     // 请求消息列表
-//    WSUser *user = [WSRunTime sharedWSRunTime].user;
-//    if (user) {
-//        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
-//            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-//            if (flag) {
-//                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
-//                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead CONTAINS %@", @"2"];
-//                NSArray *temp = [_messages filteredArrayUsingPredicate:predicate];
-//                NSInteger count= temp.count;
-//                if (count == 0) {
-//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
-//                } else {
-//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.text = [NSString stringWithFormat:@"%d", (int)count];
-//                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = NO;
-//                }
-//            }
-//        } failCallBack:^(id error) {
-//            
-//        }];
-//    }
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead == 2"];
+                self.messages = [_messages filteredArrayUsingPredicate:predicate];
+                NSInteger count= _messages.count;
+                if (count == 0) {
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
+                } else {
+                    UILabel *label = _navBarManagerView.navigationBarButSearchButView.rightLabel;
+                    label.text = [NSString stringWithFormat:@"%d", (int)count];
+                    label.hidden = NO;
+                    
+                    CGSize size = [label boundingRectWithSize:CGSizeMake(label.bounds.size.width, 0)];
+                    float width = size.width >= size.height ? size.width : size.height;
+                    width += 2;
+                    _navBarManagerView.navigationBarButSearchButView.rightLabelHeightCon.constant = width;
+                    _navBarManagerView.navigationBarButSearchButView.rightLabelWidthCon.constant = width;
+                    label.layer.cornerRadius = width / 2;
+                    label.layer.masksToBounds  = YES;
+
+                }
+            }
+        } failCallBack:^(id error) {
+            
+        } showMessage:NO];
+    }
     
     if (headerView) {
         headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", [WSUserUtil getUserPeasNum]];

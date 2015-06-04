@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WSOrderFailView : UIView
+
 @property (weak, nonatomic) IBOutlet UIButton *confirmBut;
 
 @end

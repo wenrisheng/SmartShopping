@@ -221,6 +221,8 @@
 		7CA484521AEA880700116BBC /* scan_icon_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CA484511AEA880700116BBC /* scan_icon_02.png */; };
 		7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CA484571AEA8C3F00116BBC /* WSMoreGiftViewController.m */; };
 		7CA4845A1AEA8C3F00116BBC /* WSMoreGiftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CA484581AEA8C3F00116BBC /* WSMoreGiftViewController.xib */; };
+		7CB0467D1B1FF1DE00AB7E48 /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CB0467C1B1FF1DE00AB7E48 /* down_arrow.png */; };
+		7CB0467E1B20169E00AB7E48 /* under.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CD8F3381AE558CC0039CE0F /* under.png */; };
 		7CC0859A1AEF0D420095F52B /* WSPromotionCouponSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC085981AEF0D420095F52B /* WSPromotionCouponSearchViewController.m */; };
 		7CC0859B1AEF0D420095F52B /* WSPromotionCouponSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC085991AEF0D420095F52B /* WSPromotionCouponSearchViewController.xib */; };
 		7CC5833C1ADD2D5500329D21 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC5833B1ADD2D5500329D21 /* CoreTelephony.framework */; };
@@ -248,7 +250,6 @@
 		7CCA01981AEC7C650081A8CC /* buttom.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01941AEC7C650081A8CC /* buttom.png */; };
 		7CCA01991AEC7C650081A8CC /* photo-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01951AEC7C650081A8CC /* photo-01.png */; };
 		7CCA019A1AEC7C650081A8CC /* photo-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01961AEC7C650081A8CC /* photo-02.png */; };
-		7CCA019B1AEC7C650081A8CC /* under.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA01971AEC7C650081A8CC /* under.png */; };
 		7CCA019E1AEC8DFE0081A8CC /* WSOrderFailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA019D1AEC8DFE0081A8CC /* WSOrderFailView.m */; };
 		7CCA01A01AEC8E0D0081A8CC /* WSOrderFailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA019F1AEC8E0D0081A8CC /* WSOrderFailView.xib */; };
 		7CCA01AB1AEC92C90081A8CC /* WSUpdateTelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01A91AEC92C90081A8CC /* WSUpdateTelViewController.m */; };
@@ -768,6 +769,7 @@
 		7CA484561AEA8C3F00116BBC /* WSMoreGiftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMoreGiftViewController.h; sourceTree = "<group>"; };
 		7CA484571AEA8C3F00116BBC /* WSMoreGiftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMoreGiftViewController.m; sourceTree = "<group>"; };
 		7CA484581AEA8C3F00116BBC /* WSMoreGiftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMoreGiftViewController.xib; sourceTree = "<group>"; };
+		7CB0467C1B1FF1DE00AB7E48 /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = "<group>"; };
 		7CC085971AEF0D420095F52B /* WSPromotionCouponSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPromotionCouponSearchViewController.h; sourceTree = "<group>"; };
 		7CC085981AEF0D420095F52B /* WSPromotionCouponSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPromotionCouponSearchViewController.m; sourceTree = "<group>"; };
 		7CC085991AEF0D420095F52B /* WSPromotionCouponSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSPromotionCouponSearchViewController.xib; sourceTree = "<group>"; };
@@ -802,7 +804,6 @@
 		7CCA01941AEC7C650081A8CC /* buttom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttom.png; sourceTree = "<group>"; };
 		7CCA01951AEC7C650081A8CC /* photo-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-01.png"; sourceTree = "<group>"; };
 		7CCA01961AEC7C650081A8CC /* photo-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-02.png"; sourceTree = "<group>"; };
-		7CCA01971AEC7C650081A8CC /* under.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = under.png; sourceTree = "<group>"; };
 		7CCA019C1AEC8DFE0081A8CC /* WSOrderFailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSOrderFailView.h; sourceTree = "<group>"; };
 		7CCA019D1AEC8DFE0081A8CC /* WSOrderFailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSOrderFailView.m; sourceTree = "<group>"; };
 		7CCA019F1AEC8E0D0081A8CC /* WSOrderFailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSOrderFailView.xib; sourceTree = "<group>"; };
@@ -2202,6 +2203,7 @@
 		7CCAD3181ADEAEB7001D3D8B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7CB0467C1B1FF1DE00AB7E48 /* down_arrow.png */,
 				7C835F831B1C5BF900C31CF5 /* flower-under.png */,
 				7C67B6FF1B0E21FA00E5F340 /* nodata.png */,
 				7C74B7D11B19E80B00CB7FE2 /* icon-05.png */,
@@ -2219,7 +2221,6 @@
 				7CCA01941AEC7C650081A8CC /* buttom.png */,
 				7CCA01951AEC7C650081A8CC /* photo-01.png */,
 				7CCA01961AEC7C650081A8CC /* photo-02.png */,
-				7CCA01971AEC7C650081A8CC /* under.png */,
 				7CCA18B11AEBDC9500714EA0 /* left-.png */,
 				7CCA18B21AEBDC9500714EA0 /* left.png */,
 				7CCA18B31AEBDC9500714EA0 /* middle.png */,
@@ -3089,7 +3090,6 @@
 				7C6AD5471AEF49AD000B6CB1 /* WSClearHistoryCell.xib in Resources */,
 				7CD8F3321AE557E90039CE0F /* WSMineConsumeViewController.xib in Resources */,
 				7CEEB2A81AE3C8DE005CB218 /* gainpeas_icon-04.png in Resources */,
-				7CCA019B1AEC7C650081A8CC /* under.png in Resources */,
 				7CCAD3281ADEB0C1001D3D8B /* a_selected.png in Resources */,
 				7CCA18B91AEBDC9500714EA0 /* right-.png in Resources */,
 				7C741ACF1B1DE9F20086B32B /* ShareSDKLocalizable.strings in Resources */,
@@ -3117,6 +3117,7 @@
 				7CCE4F2A1AEB190C0097DFBB /* WSMoreGiftCell.xib in Resources */,
 				7CCD8B1B1ADFD0D5007B86A9 /* arrow-01.png in Resources */,
 				7CCAD3291ADEB0C1001D3D8B /* a_normal.png in Resources */,
+				7CB0467D1B1FF1DE00AB7E48 /* down_arrow.png in Resources */,
 				7CCBBD6B1AD418AF00EA1F7F /* LaunchScreen.xib in Resources */,
 				7C7E88A31B17EDDB00E48B93 /* guide-03.jpg in Resources */,
 				7CEEB2AB1AE3C8DE005CB218 /* gainpeas_.png in Resources */,
@@ -3178,6 +3179,7 @@
 				7C4BB99A1B0AF3D8007293C3 /* WSSearchHistoryView.xib in Resources */,
 				7CD771561AEE61000040E9FD /* WSDoubleTableView.xib in Resources */,
 				7CCD8B1E1ADFD0D5007B86A9 /* bj.png in Resources */,
+				7CB0467E1B20169E00AB7E48 /* under.png in Resources */,
 				7CC0859B1AEF0D420095F52B /* WSPromotionCouponSearchViewController.xib in Resources */,
 				7C741ADD1B1DE9F20086B32B /* ShareSDKiPadSimpleShareViewUI.bundle in Resources */,
 				7CA4845A1AEA8C3F00116BBC /* WSMoreGiftViewController.xib in Resources */,
@@ -3461,7 +3463,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3493,7 +3495,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9a402e35-4c5c-44bd-96da-fd79202baf73";
+				PROVISIONING_PROFILE = "a9e0a6b7-68e0-46ac-978f-bd94f276287c";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3508,7 +3510,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -3540,7 +3542,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9a402e35-4c5c-44bd-96da-fd79202baf73";
+				PROVISIONING_PROFILE = "a9e0a6b7-68e0-46ac-978f-bd94f276287c";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

@@ -64,12 +64,26 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return dataArray.count;
+    switch (section) {
+        case 0:
+        {
+            return 0;
+        }
+            break;
+        case 1:
+        {
+            return dataArray.count;
+        }
+        default:
+            break;
+    }
+    return 0;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -86,9 +100,40 @@
 }
 
 #pragma mark UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+        {
+            return 20;
+        }
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     return WSMINECONSUMECELL_HEIGHT;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+        {
+            UIView *view = [[UIView alloc] init];
+            view.backgroundColor = [UIColor clearColor];
+            view.frame = CGRectMake(0, 0, tableView.bounds.size.width, 20);
+            return view;
+        }
+            break;
+        default:
+            break;
+    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,6 +142,7 @@
     NSInteger row = indexPath.row;
     NSDictionary *dic = [dataArray objectAtIndex:row];
     WSMineConsumeDetailViewController *mineConsumeDetailVC = [[WSMineConsumeDetailViewController alloc] init];
+    mineConsumeDetailVC.dic = dic;
     [self.navigationController pushViewController:mineConsumeDetailVC animated:YES];
 }
 

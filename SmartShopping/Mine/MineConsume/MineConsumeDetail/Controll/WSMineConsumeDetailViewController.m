@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *introLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *scanImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *bgImageView;
 
 @end
 
@@ -27,6 +28,38 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"详情";
+    
+    NSString *statusFlag = [_dic stringForKey:@"giftStatus"];
+    UIColor *color = nil;
+    if ([statusFlag isEqualToString:@"未使用"]) {
+        color = [UIColor colorWithRed:0.784 green:0.576 blue:0.000 alpha:1.000];
+    } else {
+        color = [UIColor colorWithRed:0.655 green:0.659 blue:0.667 alpha:1.000];
+    }
+    [_valueView setBorderCornerWithBorderWidth:1 borderColor:color cornerRadius:1];
+    
+    NSString *unit = @"¥ ";
+    id value = [_dic stringForKey:@"beanNumber"];
+    NSString *beanNumber = nil;
+    if ([value isKindOfClass:[NSNull class]]) {
+        beanNumber = @"";
+    } else {
+        beanNumber = value;
+    }
+    NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", unit, beanNumber]];
+    [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, unit.length)];
+    [tempStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:20] range:NSMakeRange(unit.length, beanNumber.length)];
+    _valueLabel.attributedText = tempStr;
+    _valueLabel.textColor = color;
+    
+    _titleLabel.text = [_dic objectForKey:@"shopName"];
+    _addressLabel.text = [NSString stringWithFormat:@"地址：%@", [_dic objectForKey:@"address"]];
+    _numLabel.text = [_dic stringForKey:@"giftNumber"];
+    
+    UIImage *bgImage = [UIImage imageNamed:@"under"];
+    bgImage = [bgImage resizableImageWithModeTile];
+    _bgImageView.image = bgImage;
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -59,7 +59,7 @@
                                         <action selector="allStoreButAction:" destination="-1" eventType="touchUpInside" id="jaa-AV-rjJ"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-down.png" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Yh-eJV">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="down_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Yh-eJV">
                                     <rect key="frame" x="76" y="20" width="10" height="10"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="10" id="Guk-DS-yi3"/>
@@ -165,7 +165,7 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow-down.png" width="12" height="6"/>
         <image name="back.png" width="50" height="50"/>
+        <image name="down_arrow.png" width="22" height="12"/>
     </resources>
 </document>

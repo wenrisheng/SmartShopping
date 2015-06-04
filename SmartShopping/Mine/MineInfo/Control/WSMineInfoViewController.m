@@ -150,7 +150,7 @@
 {
     [WSDatePickerUtil showDatePickerWithConfrimCallBack:^(WSDatePickerView *datePickerView) {
         NSDate *date = datePickerView.datePicker.date;
-        NSString *dateStr = [WSBaseUtil getDateStrWithDate:date format:@"yyyy-MM"];
+        NSString *dateStr = [WSBaseUtil getDateStrWithDate:date format:@"yyyy-MM-dd"];
         _birdthDayTextField.text = dateStr;
     } cancelCallBack:^(WSDatePickerView *datePickerView) {
         

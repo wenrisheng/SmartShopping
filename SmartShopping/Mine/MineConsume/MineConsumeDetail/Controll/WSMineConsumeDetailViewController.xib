@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSMineConsumeDetailViewController">
             <connections>
                 <outlet property="addressLabel" destination="4yu-FF-JJj" id="s0k-iB-b7E"/>
+                <outlet property="bgImageView" destination="5cA-XD-4KN" id="tAu-7Z-GK1"/>
                 <outlet property="contentScorllView" destination="3St-uS-7hp" id="Obd-hK-JzD"/>
                 <outlet property="introLabel" destination="5Qw-yp-avX" id="t6p-fR-hM0"/>
                 <outlet property="navigationBarManagerView" destination="ghq-Ez-cJS" id="F0t-bF-5pI"/>
@@ -40,17 +41,18 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2h-4z-Ho3">
                                     <rect key="frame" x="10" y="10" width="300" height="400"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="under.png" translatesAutoresizingMaskIntoConstraints="NO" id="5cA-XD-4KN">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5cA-XD-4KN">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5Z-iV-AyY">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="80"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="An0-Yc-Qc6">
-                                                    <rect key="frame" x="10" y="10" width="60" height="60"/>
+                                                    <rect key="frame" x="10" y="5" width="70" height="70"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="¥ 50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-FX-faV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -62,12 +64,12 @@
                                                         <constraint firstItem="nxf-FX-faV" firstAttribute="leading" secondItem="An0-Yc-Qc6" secondAttribute="leading" id="9xg-Oo-m9V"/>
                                                         <constraint firstAttribute="bottom" secondItem="nxf-FX-faV" secondAttribute="bottom" id="cHT-KX-ICP"/>
                                                         <constraint firstItem="nxf-FX-faV" firstAttribute="top" secondItem="An0-Yc-Qc6" secondAttribute="top" id="kjK-op-Egg"/>
-                                                        <constraint firstAttribute="width" constant="60" id="tEE-ne-f8U"/>
-                                                        <constraint firstAttribute="height" constant="60" id="vi9-VP-YCZ"/>
+                                                        <constraint firstAttribute="width" constant="70" id="tEE-ne-f8U"/>
+                                                        <constraint firstAttribute="height" constant="70" id="vi9-VP-YCZ"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="华润万家购物现金劵" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30A-3B-MUC">
-                                                    <rect key="frame" x="78" y="11" width="214" height="21"/>
+                                                    <rect key="frame" x="88" y="11" width="204" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="wjv-ch-heh"/>
                                                     </constraints>
@@ -76,7 +78,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地址：广州市天河区珠江新城帝景大厦商贸中心201中心" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yu-FF-JJj">
-                                                    <rect key="frame" x="78" y="29" width="214" height="46"/>
+                                                    <rect key="frame" x="88" y="29" width="204" height="46"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.46274509803921571" green="0.46666666666666667" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -103,15 +105,6 @@
                                                 <constraint firstAttribute="height" constant="1" id="Xxl-66-yEj"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最多可叠加使用3张，不兑现、不找零；不与其它优惠、其它代金卷、现金劵同时使用；请致电商家咨询，以商家反馈为准。" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Qw-yp-avX">
-                                            <rect key="frame" x="8" y="89" width="284" height="56"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="yFW-1N-3dl"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.46274509800000002" green="0.46666666670000001" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aa5-4x-f2L">
                                             <rect key="frame" x="8" y="153" width="284" height="200"/>
                                             <subviews>
@@ -164,6 +157,15 @@
                                                 <constraint firstAttribute="trailing" secondItem="vqX-YO-NMj" secondAttribute="trailing" constant="-11" id="wr0-bF-Q8F"/>
                                             </constraints>
                                         </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最多可叠加使用3张，不兑现、不找零；不与其它优惠、其它代金卷、现金劵同时使用；请致电商家咨询，以商家反馈为准。" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Qw-yp-avX">
+                                            <rect key="frame" x="8" y="89" width="284" height="56"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="yFW-1N-3dl"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46666666670000001" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -223,7 +225,4 @@
             <point key="canvasLocation" x="249" y="300"/>
         </view>
     </objects>
-    <resources>
-        <image name="under.png" width="580" height="400"/>
-    </resources>
 </document>

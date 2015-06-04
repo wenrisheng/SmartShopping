@@ -8,8 +8,12 @@
 
 #import "WSGiftDetailViewController.h"
 #import "WSGiftOrderWriterViewController.h"
+#import "WSOrderFailView.h"
 
 @interface WSGiftDetailViewController () <UIWebViewDelegate>
+{
+    WSOrderFailView *failView;
+}
 
 @property (strong, nonatomic) NSDictionary *gift;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -77,7 +81,7 @@
             WSUser *user = [WSRunTime sharedWSRunTime].user;
             int currentPeaNum = [user.beanNumber intValue];
             if (unitNum > currentPeaNum) {
-                [SVProgressHUD showErrorWithStatus:@"亲，您当前的精明豆不够兑换哦！" duration:TOAST_VIEW_TIME];
+                [self showFailView];
             } else {
                 WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
                 orderWriterVC.gift = self.gift;
@@ -87,6 +91,24 @@
     } else {
         [SVProgressHUD showErrorWithStatus:@"数据加载错误！" duration:TOAST_VIEW_TIME];
     }
+}
+
+- (void)showFailView
+{
+    
+    if (!failView) {
+        failView = GET_XIB_FIRST_OBJECT(@"WSOrderFailView");
+        [failView.confirmBut addTarget:self action:@selector(dismissFailView) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:failView];
+        [failView expandToSuperView];
+    }
+    failView.hidden = NO;
+}
+
+- (void)dismissFailView
+{
+    
+    failView.hidden  = YES;
 }
 
 @end

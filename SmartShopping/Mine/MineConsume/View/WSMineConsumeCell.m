@@ -13,9 +13,9 @@
 - (void)setModel:(NSDictionary *)dic
 {
     UIColor *color = nil;
+    NSString *statusFlag = [dic stringForKey:@"giftStatus"];
     NSString *status = nil;
-    NSInteger row = 2;
-    if (row % 2 == 0) {
+    if ([statusFlag isEqualToString:@"未使用"]) {
         color = [UIColor colorWithRed:0.784 green:0.576 blue:0.000 alpha:1.000];
         status = @"未使用";
     } else {
@@ -27,14 +27,27 @@
     _statusLabel.textColor = color;
     _statusLabel.text = status;
     NSString *unit = @"¥ ";
-    NSString *value = [dic objectForKey:@"beanNumber"];
-    NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", unit, value]];
+    id value = [dic stringForKey:@"beanNumber"];
+    NSString *beanNumber = nil;
+    if ([value isKindOfClass:[NSNull class]]) {
+        beanNumber = @"";
+    } else {
+        beanNumber = value;
+    }
+    NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", unit, beanNumber]];
     [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, unit.length)];
-    [tempStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(unit.length, value.length)];
+    [tempStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:20] range:NSMakeRange(unit.length, beanNumber.length)];
     _consumeLabel.attributedText = tempStr;
 
     _titleLabel.text = [dic objectForKey:@"shopName"];
-    _consumeNumLabel.text = [dic objectForKey:@"giftNumber"];
+    id tempNum = [dic objectForKey:@"giftNumber"];
+    NSString *giftNumber = nil;
+    if ([tempNum isKindOfClass:[NSNull class]]) {
+        giftNumber = @"";
+    } else {
+        giftNumber = tempNum;
+    }
+    _consumeNumLabel.text = giftNumber;
 }
 
 - (void)awakeFromNib {

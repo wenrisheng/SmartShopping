@@ -55,7 +55,7 @@
 {
     BOOL flag = [self validData];
     if (flag) {
-        
+        //250cf8b51c773f3f8dc8b4be867a9a02
 //        WSUser *user = [WSRunTime sharedWSRunTime].user;
 //        NSString *nwsPwd = [_nwePasswordTextField.text encodeMD5_32_lowercase];
 //        if ([user.password isEqualToString:nwsPwd]) {
@@ -79,11 +79,17 @@
         flag = NO;
         return flag;
     }
-    if (_repetNwePasswordTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请确认新密码！" duration:TOAST_VIEW_TIME];
+    if ([_oldPasswordTextField.text isEqualToString:_nwePasswordTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"新密码与原密码一致，请重新输入！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
+    if (_repetNwePasswordTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请确认认新密码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+
     if (![_nwePasswordTextField.text isEqualToString:_repetNwePasswordTextField.text]) {
         [SVProgressHUD showErrorWithStatus:@"新密码不一致！" duration:TOAST_VIEW_TIME];
         flag = NO;

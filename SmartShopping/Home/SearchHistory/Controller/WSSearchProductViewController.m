@@ -88,7 +88,9 @@
     
     // 搜索类型事件
     _searchManagerView.searchTypeView.typeButActionCallBack = ^(WSSearchTypeView *searchView) {
-        
+        if (_doubleTableView && !_doubleTableView.hidden) {
+            _doubleTableView.hidden = YES;
+        }
         _tabSlideManagerView.hidden = NO;
         if (_toastView && !_toastView.hidden) {
             self.toastView.hidden = YES;
@@ -149,7 +151,7 @@
     };
 
     
-    _searchManagerView.searchTypeView.leftImageview.image = [UIImage imageNamed:@"arrow-down"];
+    _searchManagerView.searchTypeView.leftImageview.image = [UIImage imageNamed:@"down_arrow"];
     [_searchManagerView.searchTypeView.searchBut setTitle:@"" forState:UIControlStateNormal];
     [_searchManagerView.searchTypeView.searchBut setBackgroundImage:[UIImage imageNamed:@"search-icon"] forState:UIControlStateNormal];
     
@@ -393,6 +395,7 @@
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *districts = [[result objectForKey:@"data"] objectForKey:@"districts"];
+            districts = [districts converDictionaryNumToStr];
             [domainFDataArray removeAllObjects];
             [domainFDataArray addObjectsFromArray:districts];
             [self showNearDomainSelectView];
@@ -420,6 +423,7 @@
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *towns = [[[result objectForKey:@"data"] objectForKey:@"district"] objectForKey:@"towns"];
+            towns = [towns converDictionaryNumToStr];
             [domainSDataDic setValue:towns forKey:districtId];
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSInteger SCount = towns.count;
@@ -449,13 +453,14 @@
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *shopTypes = [[result objectForKey:@"data"] objectForKey:@"shopTypes"];
+           shopTypes = [shopTypes converDictionaryNumToStr];
             [storeFDataArray removeAllObjects];
             [storeFDataArray addObjectsFromArray:shopTypes];
             [self showStoreTypeSelectView];
             NSInteger count = shopTypes.count;
             if (count > 0) {
                 NSDictionary *dic = [shopTypes objectAtIndex:0];
-                NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
+                NSString *shopTypeId = [dic stringForKey:@"shopTypeId"];
                 [self requestGetShopTypeListWithShopTypeId:shopTypeId];
             }
         }
@@ -473,6 +478,7 @@
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *saleRetails = [[result objectForKey:@"data"] objectForKey:@"saleRetails"];
+           saleRetails = [saleRetails converDictionaryNumToStr];
             [storeSDic setValue:saleRetails forKey:shopTypeId];
             NSMutableArray *tempSArray = [NSMutableArray array];
             NSInteger SCount = saleRetails.count;
@@ -502,6 +508,7 @@
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *categorys = [[result objectForKey:@"data"] objectForKey:@"categorys"];
+           categorys = [categorys converDictionaryNumToStr];
             [pinleiFDataArray removeAllObjects];
             [pinleiFDataArray addObjectsFromArray:categorys];
             [self showPinleiSelectView];
@@ -554,7 +561,7 @@
             // 添加二级区域数据源
         } else {
             NSDictionary *dic = [domainFDataArray objectAtIndex:0];
-            NSArray *tempArray = [domainSDataDic objectForKey:[dic objectForKey:@"districtId"]];
+            NSArray *tempArray = [domainSDataDic objectForKey:[dic stringForKey:@"districtId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -664,7 +671,7 @@
             // 添加二级商店数据源
         } else {
             NSDictionary *dic = [storeFDataArray objectAtIndex:0];
-            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSArray *tempArray = [storeSDic objectForKey:[dic stringForKey:@"shopTypeId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -725,7 +732,6 @@
 
         self.doubleTableView.hidden = YES;
     };
-    
 }
 
 #pragma mark 显示品类选择view
