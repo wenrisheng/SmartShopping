@@ -61,9 +61,6 @@
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
-    if (dataArray.count == 0) {
-         [self requestShopSignList];
-    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                          selector:@selector(locationUpdate:)
                                              name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
@@ -80,11 +77,13 @@
 {
 
     NSString *city = [locationDic objectForKey:LOCATION_CITY];
-    self.city = city;
-    self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
-    self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    if (dataArray.count == 0) {
-        [self requestShopSignList];
+    if (_city.length == 0) {
+        self.city = city;
+        self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
+        self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
+        if (dataArray.count == 0) {
+            [self requestShopSignList];
+        }
     }
 }
 
@@ -104,6 +103,7 @@
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeShopSignList] data:params tag:WSInterfaceTypeShopSignList sucCallBack:^(id result) {
+         [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *shopSignList = [[result objectForKey:@"data"] objectForKey:@"shopSignList"];
@@ -116,7 +116,7 @@
         }
         
     } failCallBack:^(id error) {
-
+        [_contentTableView endHeaderAndFooterRefresh];
     } showMessage:YES];
 }
 
@@ -186,35 +186,39 @@
 #pragma mark 签到按钮事件
 - (void)signupButAction:(UIButton *)but
 {
-    // 1. GPS定位不在店内跳到 不在签到范围页面 WSInStoreNoSignScopeViewController
+    //  1. GPS定位不在店内跳到 WSNoInStoreViewController
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
-    
-    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-        // 在店内
-        if (isInStore) {
-            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-            NSString *isSign = [shop stringForKey:@"isSign"];
-            //  没签到
-            if ([isSign isEqualToString:@"N"]) {
-                WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                inStoreNoSignVC.shop = shop;
-                [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-            } else {
-                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                storeDetailVC.shop = shop;
-                [self.navigationController pushViewController:storeDetailVC animated:YES];
+    [WSUserUtil actionAfterLogin:^{
+        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+            CLBeacon *beacon = nil;
+            if (beaconsArray.count > 0) {
+                beacon = [beaconsArray objectAtIndex:0];
             }
-        // 不在店内跳到 不在签到范围内
-        } else {
-            WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
-            [self.navigationController pushViewController:noSignScopeVC animated:YES];
-        }
-        
+            [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                // 在店内
+                if (isInStore) {
+                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSString *isSign = [shop stringForKey:@"isSign"];
+                    //  没签到
+                    if ([isSign isEqualToString:@"N"]) {
+                        WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                        inStoreNoSignVC.shop = shop;
+                        [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                    } else {
+                        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                        storeDetailVC.shop = shop;
+                        [self.navigationController pushViewController:storeDetailVC animated:YES];
+                    }
+                    // 不在店内
+                } else {
+                    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+                    [self.navigationController pushViewController:noInstoreVC animated:YES];
+                }
+            }];
+        }];
     }];
-
-   
 }
 
 #pragma mark 地图距离按钮事件
@@ -224,7 +228,7 @@
     NSDictionary *dic = [dataArray objectAtIndex:tag];
     NSString *lat = [dic stringForKey:@"lat"];
     NSString *lon = [dic stringForKey:@"lon"];
-    NSString *shopName = [dic stringForKey:@"shopName"];
+    NSString *shopName = [dic stringForKey:@"shopname"];
     NSString *address = [dic objectForKeyedSubscript:@"address"];
     WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
     locationDetailVC.latitude = [lon doubleValue];

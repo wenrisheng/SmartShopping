@@ -95,6 +95,6 @@
     <resources>
         <image name="arrow-03.png" width="24" height="44"/>
         <image name="head-02.png" width="102" height="102"/>
-        <image name="mobile.png" width="44" height="44"/>
+        <image name="mobile.png" width="26" height="26"/>
     </resources>
 </document>

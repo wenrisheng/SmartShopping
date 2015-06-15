@@ -24,5 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *distanceView;
 @property (weak, nonatomic) IBOutlet UIButton *signupBut;
 @property (weak, nonatomic) IBOutlet UIButton *distanceBut;
+@property (weak, nonatomic) IBOutlet UILabel *storeNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *beanNumLabel;
 
 @end

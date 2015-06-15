@@ -341,8 +341,8 @@
                 }
             }
             if (image) {
-                float imageWidth = tableView.bounds.size.width * WS_MINE_SECONDE_CELL_IMAGE_WIDTH / 320;
-                float height = imageWidth * image.size.width / image.size.height;
+                float imageWidth = (tableView.bounds.size.width - 20) * WS_MINE_SECONDE_CELL_IMAGE_WIDTH / 300;
+                float height = imageWidth * image.size.height / image.size.width;
                 return height + WSMINESECONDCELL_HEIGHT - WS_MINE_SECONDE_CELL_IMAGE_HEIGHT;
                 
             }
@@ -378,40 +378,9 @@
 #pragma mark - 注销按钮事件
 - (void)logoutButAction
 {
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    switch (user.loginType) {
-        case UserLoginTypePhone:
-        {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_KEY];
-            [WSRunTime sharedWSRunTime].user = nil;
-            
-        }
-            break;
-        case UserLoginTypeWechat:
-        {
-            [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
-        }
-            break;
-        case UserLoginTypeWeibo:
-        {
-            [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
-        }
-            break;
-        case UserLoginTypeQQ:
-        {
-           [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
-        }
-            break;
-        default:
-            break;
-    }
-    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
-    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
-    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
-    
-    
-    [WSRunTime sharedWSRunTime].user = nil;
-    [_contentTableView reloadData];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"您确定要清除注销吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 102;
+    [alert show];
 }
 
 #pragma mark - WSMineFirstCellDelegate
@@ -586,7 +555,7 @@
     NSInteger tag = alertView.tag;
     // 更新应用
     if (tag == 100) {
-        if (buttonIndex==1) {
+        if (buttonIndex == 1) {
             NSURL *url = [NSURL URLWithString:self.appURL];
             [[UIApplication sharedApplication]openURL:url];
         }
@@ -600,9 +569,47 @@
             [USER_DEFAULT removeObjectForKey:USER_KEY];
             [[SDImageCache sharedImageCache] clearMemory];
             [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
-                [SVProgressHUD showSuccessWithStatus:@"缓存已清除！" duration:TOAST_VIEW_TIME];
+            [SVProgressHUD showSuccessWithStatus:@"缓存已清除！" duration:TOAST_VIEW_TIME];
             }];
+        }
+    }
+    // 注销
+    if (tag == 102) {
+        if (buttonIndex == 1) {
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            switch (user.loginType) {
+                case UserLoginTypePhone:
+                {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_KEY];
+                    [WSRunTime sharedWSRunTime].user = nil;
+                    
+                }
+                    break;
+                case UserLoginTypeWechat:
+                {
+                    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+                }
+                    break;
+                case UserLoginTypeWeibo:
+                {
+                    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+                }
+                    break;
+                case UserLoginTypeQQ:
+                {
+                    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
+                }
+                    break;
+                default:
+                    break;
+            }
+            [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+            [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+            [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
             
+            
+            [WSRunTime sharedWSRunTime].user = nil;
+            [_contentTableView reloadData];
         }
     }
 }

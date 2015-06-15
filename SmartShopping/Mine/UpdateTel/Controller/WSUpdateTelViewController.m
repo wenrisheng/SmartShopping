@@ -16,6 +16,7 @@
     int varificateTime;
 }
 
+@property (strong, nonatomic) NSString *code;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIView *telView;
 @property (weak, nonatomic) IBOutlet UIView *varificateView;
@@ -99,7 +100,7 @@
 - (void)requestUpdateTel
 {
     NSString *oldPhone = [WSRunTime sharedWSRunTime].user.phone;
-    NSDictionary *dic = @{@"phone" : oldPhone, @"newPhon": _telTextField.text, @"validCode" : _varificateTextField.text};
+    NSDictionary *dic = @{@"phone" : oldPhone, @"newPhone": _telTextField.text, @"validCode" : _varificateTextField.text};
     [SVProgressHUD showWithStatus:@"正在更改……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdatePhone] data:dic tag:WSInterfaceTypeUpdatePhone];
 }
@@ -117,12 +118,19 @@
     if (![WSIdentifierValidator isValidPhone:tel]) {
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
         flag = NO;
-        return NO;
+        return flag;
     }
     if (_varificateTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:TOAST_VIEW_TIME];
         flag = NO;
-        return NO;
+        return flag;
+    }
+    if (_code) {
+        if (![_varificateTextField.text isEqualToString:_code]) {
+            [SVProgressHUD showErrorWithStatus:@"验证码不正确！" duration:TOAST_VIEW_TIME];
+            flag = NO;
+            return flag;
+        }
     }
     return flag;
 }
@@ -137,6 +145,7 @@
             if (flag) {
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSString *code = [data valueForKey:@"code"];
+                self.code = code;
                 DLog(@"验证码：%@", code);
             }
         }
@@ -146,6 +155,12 @@
             [SVProgressHUD dismiss];
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
+                WSUser *user = [WSRunTime sharedWSRunTime].user;
+                user.phone = _telTextField.text;
+                // 本地存储用户信息
+                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
+                [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+
                 [SVProgressHUD showSuccessWithStatus:@"手机号更改成功！" duration:TOAST_VIEW_TIME];
                 [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(doSucAfter) userInfo:nil repeats:NO];
             }

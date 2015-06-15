@@ -18,9 +18,10 @@
     NSTimer * timer;
     AVAudioPlayer *player;
     BOOL lampOn;
+
 }
 
-
+@property (strong, nonatomic) NSString *scanStr;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIImageView *tiaoImageView;
 @property (weak, nonatomic) IBOutlet ZBarReaderView *readerView;
@@ -65,7 +66,7 @@
     NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
    player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     [player prepareToPlay];
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -119,7 +120,28 @@
     [player play];
     [_readerView stop];
     [timer invalidate];
-    [self requestEarnBeanByScanGoodsWithBarcode:str];
+    self.scanStr = str;
+    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+        if (beaconsArray.count > 0) {
+            [WSProjUtil isInStoreWithIBeacon:[beaconsArray objectAtIndex:0] callback:^(id result) {
+                NSDictionary *isInShopDic = [result objectForKey:IS_IN_SHOP_DATA];
+                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                if (isInStore) {
+                    NSString *isScan = [isInShopDic stringForKey:@"isScan"];
+                    if ([isScan isEqualToString:@"Y"]) {
+                        [self requestEarnBeanByScanGoodsWithBarcode:str];
+                    } else {
+                        [SVProgressHUD dismissWithError:@"亲，您不满足扫描条件哦！" afterDelay:TOAST_VIEW_TIME];
+                    }
+                } else {
+                    [SVProgressHUD dismissWithError:[NSString stringWithFormat:@"亲，您没在%@店哦！", [isInShopDic objectForKey:@"shopName"]] afterDelay:TOAST_VIEW_TIME];
+                }
+            }];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"亲，没有扫描到iBeacon哦！" duration:TOAST_VIEW_TIME];
+        }
+    }];
+    
 }
 
 - (void) readerViewDidStart: (ZBarReaderView*) readerView
@@ -136,13 +158,15 @@
 - (void)requestEarnBeanByScanGoodsWithBarcode:(NSString *)barcode
 {
     barcode = barcode == nil ? @"" : barcode;
+    _shopid = _shopid.length == 0 ? @"" : _shopid;
     NSString *userId = [WSRunTime sharedWSRunTime].user._id;
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnBeanByScanGoods] data:@{@"uid": userId, @"barcode": barcode} tag:WSInterfaceTypeEarnBeanByScanGoods sucCallBack:^(id result) {
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnBeanByScanGoods] data:@{@"uid": userId, @"barcode": barcode, @"shopid": _shopid} tag:WSInterfaceTypeEarnBeanByScanGoods sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             [self.navigationController popViewControllerAnimated:YES];
             if (_scanSucCallBack) {
-                _scanSucCallBack();
+                NSString *beanNumber = [[result objectForKey:@"data"] objectForKey:@"beanNumber"];
+                _scanSucCallBack(beanNumber);
             }
         } else {
              [_readerView start];

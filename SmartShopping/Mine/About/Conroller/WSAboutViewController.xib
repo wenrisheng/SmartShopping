@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
+        <deployment version="2048" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
@@ -31,6 +31,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAd-dl-9Uo">
+                                    <constraints>
+                                        <constraint firstAttribute="height" priority="250" constant="20" id="VD8-RD-3NJ"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <color key="textColor" red="0.44705882352941179" green="0.45098039215686275" blue="0.45490196078431372" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -38,14 +41,12 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="centerX" secondItem="EAd-dl-9Uo" secondAttribute="centerX" id="1Ce-NX-xjB"/>
-                                <constraint firstAttribute="bottom" secondItem="EAd-dl-9Uo" secondAttribute="bottom" priority="250" constant="124" id="1gH-r2-jvd"/>
+                                <constraint firstAttribute="trailing" secondItem="EAd-dl-9Uo" secondAttribute="trailing" id="1SS-e2-rLY"/>
                                 <constraint firstAttribute="height" priority="250" constant="416" id="5qb-hs-gJ5"/>
-                                <constraint firstAttribute="width" constant="320" id="V9g-MH-s5z"/>
-                                <constraint firstAttribute="trailing" secondItem="EAd-dl-9Uo" secondAttribute="trailing" constant="10" id="Xb1-RR-fK2"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EAd-dl-9Uo" secondAttribute="bottom" id="EZU-Mw-FRt"/>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="416" id="ayd-if-0GH"/>
-                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="top" secondItem="cPY-ra-7JO" secondAttribute="top" constant="10" id="ceK-Om-LgV"/>
-                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="leading" secondItem="cPY-ra-7JO" secondAttribute="leading" constant="10" id="nJS-v7-5I5"/>
+                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="top" secondItem="cPY-ra-7JO" secondAttribute="top" constant="10" id="wzn-ba-aap"/>
+                                <constraint firstItem="EAd-dl-9Uo" firstAttribute="leading" secondItem="cPY-ra-7JO" secondAttribute="leading" constant="5" id="z3P-LT-4cb"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -65,6 +66,7 @@
                 <constraint firstItem="IAc-AS-4jl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="P1k-Rh-2KW"/>
                 <constraint firstItem="II0-pf-FnI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TKv-j5-VKn"/>
                 <constraint firstAttribute="bottom" secondItem="II0-pf-FnI" secondAttribute="bottom" id="ZYm-Wm-59O"/>
+                <constraint firstItem="cPY-ra-7JO" firstAttribute="width" secondItem="IAc-AS-4jl" secondAttribute="width" id="fU6-gu-iVH"/>
                 <constraint firstAttribute="trailing" secondItem="IAc-AS-4jl" secondAttribute="trailing" id="s6A-Zh-m2A"/>
                 <constraint firstItem="II0-pf-FnI" firstAttribute="top" secondItem="IAc-AS-4jl" secondAttribute="bottom" id="uMC-Jv-ri9"/>
             </constraints>

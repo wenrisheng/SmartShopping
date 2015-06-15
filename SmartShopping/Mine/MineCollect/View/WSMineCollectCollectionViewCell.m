@@ -51,6 +51,7 @@
     NSString *goodsId = [_dic stringForKey:@"goodsId"];
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = [_dic stringForKey:@"shopId"];
+   
     [self.viewController.navigationController pushViewController:productDetailVC animated:YES];
 }
 

@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
@@ -38,6 +39,8 @@
          NSDictionary *data = [result objectForKey:@"data"];
         NSString *memo = [[data objectForKey:@"agreeAbout"] objectForKey:@"memo"];
         _label.text = memo;
+
+
     } failCallBack:^(id error) {
         [SVProgressHUD dismissWithError:@"请求失败！" afterDelay:TOAST_VIEW_TIME];
     }];

@@ -11,5 +11,7 @@
 @interface WSOrderFailView : UIView
 
 @property (weak, nonatomic) IBOutlet UIButton *confirmBut;
+@property (weak, nonatomic) IBOutlet UILabel *upLabel;
+@property (weak, nonatomic) IBOutlet UILabel *downLabel;
 
 @end

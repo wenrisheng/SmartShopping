@@ -12,6 +12,7 @@
 #import "WSPromotionCouponViewController.h"
 #import "WSDoubleTableView.h"
 #import "WSMoreGiftSearchResultCell.h"
+#import "WSGiftTypeViewController.h"
 
 typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     MoreGiftViewTypeInitView = 0,
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     int peaScopeSelectIndex;
     int allCategoryIndex;
     NSMutableArray *searchResultArray;
+    int curTabIndex;
 }
 
 @property (strong, nonatomic) NSMutableDictionary *searchParam;
@@ -44,6 +46,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    curTabIndex = -1;
     // Do any additional setup after loading the view from its nib.
     searchResultArray = [[NSMutableArray alloc] init];
     self.searchParam = [[NSMutableDictionary alloc] init];
@@ -74,15 +77,11 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
                                              selector:@selector(locationUpdate:)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
     if (dataArray.count == 0) {
-        if (_city.length != 0) {
+        if (_city.length > 0) {
             NSMutableDictionary *param = [NSMutableDictionary dictionary];
             [param setValue:_city forKey:@"cityName"];
              [self requestSearchGift:param];
-        } else {
-            
         }
-    } else {
-        
     }
 }
 
@@ -149,14 +148,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"奖励兑换";
     
     // 设置用户精明豆数量
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    NSString *peaNum = nil;
-    if (user) {
-        peaNum = user.beanNumber;
-    } else {
-        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-        peaNum = [NSString stringWithFormat:@"%d", appPeasNum];
-    }
+    NSString *peaNum = [WSUserUtil getUserPeasNum];
     NSString *str = @"个精明豆";
     NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", peaNum, str]];
     [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.890 green:0.380 blue:0.090 alpha:1.000] range:NSMakeRange(0, peaNum.length)];
@@ -167,6 +159,10 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     
     // 设置tab
     NSArray *titles = @[@"豆子范围", @"全部分类"];
+    _tabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
+    _tabSlideManagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
+    _tabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
+    _tabSlideManagerView.tabSlideGapTextView.selectedImage = @"arrow-up";
     NSInteger count = titles.count;
     NSMutableArray *temArray = [NSMutableArray array];
     for (int i = 0; i < count; i++) {
@@ -174,34 +170,40 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         [dic setObject:[titles objectAtIndex:i] forKey:TABSLIDEGAPTEXTVIEW_IMAGE_TITLE];
         [temArray addObject:dic];
     }
-    _tabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
-    _tabSlideManagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
-    _tabSlideManagerView.tabSlideGapTextView.normalImage = @"arrow-down";
-    _tabSlideManagerView.tabSlideGapTextView.selectedImage = @"arrow-click";
+
     [_tabSlideManagerView.tabSlideGapTextView setTabSlideDataArray:temArray];
     _tabSlideManagerView.tabSlideGapTextView.callBack = ^(int index) {
         switch (index) {
             case 0:
             {
-                if (_peasScopeArray.count == 0) {
-                    [self requestPeasScope];
+                if (curTabIndex == index && !doubleTableView.hidden) {
+                    doubleTableView.hidden = YES;
                 } else {
-                    [self showPeaScopeSelectView];
+                    if (_peasScopeArray.count == 0) {
+                        [self requestPeasScope];
+                    } else {
+                        [self showPeaScopeSelectView];
+                    }
                 }
             }
                 break;
             case 1:
             {
-                if (_peasAllCategoryArray.count == 0) {
-                    [self requestAllCategory];
+                if (curTabIndex == index && !doubleTableView.hidden) {
+                    doubleTableView.hidden = YES;
                 } else {
-                    [self showAllCategorySelectView];
+                    if (_peasAllCategoryArray.count == 0) {
+                        [self requestAllCategory];
+                    } else {
+                        [self showAllCategorySelectView];
+                    }
                 }
             }
                 break;
             default:
                 break;
         }
+        curTabIndex = index;
     };
 }
 
@@ -244,6 +246,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 {
     [SVProgressHUD showWithStatus:@"正在刷新……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSearchGift] data:param tag:WSInterfaceTypeSearchGift sucCallBack:^(id result) {
+        [_contentTableView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -268,6 +271,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
             [_contentTableView reloadData];
         }
     } failCallBack:^(id error) {
+        [_contentTableView endHeaderAndFooterRefresh];
         [SVProgressHUD dismissWithError:@"刷新失败!" afterDelay:TOAST_VIEW_TIME];
     }];
 }
@@ -361,7 +365,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         for (UIView *subview in topView.subviews) {
             [subview removeFromSuperview];
         }
-        doubleTableView.bgView.backgroundColor = [UIColor clearColor];
+       // doubleTableView.bgView.backgroundColor = [UIColor clearColor];
         doubleTableView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:doubleTableView];
         NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:doubleTableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_tabSlideManagerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
@@ -416,10 +420,12 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.leftBut addTarget:self action:@selector(leftButAction:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.rightBut addTarget:self action:@selector(rightButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.moreGiftBut addTarget:self action:@selector(moreGiftButAction:) forControlEvents:UIControlEventTouchUpInside];
             }
             NSInteger row = indexPath.row;
             cell.leftBut.tag = row;
             cell.rightBut.tag = row;
+            cell.moreGiftBut.tag = row;
             NSDictionary *dic = [converDataArray objectAtIndex:row];
             [cell setModel:dic];
             return cell;
@@ -531,6 +537,16 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
             break;
     }
     [self toGiftDetailVC:modelDic];
+}
+
+- (void)moreGiftButAction:(UIButton *)but
+{
+    NSInteger tag = but.tag;
+    NSDictionary *dic = [converDataArray objectAtIndex:tag];
+    NSString *title = [dic objectForKey:CATEGORY_TITLE];
+    WSGiftTypeViewController *giftTypeVC = [[WSGiftTypeViewController alloc] init];
+    giftTypeVC.typeName = title;
+    [self.navigationController pushViewController:giftTypeVC animated:YES];
 }
 
 - (void)toGiftDetailVC:(id)param

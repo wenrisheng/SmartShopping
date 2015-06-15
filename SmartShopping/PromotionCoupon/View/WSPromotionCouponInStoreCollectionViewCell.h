@@ -1,5 +1,5 @@
 //
-//  HomeCollectionViewCell.h
+// 
 //  SmartShopping
 //
 //  Created by wrs on 15/4/12.

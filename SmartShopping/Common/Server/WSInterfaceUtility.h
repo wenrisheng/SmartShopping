@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#define BASE_URL    @"http://121.41.86.29:8888/jmg"
+#define BASE_URL @"http://121.41.86.29:8888/jmg"
+
+//#define BASE_URL    @"http://122.13.87.32:8888/jmg"
 //#define BASE_URL    @"http://121.41.86.29:8888"
 
 
@@ -55,12 +57,12 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeGetShopCategory,              //品类筛选条件
     WSInterfaceTypeOutShopGoodsList,             // 店外查询接口
     WSInterfaceTypeCheckMoreGoodsList,           // 查看更多
-    WSInterfaceTypeIsInshopByPromotions,         // 用户是否在店内
+    WSInterfaceTypeIsInShopAndIsScans,         // 用户是否在店内
     
     /***************************到店签到**********************************/
     WSInterfaceTypeShopSignList,                 // 不在店内（列表）
     WSInterfaceTypeEarnSignBean,                 // 签到获取精明豆
-    WSInterfaceTypeSsInshopBySign,               // 用户是否在店内
+ //   WSInterfaceTypeSsInshopBySign,             // 用户是否在店内
     
      /***************************商品扫描活动**********************************/
     WSInterfaceTypeGoodsScanList,                // 扫描首页商品列表

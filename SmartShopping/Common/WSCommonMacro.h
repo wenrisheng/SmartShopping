@@ -75,6 +75,9 @@
 //#define WECHAT_APPSECRET   @"9ffbe1acbb8a561ea9d03b3409649e17"
 
 
+#define COLLECTION_VIEW_GAP    10
+#define IBEACON_SCAN_TIME      10
+
 // 状态栏颜色
 #define STATUSBAR_COLOR               [UIColor colorWithRed:0.898 green:0.380 blue:0.133 alpha:1.000]
 

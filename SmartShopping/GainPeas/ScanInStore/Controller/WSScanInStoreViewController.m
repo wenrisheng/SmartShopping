@@ -73,8 +73,8 @@
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.headerHeight = WSSTOREDETAILCOLLECTIONREUSABLEVIEW_HEIGHT;
     layout.footerHeight = 0;
-    layout.minimumColumnSpacing = 20;
-    layout.minimumInteritemSpacing = 20;
+    layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
+    layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _collectionView.collectionViewLayout = layout;
 
 
@@ -263,7 +263,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
-    CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    CGFloat width = collectionView.bounds.size.width - 3 * COLLECTION_VIEW_GAP;
      NSDictionary *dic = [dataArray objectAtIndex:row];
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
     NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];
@@ -382,35 +382,39 @@
 {
     // 1. 不在店内则提示不在店内
     // 2. 在店内则跳到 WSScanProductViewController
-  
-    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-        // 在店内
-        if (isInStore) {
-            [WSUserUtil actionAfterLogin:^{
-                NSDictionary *dic = [dataArray objectAtIndex:but.tag];
-                WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
-                NSString *shopid = [_shop stringForKey:@"shopid"];
-                NSString *goodsId = [dic stringForKey:@"goodsId"];
-                scanProductVC.scanSucCallBack = ^() {
-                    WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
-                    scanAfterVC.goodsId = goodsId;
-                    scanAfterVC.shopid = shopid;
-                    scanAfterVC.beanNum = [dic stringForKey:@"beannumber"];
-                    [self.navigationController pushViewController:scanAfterVC animated:YES];
-                };
-                scanProductVC.shopid = shopid;
-                scanProductVC.goodsId = goodsId;
-                [self.navigationController pushViewController:scanProductVC animated:YES];
+    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+        if (beaconsArray.count > 0) {
+            [WSProjUtil isInStoreWithIBeacon:[beaconsArray objectAtIndex:0] callback:^(id result) {
+                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                // 在店内
+                if (isInStore) {
+                    [WSUserUtil actionAfterLogin:^{
+                        NSDictionary *dic = [dataArray objectAtIndex:but.tag];
+                        WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+                        NSString *shopid = [_shop stringForKey:@"shopid"];
+                        NSString *goodsId = [dic stringForKey:@"goodsId"];
+                        scanProductVC.scanSucCallBack = ^(NSString *beanNumber) {
+                            WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
+                            scanAfterVC.goodsId = goodsId;
+                            scanAfterVC.shopid = shopid;
+                            scanAfterVC.beanNum = beanNumber;
+                            [self.navigationController pushViewController:scanAfterVC animated:YES];
+                        };
+                        scanProductVC.shopid = shopid;
+                        scanProductVC.goodsId = goodsId;
+                        [self.navigationController pushViewController:scanProductVC animated:YES];
+                    }];
+                    
+                    // 不在店内
+                } else {
+                    [SVProgressHUD showErrorWithStatus:@"亲，您当前不在店内！" duration:TOAST_VIEW_TIME];
+                }
+                
             }];
-
-            // 不在店内
         } else {
-            [SVProgressHUD showErrorWithStatus:@"亲，您当前不在店内！" duration:TOAST_VIEW_TIME];
+            [SVProgressHUD showErrorWithStatus:@"亲，没有扫描到iBeacon哦！" duration:TOAST_VIEW_TIME];
         }
-        
     }];
-
 }
 
 

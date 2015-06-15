@@ -14,6 +14,7 @@
 @interface WSScanNoInStoreCollectionViewCell : UICollectionViewCell
 @property (copy) void(^downloadImageFinish)(void);
 - (void)setModel:(NSDictionary *)dic;
+@property (weak, nonatomic) IBOutlet UIImageView *scanImageView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *bigbut;

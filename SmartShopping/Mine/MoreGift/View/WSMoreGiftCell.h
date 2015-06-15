@@ -15,8 +15,6 @@
 - (void)setModel:(NSDictionary *)dic;
 
 @property (weak, nonatomic) IBOutlet UIView *conView;
-@property (weak, nonatomic) IBOutlet UIView *leftProduct;
-@property (weak, nonatomic) IBOutlet UIView *rightProduct;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *moreGiftBut;

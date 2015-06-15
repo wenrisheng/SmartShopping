@@ -67,17 +67,27 @@
                                     <color key="textColor" red="0.0" green="0.3921568627" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rFw-tF-JaY">
+                                    <rect key="frame" x="0.0" y="45" width="152" height="33"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="rQc-G2-fyS" secondAttribute="trailing" id="15L-dV-iIq"/>
+                                <constraint firstItem="rFw-tF-JaY" firstAttribute="top" secondItem="rQc-G2-fyS" secondAttribute="bottom" constant="16" id="1Hs-Zw-qRv"/>
                                 <constraint firstItem="tz7-1I-p5R" firstAttribute="top" secondItem="ZmS-18-lGw" secondAttribute="bottom" constant="4" id="Ill-Mf-mZE"/>
+                                <constraint firstAttribute="trailing" secondItem="rFw-tF-JaY" secondAttribute="trailing" constant="8" id="IvH-id-0jh"/>
                                 <constraint firstItem="cEC-Zk-jn8" firstAttribute="leading" secondItem="tz7-1I-p5R" secondAttribute="trailing" constant="5" id="Mt2-Fj-4bs"/>
+                                <constraint firstItem="rFw-tF-JaY" firstAttribute="leading" secondItem="aVA-vP-Qfl" secondAttribute="leading" id="R5U-cu-Que"/>
                                 <constraint firstItem="rQc-G2-fyS" firstAttribute="top" secondItem="aVA-vP-Qfl" secondAttribute="top" constant="8" id="RWN-e8-qlb"/>
                                 <constraint firstItem="tz7-1I-p5R" firstAttribute="leading" secondItem="aVA-vP-Qfl" secondAttribute="leading" id="Vi0-1w-Zez"/>
                                 <constraint firstAttribute="trailing" secondItem="cEC-Zk-jn8" secondAttribute="trailing" constant="8" id="fSR-bl-rza"/>
                                 <constraint firstItem="ZmS-18-lGw" firstAttribute="leading" secondItem="aVA-vP-Qfl" secondAttribute="leading" id="iTf-8H-Plw"/>
                                 <constraint firstItem="rQc-G2-fyS" firstAttribute="leading" secondItem="aVA-vP-Qfl" secondAttribute="leading" id="jnL-xc-vnb"/>
+                                <constraint firstAttribute="bottom" secondItem="rFw-tF-JaY" secondAttribute="bottom" id="m5I-tb-aYJ"/>
                                 <constraint firstItem="cEC-Zk-jn8" firstAttribute="top" secondItem="ZmS-18-lGw" secondAttribute="bottom" id="nfD-oT-d45"/>
                                 <constraint firstAttribute="centerY" secondItem="ZmS-18-lGw" secondAttribute="centerY" id="rGp-2x-13d"/>
                             </constraints>
@@ -201,6 +211,7 @@
             </constraints>
             <connections>
                 <outlet property="addressLabel" destination="ZmS-18-lGw" id="MHq-eK-Pki"/>
+                <outlet property="distanceBut" destination="rFw-tF-JaY" id="nEp-dV-AKg"/>
                 <outlet property="distanceLabel" destination="cEC-Zk-jn8" id="J1O-EG-8rU"/>
                 <outlet property="loginImageView" destination="PN6-r2-FQG" id="gdh-WJ-IhL"/>
                 <outlet property="signupBut" destination="2if-nj-VJR" id="WgD-oO-1kZ"/>

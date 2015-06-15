@@ -11,6 +11,9 @@
 
 #import "AppDelegate.h"
 
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
 // 基项目库
 #import "WSBaseMacro.h"
 #import "WSBaseStatic.h"

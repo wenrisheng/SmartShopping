@@ -153,8 +153,14 @@
         flag = NO;
         return flag;
     }
+    if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"请输入正确格式的手机号码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
     if (_passwordTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
         return flag;
     }
     return flag;
@@ -174,7 +180,7 @@
         [user setValuesForKeysWithDictionary:tempDic];
         user.phone = _telTextField.text;
         user.loginType = UserLoginTypePhone;
-         [self doAfterLoginSucWithUser:user];
+        [self doAfterLoginSucWithUser:user];
     }
 }
 
@@ -294,19 +300,6 @@
 #pragma mark - 登录成功后
 - (void)doAfterLoginSucWithUser:(WSUser *)user
 {
-    // 同步本地用户信息
-    [self synchromUserData:user];
-
-    // 同步精明豆
-    [self synchronUserPea];
-
-   
-}
-
-#pragma mark 同步用户数据
-- (void)synchromUserData:(WSUser *)user
-{
-    //
     NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
     if (beforeData) { // 同步是否推动消息
         WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
@@ -325,20 +318,18 @@
         user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
     }
     
+    
+    
     // 本机精明豆重新清零
     [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
     
     // 本地存储用户信息
     NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
     [USER_DEFAULT setObject:userdata forKey:USER_KEY];
-
-}
-
-- (void)synchronUserPea
-{
+    
+    // 同步服务器精明豆
     [SVProgressHUD showWithStatus:@"正在同步精明豆……"];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":[NSString stringWithFormat:@"%d", appPeasNum]} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
         NSDictionary *user = [[result objectForKey:@"data"] objectForKey:@"user"];
         [WSRunTime sharedWSRunTime].user.beanNumber = [user stringForKey:@"beanNumber"];

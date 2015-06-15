@@ -8,12 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "WSUser.h"
+#import "IBSDK.h"
 
 @interface WSRunTime : NSObject
 
-+ (WSRunTime *)sharedWSRunTime;
 
+@property (assign, nonatomic) BOOL hasIbeacon;
+@property (strong, nonatomic) NSTimer *timer;
+@property (copy) void (^callback)(NSArray *beaconsArray);
+@property (strong, nonatomic) IBSDK *ibSDK;
 @property (strong, nonatomic) WSUser *user;
 
++ (WSRunTime *)sharedWSRunTime;
+
+- (void)findIbeaconWithCallback:(void (^)(NSArray *beaconsArray))callback;
 
 @end

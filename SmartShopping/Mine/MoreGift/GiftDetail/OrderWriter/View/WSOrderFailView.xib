@@ -60,6 +60,8 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="confirmBut" destination="1Y3-vc-qyq" id="y4e-Ln-EpB"/>
+                <outlet property="downLabel" destination="fx5-gN-8os" id="Eet-da-WVU"/>
+                <outlet property="upLabel" destination="M36-eU-tS5" id="ygU-t9-UyA"/>
             </connections>
             <point key="canvasLocation" x="112" y="277"/>
         </view>

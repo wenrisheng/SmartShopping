@@ -212,27 +212,33 @@
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
     [WSUserUtil actionAfterLogin:^{
-        [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-            // 在店内
-            if (isInStore) {
-                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                NSString *isSign = [shop stringForKey:@"isSign"];
-                //  没签到
-                if ([isSign isEqualToString:@"N"]) {
-                    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                    inStoreNoSignVC.shop = shop;
-                    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-                } else {
-                    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                    storeDetailVC.shop = shop;
-                    [self.navigationController pushViewController:storeDetailVC animated:YES];
-                }
-                // 不在店内
-            } else {
-                WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-                [self.navigationController pushViewController:noInstoreVC animated:YES];
+        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+            CLBeacon *beacon = nil;
+            if (beaconsArray.count > 0) {
+                beacon = [beaconsArray objectAtIndex:0];
             }
+            [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                // 在店内
+                if (isInStore) {
+                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSString *isSign = [shop stringForKey:@"isSign"];
+                    //  没签到
+                    if ([isSign isEqualToString:@"N"]) {
+                        WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                        inStoreNoSignVC.shop = shop;
+                        [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                    } else {
+                        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                        storeDetailVC.shop = shop;
+                        [self.navigationController pushViewController:storeDetailVC animated:YES];
+                    }
+                    // 不在店内
+                } else {
+                    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+                    [self.navigationController pushViewController:noInstoreVC animated:YES];
+                }
+            }];
         }];
     }];
 }
@@ -242,26 +248,33 @@
 {
     // 1. 在店内跳到 WSStoreDetailViewController
     // 2. 不在店内跳到 WSScanInStoreViewController
-    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-        // 在店内
-        if (isInStore) {
-            [WSUserUtil actionAfterLogin:^{
-                NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
-                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                NSString *shopId = [dic stringForKey:@"shopId"];
-                NSString *shopName = [shop objectForKey:@"shopName"];
-                WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
-                scanInStoreVC.shopName = shopName;
-                scanInStoreVC.shopid = shopId;
-                [self.navigationController pushViewController:scanInStoreVC animated:YES];
-            }];
-
-            // 不在店内
-        } else {
-            WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
-            [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
+    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+        CLBeacon *beacon = nil;
+        if (beaconsArray.count > 0) {
+            beacon = [beaconsArray objectAtIndex:0];
         }
+        [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+            // 在店内
+            if (isInStore) {
+                [WSUserUtil actionAfterLogin:^{
+                    NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSString *shopId = [dic stringForKey:@"shopId"];
+                    NSString *shopName = [shop objectForKey:@"shopName"];
+                    WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+                    scanInStoreVC.shopName = shopName;
+                    scanInStoreVC.shopid = shopId;
+                    [self.navigationController pushViewController:scanInStoreVC animated:YES];
+                }];
+                
+                // 不在店内
+            } else {
+                WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+                [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
+            }
+        }];
+
     }];
 }
 

@@ -16,6 +16,7 @@
     int varificateTime;
 }
 
+@property (strong, nonatomic) NSString *code;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIView *telView;
 @property (weak, nonatomic) IBOutlet UIView *varificateView;
@@ -113,18 +114,36 @@
     if (![WSIdentifierValidator isValidPhone:tel]) {
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
         flag = NO;
-        return NO;
+        return flag;
     }
     if (_varificateTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:TOAST_VIEW_TIME];
         flag = NO;
-        return NO;
+        return flag;
+    }
+    if (_code) {
+        if (![_varificateTextField.text isEqualToString:_code]) {
+            [SVProgressHUD showErrorWithStatus:@"验证码不正确！" duration:TOAST_VIEW_TIME];
+            flag = NO;
+            return flag;
+        }
     }
     if (_passwodTestField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
         flag = NO;
-        return NO;
+        return flag;
     }
+    if (![WSIdentifierValidator isValidOnlyNumberOrLetter:_passwodTestField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"密码由6-20个数字或字母组成！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+    if (!(_passwodTestField.text.length >= 6 && _passwodTestField.text.length <= 20)) {
+        [SVProgressHUD showErrorWithStatus:@"密码由6-20个数字或字母组成！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+
     return flag;
 }
 
@@ -145,6 +164,7 @@
             if (flag) {
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSString *code = [data valueForKey:@"code"];
+                self.code = code;
                 DLog(@"验证码：%@", code);
             }
         }

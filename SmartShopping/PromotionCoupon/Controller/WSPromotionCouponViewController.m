@@ -12,7 +12,7 @@
 #import "HomeCollectionViewCell.h"
 #import "WSHomeViewController.h"
 #import "WSFilterBrandViewController.h"
-#import "WSPromotionCouponSearchViewController.h"
+
 #import "WSDoubleTableView.h"
 #import "CollectSucView.h"
 #import "WSProductDetailViewController.h"
@@ -21,7 +21,6 @@
 #import "WSLocationDetailViewController.h"
 #import "WSInStoreNoSignViewController.h"
 #import "WSStoreDetailViewController.h"
-#import "WSSearchViewController.h"
 #import "CHTCollectionViewWaterfallLayout.h"
 #import "WSSearchCommonViewController.h"
 
@@ -186,36 +185,43 @@ typedef NS_ENUM(NSInteger, SearchType) {
     
     // 判断用户是否在店内
     [SVProgressHUD showWithStatus:@"加载中……"];
-    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypePromotionCoupon callback:^(id result) {
-       BOOL isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-        // 在店内
-        if (isInStore) {
-            NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
-            self.isInShop = isInShop;
-            self.inStore_shopId = [isInShop stringForKey:@"shopId"];
-            NSString *shopName = [isInShop objectForKey:@"shopName"];
-            [self toInStoreStatus:shopName];
-            [inStoreDataArray removeAllObjects];
-            [_instoreCollectionView reloadData];
-            // 请求商店详情
-            inStoreCurPage = 0;
-            [self requestStoreDetail];
-            // 不在店内
-        } else {
-            
-            [self toOutStoreStatus];
-#if DEBUG
-            self.city = @"广州";
-#endif
-            if (_city.length > 0) {
-                inStoreCurPage = 0;
-                [self requestOutShopGoodsList];
-            } else {
-                [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-            }
-            [outStoreDataArray removeAllObjects];
-            [_outStoreCollectionView reloadData];
+    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+        CLBeacon *beacon = nil;
+        if (beaconsArray.count > 0) {
+            beacon = [beaconsArray objectAtIndex:0];
         }
+        [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+            BOOL isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+            // 在店内
+            if (isInStore) {
+                NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
+                self.isInShop = isInShop;
+                self.inStore_shopId = [isInShop stringForKey:@"shopId"];
+                NSString *shopName = [isInShop objectForKey:@"shopName"];
+                [self toInStoreStatus:shopName];
+                [inStoreDataArray removeAllObjects];
+                [_instoreCollectionView reloadData];
+                // 请求商店详情
+                inStoreCurPage = 0;
+                [self requestStoreDetail];
+                // 不在店内
+            } else {
+                
+                [self toOutStoreStatus];
+#if DEBUG
+                self.city = @"广州";
+#endif
+                if (_city.length > 0) {
+                    inStoreCurPage = 0;
+                    [self requestOutShopGoodsList];
+                } else {
+                    [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+                }
+                [outStoreDataArray removeAllObjects];
+                [_outStoreCollectionView reloadData];
+            }
+  
+        }];
     }];
 }
 
@@ -265,7 +271,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
         if (flag) {
             _instoreCollectionView.backgroundColor = [UIColor whiteColor];
             NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
-            self.shop = shop;
+            if (inStoreCurPage == 0) {
+                self.shop = shop;
+            }
+            
             NSString *shopName = [shop objectForKey:@"shopName"];
             shopName = shopName == nil ? @"" : shopName;
            // [self toInStoreStatus:shopName];
@@ -368,6 +377,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
 
 - (void)clearParam
 {
+    domainSIndex = -1;
+    storeSIndex = -1;
+    
+    self.shop = nil;
     self.outStore_districtId = nil;
     self.outStore_townId = nil;
     self.outStore_shopTypeId = nil;
@@ -676,20 +689,34 @@ typedef NS_ENUM(NSInteger, SearchType) {
 #pragma mark 点击了所有商店
 - (void)clickAllStore
 {
-    if (storeFDataArray.count == 0) {
-        [self requestGetShopTypeList];
+    // 选择了附近
+    if (domainSIndex != -1) {
+        if (storeFDataArray.count == 0) {
+            [self requestGetShopTypeList];
+        } else {
+            [self showStoreTypeSelectView];
+        }
+        // 没有选择附近
     } else {
-        [self showStoreTypeSelectView];
+        [_outStoreTabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
+        [_inStoreTabSlideMnagerView.tabSlideGapTextView resetItemViewWithIndex:1];
+        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
     }
 }
 
 #pragma mark 点击了所有品类
 - (void)clickAllType
 {
-    if (pinleiFDataArray.count == 0) {
-        [self requestDetShopCategory];
-    } else {
-        [self showPinleiSelectView];
+    if (storeSIndex != -1) {
+        if (pinleiFDataArray.count == 0) {
+            [self requestDetShopCategory];
+        } else {
+            [self showPinleiSelectView];
+        }
+    }  else {
+        [_outStoreTabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:2];
+        [_inStoreTabSlideMnagerView.tabSlideGapTextView resetItemViewWithIndex:2];
+        [SVProgressHUD showErrorWithStatus:@"请先选择商店！" duration:TOAST_VIEW_TIME];
     }
 }
 

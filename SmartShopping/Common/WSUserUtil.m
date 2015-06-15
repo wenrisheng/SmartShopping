@@ -35,8 +35,7 @@
 {
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
-        int beanNum = [user.beanNumber intValue];
-        if (beanNum < 0) {
+        if (user.beanNumber.length <= 0) {
             return @"0";
         }
         return user.beanNumber;

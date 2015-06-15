@@ -21,6 +21,14 @@
     
     _peaLabel.text = [dic stringForKey:@"beannumber"];
     _dateLabel.text = [WSProjUtil converDateWithDateStr:[dic objectForKey:@"goodsEndDate"]];
+    NSString *isScan = [dic stringForKey:@"isScan"];
+    NSString *scanImage = nil;
+    if ([isScan isEqualToString:@"Y"]) {
+        scanImage = @"scan_green";
+    } else {
+        scanImage = @"scanning";
+    }
+    [_scanBut setBackgroundImage:[UIImage imageNamed:scanImage] forState:UIControlStateNormal];
 }
 
 - (void)awakeFromNib {

@@ -20,6 +20,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uim-IP-o78">
                                 <rect key="frame" x="0.0" y="0.0" width="130" height="152"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_scan.png" translatesAutoresizingMaskIntoConstraints="NO" id="nRG-jM-8rd">
+                                        <rect key="frame" x="0.0" y="0.0" width="32" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="UJg-z3-PGX"/>
+                                            <constraint firstAttribute="height" constant="28" id="nN1-Ko-CTu"/>
+                                        </constraints>
+                                    </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RyO-sC-iJF">
                                         <rect key="frame" x="0.0" y="0.0" width="130" height="152"/>
                                     </imageView>
@@ -30,7 +37,7 @@
                                         </state>
                                     </button>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ngx-dU-syf">
-                                        <rect key="frame" x="35" y="8" width="95" height="20"/>
+                                        <rect key="frame" x="45" y="5" width="85" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time-clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="OhW-KJ-hqB">
                                                 <rect key="frame" x="3" y="3" width="15" height="15"/>
@@ -40,7 +47,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11月10日前有效" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-nJ-ech">
-                                                <rect key="frame" x="18" y="0.0" width="77" height="20"/>
+                                                <rect key="frame" x="18" y="0.0" width="67" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -54,14 +61,15 @@
                                             <constraint firstItem="NH5-nJ-ech" firstAttribute="leading" secondItem="OhW-KJ-hqB" secondAttribute="trailing" id="W4q-fJ-NT2"/>
                                             <constraint firstItem="OhW-KJ-hqB" firstAttribute="leading" secondItem="ngx-dU-syf" secondAttribute="leading" constant="3" id="WAq-Ok-g0c"/>
                                             <constraint firstAttribute="trailing" secondItem="NH5-nJ-ech" secondAttribute="trailing" id="g0c-y1-4Ea"/>
-                                            <constraint firstAttribute="width" constant="95" id="g79-MK-3uA"/>
+                                            <constraint firstAttribute="width" constant="85" id="g79-MK-3uA"/>
                                             <constraint firstAttribute="centerY" secondItem="OhW-KJ-hqB" secondAttribute="centerY" id="hy4-so-hcl"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="ngx-dU-syf" firstAttribute="top" secondItem="uim-IP-o78" secondAttribute="top" constant="8" id="0c6-Pl-WZ9"/>
+                                    <constraint firstItem="ngx-dU-syf" firstAttribute="top" secondItem="uim-IP-o78" secondAttribute="top" constant="5" id="0c6-Pl-WZ9"/>
+                                    <constraint firstItem="nRG-jM-8rd" firstAttribute="top" secondItem="uim-IP-o78" secondAttribute="top" id="6oR-4y-KuP"/>
                                     <constraint firstAttribute="trailing" secondItem="RyO-sC-iJF" secondAttribute="trailing" id="8md-0q-ZuD"/>
                                     <constraint firstItem="RyO-sC-iJF" firstAttribute="leading" secondItem="uim-IP-o78" secondAttribute="leading" id="9fL-vZ-nzT"/>
                                     <constraint firstAttribute="bottom" secondItem="mDD-Ei-Miv" secondAttribute="bottom" id="HbL-Ql-dBe"/>
@@ -69,6 +77,7 @@
                                     <constraint firstAttribute="trailing" secondItem="mDD-Ei-Miv" secondAttribute="trailing" id="UJE-nv-M3W"/>
                                     <constraint firstItem="mDD-Ei-Miv" firstAttribute="top" secondItem="uim-IP-o78" secondAttribute="top" id="XHw-0f-qjr"/>
                                     <constraint firstItem="mDD-Ei-Miv" firstAttribute="leading" secondItem="uim-IP-o78" secondAttribute="leading" id="fEC-EV-SKU"/>
+                                    <constraint firstItem="nRG-jM-8rd" firstAttribute="leading" secondItem="uim-IP-o78" secondAttribute="leading" id="m3R-8d-h2i"/>
                                     <constraint firstAttribute="bottom" secondItem="RyO-sC-iJF" secondAttribute="bottom" id="psd-c3-VAZ"/>
                                     <constraint firstItem="RyO-sC-iJF" firstAttribute="top" secondItem="uim-IP-o78" secondAttribute="top" id="xoT-jV-Mql"/>
                                 </constraints>
@@ -184,6 +193,7 @@
                 <outlet property="imageView" destination="RyO-sC-iJF" id="ugK-yu-f1q"/>
                 <outlet property="logoBut" destination="14p-cV-Mqz" id="vCq-8R-bLq"/>
                 <outlet property="peaLabel" destination="ecX-4X-and" id="Ng5-ag-L1f"/>
+                <outlet property="scanImageView" destination="nRG-jM-8rd" id="egr-JV-9aQ"/>
                 <outlet property="smallImageView" destination="REm-oU-Tdi" id="KPU-d4-Sgc"/>
             </connections>
             <point key="canvasLocation" x="140" y="238"/>
@@ -191,6 +201,7 @@
     </objects>
     <resources>
         <image name="doudou-02.png" width="34" height="32"/>
+        <image name="home_scan.png" width="64" height="56"/>
         <image name="time-clock.png" width="20" height="20"/>
     </resources>
 </document>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
+        <deployment version="2048" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
@@ -11,14 +11,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="在以下商店内，点击“到店签到”图标，摇一摇，减去精明豆" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9a-eU-tZD">
-                    <rect key="frame" x="10" y="0.0" width="300" height="50"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="在以下商店内，点击“到店签到”图标，摇一摇，赚取精明豆" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9a-eU-tZD">
+                    <rect key="frame" x="5" y="0.0" width="310" height="50"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="t9a-eU-tZD" secondAttribute="trailing" constant="5" id="A6N-hx-I1b"/>
+                <constraint firstItem="t9a-eU-tZD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="cFj-kE-owr"/>
+                <constraint firstItem="t9a-eU-tZD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="hw2-G9-Aef"/>
+                <constraint firstAttribute="bottom" secondItem="t9a-eU-tZD" secondAttribute="bottom" id="mwl-YE-hTd"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="304" y="184"/>

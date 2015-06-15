@@ -114,12 +114,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0iM-rD-eEL">
                             <rect key="frame" x="0.0" y="0.0" width="106.5" height="80"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wft-Gy-caD">
-                                    <rect key="frame" x="0.0" y="0.0" width="106" height="80"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-04.png" translatesAutoresizingMaskIntoConstraints="NO" id="f5K-DV-oA4">
                                     <rect key="frame" x="31" y="5" width="45" height="45"/>
                                     <constraints>
@@ -133,6 +127,12 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wft-Gy-caD">
+                                    <rect key="frame" x="0.0" y="0.0" width="106" height="80"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -151,12 +151,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCo-AF-fiW">
                             <rect key="frame" x="107" y="0.0" width="106" height="80"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Y4-SAI">
-                                    <rect key="frame" x="-107" y="-135" width="30" height="30"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-05.png" translatesAutoresizingMaskIntoConstraints="NO" id="USY-oq-4Qf">
                                     <rect key="frame" x="30" y="5" width="45" height="45"/>
                                     <constraints>
@@ -170,13 +164,23 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Y4-SAI">
+                                    <rect key="frame" x="0.0" y="0.0" width="106" height="80"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="USY-oq-4Qf" firstAttribute="top" secondItem="dCo-AF-fiW" secondAttribute="top" constant="5" id="5JD-hj-4Ln"/>
                                 <constraint firstItem="GhZ-nS-ArU" firstAttribute="leading" secondItem="dCo-AF-fiW" secondAttribute="leading" id="9qd-KF-vqB"/>
+                                <constraint firstAttribute="trailing" secondItem="g4y-Y4-SAI" secondAttribute="trailing" id="BEQ-ix-iMe"/>
+                                <constraint firstItem="g4y-Y4-SAI" firstAttribute="leading" secondItem="dCo-AF-fiW" secondAttribute="leading" id="FcN-ea-nkF"/>
+                                <constraint firstAttribute="bottom" secondItem="g4y-Y4-SAI" secondAttribute="bottom" id="Kyq-wR-2rY"/>
                                 <constraint firstItem="GhZ-nS-ArU" firstAttribute="top" secondItem="USY-oq-4Qf" secondAttribute="bottom" constant="1" id="O9j-Qe-h1U"/>
                                 <constraint firstAttribute="centerX" secondItem="USY-oq-4Qf" secondAttribute="centerX" id="cqb-8w-w30"/>
+                                <constraint firstItem="g4y-Y4-SAI" firstAttribute="top" secondItem="dCo-AF-fiW" secondAttribute="top" id="mU3-FN-FVF"/>
                                 <constraint firstAttribute="trailing" secondItem="GhZ-nS-ArU" secondAttribute="trailing" id="ot1-60-JkQ"/>
                                 <constraint firstItem="GhZ-nS-ArU" firstAttribute="top" secondItem="USY-oq-4Qf" secondAttribute="bottom" constant="1" id="p2u-ha-wrA"/>
                                 <constraint firstAttribute="bottom" secondItem="GhZ-nS-ArU" secondAttribute="bottom" constant="9" id="qnm-Zm-S4d"/>
@@ -185,12 +189,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m0d-ON-mpd">
                             <rect key="frame" x="214" y="0.0" width="106.5" height="80"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAN-e4-rC5">
-                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-06.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ajy-23-2jC">
                                     <rect key="frame" x="31" y="5" width="45" height="45"/>
                                     <constraints>
@@ -204,12 +202,20 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAN-e4-rC5">
+                                    <rect key="frame" x="0.0" y="0.0" width="106" height="80"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="WAN-e4-rC5" firstAttribute="top" secondItem="m0d-ON-mpd" secondAttribute="top" id="8hh-66-FnB"/>
+                                <constraint firstAttribute="bottom" secondItem="WAN-e4-rC5" secondAttribute="bottom" id="GYH-Dr-mM2"/>
+                                <constraint firstAttribute="trailing" secondItem="WAN-e4-rC5" secondAttribute="trailing" constant="0.5" id="Meh-Db-M2M"/>
+                                <constraint firstItem="WAN-e4-rC5" firstAttribute="top" secondItem="m0d-ON-mpd" secondAttribute="top" id="WOL-9M-t8b"/>
                                 <constraint firstItem="xFj-08-dNb" firstAttribute="top" secondItem="Ajy-23-2jC" secondAttribute="bottom" constant="1" id="XQ0-Ph-svo"/>
-                                <constraint firstItem="WAN-e4-rC5" firstAttribute="leading" secondItem="m0d-ON-mpd" secondAttribute="leading" id="iTV-KD-cIM"/>
+                                <constraint firstItem="WAN-e4-rC5" firstAttribute="leading" secondItem="m0d-ON-mpd" secondAttribute="leading" id="iyF-oo-SeO"/>
                                 <constraint firstItem="xFj-08-dNb" firstAttribute="leading" secondItem="m0d-ON-mpd" secondAttribute="leading" id="la1-KR-RQt"/>
                                 <constraint firstAttribute="centerX" secondItem="Ajy-23-2jC" secondAttribute="centerX" id="m8T-hd-LlK"/>
                                 <constraint firstAttribute="bottom" secondItem="xFj-08-dNb" secondAttribute="bottom" id="nzZ-dI-uc1"/>

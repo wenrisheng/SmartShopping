@@ -135,39 +135,44 @@
         int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
         
         WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
-        WSRunTime *runtime = [WSRunTime sharedWSRunTime];
-        runtime.user = beforeUser;
-        
-        // 领取本机存储的精明豆
-        runtime.user.beanNumber = [NSString stringWithFormat:@"%d", [runtime.user.beanNumber intValue] + appPeasNum];
-        
-        // 领取本机精明豆后清空本机精明豆
-        [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
-        DLog(@"本机用户保存的精明豆：%@",beforeUser.beanNumber);
-        // 同步服务器精明豆
-        WSUser *user = [WSRunTime sharedWSRunTime].user;
-        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
-            [SVProgressHUD dismiss];
-            NSDictionary *userDic = [[result objectForKey:@"data"] objectForKey:@"user"];
-            NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
-            WSUser *nweUser = [[WSUser alloc] init];
-
-            [nweUser setValuesForKeysWithDictionary:tempDic];
+        if (beforeUser) {
+            WSRunTime *runtime = [WSRunTime sharedWSRunTime];
+            runtime.user = beforeUser;
             
-            DLog(@"同步服务器用户返回的精明豆：%@",nweUser.beanNumber);
-            nweUser.phone = user.phone;
-            nweUser.isPushNotification = user.isPushNotification;
+            // 领取本机存储的精明豆
+            runtime.user.beanNumber = [NSString stringWithFormat:@"%d", [runtime.user.beanNumber intValue] + appPeasNum];
             
-            [WSRunTime sharedWSRunTime].user = nweUser;
-            // 本地存储用户信息
-            NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
-            [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+            // 领取本机精明豆后清空本机精明豆
+            [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];
+            DLog(@"本机用户保存的精明豆：%@",beforeUser.beanNumber);
             
-        } failCallBack:^(id error) {
-            [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
-           
-        } showMessage:YES];
-        
+            // 同步服务器精明豆
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":[NSString stringWithFormat:@"%d", appPeasNum]} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
+                [SVProgressHUD dismiss];
+                NSDictionary *userDic = [[result objectForKey:@"data"] objectForKey:@"user"];
+                NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
+                WSUser *nweUser = [[WSUser alloc] init];
+                
+                [nweUser setValuesForKeysWithDictionary:tempDic];
+                
+                DLog(@"同步服务器用户返回的精明豆：%@",nweUser.beanNumber);
+                if (nweUser.beanNumber.length <= 0) {
+                    nweUser.beanNumber = @"0";
+                }
+                nweUser.phone = user.phone;
+                nweUser.isPushNotification = user.isPushNotification;
+                
+                [WSRunTime sharedWSRunTime].user = nweUser;
+                // 本地存储用户信息
+                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+                [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+                
+            } failCallBack:^(id error) {
+                [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
+                
+            } showMessage:YES];
+        }
     }
 }
 

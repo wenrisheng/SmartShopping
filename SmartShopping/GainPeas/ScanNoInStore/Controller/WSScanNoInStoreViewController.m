@@ -70,8 +70,8 @@
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.headerHeight = WSSCANNOINSTOREREUSABLEVIEW_HEIGHT;
     layout.footerHeight = 0;
-    layout.minimumColumnSpacing = 20;
-    layout.minimumInteritemSpacing = 20;
+    layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
+    layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _collectionView.collectionViewLayout = layout;
     
     [_collectionView addLegendHeaderWithRefreshingBlock:^{
@@ -445,7 +445,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
-    CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    CGFloat width = collectionView.bounds.size.width - 3 * COLLECTION_VIEW_GAP;
     
     NSDictionary *dic = [dataArray objectAtIndex:row];
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];

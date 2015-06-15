@@ -26,7 +26,10 @@
         _contentLabel.textColor = [UIColor colorWithWhite:0.651 alpha:1.000];
     }
     _contentLabel.text = [dic objectForKey:@"title"];
-    _timeLabel.text = [dic objectForKey:@"time"];
+    NSString *timeStr = [dic objectForKey:@"time"];
+    NSDate *date = [WSCalendarUtil getDateWithDateStr:timeStr format:@"yyyy-MM-dd HH:ss:mm"];
+    NSString *dateStr = [WSCalendarUtil getDateStrWithDate:date format:@"yyyy-MM-dd HH:ss"];
+    _timeLabel.text = dateStr;
 }
 
 - (void)awakeFromNib {

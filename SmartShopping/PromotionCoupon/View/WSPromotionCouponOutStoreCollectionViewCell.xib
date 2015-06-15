@@ -36,9 +36,6 @@
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="logoButAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="xmE-K4-YFN"/>
-                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eVd-yN-CUd">
                                         <rect key="frame" x="10" y="2" width="45" height="45"/>
@@ -227,11 +224,11 @@
                                                     <constraint firstItem="0M2-so-nJp" firstAttribute="leading" secondItem="juo-dE-3HM" secondAttribute="leading" constant="3" id="yKb-2U-fd8"/>
                                                 </constraints>
                                             </view>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scan_icon_02.png" translatesAutoresizingMaskIntoConstraints="NO" id="ONt-Ob-eXY">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_scan.png" translatesAutoresizingMaskIntoConstraints="NO" id="ONt-Ob-eXY">
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="28"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="30" id="UHe-yH-ITw"/>
-                                                    <constraint firstAttribute="height" constant="30" id="Xd8-iB-TPz"/>
+                                                    <constraint firstAttribute="width" constant="32" id="UHe-yH-ITw"/>
+                                                    <constraint firstAttribute="height" constant="28" id="Xd8-iB-TPz"/>
                                                 </constraints>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydw-BM-1od">
@@ -344,11 +341,11 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="98g-Fv-eYH">
                                                 <rect key="frame" x="0.0" y="0.0" width="145" height="142"/>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scan_icon_02.png" translatesAutoresizingMaskIntoConstraints="NO" id="LIc-r8-gkz">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_scan.png" translatesAutoresizingMaskIntoConstraints="NO" id="LIc-r8-gkz">
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="28"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="30" id="DGC-fK-EpF"/>
-                                                    <constraint firstAttribute="height" constant="30" id="x4P-o0-GsC"/>
+                                                    <constraint firstAttribute="width" constant="32" id="DGC-fK-EpF"/>
+                                                    <constraint firstAttribute="height" constant="28" id="x4P-o0-GsC"/>
                                                 </constraints>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ng0-XV-CJ9">
@@ -569,9 +566,9 @@
     </objects>
     <resources>
         <image name="collected.png" width="34" height="34"/>
+        <image name="home_scan.png" width="64" height="56"/>
         <image name="map.png" width="12" height="18"/>
         <image name="qiandao.png" width="64" height="56"/>
-        <image name="scan_icon_02.png" width="90" height="90"/>
         <image name="share.png" width="34" height="34"/>
         <image name="time-clock.png" width="20" height="20"/>
     </resources>

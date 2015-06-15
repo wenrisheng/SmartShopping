@@ -8,6 +8,7 @@
 
 #import "WSMineConsumeDetailViewController.h"
 
+
 @interface WSMineConsumeDetailViewController ()
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScorllView;
@@ -55,6 +56,8 @@
     _titleLabel.text = [_dic objectForKey:@"shopName"];
     _addressLabel.text = [NSString stringWithFormat:@"地址：%@", [_dic objectForKey:@"address"]];
     _numLabel.text = [_dic stringForKey:@"giftNumber"];
+    
+   _scanImageView.image = [QRCodeGenerator qrImageForString:[_dic stringForKey:@"giftNumber"] imageSize:_scanImageView.bounds.size.width];
     
     UIImage *bgImage = [UIImage imageNamed:@"under"];
     bgImage = [bgImage resizableImageWithModeTile];

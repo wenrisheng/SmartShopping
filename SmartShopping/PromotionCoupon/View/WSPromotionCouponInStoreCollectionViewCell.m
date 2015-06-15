@@ -1,5 +1,5 @@
 //
-//  HomeCollectionViewCell.m
+// 
 //  SmartShopping
 //
 //  Created by wrs on 15/4/12.
@@ -53,26 +53,9 @@
 {
     // Initialization code
     [_conView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.706 green:0.710 blue:0.714 alpha:1.000] cornerRadius:5];
-    
-//    [self.leftBut addTarget:self action:@selector(leftButAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.rightBut addTarget:self action:@selector(rightButAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [_leftBut setEnlargeEdgeWithTop:5 right:23 bottom:5 left:23];
     [_rightBut setEnlargeEdgeWithTop:5 right:23 bottom:5 left:23];
-}
-
-- (void)leftButAction:(UIButton *)but
-{
-    if ([_delegate respondsToSelector:@selector(WSPromotionCouponInStoreCollectionViewCellDidClickLeftBut:)]) {
-        [_delegate WSPromotionCouponInStoreCollectionViewCellDidClickLeftBut:self];
-    }
-}
-
-- (void)rightButAction:(UIButton *)but
-{
-    if ([_delegate respondsToSelector:@selector(WSPromotionCouponInStoreCollectionViewCellDidClickRightBut:)]) {
-        [_delegate WSPromotionCouponInStoreCollectionViewCellDidClickRightBut:self];
-    }
 }
 
 - (IBAction)prodcutButAction:(id)sender
@@ -108,9 +91,18 @@
             } showMessage:YES];
             // 已收藏 取消收藏
         } else {
-            [self.viewController.view makeToast:@"已取消收藏！"];
-            [dic setValue:@"N" forKey:@"isCollect"];
-            [_leftBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
+            NSString *goodsid = [dic stringForKey:@"goodsId"];
+            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:param tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
+                float flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    [self.viewController.view makeToast:@"已取消收藏！"];
+                    [dic setValue:@"N" forKey:@"isCollect"];
+                    [_leftBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
+                }
+            } failCallBack:^(id error) {
+                [SVProgressHUD showErrorWithStatus:@"操作失败！" duration:TOAST_VIEW_TIME];
+            } showMessage:YES];
         }
     } else {
         [WSUserUtil actionAfterLogin:^{
@@ -124,43 +116,20 @@
 
 - (IBAction)shareButAction:(id)sender
 {
-    NSString *goodsId = [dic stringForKey:@"goodsId"];
-    NSString *shopId = [dic stringForKey:@"shopId"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:goodsId forKey:@"goodsId"];
-    [params setValue:shopId forKey:@"shopid"];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
     
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            NSDictionary *goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
-            NSString *goodsName = [dic objectForKey:@"goodsName"];
-            NSString *shopName = [dic objectForKey:@"shopName"];
-            NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
-            id url = [goodsDetails objectForKey:@"h5Url"];
-            
-            NSMutableDictionary *shareDic = [NSMutableDictionary dictionaryWithDictionary:goodsDetails];
-            
-            [shareDic setValue:goodsName forKey:GOODS_NAME];
-            [shareDic setValue:shopName forKey:SHOP_NAME];
-            [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
-            [shareDic setValue:url forKey:GOODS_URL];
-            [self performSelector:@selector(shareProduct:) withObject:goodsDetails afterDelay:1];
-            //[self performSelectorInBackground:@selector(shareProduct:) withObject:goodsDetails ];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD showErrorWithStatus:@"分享失败！" duration:TOAST_VIEW_TIME];
-    } showMessage:YES];
-
-}
-
-- (void)shareProduct:(NSDictionary *)shareDic
-{
+    NSString *goodsName = [dic objectForKey:@"goodsName"];
+    NSString *shopName = [dic objectForKey:@"shopName"];
+    NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
+    NSString *url = [dic objectForKey:@"h5Url"];
+    
+    NSMutableDictionary *shareDic = [NSMutableDictionary dictionary];
+    
+    [shareDic setValue:goodsName forKey:GOODS_NAME];
+    [shareDic setValue:shopName forKey:SHOP_NAME];
+    [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
+    [shareDic setValue:url forKey:GOODS_URL];
     [WSProjShareUtil shareGoodsDetails:shareDic];
 }
+
 
 @end

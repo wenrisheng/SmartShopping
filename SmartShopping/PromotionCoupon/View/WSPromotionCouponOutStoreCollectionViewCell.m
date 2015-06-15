@@ -38,19 +38,19 @@
     NSString *FisCollect = nil;
     NSString *FgoodsEndDate = nil;
     NSString *FgoodsLogo = nil;
-    NSString *FgoodsName = @"N";
+    NSString *FgoodsName = @"";
     
     NSString *SgoodsScan = nil;
     NSString *SisCollect = nil;
     NSString *SgoodsEndDate = nil;
     NSString *SgoodsLogo = nil;
-    NSString *SgoodsName = @"N";
+    NSString *SgoodsName = @"";
     if (goodsList.count > 0) {
         NSDictionary *FDic = [goodsList objectAtIndex:0];
         FgoodsEndDate = [FDic objectForKey:@"goodsEndDate"];
         FgoodsLogo = [FDic objectForKey:@"goodsLogo"];
         FgoodsName = [FDic objectForKey:@"goodsName"];
-        FgoodsScan = [FDic objectForKey:@"goodsScan"];
+        FgoodsScan = [FDic stringForKey:@"goodsScan"];
         FisCollect = [FDic objectForKey:@"isCollect"];
     }
    
@@ -59,10 +59,15 @@
         SgoodsEndDate = [SDic objectForKey:@"goodsEndDate"];
         SgoodsLogo = [SDic objectForKey:@"goodsLogo"];
         SgoodsName = [SDic objectForKey:@"goodsName"];
-        SgoodsScan = [SDic objectForKey:@"goodsScan"];
+        SgoodsScan = [SDic stringForKey:@"goodsScan"];
         SisCollect = [SDic objectForKey:@"isCollect"];
     }
 
+    if ([FgoodsScan isEqualToString:@"1"]) {
+        _leftScanImageView.hidden = NO;
+    } else {
+        _leftScanImageView.hidden = YES;
+    }
     _leftValidDateLabel.text = [self getValidateWithDateStr:FgoodsEndDate];
     [_leftImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:FgoodsLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (_downloadImageFinish) {
@@ -78,6 +83,11 @@
        
     }
     
+    if ([SgoodsScan isEqualToString:@"1"]) {
+        _rightScanImageView.hidden = NO;
+    } else {
+        _rightScanImageView.hidden = YES;
+    }
     _rightValidDateLabel.text = [self getValidateWithDateStr:SgoodsEndDate];
     [_rightImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:SgoodsLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (_downloadImageFinish) {
@@ -118,12 +128,6 @@
     }
 }
 
-- (IBAction)logoButAction:(id)sender {
-    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shop = dic;
-    [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
-}
-
 - (IBAction)distanceButAction:(id)sender
 {
     NSString *lat = [dic stringForKey:@"lat"];
@@ -144,23 +148,48 @@
 //    WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
 //    [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
     
-    [WSUserUtil actionAfterLogin:^{
-        [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypePromotionCoupon callback:^(id result) {
-            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-            // 在店内
-            if (isInStore) {
-                NSDictionary *isInShop = [result objectForKey:IS_IN_SHOP_DATA];
-                // 请求商店详情
-                [self requestStoreDetailWithShopId:[isInShop stringForKey:@"shopId"]];
-                
-                // 不在店内
-            } else {
-                [self toNoInStoreVC];
-            }
-            
-        }];
-    }];
+    // 可以签到
+    NSString *isSign = [dic stringForKey:@"isSign"];
+    if ([isSign isEqualToString:@"1"]) {
+        [WSUserUtil actionAfterLogin:^{
+            [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+                CLBeacon *beacon = nil;
+                if (beaconsArray.count > 0) {
+                    beacon = [beaconsArray objectAtIndex:0];
+                }
+                [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+                    BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                    // 在店内
+                    if (isInStore) {
+                        NSString *userIsSign = [dic stringForKey:@"userIsSign"];
+                        // 用户已经签到
+                        if ([userIsSign isEqualToString:@"Y"]) {
+                            WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                            storeDetailVC.shop = dic;
+                            [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+                        } else {
+                            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                            WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                            inStoreNoSignVC.shop = shop;
+                            [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                        }
+                        // 不在店内
+                    } else {
+                        //不在签到范围内
+                        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
+                        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
+                    }
+                }];
 
+            }];
+        }];
+        
+    // 不可以签到
+    } else {
+        //不在签到范围内
+        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
+        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
+    }
 }
 
 - (IBAction)lookMoreButAction:(id)sender
@@ -217,8 +246,19 @@
             } showMessage:YES];
         // 已收藏 取消收藏
         } else {
-             [goodDic setValue:@"N" forKey:@"isCollect"];
-            [_leftCollectBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
+            NSString *goodsid = [goodDic stringForKey:@"goodsId"];
+            NSDictionary *param = @{@"uid": user._id, @"goodsid":  goodsid, @"shopid": shopId};
+            [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:param tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
+                float flag = [WSInterfaceUtility validRequestResult:result];
+                if (flag) {
+                    [self.viewController.view makeToast:@"已取消收藏！"];
+                    [goodDic setValue:@"N" forKey:@"isCollect"];
+                    [_leftCollectBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
+                }
+            } failCallBack:^(id error) {
+                [SVProgressHUD showErrorWithStatus:@"操作失败！" duration:TOAST_VIEW_TIME];
+            } showMessage:YES];
+            
                 }
     } else {
         [WSUserUtil actionAfterLogin:^{
@@ -232,47 +272,24 @@
 
 - (IBAction)leftShareButAction:(id)sender
 {
+    
+    
     NSArray *goodsList = [dic objectForKey:@"goodsList"];
     if (goodsList.count == 0) {
         return;
     }
     NSDictionary *goodDic = [goodsList objectAtIndex:0];
-    NSString *goodsId = [goodDic stringForKey:@"goodsId"];
-    NSString *shopId = [dic stringForKey:@"shopId"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:goodsId forKey:@"goodsId"];
-    [params setValue:shopId forKey:@"shopid"];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
+    NSString *goodsName = [goodDic objectForKey:@"goodsName"];
+    NSString *shopName = [dic objectForKey:@"shopName"];
+    NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[goodDic objectForKey:@"goodsLogo"]];
+    NSString *url = [goodDic objectForKey:@"h5Url"];
     
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            NSDictionary *goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
-            NSString *goodsName = [goodDic objectForKey:@"goodsName"];
-            NSString *shopName = [dic objectForKey:@"shopName"];
-            NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[goodDic objectForKey:@"goodsLogo"]];
-            id url = [goodsDetails objectForKey:@"h5Url"];
-            
-            NSMutableDictionary *shareDic = [NSMutableDictionary dictionaryWithDictionary:goodsDetails];
-            
-            [shareDic setValue:goodsName forKey:GOODS_NAME];
-            [shareDic setValue:shopName forKey:SHOP_NAME];
-            [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
-            [shareDic setValue:url forKey:GOODS_URL];
-            [self performSelector:@selector(shareProduct:) withObject:goodsDetails afterDelay:1];
-            //[self performSelectorInBackground:@selector(shareProduct:) withObject:goodsDetails ];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD showErrorWithStatus:@"分享失败！" duration:TOAST_VIEW_TIME];
-    } showMessage:YES];
+    NSMutableDictionary *shareDic = [NSMutableDictionary dictionary];
     
-}
-
-- (void)shareProduct:(NSDictionary *)shareDic
-{
+    [shareDic setValue:goodsName forKey:GOODS_NAME];
+    [shareDic setValue:shopName forKey:SHOP_NAME];
+    [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
+    [shareDic setValue:url forKey:GOODS_URL];
     [WSProjShareUtil shareGoodsDetails:shareDic];
 }
 
@@ -311,7 +328,7 @@
                 BOOL flag = [WSInterfaceUtility validRequestResult:result];
                 if (flag) {
                     [goodDic setValue:@"Y" forKey:@"isCollect"];
-                    [_leftCollectBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
+                    [_rightCollectBut setBackgroundImage:[UIImage imageNamed:@"collected"] forState:UIControlStateNormal];
                     [CollectSucView showCollectSucViewInView:self.viewController.view];
                 }
                 
@@ -325,6 +342,7 @@
             [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDeleteCollect] data:param tag:WSInterfaceTypeDeleteCollect sucCallBack:^(id result) {
                 float flag = [WSInterfaceUtility validRequestResult:result];
                 if (flag) {
+                     [self.viewController.view makeToast:@"已取消收藏！"];
                     [goodDic setValue:@"N" forKey:@"isCollect"];
                     [_rightCollectBut setBackgroundImage:[UIImage imageNamed:@"uncollect"] forState:UIControlStateNormal];
                 }
@@ -345,41 +363,22 @@
 - (IBAction)rightShareButAction:(id)sender
 {
     NSArray *goodsList = [dic objectForKey:@"goodsList"];
-    if (goodsList.count == 0) {
+    if (goodsList.count >= 2) {
         return;
     }
     NSDictionary *goodDic = [goodsList objectAtIndex:1];
-    NSString *goodsId = [goodDic stringForKey:@"goodsId"];
-    NSString *shopId = [dic stringForKey:@"shopId"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:goodsId forKey:@"goodsId"];
-    [params setValue:shopId forKey:@"shopid"];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [params setValue:user._id forKey:@"uid"];
-    }
+    NSString *goodsName = [goodDic objectForKey:@"goodsName"];
+    NSString *shopName = [dic objectForKey:@"shopName"];
+    NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[goodDic objectForKey:@"goodsLogo"]];
+    NSString *url = [goodDic objectForKey:@"h5Url"];
     
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetGoodsDetails] data:params tag:WSInterfaceTypeGetGoodsDetails sucCallBack:^(id result) {
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
-        if (flag) {
-            NSDictionary *goodsDetails = [[result objectForKey:@"data"] objectForKey:@"goodsDetails"];
-            NSString *goodsName = [goodDic objectForKey:@"goodsName"];
-            NSString *shopName = [dic objectForKey:@"shopName"];
-            NSString *goodsLogo = [WSInterfaceUtility getImageURLWithStr:[goodDic objectForKey:@"goodsLogo"]];
-            id url = [goodsDetails objectForKey:@"h5Url"];
-            
-            NSMutableDictionary *shareDic = [NSMutableDictionary dictionaryWithDictionary:goodsDetails];
-            
-            [shareDic setValue:goodsName forKey:GOODS_NAME];
-            [shareDic setValue:shopName forKey:SHOP_NAME];
-            [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
-            [shareDic setValue:url forKey:GOODS_URL];
-            [self performSelector:@selector(shareProduct:) withObject:goodsDetails afterDelay:1];
-            //[self performSelectorInBackground:@selector(shareProduct:) withObject:goodsDetails ];
-        }
-    } failCallBack:^(id error) {
-        [SVProgressHUD showErrorWithStatus:@"分享失败！" duration:TOAST_VIEW_TIME];
-    } showMessage:YES];
+    NSMutableDictionary *shareDic = [NSMutableDictionary dictionary];
+    
+    [shareDic setValue:goodsName forKey:GOODS_NAME];
+    [shareDic setValue:shopName forKey:SHOP_NAME];
+    [shareDic setValue:goodsLogo forKey:GOODS_LOGO];
+    [shareDic setValue:url forKey:GOODS_URL];
+    [WSProjShareUtil shareGoodsDetails:shareDic];
 }
 
 #pragma mark - 请求商店详情
@@ -420,21 +419,11 @@
                 storeDetailVC.shop = shop;
                 [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
             }
-        } else {
-            //不在店内
-            [self toNoInStoreVC];
         }
     } failCallBack:^(id error) {
-        [self toNoInStoreVC];
-    } showMessage:NO];
+       
+    } showMessage:YES];
 }
 
-- (void)toNoInStoreVC
-{
-    [WSUserUtil actionAfterLogin:^{
-        WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-        [self.viewController.navigationController pushViewController:noInstoreVC animated:YES];
-    }];
-}
 
 @end

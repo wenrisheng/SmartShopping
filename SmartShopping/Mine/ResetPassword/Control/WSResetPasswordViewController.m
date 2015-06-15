@@ -74,6 +74,13 @@
         flag = NO;
         return flag;
     }
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    NSString *encodePwd = [_oldPasswordTextField.text encodeMD5_32_lowercase];
+    if (![encodePwd isEqualToString:user.password]) {
+        [SVProgressHUD showErrorWithStatus:@"原密码不正确！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
     if (_nwePasswordTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入新密码！" duration:TOAST_VIEW_TIME];
         flag = NO;
@@ -85,11 +92,15 @@
         return flag;
     }
     if (_repetNwePasswordTextField.text.length == 0) {
-        [SVProgressHUD showErrorWithStatus:@"请确认认新密码！" duration:TOAST_VIEW_TIME];
+        [SVProgressHUD showErrorWithStatus:@"请确认新密码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
-
+    if (![WSIdentifierValidator isValidOnlyNumberOrLetter:_repetNwePasswordTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"密码由6-20个数字或字母组成！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
     if (![_nwePasswordTextField.text isEqualToString:_repetNwePasswordTextField.text]) {
         [SVProgressHUD showErrorWithStatus:@"新密码不一致！" duration:TOAST_VIEW_TIME];
         flag = NO;
@@ -126,6 +137,11 @@
             [SVProgressHUD dismiss];
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
+                WSUser *user = [WSRunTime sharedWSRunTime].user;
+                user.password = [_nwePasswordTextField.text encodeMD5_32_lowercase];
+                // 本地存储用户信息
+                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
+                [USER_DEFAULT setObject:userdata forKey:USER_KEY];
                 [SVProgressHUD showSuccessWithStatus:@"密码修改成功" duration:TOAST_VIEW_TIME];
                 [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(resetPasswordAfter) userInfo:nil repeats:NO];
             }

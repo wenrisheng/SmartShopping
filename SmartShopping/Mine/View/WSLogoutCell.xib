@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayp-MV-CjJ">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayp-MV-CjJ">
                         <rect key="frame" x="8" y="10" width="304" height="40"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.29411764709999999" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                         <state key="normal" title="注销">
@@ -23,6 +23,12 @@
                         </state>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ayp-MV-CjJ" secondAttribute="bottom" constant="9.5" id="DWd-4o-Qgm"/>
+                    <constraint firstAttribute="trailing" secondItem="ayp-MV-CjJ" secondAttribute="trailing" constant="8" id="aut-U6-Zqg"/>
+                    <constraint firstItem="ayp-MV-CjJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="iOs-mi-lGR"/>
+                    <constraint firstItem="ayp-MV-CjJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="ytf-9e-hgI"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>

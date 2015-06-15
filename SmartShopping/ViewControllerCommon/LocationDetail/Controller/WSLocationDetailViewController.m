@@ -50,6 +50,7 @@
     _mapView.showsUserLocation = YES;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
     
+    
     [_mapView setZoomLevel:11];
     _mapView.delegate = self;
     pointAnnotation = [[BMKPointAnnotation alloc]init];
@@ -60,7 +61,7 @@
     pointAnnotation.title = @"";
     [_mapView addAnnotation:pointAnnotation];
     
-
+    _mapView.centerCoordinate = coor;
     
 }
 
@@ -94,6 +95,7 @@
 {
     DLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
    [_mapView updateLocationData:userLocation];
+    _mapView.centerCoordinate = userLocation.location.coordinate;
 }
 
 - (void)didFailToLocateUserWithError:(NSError *)error

@@ -34,7 +34,6 @@
     _leftLabel.text = leftName;
     _leftPeaLabel.text = leftPeaNum;
     
-    _rightBut.enabled = NO;
     NSString *rightImageURL = @"";
     NSString *rightName = @"--";
     NSString *rightPeaNum = @"";
@@ -43,18 +42,21 @@
         rightImageURL = [WSInterfaceUtility getImageURLWithStr:[secondDic objectForKey:@"giftLogo"]];
         rightName = [secondDic objectForKey:@"giftName"];
         rightPeaNum = [secondDic stringForKey:@"requiredBean"];
-        _rightBut.enabled = YES;
+        [_rightImageView sd_setImageWithURL:[NSURL URLWithString:rightImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+        }];
+        _rightLabel.text = rightName;
+        _rightPeaLabel.text = rightPeaNum;
+        _rightView.hidden = NO;
+    } else {
+        _rightView.hidden = YES;
     }
-    [_rightImageView sd_setImageWithURL:[NSURL URLWithString:rightImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
-    _rightLabel.text = rightName;
-    _rightPeaLabel.text = rightPeaNum;
+
 }
 
 - (void)awakeFromNib {
     // Initialization code
-    NSArray *array = @[_leftProduct, _rightProduct];
+    NSArray *array = @[_leftView, _rightView];
     for (UIView *view in array) {
         [view setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.855 green:0.859 blue:0.863 alpha:1.000] cornerRadius:5];
     }

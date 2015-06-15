@@ -181,7 +181,12 @@
         [self showFailView];
         return;
     }
-    if (tem == maxNum) { // 不可以加
+    int surpluscount = [[_gift stringForKey:@"surpluscount"] intValue];
+    if (surpluscount <= 0) {
+        
+        return;
+    }
+    if (tem == maxNum || tem == [[_gift stringForKey:@"surpluscount"] intValue]) { // 不可以加
         [self notAdd];
         curNumInt = tem;
         curNum = [NSString stringWithFormat:@"%d", curNumInt];
@@ -301,8 +306,23 @@
 - (BOOL)validateData
 {
     float flag = YES;
-    if (_telTextField.text.length > 0 && ![WSIdentifierValidator isValidPhone:_telTextField.text]) {
+    if (_telTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+    if (![WSIdentifierValidator isValidPhone:_telTextField.text]) {
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+    if (_addressTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入配送地址！" duration:2.0];
+        flag = NO;
+        return flag;
+    }
+    if (_detailAddressTextView.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入详细地址！" duration:2.0];
         flag = NO;
         return flag;
     }

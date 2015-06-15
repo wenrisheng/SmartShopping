@@ -25,6 +25,6 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
 + (NSString *)converDateWithDateStr:(NSString *)dateStr;
 + (NSString *)converDistanceWithDistanceStr:(NSString *)distance;
 
-+ (void)isInStoreWithIsInStoreType:(IsInStoreType)type callback:(void (^)(id result))callback;
++ (void)isInStoreWithIBeacon:(CLBeacon *)ibeacon callback:(void (^)(id result))callback;
 
 @end

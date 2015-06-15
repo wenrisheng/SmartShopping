@@ -19,12 +19,15 @@
 - (void)setModel:(NSDictionary *)dic
 {
     NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"logoPath"]];
-    _leftImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]]];
+    [_leftImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
     
     _giftNumLabel.text = [NSString stringWithFormat:@"礼品编号：%@", [dic stringForKey:@"giftNumber"]];
     _nameLabel.text = [dic objectForKey:@"giftName"];
     _numLabel.text = [dic stringForKey:@"beanNumber"];
     _timeLabel.text = [dic objectForKey:@"exchangeTime"];
+    _statusLabel.text = [dic objectForKey:@"giftStatus"];
 }
 
 - (void)awakeFromNib {

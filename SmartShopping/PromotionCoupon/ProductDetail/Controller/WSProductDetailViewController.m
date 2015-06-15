@@ -9,6 +9,7 @@
 #import "WSProductDetailViewController.h"
 #import "CollectSucView.h"
 #import "WSScanProductViewController.h"
+#import "WSScanAfterViewController.h"
 
 @interface WSProductDetailViewController () <UIWebViewDelegate>
 
@@ -64,7 +65,7 @@
 {
     NSArray *titleArray = nil;
     NSArray *imageArray = nil;
-    NSString *Isscan = [_goodsDetails stringForKey:@"isscan"];
+    NSString *Isscan = [_goodsDetails stringForKey:@"goodsScan"];
     // 可以扫描
     if ([Isscan isEqualToString:@"1"]) {
         _hasScan = YES;
@@ -132,8 +133,19 @@
 
                 // 扫描
                 if (_hasScan) {
-                    WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
-                    [self.navigationController pushViewController:scanProductVC animated:YES];
+                    [WSUserUtil actionAfterLogin:^{
+                        WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+                        scanProductVC.scanSucCallBack = ^(NSString *beanNumber) {
+                            WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
+                            scanAfterVC.goodsId = [_goodsDetails stringForKey:@"id"];
+                            scanAfterVC.shopid = _shopId;
+                            scanAfterVC.beanNum = beanNumber;
+                            [self.navigationController pushViewController:scanAfterVC animated:YES];
+                        };
+                        scanProductVC.shopid = _shopId;
+                        scanProductVC.goodsId = [_goodsDetails stringForKey:@"id"];
+                        [self.navigationController pushViewController:scanProductVC animated:YES];
+                    }];
                 // 分享
                 } else {
                     if (_goodsDetails) {

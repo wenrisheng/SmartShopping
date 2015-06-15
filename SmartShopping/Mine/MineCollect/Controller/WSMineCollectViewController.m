@@ -53,11 +53,11 @@
     layout.sectionInset = UIEdgeInsetsMake(20, 10, 10, 10);
     layout.headerHeight = 0;
     layout.footerHeight = 0;
-    layout.minimumColumnSpacing = 20;
-    layout.minimumInteritemSpacing = 20;
+    layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
+    layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _contentCollectionView.collectionViewLayout = layout;
     dataArray = [[NSMutableArray alloc] init];
-    [self requestMineCollect];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,6 +75,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
+    curPage = 0;
+    [self requestMineCollect];
 }
 
 #pragma mark - 用户位置更新
@@ -159,7 +161,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
-    CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    CGFloat width = collectionView.bounds.size.width - 3 * COLLECTION_VIEW_GAP;
     NSDictionary *dic = [dataArray objectAtIndex:row];
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];
     NSString *goodsLogoURL = [WSInterfaceUtility getImageURLWithStr:goodsLogo];

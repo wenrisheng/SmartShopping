@@ -10,6 +10,7 @@
                 <outlet property="collectionView" destination="gK6-d3-20d" id="ksn-05-IJf"/>
                 <outlet property="searchManagerView" destination="13C-Cs-RKM" id="qKo-8R-TZo"/>
                 <outlet property="tabSlideManagerView" destination="8fn-MX-JbU" id="yFD-KL-HW2"/>
+                <outlet property="topRightBut" destination="gr0-eF-c7t" id="98D-1x-ig2"/>
                 <outlet property="view" destination="XVQ-zw-hfA" id="In2-N9-4se"/>
             </connections>
         </placeholder>

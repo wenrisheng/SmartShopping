@@ -79,20 +79,20 @@
     DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
 
 #endif
-    __weak ASIFormDataRequest *respRequest = request;
+    __weak ASIFormDataRequest *weakRequest = request;
     // 请求完成
     [request setCompletionBlock:^{
         
-        NSData *responseData = [respRequest responseData];
+        NSData *responseData = [weakRequest responseData];
         NSError *jsonError = nil;
         NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&jsonError];
         
         // 调试打印响应数据
 #ifdef DEBUG
-        NSString * str = [[NSString alloc] initWithData:[respRequest postBody] encoding:NSUTF8StringEncoding];
+        NSString * str = [[NSString alloc] initWithData:[weakRequest postBody] encoding:NSUTF8StringEncoding];
         DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
         DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
-        NSError *requestError = respRequest.error;
+        NSError *requestError = weakRequest.error;
         if (requestError) {
             DLog(@"requstError:%@", requestError);
         }
@@ -101,7 +101,7 @@
         }
         NSArray *allKeys = [resultDic allKeys];
         NSMutableString *resultStr = [[NSMutableString alloc] init];
-        [resultStr appendString:[NSString stringWithFormat:@"*********request  %d result:\n", (int)respRequest.tag]];
+        [resultStr appendString:[NSString stringWithFormat:@"*********request  %d result:\n", (int)weakRequest.tag]];
         [resultStr appendString:@"{\n"];
         for (id key in allKeys) {
             [resultStr appendString:[NSString stringWithFormat:@"%@:%@,\n", key, [resultDic objectForKey:key]]];
@@ -122,12 +122,12 @@
         
     // 调试 打印请求错误
 #ifdef  DEBUG
-        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:respRequest.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, respRequest.error);
+        NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:weakRequest.url encoding:NSUTF8StringEncoding error:nil], (int)weakRequest.tag, weakRequest.error);
 #endif
         
         // 请求错误回调
         if (failCallBack) {
-            failCallBack(request.error);
+            failCallBack(weakRequest.error);
         }
     }];
     

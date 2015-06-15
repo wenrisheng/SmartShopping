@@ -37,7 +37,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    //[SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
 }
 
 @end

@@ -19,14 +19,14 @@
     _tableS.dataSource = self;
     _tableS.delegate = self;
     
-//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestAction:)];
-//    [self.bgView addGestureRecognizer:tapGest];
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestAction:)];
+    [self.bgView addGestureRecognizer:tapGest];
 }
 
-//- (void)tapGestAction:(UITapGestureRecognizer *)tapGest
-//{
-//    self.hidden = YES;
-//}
+- (void)tapGestAction:(UITapGestureRecognizer *)tapGest
+{
+    self.hidden = YES;
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

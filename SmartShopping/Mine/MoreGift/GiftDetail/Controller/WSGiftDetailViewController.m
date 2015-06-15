@@ -74,6 +74,12 @@
 {
     if (_gift) {
         [WSUserUtil actionAfterLogin:^{
+            int surpluscount = [[_gift stringForKey:@"surpluscount"] intValue];
+            if (surpluscount <= 0) {
+                [self showFailViewWithMsg:@"哎呀，礼品已经兑换完了！"];
+                return;
+            }
+            
             // 礼品所需的精明豆
            int unitNum = [[_gift stringForKey:@"amount"] intValue];
             
@@ -81,7 +87,7 @@
             WSUser *user = [WSRunTime sharedWSRunTime].user;
             int currentPeaNum = [user.beanNumber intValue];
             if (unitNum > currentPeaNum) {
-                [self showFailView];
+                [self showFailViewWithMsg:@"哎呀，精明豆不够啊！"];
             } else {
                 WSGiftOrderWriterViewController *orderWriterVC = [[WSGiftOrderWriterViewController alloc] init];
                 orderWriterVC.gift = self.gift;
@@ -93,7 +99,7 @@
     }
 }
 
-- (void)showFailView
+- (void)showFailViewWithMsg:(NSString *)msg
 {
     
     if (!failView) {
@@ -102,6 +108,7 @@
         [self.view addSubview:failView];
         [failView expandToSuperView];
     }
+    failView.upLabel.text = msg;
     failView.hidden = NO;
 }
 

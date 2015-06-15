@@ -22,29 +22,23 @@
 #define HISTORY_COUNT                     10
 
 @interface WSSearchProductViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
-{
-    NSMutableArray *domainFDataArray; // 一级区域数据
-    NSMutableDictionary *domainSDataDic; // 二级区域数据
-    int domainFIndex; // 当前选中的一级区域
-    int domainSIndex; // 当前选中的二级区域
-    
-    NSMutableArray *storeFDataArray;// 商店一级数据
-    NSMutableDictionary *storeSDic;// 商店二级数据
-    int storeFIndex; // 当前选中的一级商店
-    int storeSIndex; // 当前选中的二级商店
-    
-    NSMutableArray *pinleiFDataArray; // 品类
-    NSMutableDictionary *pinleiSDic; // 二级品类
-    int pinleiFIndex;
-    
-    int curPage;
-    NSMutableArray *dataArray;
-    
-    BOOL hasRequest;
-    
-    int curTabIndex;
-}
 
+@property (weak, nonatomic) IBOutlet UIButton *topRightBut;
+@property (strong, nonatomic) NSMutableArray *domainFDataArray; // 一级区域数据
+@property (strong, nonatomic) NSMutableDictionary *domainSDataDic; // 二级区域数据
+@property (assign, nonatomic) int domainFIndex; // 当前选中的一级区域
+@property (assign, nonatomic) int domainSIndex; // 当前选中的二级区域
+@property (strong, nonatomic)  NSMutableArray *storeFDataArray;// 商店一级数据
+@property (strong, nonatomic)  NSMutableDictionary *storeSDic;// 商店二级数据
+@property (assign, nonatomic) int storeFIndex; // 当前选中的一级商店
+@property (assign, nonatomic)  int storeSIndex; // 当前选中的二级商店
+@property (strong, nonatomic)  NSMutableArray *pinleiFDataArray; // 品类
+@property (strong, nonatomic) NSMutableDictionary *pinleiSDic; // 二级品类
+@property (assign, nonatomic) int pinleiFIndex;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (assign, nonatomic) BOOL hasRequest;
+@property (assign, nonatomic) int curTabIndex;;
+@property (assign, nonatomic) int curPage;
 @property (strong, nonatomic) NSString *searchname;
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double longtide;
@@ -69,9 +63,15 @@
 @end
 
 @implementation WSSearchProductViewController
+@synthesize curPage, curTabIndex, hasRequest, dataArray, domainFDataArray, domainSDataDic, storeFDataArray, storeSDic, pinleiFDataArray, pinleiSDic;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    self.domainSIndex = -1;
+    self.storeSIndex = -1;
+    _tabSlideManagerView.hidden = YES;
+    _topRightBut.hidden = YES;
     curTabIndex = -1;
     hasRequest = NO;
     curPage = 0;
@@ -87,11 +87,12 @@
     _searchManagerView.searchTypeView.typeLabel.text = @"商品";
     
     // 搜索类型事件
+    
     _searchManagerView.searchTypeView.typeButActionCallBack = ^(WSSearchTypeView *searchView) {
         if (_doubleTableView && !_doubleTableView.hidden) {
             _doubleTableView.hidden = YES;
         }
-        _tabSlideManagerView.hidden = NO;
+
         if (_toastView && !_toastView.hidden) {
             self.toastView.hidden = YES;
         } else {
@@ -105,9 +106,12 @@
                 }
             };
         }
-        _tabSlideManagerView.hidden = NO;
     };
+    __weak WSSearchProductViewController *weakSelf = self;
     _searchManagerView.searchTypeView.didBeginEditingCallback  = ^(WSSearchTypeView *searchView) {
+        if (!_doubleTableView.hidden) {
+            _doubleTableView.hidden = YES;
+        }
         if (_toastView && !_toastView.hidden) {
             self.toastView.hidden = YES;
         }
@@ -119,15 +123,15 @@
              self.historyView.hidden = NO;
              self.historyView.didSelectedCallback = ^(NSInteger index) {
                 NSString *searchname = [historyArray objectAtIndex:index];
-                _searchManagerView.searchTypeView.centerTextField.text = searchname;
-                self.searchname = searchname;
-                curPage = 0;
-                [self requestSelectGoods];
+                weakSelf.searchManagerView.searchTypeView.centerTextField.text = searchname;
+                weakSelf.searchname = searchname;
+                weakSelf.curPage = 0;
+                [weakSelf requestSelectGoods];
             };
            self.historyView.clearCallback = ^() {
-               _historyView.dataArray = nil;
-               [ self.historyView.contentTableView reloadData];
-                [USER_DEFAULT removeObjectForKey:SEARCH_PRODUCT_HISTORY_KEY];
+               weakSelf.historyView.dataArray = nil;
+               [weakSelf.historyView.contentTableView reloadData];
+               [USER_DEFAULT removeObjectForKey:SEARCH_PRODUCT_HISTORY_KEY];
             };
 
         }
@@ -142,7 +146,7 @@
     };
     
     _searchManagerView.searchTypeView.shouldReturnCallback =  ^ (WSSearchTypeView *searchView) {
-        [self doSearch];
+        //[self doSearch];
         return YES;
     };
     
@@ -154,7 +158,6 @@
     _searchManagerView.searchTypeView.leftImageview.image = [UIImage imageNamed:@"down_arrow"];
     [_searchManagerView.searchTypeView.searchBut setTitle:@"" forState:UIControlStateNormal];
     [_searchManagerView.searchTypeView.searchBut setBackgroundImage:[UIImage imageNamed:@"search-icon"] forState:UIControlStateNormal];
-    
     NSArray *temp1 = @[@"附近", @"所有商店", @"品类"];
     _tabSlideManagerView.tabSlideGapTextView.imageheight = TOP_TAB_IMAGE_WIDTH;
     _tabSlideManagerView.tabSlideGapTextView.imageWith = TOP_TAB_IMAGE_WIDTH;
@@ -223,8 +226,8 @@
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.headerHeight = 0;
     layout.footerHeight = 0;
-    layout.minimumColumnSpacing = 20;
-    layout.minimumInteritemSpacing = 20;
+    layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
+    layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _collectionView.collectionViewLayout = layout;
 
 }
@@ -273,10 +276,6 @@
 
 - (void)doSearch
 {
-    if (_historyView && !_historyView.hidden) {
-        _historyView.hidden = YES;
-    }
-    _tabSlideManagerView.hidden = NO;
     [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
     if (_searchname.length > 0) {
         NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
@@ -365,21 +364,35 @@
 #pragma mark 点击了所有商店
 - (void)clickAllStore
 {
-    if (storeFDataArray.count == 0) {
-        [self requestGetShopTypeList];
+    // 选择了附近
+    if (self.domainSIndex != -1) {
+        if (storeFDataArray.count == 0) {
+            [self requestGetShopTypeList];
+        } else {
+            [self showStoreTypeSelectView];
+        }
+    // 没有选择附近
     } else {
-       [self showStoreTypeSelectView];
+        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
+        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
     }
+   
 }
 
 #pragma mark 点击了所有品类
 - (void)clickAllType
 {
-    if (pinleiFDataArray.count == 0) {
-        [self requestDetShopCategory];
-    } else {
-        [self showPinleiSelectView];
+    if (self.storeSIndex != -1) {
+        if (pinleiFDataArray.count == 0) {
+            [self requestDetShopCategory];
+        } else {
+            [self showPinleiSelectView];
+        }
+    }  else {
+        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:2];
+        [SVProgressHUD showErrorWithStatus:@"请先选择商店！" duration:TOAST_VIEW_TIME];
     }
+   
 }
 
 #pragma mark - 请求区域筛选getAreaList
@@ -577,26 +590,26 @@
     self.doubleTableView.dataArrayS = tempSArray;
     [self.doubleTableView.tableF reloadData];
     [self.doubleTableView.tableS reloadData];
-
+    __weak WSSearchProductViewController *weakSelf = self;
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
-        domainFIndex = (int)index;
+        weakSelf.domainFIndex = (int)index;
         
-        _doubleTableView.dataArrayS = nil;
-        [_doubleTableView.tableS reloadData];
-        NSDictionary *dic = [domainFDataArray objectAtIndex:index];
+        weakSelf.doubleTableView.dataArrayS = nil;
+        [weakSelf.doubleTableView.tableS reloadData];
+        NSDictionary *dic = [weakSelf.domainFDataArray objectAtIndex:index];
         NSString *districtId = [dic stringForKey:@"districtId"];
-        self.districtId = districtId;
-        NSArray *secondArray = [domainSDataDic objectForKey:districtId];
+        weakSelf.districtId = districtId;
+        NSArray *secondArray = [weakSelf.domainSDataDic objectForKey:districtId];
         // 第一个数据的二级区域数据是否为空
         // 二级区域数据为空时请求数据
         if (secondArray.count == 0) {
-            [self requestGetSAreaListWithDistrictId:districtId];
+            [weakSelf requestGetSAreaListWithDistrictId:districtId];
             
             // 二级区域数据不为空时刷新二级表格
         } else {
             NSMutableArray *tempSArray = [NSMutableArray array];
-            NSDictionary *dic = [domainFDataArray objectAtIndex:index];
-            NSArray *tempArray = [domainSDataDic objectForKey:[dic stringForKey:@"districtId"]];
+            NSDictionary *dic = [weakSelf.domainFDataArray objectAtIndex:index];
+            NSArray *tempArray = [weakSelf.domainSDataDic objectForKey:[dic stringForKey:@"districtId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -606,25 +619,35 @@
                 [tempSArray addObject:datadic];
             }
            
-            self.doubleTableView.dataArrayS = tempSArray;
-            [self.doubleTableView.tableS reloadData];
+            weakSelf.doubleTableView.dataArrayS = tempSArray;
+            [weakSelf.doubleTableView.tableS reloadData];
         }
         
     };
     self.doubleTableView.tableSCallBack = ^(NSInteger index) {
-        domainSIndex = (int)index;
-        NSDictionary *dic = [domainFDataArray objectAtIndex:domainFIndex];
+        weakSelf.domainSIndex = (int)index;
+        NSDictionary *dic = [weakSelf.domainFDataArray objectAtIndex:weakSelf.domainFIndex];
         NSString *districtId = [dic stringForKey:@"districtId"];
-        NSArray *secondArray = [domainSDataDic objectForKey:districtId];
+        NSArray *secondArray = [weakSelf.domainSDataDic objectForKey:districtId];
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
-
-        [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
-        self.townId = [SDic stringForKey:@"townId"];
-        curPage = 0;
-        [self requestSelectGoods];
+        [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = title;
+        NSString *townId = [SDic stringForKey:@"townId"];
+        if (townId.length > 0) {
+            weakSelf.townId = townId;
+        }
         
-        self.doubleTableView.hidden = YES;
+        // 选择了全部
+        NSString *selectedDistrictId = [SDic stringForKey:@"districtId"];
+        if (districtId.length > 0) {
+            weakSelf.districtId = selectedDistrictId;
+            weakSelf.townId = @"";
+        }
+       
+        weakSelf.curPage = 0;
+        [weakSelf requestSelectGoods];
+        
+        weakSelf.doubleTableView.hidden = YES;
     };
 }
 
@@ -687,25 +710,26 @@
     self.doubleTableView.dataArrayS = tempSArray;
     [self.doubleTableView.tableF reloadData];
     [self.doubleTableView.tableS reloadData];
+    WSSearchProductViewController *weakSelf = self;
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
-        storeFIndex = (int)index;
-        _doubleTableView.dataArrayS = nil;
-        [_doubleTableView.tableS reloadData];
-        NSDictionary *dic = [storeFDataArray objectAtIndex:index];
+        weakSelf.storeFIndex = (int)index;
+        weakSelf.doubleTableView.dataArrayS = nil;
+        [weakSelf.doubleTableView.tableS reloadData];
+        NSDictionary *dic = [weakSelf.storeFDataArray objectAtIndex:index];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
-        self.shopTypeId = shopTypeId;
+        weakSelf.shopTypeId = shopTypeId;
         
-        NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
+        NSArray *secondArray = [weakSelf.storeSDic objectForKey:shopTypeId];
         // 第一个数据的二级数据是否为空
         // 二级数据为空时请求数据
         if (secondArray.count == 0) {
-            [self requestGetShopTypeListWithShopTypeId:shopTypeId];
+            [weakSelf requestGetShopTypeListWithShopTypeId:shopTypeId];
             
             // 二级数据不为空时刷新二级表格
         } else {
             NSMutableArray *tempSArray = [NSMutableArray array];
-            NSDictionary *dic = [storeFDataArray objectAtIndex:index];
-            NSArray *tempArray = [storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
+            NSDictionary *dic = [weakSelf.storeFDataArray objectAtIndex:index];
+            NSArray *tempArray = [weakSelf.storeSDic objectForKey:[dic objectForKey:@"shopTypeId"]];
             NSInteger SCount = tempArray.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
@@ -714,23 +738,31 @@
                 [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
                 [tempSArray addObject:datadic];
             }
-            self.doubleTableView.dataArrayS = tempSArray;
-            [self.doubleTableView.tableS reloadData];
+            weakSelf.doubleTableView.dataArrayS = tempSArray;
+            [weakSelf.doubleTableView.tableS reloadData];
         }
     };
     self.doubleTableView.tableSCallBack = ^(NSInteger index) {
-        storeSIndex = (int)index;
-        NSDictionary *dic = [storeFDataArray objectAtIndex:storeFIndex];
+        weakSelf.storeSIndex = (int)index;
+        NSDictionary *dic = [weakSelf.storeFDataArray objectAtIndex:weakSelf.storeFIndex];
         NSString *shopTypeId = [dic objectForKey:@"shopTypeId"];
-        NSArray *secondArray = [storeSDic objectForKey:shopTypeId];
+        NSArray *secondArray = [weakSelf.storeSDic objectForKey:shopTypeId];
         NSDictionary *SDic = [secondArray objectAtIndex:index];
         NSString *title = [SDic objectForKey:@"name"];
-        [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
-        self.retailId = [SDic stringForKey:@"retailId"];
-        curPage = 0;
-        [self requestSelectGoods];
+        [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = title;
+        NSString *retailId = [SDic stringForKey:@"retailId"];
+        if (retailId.length > 0) {
+            weakSelf.retailId = retailId;
+        }
+        NSString *selectedShopTypeId = [SDic stringForKey:@"shopTypeId"];
+        if (selectedShopTypeId.length > 0) {
+            weakSelf.shopTypeId = selectedShopTypeId;
+            weakSelf.retailId = @"";
+        }
+        weakSelf.curPage = 0;
+        [weakSelf requestSelectGoods];
 
-        self.doubleTableView.hidden = YES;
+        weakSelf.doubleTableView.hidden = YES;
     };
 }
 
@@ -767,16 +799,17 @@
     [self.doubleTableView.tableF reloadData];
     [self.doubleTableView.tableS reloadData];
     self.doubleTableView.tableSCallBack = nil;
+    __weak WSSearchProductViewController *weakSelf = self;
     self.doubleTableView.tableFCallBack = ^(NSInteger index) {
-        pinleiFIndex = (int)index;
-        _doubleTableView.dataArrayS = nil;
-        [_doubleTableView.tableS reloadData];
-        NSDictionary *dic = [pinleiFDataArray objectAtIndex:index];
+        weakSelf.pinleiFIndex = (int)index;
+        weakSelf.doubleTableView.dataArrayS = nil;
+        [weakSelf.doubleTableView.tableS reloadData];
+        NSDictionary *dic = [weakSelf.pinleiFDataArray objectAtIndex:index];
         NSString *mainId = [dic stringForKey:@"mainId"];
-        self.categoryId = mainId;
+        weakSelf.categoryId = mainId;
         NSString *name = [dic stringForKey:@"name"];
-        [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = name;
-        self.doubleTableView.hidden = YES;
+        [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = name;
+        weakSelf.doubleTableView.hidden = YES;
     };
 }
 
@@ -784,10 +817,24 @@
 #pragma mark  商品搜索
 - (void)requestSelectGoods
 {
+    if (!_historyView.hidden) {
+        _historyView.hidden = YES;
+    }
+    if (!_doubleTableView.hidden) {
+        _doubleTableView.hidden = YES;
+    }
+    if (_toastView && !_toastView.hidden) {
+        _toastView.hidden = YES;
+    }
+    
+     [_searchManagerView.searchView.textField resignFirstResponder];
+    _tabSlideManagerView.hidden = NO;
+    
+    _topRightBut.hidden = NO;
 #if DEBUG
     self.city = @"广州";
 #endif
-     _tabSlideManagerView.hidden = NO;
+    // _tabSlideManagerView.hidden = NO;
     hasRequest = YES;
     if (!_city) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
@@ -850,6 +897,18 @@
             
         }
         [_collectionView reloadData];
+        if (dataArray.count == 0) {
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)_collectionView.collectionViewLayout;
+            layout.columnCount = 1;
+            [layout invalidateLayout];
+        } else {
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)_collectionView.collectionViewLayout;
+            layout.columnCount = 2;
+            [layout invalidateLayout];
+        }
+
     } failCallBack:^(id error) {
         [_collectionView endHeaderAndFooterRefresh];
     } showMessage:YES];
@@ -861,7 +920,10 @@
 }
 
 - (IBAction)topRightAction:(id)sender {
-    if (_categoryId) {
+    if (!_doubleTableView.hidden) {
+        _doubleTableView.hidden = YES;
+    }
+    if (_categoryId.length > 0) {
         WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
         filterBrandVC.mainId = self.categoryId;
         filterBrandVC.callBack = ^(NSArray *array) {
@@ -942,7 +1004,7 @@
         return CGSizeMake(SCREEN_WIDTH, SCREEN_HEITHT);
     }
     NSInteger row =indexPath.row;
-    CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+    CGFloat width = collectionView.bounds.size.width - 3 * COLLECTION_VIEW_GAP;
     
     NSDictionary *dic = [dataArray objectAtIndex:row];
     NSString *goodsLogo = [dic objectForKey:@"goodsLogo"];

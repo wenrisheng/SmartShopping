@@ -122,12 +122,8 @@
                                                         <color key="textColor" red="0.32156862745098042" green="0.32156862745098042" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cr5-fk-OrJ">
-                                                        <rect key="frame" x="34" y="8" width="32" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="32" id="3TP-Cq-Arg"/>
-                                                            <constraint firstAttribute="height" constant="23" id="zYV-tD-B8k"/>
-                                                        </constraints>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cr5-fk-OrJ">
+                                                        <rect key="frame" x="34" y="8" width="32" height="22"/>
                                                         <state key="normal" backgroundImage="icon-01.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
@@ -140,9 +136,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="xcp-Jh-gHZ" secondAttribute="trailing" id="0j2-Fr-nOC"/>
                                                     <constraint firstItem="xcp-Jh-gHZ" firstAttribute="top" secondItem="vUt-Lv-RYR" secondAttribute="top" constant="26" id="ThY-uC-Ysk"/>
-                                                    <constraint firstAttribute="centerX" secondItem="cr5-fk-OrJ" secondAttribute="centerX" id="WzK-pB-U2R"/>
                                                     <constraint firstAttribute="height" constant="40" id="XPs-8r-J2n"/>
-                                                    <constraint firstItem="cr5-fk-OrJ" firstAttribute="top" secondItem="vUt-Lv-RYR" secondAttribute="top" constant="8" id="a5v-dN-Prn"/>
                                                     <constraint firstAttribute="width" constant="100" id="b4H-3Q-MMu"/>
                                                     <constraint firstItem="xcp-Jh-gHZ" firstAttribute="leading" secondItem="vUt-Lv-RYR" secondAttribute="leading" id="x7S-8h-zAo"/>
                                                 </constraints>
@@ -160,10 +154,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xp5-Fj-V2L">
-                                                        <rect key="frame" x="36" y="8" width="28" height="20"/>
+                                                        <rect key="frame" x="34" y="8" width="32" height="22"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="20" id="06e-0X-hxH"/>
-                                                            <constraint firstAttribute="width" constant="28" id="jUB-gp-wn5"/>
+                                                            <constraint firstAttribute="height" constant="22" id="06e-0X-hxH"/>
+                                                            <constraint firstAttribute="width" constant="32" id="jUB-gp-wn5"/>
                                                         </constraints>
                                                         <state key="normal" backgroundImage="icon-02.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,10 +191,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-FD-9bT">
-                                                        <rect key="frame" x="36" y="8" width="28" height="20"/>
+                                                        <rect key="frame" x="34" y="8" width="32" height="22"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="20" id="boJ-S4-dHx"/>
-                                                            <constraint firstAttribute="width" constant="28" id="gaM-rG-Tlc"/>
+                                                            <constraint firstAttribute="height" constant="22" id="boJ-S4-dHx"/>
+                                                            <constraint firstAttribute="width" constant="32" id="gaM-rG-Tlc"/>
                                                         </constraints>
                                                         <state key="normal" backgroundImage="icon-03.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

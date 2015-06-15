@@ -17,8 +17,12 @@
     NSTimer *timer;
     int varificateTime;
     WSRegisterSucView *registerSucView;
+    BOOL checkUserProce;
 }
 
+@property (strong, nonatomic) NSString *code;
+@property (weak, nonatomic) IBOutlet UIButton *checkUserProceBut;
+- (IBAction)checkUserProceButAction:(id)sender;
 @property (strong, nonatomic) NSString *city;
 @property (assign, nonatomic) double latitude;
 @property (assign, nonatomic) double longitude;
@@ -50,6 +54,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    checkUserProce = YES;
     varificateTime = VARIFICATE_TIME;
     [self initView];
     // 设置用户定位位置
@@ -191,8 +196,25 @@
         flag = NO;
         return flag;
     }
+    if (_code) {
+        if (![_varificateTextField.text isEqualToString:_code]) {
+            [SVProgressHUD showErrorWithStatus:@"验证码不正确！" duration:TOAST_VIEW_TIME];
+            flag = NO;
+            return flag;
+        }
+    }
     if (_passwordTextField.text.length == 0) {
          [SVProgressHUD showErrorWithStatus:@"请输入密码！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+    if (![WSIdentifierValidator isValidOnlyNumberOrLetter:_passwordTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"密码由6-20个数字或字母组成！" duration:TOAST_VIEW_TIME];
+        flag = NO;
+        return flag;
+    }
+    if (!(_passwordTextField.text.length >= 6 && _passwordTextField.text.length <= 20)) {
+        [SVProgressHUD showErrorWithStatus:@"密码由6-20个数字或字母组成！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
     }
@@ -284,6 +306,7 @@
             if (flag) {
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSString *code = [data valueForKey:@"code"];
+                self.code = code;
                 DLog(@"验证码：%@", code);
             }
         }
@@ -321,4 +344,14 @@
     }
 }
 
+- (IBAction)checkUserProceButAction:(id)sender {
+    NSString *image = nil;
+    if (checkUserProce) {
+       image = @"choose-02";
+    } else {
+        image = @"choose-01";
+    }
+     [_checkUserProceBut setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+    checkUserProce = !checkUserProce;
+}
 @end

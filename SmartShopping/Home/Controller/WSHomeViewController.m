@@ -19,7 +19,6 @@
 #import "WSStoreDetailViewController.h"
 #import "WSScanNoInStoreViewController.h"
 #import "WSInviateFriendViewController.h"
-#import "WSSearchViewController.h"
 #import "CollectSucView.h"
 #import "WSCollectHeaderView.h"
 #import "WSScanInStoreViewController.h"
@@ -117,8 +116,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.headerHeight = HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT;
     layout.footerHeight = 0;
-    layout.minimumColumnSpacing = 20;
-    layout.minimumInteritemSpacing = 20;
+    layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
+    layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
    _supermarketCollectionView.collectionViewLayout = layout;
 }
 
@@ -131,6 +130,10 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+#ifdef DEBUG
+self.city = @"广州";
+#endif
+    
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
@@ -140,7 +143,7 @@ typedef NS_ENUM(NSInteger, ShopType)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
 
     // 没有幻灯片时请求幻灯片数据
-    if (_city.length != 0 && slideImageArray.count == 0) {
+    if (self.city.length != 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
     
@@ -155,25 +158,13 @@ typedef NS_ENUM(NSInteger, ShopType)
         [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
-                self.messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRead == 2"];
-                self.messages = [_messages filteredArrayUsingPredicate:predicate];
-                NSInteger count= _messages.count;
-                if (count == 0) {
-                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
+                NSDictionary *data = [result objectForKey:@"data"];
+                self.messages = [data objectForKey:@"messages"];
+                NSString *isNews = [data stringForKey:@"isNews"];
+                if ([isNews isEqualToString:@"Y"]) {
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = NO;
                 } else {
-                    UILabel *label = _navBarManagerView.navigationBarButSearchButView.rightLabel;
-                    label.text = [NSString stringWithFormat:@"%d", (int)count];
-                    label.hidden = NO;
-                    
-                    CGSize size = [label boundingRectWithSize:CGSizeMake(label.bounds.size.width, 0)];
-                    float width = size.width >= size.height ? size.width : size.height;
-                    width += 2;
-                    _navBarManagerView.navigationBarButSearchButView.rightLabelHeightCon.constant = width;
-                    _navBarManagerView.navigationBarButSearchButView.rightLabelWidthCon.constant = width;
-                    label.layer.cornerRadius = width / 2;
-                    label.layer.masksToBounds  = YES;
-
+                    _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
                 }
             }
         } failCallBack:^(id error) {
@@ -197,8 +188,6 @@ typedef NS_ENUM(NSInteger, ShopType)
 {
     NSDictionary *locationDic = [notification object];
     [self setLocationCity:locationDic];
-    
-    
 }
 
 - (void)setLocationCity:(NSDictionary *)locationDic
@@ -309,6 +298,7 @@ typedef NS_ENUM(NSInteger, ShopType)
 #pragma mark - 请求幻灯片
 - (void)requestGetAdsPhoto
 {
+    self.city = _city.length > 0 ? self.city : @"";
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"1"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -455,7 +445,7 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
-     CGFloat width = ((collectionView.bounds.size.width - 2 * CELLECTIONVIEW_CONTENT_INSET) - CELLECTIONVIEW_CELL_SPACE) / 2;
+     CGFloat width = collectionView.bounds.size.width - 3 * COLLECTION_VIEW_GAP;
     NSArray *array = nil;
     switch (shopType) {
         case ShopTypeSuperMarket:
@@ -499,39 +489,47 @@ typedef NS_ENUM(NSInteger, ShopType)
     if (indexPath.section == 0) {
     if ([kind isEqualToString:CHTCollectionElementKindSectionHeader]) {
         headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"HomeHeaderCollectionReusableView" forIndexPath:indexPath];
-        ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
+        [headerView.storeSignInBut addTarget:self action:@selector(shopSignInAction:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView.scanProductBut addTarget:self action:@selector(scanProductAction:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView.inviteFriendBut addTarget:self action:@selector(invateFriendAction:) forControlEvents:UIControlEventTouchUpInside];
+        
         NSInteger imageCount = slideImageArray.count;
-        NSMutableArray *imageDataArray = [NSMutableArray array];
-        for (int i = 0; i < imageCount; i++) {
-            NSDictionary *dic = [slideImageArray objectAtIndex:i];
-            NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
-            [imageDataArray addObject:imageURL];
+        if (imageCount != 0) {
+            ACImageScrollView *imageScrollView = headerView.imageScrollManagerView.acImageScrollView;
+            NSMutableArray *imageDataArray = [NSMutableArray array];
+            for (int i = 0; i < imageCount; i++) {
+                NSDictionary *dic = [slideImageArray objectAtIndex:i];
+                NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"pic_path"]];
+                [imageDataArray addObject:imageURL];
+            }
+            
+            [imageScrollView setImageData:imageDataArray];
+            __weak ACImageScrollView *weekImageScrollView = imageScrollView;
+            imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
+                float height = 0;
+                CGSize imageSize = image.size;
+                height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
+                height =  height + HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT - HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT;
+                CHTCollectionViewWaterfallLayout *layout =
+                (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+                layout.headerHeight = height;
+                [layout invalidateLayout];
+                //[weekImageScrollView layoutIfNeeded];
+                [weekImageScrollView updateConstraintsIfNeeded];
+                [weekImageScrollView updateConstraints];
+            };
+            imageScrollView.callback = ^(int index) {
+                DLog(@"广告：%d", index);
+                NSDictionary *dic = [slideImageArray objectAtIndex:index];
+                WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+                advertisementVC.url = [dic objectForKey:@"third_link"];
+                [self.navigationController pushViewController:advertisementVC animated:YES];
+            };
         }
-        [imageScrollView setImageData:imageDataArray];
-        __weak ACImageScrollView *weekImageScrollView = imageScrollView;
-        imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
-            float height = 0;
-            CGSize imageSize = image.size;
-            height = weekImageScrollView.bounds.size.width * imageSize.height / imageSize.width;
-            height =  height + HOMEHEADERCOLLECTIONREUSABLEVIEW_HEIGHT - HOMEHEADER_COLLECTION_REUSABLE_VIEW_IMAGESCROLLVIEW_HEIGHT;
-            CHTCollectionViewWaterfallLayout *layout =
-            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
-            layout.headerHeight = height;
-            [layout invalidateLayout];
-            //[weekImageScrollView layoutIfNeeded];
-            [weekImageScrollView updateConstraintsIfNeeded];
-            [weekImageScrollView updateConstraints];
-        };
-        imageScrollView.callback = ^(int index) {
-            DLog(@"广告：%d", index);
-            NSDictionary *dic = [slideImageArray objectAtIndex:index];
-            WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
-            advertisementVC.url = [dic objectForKey:@"third_link"];
-            [self.navigationController pushViewController:advertisementVC animated:YES];
-        };
         NSString *beanNum = [WSUserUtil getUserPeasNum];
         headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
         headerView.tag = indexPath.row;
+        [headerView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:)forControlEvents:UIControlEventValueChanged];
         return headerView;
     }
         return nil;
@@ -595,27 +593,33 @@ typedef NS_ENUM(NSInteger, ShopType)
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
     [WSUserUtil actionAfterLogin:^{
-        [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-            // 在店内
-            if (isInStore) {
-                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                NSString *isSign = [shop stringForKey:@"isSign"];
-                //  没签到
-                if ([isSign isEqualToString:@"N"]) {
-                    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                    inStoreNoSignVC.shop = shop;
-                    [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-                } else {
-                    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                    storeDetailVC.shop = shop;
-                    [self.navigationController pushViewController:storeDetailVC animated:YES];
-                }
-                // 不在店内
-            } else {
-                WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-                [self.navigationController pushViewController:noInstoreVC animated:YES];
+        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+            CLBeacon *beacon = nil;
+            if (beaconsArray.count > 0) {
+                beacon = [beaconsArray objectAtIndex:0];
             }
+            [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                // 在店内
+                if (isInStore) {
+                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSString *isSign = [shop stringForKey:@"isSign"];
+                    //  没签到
+                    if ([isSign isEqualToString:@"N"]) {
+                        WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                        inStoreNoSignVC.shop = shop;
+                        [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                    } else {
+                        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                        storeDetailVC.shop = shop;
+                        [self.navigationController pushViewController:storeDetailVC animated:YES];
+                    }
+                    // 不在店内
+                } else {
+                    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+                    [self.navigationController pushViewController:noInstoreVC animated:YES];
+                }
+            }];
         }];
     }];
 }
@@ -624,23 +628,33 @@ typedef NS_ENUM(NSInteger, ShopType)
 - (void)scanProductAction:(id)sender
 {
     // 1. 在店内跳到 WSStoreDetailViewController
-    // 2. 不在店内跳到 WSScanNoInStoreViewController
-    [WSProjUtil isInStoreWithIsInStoreType:IsInStoreTypeGainPea callback:^(id result) {
-        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-        // 在店内
-        if (isInStore) {
-            [WSUserUtil actionAfterLogin:^{
-                NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
-                NSString *shopId = [dic stringForKey:@"shopId"];
-                WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
-                scanInStoreVC.shopid = shopId;
-                [self.navigationController pushViewController:scanInStoreVC animated:YES];
-            }];
-            
-            // 不在店内
-        } else {
-            [self toScanNoInStore];
+    // 2. 不在店内跳到 WSScanInStoreViewController
+    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+        CLBeacon *beacon = nil;
+        if (beaconsArray.count > 0) {
+            beacon = [beaconsArray objectAtIndex:0];
         }
+        [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+            // 在店内
+            if (isInStore) {
+                [WSUserUtil actionAfterLogin:^{
+                    NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                    NSString *shopId = [dic stringForKey:@"shopId"];
+                    NSString *shopName = [shop objectForKey:@"shopName"];
+                    WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+                    scanInStoreVC.shopName = shopName;
+                    scanInStoreVC.shopid = shopId;
+                    [self.navigationController pushViewController:scanInStoreVC animated:YES];
+                }];
+                
+                // 不在店内
+            } else {
+                WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+                [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
+            }
+        }];
         
     }];
 }

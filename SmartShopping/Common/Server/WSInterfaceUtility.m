@@ -208,16 +208,16 @@
             return [NSString stringWithFormat:@"%@/app/checkMoreGoodsList.do", BASE_URL];
         }
             break;
-        case WSInterfaceTypeIsInshopByPromotions:
+        case WSInterfaceTypeIsInShopAndIsScans:
         {
-            return [NSString stringWithFormat:@"%@/app/isInshopByPromotions.do", BASE_URL];
+            return [NSString stringWithFormat:@"%@/app/isInShopAndIsScan", BASE_URL];
         }
             break;
-        case WSInterfaceTypeSsInshopBySign:
-        {
-            return [NSString stringWithFormat:@"%@/app/isInshopBySign.do", BASE_URL];
-        }
-            break;
+//        case WSInterfaceTypeSsInshopBySign:
+//        {
+//            return [NSString stringWithFormat:@"%@/app/isInshopBySign.do", BASE_URL];
+//        }
+//            break;
 //        case WSInterfaceTypeIsInshopByPromotions:
 //        {
 //            return [NSString stringWithFormat:@"%@/app/isInshopByPromotions.do", BASE_URL];

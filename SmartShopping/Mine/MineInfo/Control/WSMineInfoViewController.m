@@ -18,6 +18,7 @@
     UIDatePicker *datePicker;
 }
 
+@property (strong, nonatomic) NSString *code;
 @property (weak, nonatomic) IBOutlet UITextField *nicknameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *validCodeTextField;
@@ -211,6 +212,13 @@
         [SVProgressHUD showErrorWithStatus:@"请输入验证码！" duration:TOAST_VIEW_TIME];
         flag = NO;
         return flag;
+    }
+    if (_code) {
+        if (![_validCodeTextField.text isEqualToString:_code]) {
+            [SVProgressHUD showErrorWithStatus:@"验证码不正确！" duration:TOAST_VIEW_TIME];
+            flag = NO;
+            return flag;
+        }
     }
     if (_birdthDayTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请选择出生年月！" duration:TOAST_VIEW_TIME];

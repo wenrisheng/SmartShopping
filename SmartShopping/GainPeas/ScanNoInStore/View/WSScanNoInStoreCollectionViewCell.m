@@ -12,7 +12,14 @@
 
 - (void)setModel:(NSDictionary *)dic
 {
-    NSString *goodslLogo = [dic objectForKey:@"goodslLogo"];
+    NSString *goodsScan = [dic stringForKey:@"goodsScan"];
+    if ([goodsScan isEqualToString:@"1"]) {
+        _scanImageView.hidden = NO;
+    } else {
+        _scanImageView.hidden = YES;
+    }
+    
+    NSString *goodslLogo = [dic objectForKey:@"goodsLogo"];
     [_imageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:goodslLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
     }];
     NSString *shopLogo = [dic objectForKey:@"shopLogo"];
