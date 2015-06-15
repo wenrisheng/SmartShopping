@@ -253,6 +253,7 @@
             if (flag) {
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSString *code = [data valueForKey:@"code"];
+                self.code = code;
                 DLog(@"验证码：%@", code);
             }
         }

@@ -55,13 +55,6 @@
 {
     BOOL flag = [self validData];
     if (flag) {
-        //250cf8b51c773f3f8dc8b4be867a9a02
-//        WSUser *user = [WSRunTime sharedWSRunTime].user;
-//        NSString *nwsPwd = [_nwePasswordTextField.text encodeMD5_32_lowercase];
-//        if ([user.password isEqualToString:nwsPwd]) {
-//            [SVProgressHUD showErrorWithStatus:@"新密码与原密码一致，请重新输入!" duration:TOAST_VIEW_TIME];
-//            return;
-//        }
         [self requestResetPassword];
     }
 }
@@ -121,34 +114,16 @@
 #pragma mark - ServiceDelegate
 - (void)requestSucess:(id)result tag:(int)tag
 {
-    switch (tag) {
-        case WSInterfaceTypeGetValidCode:
-        {
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-            if (flag) {
-                NSDictionary *data = [result valueForKey:@"data"];
-                NSString *code = [data valueForKey:@"code"];
-                DLog(@"验证码：%@", code);
-            }
-        }
-            break;
-        case WSInterfaceTypeResetPassword:
-        {
-            [SVProgressHUD dismiss];
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
-            if (flag) {
-                WSUser *user = [WSRunTime sharedWSRunTime].user;
-                user.password = [_nwePasswordTextField.text encodeMD5_32_lowercase];
-                // 本地存储用户信息
-                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
-                [USER_DEFAULT setObject:userdata forKey:USER_KEY];
-                [SVProgressHUD showSuccessWithStatus:@"密码修改成功" duration:TOAST_VIEW_TIME];
-                [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(resetPasswordAfter) userInfo:nil repeats:NO];
-            }
-        }
-            break;
-        default:
-            break;
+    [SVProgressHUD dismiss];
+    BOOL flag = [WSInterfaceUtility validRequestResult:result];
+    if (flag) {
+        WSUser *user = [WSRunTime sharedWSRunTime].user;
+        user.password = [_nwePasswordTextField.text encodeMD5_32_lowercase];
+        // 本地存储用户信息
+        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:user];
+        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+        [SVProgressHUD showSuccessWithStatus:@"密码修改成功" duration:TOAST_VIEW_TIME];
+        [NSTimer scheduledTimerWithTimeInterval:TOAST_VIEW_TIME target:self selector:@selector(resetPasswordAfter) userInfo:nil repeats:NO];
     }
 }
 
