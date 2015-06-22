@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger, UserLoginType) {
 
 @property (strong, nonatomic) NSString *thirdid; // 第三方标记
 
+@property (strong, nonatomic) NSString *userType;  // @"1" 登录用户   @"2"游客
+
 // 推送通知
 @property (assign, nonatomic) BOOL isPushNotification;
 @property (assign, nonatomic) int loginType;

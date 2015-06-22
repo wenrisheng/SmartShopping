@@ -71,6 +71,12 @@
 		7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BB9971B0AF3C5007293C3 /* WSSearchHistoryView.m */; };
 		7C4BB99A1B0AF3D8007293C3 /* WSSearchHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */; };
 		7C4C7F7C1B139552002A264A /* WSProjShareUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */; };
+		7C5403011B307E0A0018981F /* WSInfoGoodDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C5402FF1B307E0A0018981F /* WSInfoGoodDetailViewController.m */; };
+		7C5403021B307E0A0018981F /* WSInfoGoodDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C5402FF1B307E0A0018981F /* WSInfoGoodDetailViewController.m */; };
+		7C5403031B307E0A0018981F /* WSInfoGoodDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5403001B307E0A0018981F /* WSInfoGoodDetailViewController.xib */; };
+		7C5403041B307E0A0018981F /* WSInfoGoodDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5403001B307E0A0018981F /* WSInfoGoodDetailViewController.xib */; };
+		7C5403091B30FA490018981F /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5403081B30FA490018981F /* area.plist */; };
+		7C54030A1B30FA490018981F /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5403081B30FA490018981F /* area.plist */; };
 		7C55073A1B07A12000DE0126 /* BaiduMapAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */; };
 		7C55073B1B07A12000DE0126 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7C5507391B07A12000DE0126 /* mapapi.bundle */; };
 		7C5507421B08C67600DE0126 /* WSScanInStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55073F1B08C67600DE0126 /* WSScanInStoreViewController.m */; };
@@ -655,6 +661,14 @@
 		7CC827B71AF1311B00A837F8 /* kuang.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B41AF1311B00A837F8 /* kuang.png */; };
 		7CC827B81AF1311B00A837F8 /* lamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B51AF1311B00A837F8 /* lamp.png */; };
 		7CC827B91AF1311B00A837F8 /* light.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B61AF1311B00A837F8 /* light.png */; };
+		7CC9C8401B324D1E009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C83F1B324D1E009F318D /* Location.gpx */; };
+		7CC9C8411B324D1E009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C83F1B324D1E009F318D /* Location.gpx */; };
+		7CC9C85A1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
+		7CC9C85B1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
+		7CC9C85F1B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
+		7CC9C8601B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
+		7CC9C8621B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
+		7CC9C8631B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
 		7CCA018B1AEC69490081A8CC /* WSConsumeOrderWriterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */; };
 		7CCA018C1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */; };
 		7CCA01901AEC7B7C0081A8CC /* WSOrderSucView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018F1AEC7B7C0081A8CC /* WSOrderSucView.xib */; };
@@ -973,6 +987,10 @@
 		7C4BB9991B0AF3D8007293C3 /* WSSearchHistoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchHistoryView.xib; sourceTree = "<group>"; };
 		7C4C7F7A1B139552002A264A /* WSProjShareUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSProjShareUtil.h; sourceTree = "<group>"; };
 		7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSProjShareUtil.m; sourceTree = "<group>"; };
+		7C5402FE1B307E0A0018981F /* WSInfoGoodDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSInfoGoodDetailViewController.h; sourceTree = "<group>"; };
+		7C5402FF1B307E0A0018981F /* WSInfoGoodDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSInfoGoodDetailViewController.m; sourceTree = "<group>"; };
+		7C5403001B307E0A0018981F /* WSInfoGoodDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSInfoGoodDetailViewController.xib; sourceTree = "<group>"; };
+		7C5403081B30FA490018981F /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
 		7C5507381B07A12000DE0126 /* BaiduMapAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI.framework; sourceTree = "<group>"; };
 		7C5507391B07A12000DE0126 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
 		7C55073E1B08C67600DE0126 /* WSScanInStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSScanInStoreViewController.h; sourceTree = "<group>"; };
@@ -1223,6 +1241,16 @@
 		7CC827B41AF1311B00A837F8 /* kuang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kuang.png; sourceTree = "<group>"; };
 		7CC827B51AF1311B00A837F8 /* lamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lamp.png; sourceTree = "<group>"; };
 		7CC827B61AF1311B00A837F8 /* light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light.png; sourceTree = "<group>"; };
+		7CC9C83F1B324D1E009F318D /* Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
+		7CC9C8541B329BB9009F318D /* ESTBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
+		7CC9C8551B329BB9009F318D /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
+		7CC9C8561B329BB9009F318D /* ESTBeaconManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
+		7CC9C8571B329BB9009F318D /* ESTBeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
+		7CC9C8581B329BB9009F318D /* ESTBeaconUpdateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconUpdateInfo.h; sourceTree = "<group>"; };
+		7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEstimoteSDK.a; sourceTree = "<group>"; };
+		7CC9C85D1B33129B009F318D /* PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopView.h; sourceTree = "<group>"; };
+		7CC9C85E1B33129B009F318D /* PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopView.m; sourceTree = "<group>"; };
+		7CC9C8611B3312AB009F318D /* PopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopView.xib; sourceTree = "<group>"; };
 		7CCA01881AEC69490081A8CC /* WSConsumeOrderWriterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSConsumeOrderWriterViewController.h; sourceTree = "<group>"; };
 		7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSConsumeOrderWriterViewController.m; sourceTree = "<group>"; };
 		7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSConsumeOrderWriterViewController.xib; sourceTree = "<group>"; };
@@ -1463,6 +1491,7 @@
 				7CAB82B21B2DEB6C00D50F7D /* libiconv.2.4.0.dylib in Frameworks */,
 				7CAB82B31B2DEB6C00D50F7D /* ShareSDKiPadSimpleShareViewUI.framework in Frameworks */,
 				7CAB82B41B2DEB6C00D50F7D /* KaKaoStoryConnection.framework in Frameworks */,
+				7CC9C85B1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */,
 				7CAB82B51B2DEB6C00D50F7D /* CoreVideo.framework in Frameworks */,
 				7CAB82B61B2DEB6C00D50F7D /* CoreMedia.framework in Frameworks */,
 				7CAB82B71B2DEB6C00D50F7D /* QZoneConnection.framework in Frameworks */,
@@ -1586,6 +1615,7 @@
 				7C741AC81B1DE9F20086B32B /* TwitterConnection.framework in Frameworks */,
 				7C9085661ADF75B90073D94C /* Social.framework in Frameworks */,
 				7C9085641ADF759B0073D94C /* Accounts.framework in Frameworks */,
+				7CC9C85A1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */,
 				7C741AC61B1DE9F10086B32B /* TencentWeiboConnection.framework in Frameworks */,
 				7C741AD61B1DE9F20086B32B /* libTCWeiboSDK.a in Frameworks */,
 				7C741AAC1B1DE9F10086B32B /* CopyConnection.framework in Frameworks */,
@@ -1651,6 +1681,8 @@
 		7C1748B11B25D9DD002CE5CE /* iBeacon */ = {
 			isa = PBXGroup;
 			children = (
+				7CC9C8531B329BB9009F318D /* Headers */,
+				7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */,
 				7C1748B21B25D9DD002CE5CE /* IBSDK.h */,
 				7C1748B31B25D9DD002CE5CE /* libIBSDK.a */,
 			);
@@ -1676,6 +1708,7 @@
 				7C249B1D1ADD6114000712BF /* Model */,
 				7C249B6E1ADD6B64000712BF /* View */,
 				7CCA01B91AED09DB0081A8CC /* InfoDetail */,
+				7C5402FC1B307E0A0018981F /* InfoGoodDetail */,
 			);
 			path = InfoList;
 			sourceTree = "<group>";
@@ -1933,6 +1966,9 @@
 				7C4206241AF5A954005F9F44 /* WSLocationDetailViewController.h */,
 				7C4206251AF5A954005F9F44 /* WSLocationDetailViewController.m */,
 				7C4206261AF5A954005F9F44 /* WSLocationDetailViewController.xib */,
+				7CC9C85D1B33129B009F318D /* PopView.h */,
+				7CC9C85E1B33129B009F318D /* PopView.m */,
+				7CC9C8611B3312AB009F318D /* PopView.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1989,6 +2025,24 @@
 				7C4206341AF5FECC005F9F44 /* WSScanAfterViewController.h */,
 				7C4206351AF5FECC005F9F44 /* WSScanAfterViewController.m */,
 				7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7C5402FC1B307E0A0018981F /* InfoGoodDetail */ = {
+			isa = PBXGroup;
+			children = (
+				7C5402FD1B307E0A0018981F /* Controller */,
+			);
+			path = InfoGoodDetail;
+			sourceTree = "<group>";
+		};
+		7C5402FD1B307E0A0018981F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7C5402FE1B307E0A0018981F /* WSInfoGoodDetailViewController.h */,
+				7C5402FF1B307E0A0018981F /* WSInfoGoodDetailViewController.m */,
+				7C5403001B307E0A0018981F /* WSInfoGoodDetailViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2621,6 +2675,18 @@
 			path = scan;
 			sourceTree = "<group>";
 		};
+		7CC9C8531B329BB9009F318D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				7CC9C8541B329BB9009F318D /* ESTBeacon.h */,
+				7CC9C8551B329BB9009F318D /* ESTBeaconDefinitions.h */,
+				7CC9C8561B329BB9009F318D /* ESTBeaconManager.h */,
+				7CC9C8571B329BB9009F318D /* ESTBeaconRegion.h */,
+				7CC9C8581B329BB9009F318D /* ESTBeaconUpdateInfo.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
 		7CCA01811AEC68D00081A8CC /* ConsumeOrderWriter */ = {
 			isa = PBXGroup;
 			children = (
@@ -2860,8 +2926,10 @@
 				7C013EF11AD5699E00E74C78 /* BaseStaticLibraryResource.bundle */,
 				7CCD118C1AD5575E005A1429 /* images */,
 				7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */,
+				7C5403081B30FA490018981F /* area.plist */,
 				7CCBBD581AD418AF00EA1F7F /* Info.plist */,
 				7CCBBD591AD418AF00EA1F7F /* main.m */,
+				7CC9C83F1B324D1E009F318D /* Location.gpx */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3569,6 +3637,7 @@
 				7CAB83061B2DEB6C00D50F7D /* shake-01.png in Resources */,
 				7CAB83071B2DEB6C00D50F7D /* WSMineFirstCell.xib in Resources */,
 				7CAB83081B2DEB6C00D50F7D /* doudou-02.png in Resources */,
+				7C54030A1B30FA490018981F /* area.plist in Resources */,
 				7CAB83091B2DEB6C00D50F7D /* gainpeas_icon-05.png in Resources */,
 				7CAB830A1B2DEB6C00D50F7D /* WSUserProtocolViewController.xib in Resources */,
 				7CAB830B1B2DEB6C00D50F7D /* colleation-011.png in Resources */,
@@ -3600,6 +3669,7 @@
 				7CAB83241B2DEB6C00D50F7D /* shake-02.png in Resources */,
 				7CAB83251B2DEB6C00D50F7D /* WSSearchCommonViewController.xib in Resources */,
 				7CAB83261B2DEB6C00D50F7D /* WSGiftDetailViewController.xib in Resources */,
+				7CC9C8411B324D1E009F318D /* Location.gpx in Resources */,
 				7CAB83271B2DEB6C00D50F7D /* icon-03.png in Resources */,
 				7CAB83281B2DEB6C00D50F7D /* redmobile.png in Resources */,
 				7CAB83291B2DEB6C00D50F7D /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
@@ -3704,6 +3774,7 @@
 				7CAB838C1B2DEB6C00D50F7D /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7CAB838D1B2DEB6C00D50F7D /* icon-05.png in Resources */,
 				7CAB838E1B2DEB6C00D50F7D /* WSScanNoInStoreViewController.xib in Resources */,
+				7CC9C8631B3312AB009F318D /* PopView.xib in Resources */,
 				7CAB838F1B2DEB6C00D50F7D /* WSMineInfoViewController.xib in Resources */,
 				7CAB83901B2DEB6C00D50F7D /* 02.png in Resources */,
 				7CAB83911B2DEB6C00D50F7D /* radio_choose-02.png in Resources */,
@@ -3761,6 +3832,7 @@
 				7CAB83C51B2DEB6C00D50F7D /* WSStoreDetailCollectionReusableView.xib in Resources */,
 				7CAB83C61B2DEB6C00D50F7D /* WSLocationDetailViewController.xib in Resources */,
 				7CAB83C71B2DEB6C00D50F7D /* gainpeas_icon-06.png in Resources */,
+				7C5403041B307E0A0018981F /* WSInfoGoodDetailViewController.xib in Resources */,
 				7CAB83C81B2DEB6C00D50F7D /* d_selected.png in Resources */,
 				7CAB83C91B2DEB6C00D50F7D /* WSConfirmClearCacheView.xib in Resources */,
 				7CAB83CA1B2DEB6C00D50F7D /* WSLogoutCell.xib in Resources */,
@@ -3786,6 +3858,7 @@
 				7CD0E4B01AE3A63100B78C9C /* shake-01.png in Resources */,
 				7C9085841ADF835D0073D94C /* WSMineFirstCell.xib in Resources */,
 				7CCD8B211ADFD0D5007B86A9 /* doudou-02.png in Resources */,
+				7C5403091B30FA490018981F /* area.plist in Resources */,
 				7CEEB2A91AE3C8DE005CB218 /* gainpeas_icon-05.png in Resources */,
 				7CC760A71AE2114A000C9085 /* WSUserProtocolViewController.xib in Resources */,
 				7CCA01D81AED42900081A8CC /* colleation-011.png in Resources */,
@@ -3817,6 +3890,7 @@
 				7CD0E4B11AE3A63100B78C9C /* shake-02.png in Resources */,
 				7C74B7E21B1B45D700CB7FE2 /* WSSearchCommonViewController.xib in Resources */,
 				7CCE4F5A1AEB73480097DFBB /* WSGiftDetailViewController.xib in Resources */,
+				7CC9C8401B324D1E009F318D /* Location.gpx in Resources */,
 				7CCD8B271ADFD0D5007B86A9 /* icon-03.png in Resources */,
 				7C7E26D21AF4DC0600EC6598 /* redmobile.png in Resources */,
 				7C741ADB1B1DE9F20086B32B /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
@@ -3921,6 +3995,7 @@
 				7C741AE01B1DE9F20086B32B /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7C74B7D21B19E80B00CB7FE2 /* icon-05.png in Resources */,
 				7CCBF4F01AEFC53E005321BF /* WSScanNoInStoreViewController.xib in Resources */,
+				7CC9C8621B3312AB009F318D /* PopView.xib in Resources */,
 				7CD0E45A1AE2A51B00B78C9C /* WSMineInfoViewController.xib in Resources */,
 				7CCD8B151ADFD0D5007B86A9 /* 02.png in Resources */,
 				7CD0E45E1AE2A75000B78C9C /* radio_choose-02.png in Resources */,
@@ -3978,6 +4053,7 @@
 				7CEEB29E1AE3C49B005CB218 /* WSStoreDetailCollectionReusableView.xib in Resources */,
 				7C4206281AF5A954005F9F44 /* WSLocationDetailViewController.xib in Resources */,
 				7CEEB2AA1AE3C8DE005CB218 /* gainpeas_icon-06.png in Resources */,
+				7C5403031B307E0A0018981F /* WSInfoGoodDetailViewController.xib in Resources */,
 				7CCAD32E1ADEB0C1001D3D8B /* d_selected.png in Resources */,
 				7CCA01B81AECCADD0081A8CC /* WSConfirmClearCacheView.xib in Resources */,
 				7CA484441AEA578A00116BBC /* WSLogoutCell.xib in Resources */,
@@ -4011,6 +4087,7 @@
 				7CAB823F1B2DEB6C00D50F7D /* WSMineConsumeViewController.m in Sources */,
 				7CAB82401B2DEB6C00D50F7D /* WSLoginViewController.m in Sources */,
 				7CAB82411B2DEB6C00D50F7D /* WSSearchCommonViewController.m in Sources */,
+				7CC9C8601B33129B009F318D /* PopView.m in Sources */,
 				7CAB82421B2DEB6C00D50F7D /* WSMineCollectCollectionViewCell.m in Sources */,
 				7CAB82431B2DEB6C00D50F7D /* WSFilterBrandViewController.m in Sources */,
 				7CAB82441B2DEB6C00D50F7D /* ASICloudFilesObjectRequest.m in Sources */,
@@ -4096,6 +4173,7 @@
 				7CAB82931B2DEB6C00D50F7D /* WSCollectHeaderView.m in Sources */,
 				7CAB82941B2DEB6C00D50F7D /* ASICloudFilesRequest.m in Sources */,
 				7CAB82951B2DEB6C00D50F7D /* CollectSucView.m in Sources */,
+				7C5403021B307E0A0018981F /* WSInfoGoodDetailViewController.m in Sources */,
 				7CAB82961B2DEB6C00D50F7D /* main.m in Sources */,
 				7CAB82971B2DEB6C00D50F7D /* WSMineThirdCell.m in Sources */,
 				7CAB82981B2DEB6C00D50F7D /* WSAboutViewController.m in Sources */,
@@ -4137,6 +4215,7 @@
 				7CD8F3311AE557E90039CE0F /* WSMineConsumeViewController.m in Sources */,
 				7C6E56F51AE1594100D020D5 /* WSLoginViewController.m in Sources */,
 				7C74B7E11B1B45D700CB7FE2 /* WSSearchCommonViewController.m in Sources */,
+				7CC9C85F1B33129B009F318D /* PopView.m in Sources */,
 				7CD8F3291AE54E240039CE0F /* WSMineCollectCollectionViewCell.m in Sources */,
 				7CD771491AEE4D390040E9FD /* WSFilterBrandViewController.m in Sources */,
 				7C6558A71B07975800D832C2 /* ASICloudFilesObjectRequest.m in Sources */,
@@ -4222,6 +4301,7 @@
 				7C3B88E51B0382CA008B0951 /* WSCollectHeaderView.m in Sources */,
 				7C6558A81B07975800D832C2 /* ASICloudFilesRequest.m in Sources */,
 				7C43C5291AFBD000001FEA64 /* CollectSucView.m in Sources */,
+				7C5403011B307E0A0018981F /* WSInfoGoodDetailViewController.m in Sources */,
 				7CCBBD5A1AD418AF00EA1F7F /* main.m in Sources */,
 				7C3511711ADFF4380014696B /* WSMineThirdCell.m in Sources */,
 				7CCA01B21AECC4C70081A8CC /* WSAboutViewController.m in Sources */,
@@ -4469,7 +4549,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4503,7 +4583,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "054df010-a9dc-4391-8984-3c09dc7372c4";
+				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};
@@ -4515,7 +4595,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4549,7 +4629,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "054df010-a9dc-4391-8984-3c09dc7372c4";
+				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};

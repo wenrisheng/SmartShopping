@@ -50,6 +50,12 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     // Do any additional setup after loading the view from its nib.
     searchResultArray = [[NSMutableArray alloc] init];
     self.searchParam = [[NSMutableDictionary alloc] init];
+    [_searchParam setValue:@"" forKey:@"beforeBean"];
+    [_searchParam setValue:@"" forKey:@"afterBean"];
+    [_searchParam setValue:@"" forKey:@"categoryId"];
+    [_searchParam setValue:@"" forKey:@"giftTag"];
+    [_searchParam setValue:@"" forKey:@"giftTagName"];
+    
     viewType = MoreGiftViewTypeInitView;
     self.peasScopeArray = [[NSMutableArray alloc] init];
     self.peasAllCategoryArray = [[NSMutableArray alloc] init];
@@ -216,6 +222,8 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             id BeanList = [[result objectForKey:@"data"] objectForKey:@"BeanList"];
+            NSDictionary *all = @{@"BeanScope": @{@"beanScope": @"全部", @"afterBean": @"", @"beforeBean": @""}};
+            [_peasScopeArray addObject:all];
             [_peasScopeArray addObjectsFromArray:BeanList];
             [self showPeaScopeSelectView];
         }
@@ -233,6 +241,8 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             id GiftCategoryList = [[result objectForKey:@"data"] objectForKey:@"GiftCategoryList"];
+            NSDictionary *all = @{@"GiftCategory": @{@"giftCategoryName": @"全部", @"id": @"", @"giftType": @""}};
+            [_peasAllCategoryArray addObject:all];
             [_peasAllCategoryArray addObjectsFromArray:GiftCategoryList];
             [self showAllCategorySelectView];
         }
@@ -244,6 +254,10 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
 #pragma mark 请求礼物
 - (void)requestSearchGift:(NSDictionary *)param
 {
+    if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [SVProgressHUD showWithStatus:@"正在刷新……"];
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSearchGift] data:param tag:WSInterfaceTypeSearchGift sucCallBack:^(id result) {
         [_contentTableView endHeaderAndFooterRefresh];
@@ -345,7 +359,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         NSDictionary *GiftCategory = [dic objectForKey:@"GiftCategory"];
         WSTabSlideGapTextItemView *iteview = [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1];
         iteview.label.text = [GiftCategory objectForKey:@"giftCategoryName"];
-        [_searchParam setValue:[GiftCategory objectForKey:@"giftType"] forKey:@"categoryId"];
+        [_searchParam setValue:[GiftCategory objectForKey:@"id"] forKey:@"categoryId"];
         [_searchParam setValue:_city forKey:@"cityName"];
         viewType = MoreGiftViewTypeFilterView;
         [self requestSearchGift:_searchParam];

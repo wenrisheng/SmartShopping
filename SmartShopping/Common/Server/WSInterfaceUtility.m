@@ -53,6 +53,16 @@
             return [NSString stringWithFormat:@"%@/app/updateUser.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeTouristRegist:
+        {
+            return [NSString stringWithFormat:@"%@/app/touristRegist.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetBeannumberByKeyWord:
+        {
+            return [NSString stringWithFormat:@"%@/app/getBeannumberByKeyWord.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeMytowGift:
         {
             return [NSString stringWithFormat:@"%@/app/mytowgift.do", BASE_URL];
@@ -118,9 +128,19 @@
             return [NSString stringWithFormat:@"%@/app/feedBack.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeGetOneIbeacon:
+        {
+            return [NSString stringWithFormat:@"%@/app/getOneIbeacon.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeGetAdsPhoto:
         {
             return [NSString stringWithFormat:@"%@/app/getAdsPhoto.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeClickAdvert:
+        {
+             return [NSString stringWithFormat:@"%@/app/clickAdvert.do", BASE_URL];
         }
             break;
         case WSInterfaceTypeGetHomePageGoods:
@@ -158,6 +178,16 @@
            return [NSString stringWithFormat:@"%@/app/selectGoods.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeMessageGoodsDetails:
+        {
+            return  [NSString stringWithFormat:@"%@/app/messageGoodsDetails.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeFindMessageDetail:
+        {
+             return  [NSString stringWithFormat:@"%@/app/findMessageDetail.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeGetAreaList:
         {
             return [NSString stringWithFormat:@"%@/app/getAreaList.do", BASE_URL];
@@ -171,6 +201,11 @@
         case WSInterfaceTypeGetShopCategory:
         {
             return [NSString stringWithFormat:@"%@/app/getShopCategory.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeGetShopBrand:
+        {
+            return [NSString stringWithFormat:@"%@/app/getShopBrand.do", BASE_URL];
         }
             break;
         case WSInterfaceTypeOutShopGoodsList:
@@ -262,6 +297,35 @@
          [SVProgressHUD showErrorWithStatus:msg duration:TOAST_VIEW_TIME];
     }
    
+#ifdef DEBUG
+    DLog(@"请求错误结果状态描述：%@", statusDesc);
+#endif
+    return flag;
+}
+
++ (BOOL)validRequestResultNoErrorMsg:(NSDictionary *)dic
+{
+    BOOL flag = NO;
+    NSInteger status = [[dic objectForKey:@"status"] integerValue];
+    NSString *statusDesc = nil;
+    if (status == 10001) {
+        statusDesc = @"成功";
+        flag = YES;
+        return flag;
+    } else if (status == 2001) {
+        statusDesc = @"失败未知错误";
+    } else if (status == 20003) {
+        statusDesc = @"找不到内容";
+    } else if (status == 2004) {
+        statusDesc = @"参数错误";
+    } else if (status == 2006) {
+        statusDesc = @"参数为空";
+    } else if (status == 21001) {
+        statusDesc = @"身份认证失效，需重新登录";
+    } else if (status == 20005) {
+        statusDesc = @"其他自定义状态消息";
+    }
+    
 #ifdef DEBUG
     DLog(@"请求错误结果状态描述：%@", statusDesc);
 #endif

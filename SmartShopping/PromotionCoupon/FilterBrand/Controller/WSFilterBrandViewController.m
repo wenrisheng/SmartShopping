@@ -13,11 +13,11 @@
 
 @interface WSFilterBrandViewController () <UITableViewDataSource, UITableViewDelegate,WSNavigationBarButLabelButViewDelegate>
 {
-    NSMutableArray *dataArray;
+    
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
-@property (weak, nonatomic) IBOutlet UITableView *contentTableView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *allSelectedImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *allNotSelectedImageView;
 - (IBAction)allSelectedButAction:(id)sender;
@@ -26,6 +26,7 @@
 @end
 
 @implementation WSFilterBrandViewController
+@synthesize dataArray;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,14 +35,8 @@
     _navigationBarManagerView.navigationBarButLabelButView.delegate = self;
     [_navigationBarManagerView.navigationBarButLabelButView.rightBut setBackgroundImage:nil forState:UIControlStateNormal];
     [_navigationBarManagerView.navigationBarButLabelButView.rightBut setTitle:@"确定" forState:UIControlStateNormal];
-    dataArray = [[NSMutableArray alloc] init];
-    
+    self.dataArray = [[NSMutableArray alloc] init];
     [self requestGetShopCategory];
-    
-//    for (int i = 0; i < 5; i++) {
-//        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{SELECTED_FLAG : @"1"}];
-//        [dataArray addObject:dic];
-//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,19 +45,19 @@
 }
 
 
-#pragma mark 请求二级品类
+#pragma mark 请求pinpai
 - (void)requestGetShopCategory
 {
     [SVProgressHUD showWithStatus:@"加载中……"];
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopCategory] data:@{@"level": @"2", @"parentId": _mainId} tag:WSInterfaceTypeGetShopTypeList sucCallBack:^(id result) {
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopBrand] data:@{@"categoryId": _categoryId} tag:WSInterfaceTypeGetShopBrand sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            NSArray *categorys = [[result objectForKey:@"data"] objectForKey:@"categorys"];
-            NSInteger SCount = categorys.count;
+            NSArray *brands = [[result objectForKey:@"data"] objectForKey:@"brands"];
+            NSInteger SCount = brands.count;
             for (int i = 0; i < SCount; i++) {
                 NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
-                NSDictionary *dic = [categorys objectAtIndex:i];
+                NSDictionary *dic = [brands objectAtIndex:i];
                 [datadic setDictionary:dic];
                 [datadic setObject:@"1" forKey:SELECTED_FLAG];
                 [dataArray addObject:datadic];
@@ -84,7 +79,9 @@
     if (_callBack) {
         _callBack(selectedArray);
     }
+  
     [self.navigationController popViewControllerAnimated:YES];
+    _beforeVC.isLoadInStoreOrOutStore = YES;
 }
 
 #pragma mark - UITableViewDataSource

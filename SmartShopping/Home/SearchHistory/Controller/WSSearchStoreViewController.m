@@ -320,8 +320,8 @@
     [params setValue:_townId forKey:@"townId"];
     [params setValue:_shopTypeId forKey:@"shopTypeId"];
     [params setValue:_retailId forKey:@"retailId"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:_searchname forKey:@"searchname"];
     
     [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
@@ -429,17 +429,17 @@
 - (void)clickAllStore
 {
     // 选择了附近
-    if (self.domainSIndex != -1) {
+//    if (self.domainSIndex != -1) {
         if (storeFDataArray.count == 0) {
             [self requestGetShopTypeList];
         } else {
             [self showStoreTypeSelectView];
         }
         // 没有选择附近
-    } else {
-        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
-        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
-    }
+//    } else {
+//        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
+//        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
+//    }
 }
 
 #pragma mark - 请求区域筛选getAreaList
@@ -662,13 +662,21 @@
          NSString *townId = [SDic stringForKey:@"townId"];
         if (townId.length > 0) {
             weakSelf.townId = townId;
+            
+            NSString *tempStr = @"附近";
+            NSRange range = [title rangeOfString:tempStr];
+            if (range.length > 0) {
+                weakSelf.townId = @"";
+            }
         }
         
         // 选择了全部
         NSString *selectedDistrictId = [SDic stringForKey:@"districtId"];
-        if (districtId.length > 0) {
+        if (selectedDistrictId.length > 0) {
             weakSelf.districtId = selectedDistrictId;
             weakSelf.townId = @"";
+            NSDictionary *dic = [weakSelf.domainFDataArray objectAtIndex:weakSelf.domainFIndex];
+            [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = [dic objectForKey:@"name"];
         }
 
         weakSelf.curPage = 0;
@@ -785,6 +793,8 @@
         if (selectedShopTypeId.length > 0) {
             weakSelf.shopTypeId = selectedShopTypeId;
             weakSelf.retailId = @"";
+            NSDictionary *dic = [weakSelf.storeFDataArray objectAtIndex:weakSelf.storeFIndex];
+            [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = [dic objectForKey:@"name"];
         }
 
         weakSelf.curPage = 0;

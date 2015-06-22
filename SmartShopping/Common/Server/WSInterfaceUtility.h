@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#define BASE_URL @"http://121.41.86.29:8888/jmg"
+//#define BASE_URL @"http://121.41.86.29:8888/jmg"
 
-//#define BASE_URL    @"http://122.13.87.32:8888/jmg"
+#define BASE_URL    @"http://122.13.87.32:8888/jmg"
 //#define BASE_URL    @"http://121.41.86.29:8888"
 
 
@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeUpdatePhone,                   // 修改手机号码
     WSInterfaceTypeGetEmailValidCode,            // 获取邮箱验证码
     WSInterfaceTypeUpdateUser,                   // 用户资料修改
+    WSInterfaceTypeTouristRegist,                //游客用户注册
+    WSInterfaceTypeGetBeannumberByKeyWord,       // 精明豆后去规则接口
     
     /***************************我的**********************************/
     WSInterfaceTypeMytowGift,                    // 我的页面奖励兑换
@@ -42,7 +44,9 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeSynchroBeanNumber,            //用户登录时同步精明豆
     
     /***************************首页**********************************/
+    WSInterfaceTypeGetOneIbeacon,                // 查询ibeacon推送文本消息
     WSInterfaceTypeGetAdsPhoto,                  // 首页广告轮播图片
+    WSInterfaceTypeClickAdvert,                  // 用户每次点击广告
     WSInterfaceTypeGetHomePageGoods,             // 首页附件精选
     WSInterfaceTypeUserMessage,                  // 消息列表
     WSInterfaceTypeuUpdateMessage,               // 更新用户消息是否已读
@@ -50,11 +54,14 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeGetGoodsDetails,              // 查询商品详情
     WSInterfaceTypeSearchShop,                   // 首页商店搜索
     WSInterfaceTypeSelectGoods,                  // 首页商品搜索
+    WSInterfaceTypeMessageGoodsDetails,          //消息列表的商品详情
+    WSInterfaceTypeFindMessageDetail,            //文本消息查看详情接口
     
     /***************************促销优惠**********************************/
     WSInterfaceTypeGetAreaList,                  //区域筛选条件
     WSInterfaceTypeGetShopTypeList,              //所有商店筛选条件
     WSInterfaceTypeGetShopCategory,              //品类筛选条件
+    WSInterfaceTypeGetShopBrand,                 //品牌筛选条件
     WSInterfaceTypeOutShopGoodsList,             // 店外查询接口
     WSInterfaceTypeCheckMoreGoodsList,           // 查看更多
     WSInterfaceTypeIsInShopAndIsScans,         // 用户是否在店内
@@ -83,6 +90,8 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
 + (NSString *)getURLWithType:(WSInterfaceType)interfaceType;
 
 + (BOOL)validRequestResult:(NSDictionary *)dic;
+
++ (BOOL)validRequestResultNoErrorMsg:(NSDictionary *)dic;
 
 + (NSString *)getImageURLWithStr:(NSString *)str;
 

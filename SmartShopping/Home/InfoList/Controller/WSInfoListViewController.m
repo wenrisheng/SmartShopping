@@ -10,6 +10,7 @@
 #import "WSInfoListCell.h"
 #import "WSInfoDetailViewController.h"
 #import "WSProductDetailViewController.h"
+#import "WSInfoGoodDetailViewController.h"
 
 @interface WSInfoListViewController () <WSNavigationBarButLabelViewDelegate>
 {
@@ -29,21 +30,17 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    
+    self.sortArray = [[NSMutableArray alloc] init];
     _navigationBarManagerView.navigationBarButLabelView.delegate = self;
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"消息列表";
-    if (!_dataArray) {
-        _dataArray = [[NSMutableArray alloc] init];
-    }
-    if (_dataArray.count == 0) {
-        [self requestInfo];
-    }
     
     [_contentTableView addLegendHeaderWithRefreshingBlock:^{
         [self requestInfo];
     }];
     if (_dataArray.count != 0) {
-        [self sortDataArray];
+        [_sortArray removeAllObjects];
+        [self.sortArray addObjectsFromArray:_dataArray];
     } else {
          [self requestInfo];
     }
@@ -57,38 +54,17 @@
         [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            if (!_dataArray) {
-                self.dataArray = [[NSMutableArray alloc] init];
+            if (!_sortArray) {
+                self.sortArray = [[NSMutableArray alloc] init];
             }
-            [_dataArray removeAllObjects];
+            [_sortArray removeAllObjects];
             NSArray *messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
-            [self.dataArray addObjectsFromArray:messages];
-            [self sortDataArray];
+            [_sortArray addObjectsFromArray:messages];
             [_contentTableView reloadData];
         }
     } failCallBack:^(id error) {
          [_contentTableView endHeaderAndFooterRefresh];
     } showMessage:YES];
-}
-
-- (void)sortDataArray
-{
-    NSArray *array = [_dataArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSDictionary *dic1 = obj1;
-        NSDictionary *dic2 = obj2;
-        int isRead1 = [[dic1 stringForKey:@"isRead"] intValue];
-        int isRead2 = [[dic2 stringForKey:@"isRead"] intValue];
-        if (isRead1 <= isRead2) {
-            return (NSComparisonResult)NSOrderedAscending;
-        } else {
-            return (NSComparisonResult)NSOrderedDescending;
-        }
-    }];
-    if (!_sortArray) {
-        self.sortArray = [[NSMutableArray alloc] init];
-    }
-    [_sortArray removeAllObjects];
-    [self.sortArray addObjectsFromArray:array];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -141,7 +117,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSDictionary *dic = [_sortArray objectAtIndex:row];
-    NSString *content = [dic objectForKey:@"content"];
+    NSString *type = [dic stringForKey:@"type"];
     // 更新用户消息是否已读
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeuUpdateMessage] data:@{@"mesId": [dic stringForKey:@"id"]} tag:WSInterfaceTypeuUpdateMessage sucCallBack:^(id result) {
         
@@ -150,29 +126,15 @@
     }];
     
     // 跳到消息详情页面
-    if ([content respondsToSelector:@selector(length)]) {
-        if (content.length > 0) {
-            WSInfoDetailViewController *infDetailVC = [[WSInfoDetailViewController alloc] init];
-            infDetailVC.dic = dic;
-            [self.navigationController pushViewController:infDetailVC animated:YES];
-            // 跳到商品详情页面
-        } else {
-            NSString *goodsNumber = [dic stringForKey:@"goodsNumber"];
-            NSString *shopId = [dic stringForKey:@"shopId"];
-            shopId = shopId.length > 0 ? shopId : @"1";
-            WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
-            productDetailVC.goodsNumber = goodsNumber;
-            productDetailVC.shopId = shopId;
-            [self.navigationController pushViewController:productDetailVC animated:YES];
-        }
+    if ([type isEqualToString:@"2"]) {
+        WSInfoDetailViewController *infDetailVC = [[WSInfoDetailViewController alloc] init];
+        infDetailVC.dic = dic;
+        [self.navigationController pushViewController:infDetailVC animated:YES];
+        // 跳到商品详情页面
     } else {
-        NSString *goodsNumber = [dic stringForKey:@"goodsNumber"];
-        NSString *shopId = [dic stringForKey:@"shopId"];
-        shopId = shopId.length > 0 ? shopId : @"1";
-        WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
-        productDetailVC.goodsNumber = goodsNumber;
-        productDetailVC.shopId = shopId;
-        [self.navigationController pushViewController:productDetailVC animated:YES];
+        WSInfoGoodDetailViewController *infoGoodDetailVC = [[WSInfoGoodDetailViewController alloc] init];
+        infoGoodDetailVC.dic = dic;
+        [self.navigationController pushViewController:infoGoodDetailVC animated:YES];
     }
     
 }

@@ -180,6 +180,7 @@
         [user setValuesForKeysWithDictionary:tempDic];
         user.phone = _telTextField.text;
         user.loginType = UserLoginTypePhone;
+        user.userType = @"1";
         [self doAfterLoginSucWithUser:user];
     }
 }
@@ -317,8 +318,6 @@
     } else {
         user.beanNumber = [NSString stringWithFormat:@"%d", appPeasNum];
     }
-    
-    
     
     // 本机精明豆重新清零
     [USER_DEFAULT setValue:[NSNumber numberWithInt:0] forKey:APP_PEAS_NUM];

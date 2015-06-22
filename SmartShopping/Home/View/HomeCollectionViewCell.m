@@ -99,8 +99,8 @@
         NSString *shopName = [dic stringForKey:@"shopName"];
         NSString *address = [dic objectForKeyedSubscript:@"address"];
         WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
-        locationDetailVC.latitude = [lon doubleValue];
-        locationDetailVC.longitude = [lat doubleValue];
+        locationDetailVC.latitude = [lat doubleValue];
+        locationDetailVC.longitude = [lon doubleValue];
         locationDetailVC.locTitle = shopName;
         locationDetailVC.address = address;
         [self.viewController.navigationController pushViewController:locationDetailVC animated:YES];
@@ -111,7 +111,8 @@
 {
     NSString *shopId = [dic stringForKey:@"shopId"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    NSString *userType = user.userType;
+    if ([userType isEqualToString:@"1"]) {
         NSString *isCollect = [dic stringForKey:@"isCollect"];
         // 没有收藏  白色安心
         if ([isCollect isEqualToString:@"N"]) {

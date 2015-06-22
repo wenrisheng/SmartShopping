@@ -14,6 +14,7 @@
 #import "WSScanProductViewController.h"
 #import "WSProductDetailViewController.h"
 #import "WSScanAfterViewController.h"
+#import "WSAdvertisementDetailViewController.h"
 
 @interface WSScanInStoreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
@@ -48,10 +49,10 @@
     toEndPage = NO;
     canSign = NO;
     
-    NSString *commitName = @"而而而而而而而";
-    if (_shopName.length > commitName.length) {
-        _shopName = [NSString stringWithFormat:@"%@…", [_shopName substringToIndex:commitName.length]];
-    }
+//    NSString *commitName = @"而而而而而而而";
+//    if (_shopName.length > commitName.length) {
+//        _shopName = [NSString stringWithFormat:@"%@…", [_shopName substringToIndex:commitName.length]];
+//    }
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = _shopName;
     
@@ -77,7 +78,10 @@
     layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _collectionView.collectionViewLayout = layout;
 
-
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    
     [self requestGetAdsPhoto];
     
     // 请求店内扫描产品
@@ -93,16 +97,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // 设置用户定位位置
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
-    
-    if (_city && dataArray.count == 0) {
-        [self requestInShopGoodsScanList];
-    } else {
-        [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
-    }
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
@@ -132,10 +126,6 @@
     self.city = city;
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-
-    if (dataArray.count == 0) {
-        [self requestInShopGoodsScanList];
-    }
     if (slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
@@ -180,6 +170,7 @@
             if (currentPage == 0) {
                 [dataArray removeAllObjects];
             }
+            currentPage ++;
             NSArray *goodslist = [[[result objectForKey:@"data"] objectForKey:@"goodsscanlist"] objectForKey:@"goodslist"];
             NSInteger count = goodslist.count;
             for (int i = 0; i < count; i++) {
@@ -337,7 +328,13 @@
             [layout invalidateLayout];
 
         };
-
+        imageScrollView.callback = ^(int index) {
+            DLog(@"广告：%d", index);
+            NSDictionary *dic = [slideImageArray objectAtIndex:index];
+            WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+            advertisementVC.dic = dic;
+            [self.navigationController pushViewController:advertisementVC animated:YES];
+        };
         
         if (_shop) {
             NSString *isSign = [_shop stringForKey:@"isSign"];
@@ -368,11 +365,16 @@
 {
     NSInteger row = indexPath.row;
     if (dataArray.count != 0) {
-        NSDictionary *dic = [dataArray objectAtIndex:row];
+        NSMutableDictionary *dic = [dataArray objectAtIndex:row];
         NSString *goodsId = [dic stringForKey:@"goodsId"];
         WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
         productDetailVC.goodsId = goodsId;
         productDetailVC.shopId = _shopid;
+        productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+            NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+            [dic setValue:isCollect forKey:@"isCollect"];
+            [_collectionView reloadData];
+        };
         [self.navigationController pushViewController:productDetailVC animated:YES];
     }
 }

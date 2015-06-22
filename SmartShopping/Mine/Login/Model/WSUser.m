@@ -36,6 +36,8 @@
         self.verifyCode = [coder decodeObjectForKey:@"verifyCode"];
         self.phone = [coder decodeObjectForKey:@"phone"];
         
+        self.userType = [coder decodeObjectForKey:@"userType"];
+        
         self.isPushNotification = [[coder decodeObjectForKey:@"isPushNotification"] boolValue];
         self.loginType = [[coder decodeObjectForKey:@"logniType"] intValue];
         self.uid = [coder decodeObjectForKey:@"loginType"];
@@ -67,6 +69,8 @@
     [coder encodeObject:_status forKey:@"status"];
     [coder encodeObject:_verifyCode forKey:@"verifyCode"];
     [coder encodeObject:_phone forKey:@"phone"];
+    
+    [coder encodeObject:_userType forKey:@"userType"];
     
     [coder encodeObject:[NSNumber numberWithBool:_isPushNotification] forKey:@"isPushNotification"];
     

@@ -35,6 +35,7 @@
 @property (strong, nonatomic)  NSMutableArray *pinleiFDataArray; // 品类
 @property (strong, nonatomic) NSMutableDictionary *pinleiSDic; // 二级品类
 @property (assign, nonatomic) int pinleiFIndex;
+@property (assign, nonatomic) int pinleiSIndex;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (assign, nonatomic) BOOL hasRequest;
 @property (assign, nonatomic) int curTabIndex;;
@@ -83,6 +84,7 @@
     storeSDic = [[NSMutableDictionary alloc] init];
     pinleiFDataArray = [[NSMutableArray alloc] init];
     pinleiSDic = [[NSMutableDictionary alloc] init];
+    self.brandIds = [[NSMutableArray alloc] init];
     
     _searchManagerView.searchTypeView.typeLabel.text = @"商品";
     
@@ -365,17 +367,17 @@
 - (void)clickAllStore
 {
     // 选择了附近
-    if (self.domainSIndex != -1) {
+//    if (self.domainSIndex != -1) {
         if (storeFDataArray.count == 0) {
             [self requestGetShopTypeList];
         } else {
             [self showStoreTypeSelectView];
         }
     // 没有选择附近
-    } else {
-        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
-        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
-    }
+//    } else {
+//        [_tabSlideManagerView.tabSlideGapTextView resetItemViewWithIndex:1];
+//        [SVProgressHUD showErrorWithStatus:@"请先选择附近！" duration:TOAST_VIEW_TIME];
+//    }
    
 }
 
@@ -532,6 +534,38 @@
     
 }
 
+#pragma mark - 请求二级品类
+- (void)requestDetShopCategoryWithParentId:(NSString *)parentId
+{
+    [SVProgressHUD showWithStatus:@"加载中……"];
+    self.shopTypeId = self.shopTypeId.length > 0 ? self.shopTypeId : @"";
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetShopCategory] data:@{@"level": @"2", @"shopTypeId": self.shopTypeId, @"parentId": parentId} tag:WSInterfaceTypeGetShopCategory sucCallBack:^(id result) {
+        [SVProgressHUD dismiss];
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSArray *categorys = [[result objectForKey:@"data"] objectForKey:@"categorys"];
+            categorys = [categorys converDictionaryNumToStr];
+            [pinleiSDic setValue:categorys forKey:parentId];
+            NSMutableArray *tempSArray = [NSMutableArray array];
+            NSInteger SCount = categorys.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [categorys objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [datadic setValue:[dic objectForKey:@"1"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+            
+            self.doubleTableView.dataArrayS = tempSArray;
+            [self.doubleTableView.tableS reloadData];
+        }
+    } failCallBack:^(id error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+    }];
+    
+}
+
 #pragma mark - 显示附近区域选择view
 - (void)showNearDomainSelectView
 {
@@ -635,13 +669,22 @@
         NSString *townId = [SDic stringForKey:@"townId"];
         if (townId.length > 0) {
             weakSelf.townId = townId;
+            
+            NSString *tempStr = @"附近";
+            NSRange range = [title rangeOfString:tempStr];
+            if (range.length > 0) {
+                weakSelf.townId = @"";
+            }
+
         }
         
         // 选择了全部
         NSString *selectedDistrictId = [SDic stringForKey:@"districtId"];
-        if (districtId.length > 0) {
+        if (selectedDistrictId.length > 0) {
             weakSelf.districtId = selectedDistrictId;
             weakSelf.townId = @"";
+            NSDictionary *dic = [weakSelf.domainFDataArray objectAtIndex:weakSelf.domainFIndex];
+             [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:0].label.text = [dic objectForKey:@"name"];
         }
        
         weakSelf.curPage = 0;
@@ -754,10 +797,14 @@
         if (retailId.length > 0) {
             weakSelf.retailId = retailId;
         }
+        
+        // 选了全部
         NSString *selectedShopTypeId = [SDic stringForKey:@"shopTypeId"];
         if (selectedShopTypeId.length > 0) {
             weakSelf.shopTypeId = selectedShopTypeId;
             weakSelf.retailId = @"";
+            NSDictionary *dic = [weakSelf.storeFDataArray objectAtIndex:weakSelf.storeFIndex];
+            [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:1].label.text = [dic objectForKey:@"name"];
         }
         weakSelf.curPage = 0;
         [weakSelf requestSelectGoods];
@@ -794,8 +841,33 @@
         [tempFArray addObject:datadic];
     }
     
+    NSMutableArray *tempSArray = [NSMutableArray array];
+    if (FCount > 0) {
+        NSDictionary *dic = [pinleiFDataArray objectAtIndex:0];
+        NSString *mainId = [dic stringForKey:@"mainId"];
+        NSArray *secondArray = [pinleiSDic objectForKey:mainId];
+        // 第一个商店数据的二级商店数据是否为空
+        if (secondArray.count == 0) {
+            // 请求二级商店数据
+            [self requestDetShopCategoryWithParentId:mainId];
+            // 添加二级商店数据源
+        } else {
+            NSDictionary *dic = [pinleiFDataArray objectAtIndex:0];
+            NSArray *tempArray = [pinleiSDic objectForKey:[dic stringForKey:@"mainId"]];
+            NSInteger SCount = tempArray.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [tempArray objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+        }
+    }
+
+    
     self.doubleTableView.dataArrayF = tempFArray;
-    self.doubleTableView.dataArrayS = nil;
+    self.doubleTableView.dataArrayS = tempSArray;
     [self.doubleTableView.tableF reloadData];
     [self.doubleTableView.tableS reloadData];
     self.doubleTableView.tableSCallBack = nil;
@@ -807,10 +879,58 @@
         NSDictionary *dic = [weakSelf.pinleiFDataArray objectAtIndex:index];
         NSString *mainId = [dic stringForKey:@"mainId"];
         weakSelf.categoryId = mainId;
-        NSString *name = [dic stringForKey:@"name"];
-        [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = name;
+
+        
+        NSArray *secondArray = [weakSelf.pinleiSDic objectForKey:mainId];
+        // 第一个数据的二级数据是否为空
+        // 二级数据为空时请求数据
+        if (secondArray.count == 0) {
+            [weakSelf requestDetShopCategoryWithParentId:mainId];
+            
+            // 二级数据不为空时刷新二级表格
+        } else {
+            NSMutableArray *tempSArray = [NSMutableArray array];
+            NSDictionary *dic = [weakSelf.pinleiFDataArray objectAtIndex:index];
+            NSArray *tempArray = [weakSelf.pinleiSDic objectForKey:[dic objectForKey:@"mainId"]];
+            NSInteger SCount = tempArray.count;
+            for (int i = 0; i < SCount; i++) {
+                NSMutableDictionary *datadic = [NSMutableDictionary dictionary];
+                NSDictionary *dic = [tempArray objectAtIndex:i];
+                [datadic setValue:[dic objectForKey:@"name"] forKey:DOUBLE_TABLE_TITLE];
+                [datadic setValue:[dic objectForKey:@"0"] forKey:DOUBLE_TABLE_SELECTED_FLAG];
+                [tempSArray addObject:datadic];
+            }
+            weakSelf.doubleTableView.dataArrayS = tempSArray;
+            [weakSelf.doubleTableView.tableS reloadData];
+        }
+
+    };
+    self.doubleTableView.tableSCallBack = ^(NSInteger index) {
+        weakSelf.pinleiSIndex = (int)index;
+        NSDictionary *dic = [weakSelf.pinleiFDataArray objectAtIndex:weakSelf.pinleiFIndex];
+        NSString *mainId = [dic objectForKey:@"mainId"];
+        NSArray *secondArray = [weakSelf.pinleiSDic objectForKey:mainId];
+        NSDictionary *SDic = [secondArray objectAtIndex:index];
+        NSString *title = [SDic objectForKey:@"name"];
+        [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = title;
+        NSString *subId = [SDic stringForKey:@"subId"];
+        if (subId.length > 0) {
+            weakSelf.categoryId = subId;
+        }
+        
+        // 选了全部
+        NSString *SmainId = [SDic stringForKey:@"mainId"];
+        if (SmainId.length > 0) {
+            weakSelf.categoryId = SmainId;
+            NSDictionary *dic = [weakSelf.pinleiFDataArray objectAtIndex:weakSelf.pinleiFIndex];
+            [weakSelf.tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = [dic objectForKey:@"name"];
+        }
+        weakSelf.curPage = 0;
+        [weakSelf requestSelectGoods];
+        
         weakSelf.doubleTableView.hidden = YES;
     };
+
 }
 
 
@@ -858,12 +978,21 @@
     [params setValue:_townId forKey:@"townId"];
     [params setValue:_shopTypeId forKey:@"shopTypeId"];
     [params setValue:_retailId forKey:@"retailId"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:_searchname forKey:@"searchname"];
     [params setValue:_categoryId forKey:@"categoryId"];
     if (_brandIds.count > 0) {
-        [params setValue:_brandIds forKey:@"brandIds"];
+        NSMutableString *brands = [[NSMutableString alloc] init];
+        for (int i = 0; i <  _brandIds.count; i++) {
+            NSString *brandID = [_brandIds objectAtIndex:i];
+            if (i == _brandIds.count - 1) {
+                [brands appendString:brandID];
+            } else {
+                [brands appendString:[NSString stringWithFormat:@"%@,", brandID]];
+            }
+        }
+        [params setValue:brands forKey:@"brandIds"];
     } else {
         [params setValue:@"" forKey:@"brandIds"];
     }
@@ -925,31 +1054,21 @@
     }
     if (_categoryId.length > 0) {
         WSFilterBrandViewController *filterBrandVC = [[WSFilterBrandViewController alloc] init];
-        filterBrandVC.mainId = self.categoryId;
+        filterBrandVC.categoryId = self.categoryId;
         filterBrandVC.callBack = ^(NSArray *array) {
             NSMutableArray *subIdArray = [NSMutableArray array];
-            BOOL hasMain = NO; // 是否选了全部
             for (NSDictionary *dic in array) {
-                NSString *mainId = [dic stringForKey:@"mainId"];
-                if (mainId) {
-                    hasMain = YES;
-                    self.categoryId = mainId;
-                    [_tabSlideManagerView.tabSlideGapTextView getItemViewWithIndex:2].label.text = [dic objectForKey:@"name"];
-                    [_brandIds removeAllObjects];
-                    curPage = 0;
-                    [self requestSelectGoods];
-                    break;
-                }
-                NSString *subId = [dic stringForKey:@"subId"];
-                [subIdArray addObject:subId];
+                NSString *pingpaiID = [dic stringForKey:@"id"];
+                [subIdArray addObject:pingpaiID];
             }
-            if (!hasMain) {
-                self.brandIds = subIdArray;
-                if (_brandIds.count > 0) {
-                    curPage = 0;
-                    [self requestSelectGoods];
-                }
+            if (!_brandIds) {
+                self.brandIds = [[NSMutableArray alloc] init];
             }
+            [self.brandIds removeAllObjects];
+            [self.brandIds addObjectsFromArray:subIdArray];
+            curPage = 0;
+            [self requestSelectGoods];
+
         };
         [self.navigationController pushViewController:filterBrandVC animated:YES];
     } else {

@@ -57,7 +57,11 @@
     layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
     _contentCollectionView.collectionViewLayout = layout;
     dataArray = [[NSMutableArray alloc] init];
-    
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    curPage = 0;
+    [self requestMineCollect];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,15 +72,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // 设置用户定位位置
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
-    curPage = 0;
-    [self requestMineCollect];
+
 }
 
 #pragma mark - 用户位置更新
@@ -91,13 +92,6 @@
     self.city = [locationDic objectForKey:LOCATION_CITY];
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-
-    DLog(@"定位：%@", _city);
-    if (_city.length > 0) {
-        if (self.city.length > 0 && dataArray.count == 0) {
-            [self requestMineCollect];
-        }
-    }
 }
 
 - (void)requestMineCollect
@@ -109,7 +103,7 @@
     }
     [SVProgressHUD showWithStatus:@"加载中……"];
     NSString *userId = [WSRunTime sharedWSRunTime].user._id;
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyCollectList] data:@{@"uid": userId,  @"lon": [NSString stringWithFormat:@"%f", _latitude], @"lat": [NSString stringWithFormat:@"%f", _longtide], @"pages": [NSString stringWithFormat:@"%d", curPage + 1], @"pageSize":WSPAGE_SIZE } tag:WSInterfaceTypeMyCollectList sucCallBack:^(id result) {
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyCollectList] data:@{@"uid": userId,  @"lat": [NSString stringWithFormat:@"%f", _latitude], @"lon": [NSString stringWithFormat:@"%f", _longtide], @"pages": [NSString stringWithFormat:@"%d", curPage + 1], @"pageSize":WSPAGE_SIZE } tag:WSInterfaceTypeMyCollectList sucCallBack:^(id result) {
         [_contentCollectionView endHeaderAndFooterRefresh];
         [SVProgressHUD dismiss];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
@@ -119,7 +113,11 @@
             }
             curPage ++;
             NSArray *myCollectList = [[result objectForKey:@"data"]objectForKey:@"myCollectList"];
-            [dataArray addObjectsFromArray:myCollectList];
+            for (int i = 0; i < myCollectList.count; i++) {
+                NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[myCollectList objectAtIndex:i]];
+                [dataArray addObject:dic];
+            }
+            
             
             [_contentCollectionView reloadData];
         }
@@ -153,7 +151,7 @@
     };
     NSInteger row = indexPath.row;
     cell.tag = row;
-    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSMutableDictionary *dic = [dataArray objectAtIndex:row];
     [cell setModel:dic];
     return cell;
 }

@@ -64,11 +64,6 @@
         [SVProgressHUD showErrorWithStatus:@"手机号码不正确！" duration:TOAST_VIEW_TIME];
         return;
     }
-    UIButton *but = (UIButton *)sender;
-    [but setEnabled:NO];
-    varificateTime = VARIFICATE_TIME;
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-    but.alpha = 0.7;
     [self requestValidCode];
 }
 
@@ -166,6 +161,10 @@
                 NSString *code = [data valueForKey:@"code"];
                 self.code = code;
                 DLog(@"验证码：%@", code);
+                [_gainVarificateBut setEnabled:NO];
+                varificateTime = VARIFICATE_TIME;
+                timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+                _gainVarificateBut.alpha = 0.7;
             }
         }
             break;

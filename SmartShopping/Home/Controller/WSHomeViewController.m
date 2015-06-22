@@ -42,6 +42,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     BOOL supermarketToEndPage;
     int baihuoCurPage;
     BOOL baihuoToEndPage;
+    BOOL isFirstViewAppear;
+    BOOL isFirstLocationSuc;
 }
 
 @property (strong, nonatomic) UIImage *downloadAcImage;
@@ -70,6 +72,8 @@ typedef NS_ENUM(NSInteger, ShopType)
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     //[_navBarManagerView.navigationBarButSearchButView.rightBut setBackgroundImage:[UIImage imageNamed:@"navigationBarButSearchButView"] forState:UIControlStateNormal];
+    isFirstViewAppear = YES;
+    isFirstLocationSuc = YES;
     _navBarManagerView.navigationBarButSearchButView.delegate = self;
     _navBarManagerView.navigationBarButSearchButView.leftLabel.text = @"--";
     _navBarManagerView.navigationBarButSearchButView.leftBut.enabled = NO;
@@ -90,7 +94,7 @@ typedef NS_ENUM(NSInteger, ShopType)
     [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_supermarketCollectionView registerNib:[UINib nibWithNibName:@"HomeHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader withReuseIdentifier:@"HomeHeaderCollectionReusableView"];
     [_supermarketCollectionView addLegendFooterWithRefreshingBlock:^{
-        [self requestGetHomePageGoos];
+        [self requestGetHomePageGoosShowMsg:YES];
     }];
 
     [_supermarketCollectionView addLegendHeaderWithRefreshingBlock:^{
@@ -108,7 +112,7 @@ typedef NS_ENUM(NSInteger, ShopType)
             default:
                 break;
         }
-        [self requestGetHomePageGoos];
+        [self requestGetHomePageGoosShowMsg:YES];
         DLog(@"下拉刷新完成！");
     }];
     
@@ -119,6 +123,10 @@ typedef NS_ENUM(NSInteger, ShopType)
     layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
     layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
    _supermarketCollectionView.collectionViewLayout = layout;
+    
+    // 同步用户信息与精明豆
+    [self synchronUserOrTourist];
+    
 }
 
 
@@ -147,10 +155,26 @@ self.city = @"广州";
         [self requestGetAdsPhoto];
     }
     
-    if (_city.length != 0) {
-        // 页面没有数据时请求数据
-        [self requestData];
+    if (isFirstViewAppear) {
+        isFirstViewAppear = !isFirstViewAppear;
+    } else {
+//        switch (shopType) {
+//            case ShopTypeBaihuoFuzhuang:
+//            {
+//                baihuoCurPage = 0;
+//            }
+//                break;
+//            case ShopTypeSuperMarket:
+//            {
+//                supermarketCurPage = 0;
+//            }
+//                break;
+//            default:
+//                break;
+//        }
+//        [self requestGetHomePageGoosShowMsg:YES];
     }
+
     
     // 请求消息列表
     WSUser *user = [WSRunTime sharedWSRunTime].user;
@@ -204,24 +228,97 @@ self.city = @"广州";
         if (self.city.length > 0 && slideImageArray.count == 0) {
             [self requestGetAdsPhoto];
         }
-        
-        // 页面没有数据时请求数据
-        [self requestData];
+        if (isFirstLocationSuc) {
+            isFirstLocationSuc = !isFirstLocationSuc;
+            [self requestGetHomePageGoosShowMsg:YES];
+        }
+        [self requestTourist];
     }
-  //  }
 }
 
-- (void)requestGetHomePageGoos
+- (void)requestTourist
+{
+    NSData *touristData = [USER_DEFAULT objectForKey:TOURIST_KEY];
+    if (!touristData) {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:_city forKey:@"cityName"];
+
+        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeTouristRegist] data:params tag:WSInterfaceTypeTouristRegist sucCallBack:^(id result) {
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                NSDictionary *data = [result valueForKey:@"data"];
+                NSDictionary *userDic = [data valueForKey:@"user"];
+                
+                NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
+                WSUser *tourist = [[WSUser alloc] init];
+                [tourist setValuesForKeysWithDictionary:tempDic];
+                 tourist.userType = @"2";
+                
+                // 首次打开app
+                [WSProjUtil synchronFirstUsedBeanNumWithUser:tourist callBack:^{
+                    [_supermarketCollectionView reloadData];
+                }];
+                
+                [WSProjUtil synchronOpenAppBeanNumWithUser:tourist callBack:^{
+                    [_supermarketCollectionView reloadData];
+                }];
+                
+                // 本地游客信息
+                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:tourist];
+                [USER_DEFAULT setObject:userdata forKey:TOURIST_KEY];
+                
+                // 如果用户没登录则为游客
+                NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
+                if (!beforeData) {
+                    WSRunTime *runTime = [WSRunTime sharedWSRunTime];
+                    runTime.user = tourist;
+                    [_supermarketCollectionView reloadData];
+                }
+            }
+        } failCallBack:^(id error) {
+            
+        } showMessage:NO];
+    }
+}
+
+- (void)synchronUserOrTourist
+{
+    // 自动登录时同步用户数据
+    NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
+    if (beforeData) {
+        WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
+        [WSRunTime sharedWSRunTime].user = beforeUser;
+        // 
+        [WSProjUtil synchronOpenAppBeanNumWithUser:beforeUser callBack:^{
+            [_supermarketCollectionView reloadData];
+        }];
+        
+        [WSProjUtil synchronFirstUsedBeanNumWithUser:beforeUser callBack:^{
+             [_supermarketCollectionView reloadData];
+        }];
+    } else {
+        NSData *touristData = [USER_DEFAULT objectForKey:TOURIST_KEY];
+        if (touristData) {
+            WSUser *beforeTourist = [NSKeyedUnarchiver unarchiveObjectWithData:touristData];
+            
+            [WSProjUtil synchronOpenAppBeanNumWithUser:beforeTourist callBack:^{
+                [_supermarketCollectionView reloadData];
+            }];
+        }
+    }
+}
+
+- (void)requestGetHomePageGoosShowMsg:(BOOL)showMsg
 {
     if (_city.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
         [_supermarketCollectionView endHeaderAndFooterRefresh];
         
-    } else{
+    } else {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_city forKey:@"cityName"];
-        [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lon"];
-        [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lat"];
+        [params setValue:[NSNumber numberWithDouble:_latitude] forKey:@"lat"];
+        [params setValue:[NSNumber numberWithDouble:_longtide] forKey:@"lon"];
         [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
         switch (shopType) {
             case ShopTypeSuperMarket:
@@ -243,10 +340,8 @@ self.city = @"广州";
         if (user) {
             [params setValue:user._id forKey:@"uid"];
         }
-        [SVProgressHUD showWithStatus:@"加载中……"];
-        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
+        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
             [_supermarketCollectionView endHeaderAndFooterRefresh];
-            [SVProgressHUD dismiss];
             float flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
                 switch (shopType) {
@@ -290,8 +385,7 @@ self.city = @"广州";
             }
         } failCallBack:^(id error) {
             [_supermarketCollectionView endHeaderAndFooterRefresh];
-            [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
-        }];
+        } showMessage:showMsg];
     }
 }
 
@@ -313,20 +407,20 @@ self.city = @"广州";
 }
 
 #pragma mark 页面没有数据时请求数据
-- (void)requestData
+- (void)requestDataShowMsg:(BOOL)showMsg
 {
     switch (shopType) {
         case ShopTypeSuperMarket:
         {
             if (superMarketDataArray.count == 0) {
-                [self requestGetHomePageGoos];
+                [self requestGetHomePageGoosShowMsg:showMsg];
             }
         }
             break;
         case ShopTypeBaihuoFuzhuang:
         {
             if (baihuoFuzhuangDataArray.count == 0) {
-                [self requestGetHomePageGoos];
+                [self requestGetHomePageGoosShowMsg:showMsg];
             }
         }
             break;
@@ -522,7 +616,7 @@ self.city = @"广州";
                 DLog(@"广告：%d", index);
                 NSDictionary *dic = [slideImageArray objectAtIndex:index];
                 WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
-                advertisementVC.url = [dic objectForKey:@"third_link"];
+                advertisementVC.dic = dic;
                 [self.navigationController pushViewController:advertisementVC animated:YES];
             };
         }
@@ -544,10 +638,10 @@ self.city = @"广州";
 {
     if (superMarketDataArray.count != 0) {
         supermarketCurPage = 0;
-        [self requestGetHomePageGoos];
+        [self requestGetHomePageGoosShowMsg:YES];
     }
     if (baihuoFuzhuangDataArray.count != 0) {
-        [self requestGetHomePageGoos];
+        [self requestGetHomePageGoosShowMsg:YES];
     }
 }
 
@@ -571,10 +665,15 @@ self.city = @"广州";
             break;
     }
     NSInteger row = indexPath.row;
-    NSDictionary *dic = [dataArray objectAtIndex:row];
+    NSMutableDictionary *dic = [dataArray objectAtIndex:row];
     NSString *goodsId = [dic stringForKey:@"goodsId"];
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = [dic stringForKey:@"shopId"];
+    productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+        NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+        [dic setValue:isCollect forKey:@"isCollect"];
+        [_supermarketCollectionView reloadData];
+    };
     [self.navigationController pushViewController:productDetailVC animated:YES];
 
 
@@ -686,7 +785,7 @@ self.city = @"广州";
 //            _supermarketCollectionView.hidden = NO;
 //            _baihuofuzhuangCollectView.hidden = YES;
             if (superMarketDataArray.count == 0) {
-                [self requestGetHomePageGoos];
+                [self requestGetHomePageGoosShowMsg:YES];
             }
         }
             break;
@@ -695,7 +794,7 @@ self.city = @"广州";
 //            _supermarketCollectionView.hidden = YES;
 //            _baihuofuzhuangCollectView.hidden = NO;
             if (baihuoFuzhuangDataArray.count == 0) {
-                [self requestGetHomePageGoos];
+                [self requestGetHomePageGoosShowMsg:YES];
             }
         }
             break;

@@ -14,19 +14,9 @@
 #import <Parse/Parse.h>
 #import "WSGuideViewController.h"
 
-#define APP_NOT_FIRST_OPEN         @"APP_NOT_FIRST_OPEN"
-#define APP_DAY_PEA                @"APP_DAY_PEA"
-#define APP_DAY_PEA_IS_GET         @"APP_DAY_PEA_IS_GET"
-#define APP_DAY_PEA_IS_GET_DAY     @"APP_DAY_PEA_IS_GET_DAY"
-
-#define APP_GUIDE                  @"APP_GUIDE"
-
-//#import "IBSDK.h"
-
 @interface AppDelegate () <BMKGeneralDelegate>
 {
      BMKMapManager* _mapManager;
-//    IBSDK *ibsdk;
 }
 @end
 
@@ -38,8 +28,19 @@
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
 
+    // 处理iOS8本地推送不能收到的问题
+    float sysVersion = [[UIDevice currentDevice]systemVersion].floatValue;
+    if (sysVersion >= 8.0) {
+        UIUserNotificationType type=UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIUserNotificationTypeSound;
+        UIUserNotificationSettings *setting=[UIUserNotificationSettings settingsForTypes:type categories:nil];
+        [[UIApplication sharedApplication]registerUserNotificationSettings:setting];
+    }
+    
     // 同步用户信息与精明豆
-    [self synchronUserDataAndPeaNum];
+   // [self synchronUserDataAndPeaNum];
+    
+    // 同步精明豆获取规则接口
+    [self synchronBeannumberByKeyWord];
     
     // 百度地图
     [self initBMK];
@@ -63,31 +64,41 @@
         [USER_DEFAULT setValue:[NSNumber numberWithInt:1] forKey:APP_GUIDE];
     }
     
+    // 开启百度地图定位
     [[WSBMKUtil sharedInstance] startUserLocationService];
     
-   // [self testIbeaCon];
-    
-
+    // 开启ibeacon扫描
+    [[WSRunTime sharedWSRunTime] startLocation];
     
     return YES;
 }
 
-//- (void)testIbeaCon
-//{
-//
-//    ibsdk = [[IBSDK alloc] init];
-//    [ibsdk startLocation];
-//    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(check) userInfo:nil repeats:YES];
-//}
-//
-//- (void)check
-//{
-//    NSArray *ibeacons = ibsdk.beaconsArray;
-//    for (id beacon in ibeacons) {
-//        DLog(@"beacon:%@", beacon);
-//    }
-//    
-//}
+- (void)synchronBeannumberByKeyWord
+{
+    // 首次使用
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetBeannumberByKeyWord] data:@{@"keyword": @"FIRST_USED"} tag:WSInterfaceTypeGetBeannumberByKeyWord sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSDictionary *data = [result objectForKey:@"data"];
+            NSString *beanNumber = [data stringForKey:@"beanNumber"];
+            [USER_DEFAULT setObject:beanNumber forKey:FIRST_USED];
+        }
+    } failCallBack:^(id error) {
+        
+    } showMessage:NO];
+    
+    // 打开app
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetBeannumberByKeyWord] data:@{@"keyword": @"OPEN_APP"} tag:WSInterfaceTypeGetBeannumberByKeyWord sucCallBack:^(id result) {
+        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        if (flag) {
+            NSDictionary *data = [result objectForKey:@"data"];
+            NSString *beanNumber = [data stringForKey:@"beanNumber"];
+            [USER_DEFAULT setObject:beanNumber forKey:OPEN_APP];
+        }
+    } failCallBack:^(id error) {
+        
+    } showMessage:NO];
+}
 
 - (void)synchronUserDataAndPeaNum
 {
@@ -96,7 +107,6 @@
     if (!notFirstOpen) {
         [USER_DEFAULT setValue:[NSNumber numberWithInt:100] forKey:APP_PEAS_NUM];
         [USER_DEFAULT setValue:[NSNumber numberWithBool:NO] forKey:APP_NOT_FIRST_OPEN];
-        [USER_DEFAULT setObject:[NSNumber numberWithInt:1] forKey:APP_NOT_FIRST_OPEN];
     }
 
     NSString *dateStr = [WSCalendarUtil getDateStrWithDate:[NSDate date] format:@"yyyyMMdd"];
@@ -169,9 +179,9 @@
                 [USER_DEFAULT setObject:userdata forKey:USER_KEY];
                 
             } failCallBack:^(id error) {
-                [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
+               // [SVProgressHUD dismissWithError:@"同步失败！" afterDelay:TOAST_VIEW_TIME];
                 
-            } showMessage:YES];
+            } showMessage:NO];
         }
     }
 }
@@ -278,6 +288,14 @@
     _nav = [[WSBaseNavigationController alloc] initWithRootViewController:tabbarVC];
     _nav.navigationBarHidden = YES;
     self.window.rootViewController = _nav;
+}
+
+#pragma mark -
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSDictionary *beaconDic = [notification userInfo];
+    NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
+    NSString *thirdlink = [beaconInfoDic objectForKey:@"thirdlink"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url

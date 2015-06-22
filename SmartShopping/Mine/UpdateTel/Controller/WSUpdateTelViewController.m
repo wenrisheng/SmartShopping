@@ -67,11 +67,6 @@
     }
     NSDictionary *dic = @{@"phone" : _telTextField.text, @"type" : @"1"};
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetValidCode] data:dic tag:WSInterfaceTypeGetValidCode];
-    UIButton *but = (UIButton *)sender;
-    [but setEnabled:NO];
-    varificateTime = VARIFICATE_TIME;
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-    but.alpha = 0.7;
 }
 
 - (void)timeAction:(NSTimer *)time
@@ -147,6 +142,11 @@
                 NSString *code = [data valueForKey:@"code"];
                 self.code = code;
                 DLog(@"验证码：%@", code);
+                
+                [_gainVarificateBut setEnabled:NO];
+                varificateTime = VARIFICATE_TIME;
+                timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+                _gainVarificateBut.alpha = 0.7;
             }
         }
             break;

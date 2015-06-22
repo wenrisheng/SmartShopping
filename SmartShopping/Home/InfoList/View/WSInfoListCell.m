@@ -21,7 +21,7 @@
     NSString *isRead = [dic stringForKey:@"isRead"];
     // 未读
     if ([isRead isEqualToString:@"1"]) {
-        _contentLabel.textColor = [UIColor colorWithWhite:0.353 alpha:1.000];
+        _contentLabel.textColor = [UIColor blackColor];
     } else {
         _contentLabel.textColor = [UIColor colorWithWhite:0.651 alpha:1.000];
     }

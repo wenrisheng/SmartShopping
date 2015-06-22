@@ -9,6 +9,8 @@
 #import "WSLocationDetailViewController.h"
 #import "PaopaoView.h"
 
+#define TITLE_VIEW_HEIGT     20
+
 @interface WSLocationDetailViewController () <BMKLocationServiceDelegate, BMKMapViewDelegate>
 {
     BMKLocationService* _locService;
@@ -35,30 +37,30 @@
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"商家地址";
     
-    //设置定位精确度，默认：kCLLocationAccuracyBest
-    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    //启动LocationService
-    [_locService startUserLocationService];
+//    //设置定位精确度，默认：kCLLocationAccuracyBest
+//    [BMKLocationService setLocationDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+//    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
+//    [BMKLocationService setLocationDistanceFilter:LOCATION_DISTANCE_FILTER];
+//    
+//    //初始化BMKLocationService
+//    _locService = [[BMKLocationService alloc]init];
+//    _locService.delegate = self;
+//    //启动LocationService
+//    [_locService startUserLocationService];
 
     
-    _mapView.showsUserLocation = YES;//先关闭显示的定位图层
+//    _mapView.showsUserLocation = YES;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
     
     
-    [_mapView setZoomLevel:11];
+    [_mapView setZoomLevel:19];
     _mapView.delegate = self;
     pointAnnotation = [[BMKPointAnnotation alloc]init];
     CLLocationCoordinate2D coor;
     coor.latitude = _latitude;
     coor.longitude = _longitude;
     pointAnnotation.coordinate = coor;
-    pointAnnotation.title = @"";
+    pointAnnotation.title = _locTitle;
     [_mapView addAnnotation:pointAnnotation];
     
     _mapView.centerCoordinate = coor;
@@ -74,13 +76,13 @@
     [super viewWillAppear:animated];
    // [[WSBMKUtil sharedInstance] stopUserLocationService];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
-    _locService.delegate = self;
+   // _locService.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     _mapView.delegate = nil; // 不用时，置nil
-    _locService.delegate = nil;
+   // _locService.delegate = nil;
     //[[WSBMKUtil sharedInstance] startUserLocationService];
 }
 
@@ -123,34 +125,45 @@
             // 设置可拖拽
             annotationView.draggable = YES;
             
-            PaopaoView *paopaoView = [[PaopaoView alloc] initWithFrame:CGRectMake(0, 0, 80, 60)];
-//            paopaoView.titleLabel.text = _locTitle;
-//            paopaoView.addressLabel.text = _address;
+
             
-            
-            UIView *popView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 60)];
+
+            UIView *popView = [[UIView alloc]initWithFrame:CGRectMake(100, 0, 100, 60)];
             [popView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithWhite:0.867 alpha:1.000] cornerRadius:5];
             popView.backgroundColor = [UIColor whiteColor];
             CGRect bounds = popView.bounds;
             //
-            UILabel *driverName = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, bounds.size.width - 2 * 5, 20)];
+            UILabel *driverName = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, bounds.size.width - 2 * 5, TITLE_VIEW_HEIGT)];
             driverName.text = _locTitle;
             driverName.backgroundColor = [UIColor clearColor];
             driverName.font = [UIFont systemFontOfSize:14];
             driverName.textColor = [UIColor colorWithWhite:0.406 alpha:1.000];
             [popView addSubview:driverName];
+//            CGSize size = [driverName boundingRectWithSize:CGSizeMake(0, TITLE_VIEW_HEIGT)];
+//            CGRect rect = driverName.frame;
+//            rect.size.width = size.width;
+//            driverName.frame = rect;
             
-            UILabel *carName = [[UILabel alloc]initWithFrame:CGRectMake(5, 15, bounds.size.width - 2 * 5, bounds.size.height - 20)];
+            UILabel *carName = [[UILabel alloc]initWithFrame:CGRectMake(5, 15, bounds.size.width - 2 * 5, bounds.size.height - TITLE_VIEW_HEIGT)];
             carName.text = _address;
             carName.numberOfLines = 0;
             carName.backgroundColor = [UIColor clearColor];
             carName.font = [UIFont systemFontOfSize:10];
             carName.textColor = [UIColor colorWithWhite:0.562 alpha:1.000];
             [popView addSubview:carName];
+//            CGSize size1 = [carName boundingRectWithSize:CGSizeMake(size.width, 0)];
+//            CGRect rect1= driverName.frame;
+//            rect1.size.height = size1.height;
+//            rect1.origin.y = size.height;
+//            driverName.frame = rect1;
+            
+//            CGRect rect3 = popView.frame;
+//            rect3.size.width = size.width;
+//            rect3.size.height = rect.size.height + rect1.size.height;
+//            popView.frame = rect3;
             
             BMKActionPaopaoView *actionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:popView];
-            actionPaopaoView.frame = CGRectMake(0, 0, 100, 60);
-            paopaoView.frame = actionPaopaoView.bounds;
+           // actionPaopaoView.frame = CGRectMake(0, 0, 100, 60);
             annotationView.paopaoView = nil;
             annotationView.paopaoView = actionPaopaoView;
         }

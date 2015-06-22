@@ -53,6 +53,7 @@
     // 设置用户定位位置
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     [self setLocationCity:locationDic];
+
     if (_city.length != 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
@@ -121,7 +122,7 @@
                 DLog(@"广告：%d", index);
                 NSDictionary *dic = [slideImageArray objectAtIndex:index];
                 WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
-                advertisementVC.url = [dic objectForKey:@"third_link"];
+                advertisementVC.dic = dic;
                 [self.navigationController pushViewController:advertisementVC animated:YES];
             };
             

@@ -52,6 +52,9 @@
         FgoodsName = [FDic objectForKey:@"goodsName"];
         FgoodsScan = [FDic stringForKey:@"goodsScan"];
         FisCollect = [FDic objectForKey:@"isCollect"];
+        _leftProductView.hidden = NO;
+    } else {
+        _leftProductView.hidden = YES;
     }
    
     if (goodsList.count > 1) {
@@ -61,6 +64,9 @@
         SgoodsName = [SDic objectForKey:@"goodsName"];
         SgoodsScan = [SDic stringForKey:@"goodsScan"];
         SisCollect = [SDic objectForKey:@"isCollect"];
+        _rightProductView.hidden = NO;
+    } else {
+        _rightProductView.hidden = YES;
     }
 
     if ([FgoodsScan isEqualToString:@"1"]) {
@@ -135,8 +141,8 @@
     NSString *shopName = [dic stringForKey:@"shopName"];
     NSString *address = [dic objectForKeyedSubscript:@"address"];
     WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
-    locationDetailVC.latitude = [lon doubleValue];
-    locationDetailVC.longitude = [lat doubleValue];
+    locationDetailVC.latitude = [lat doubleValue];
+    locationDetailVC.longitude = [lon doubleValue];
     locationDetailVC.locTitle = shopName;
     locationDetailVC.address = address;
     [self.viewController.navigationController pushViewController:locationDetailVC animated:YES];
@@ -226,7 +232,8 @@
     NSMutableDictionary *goodDic = [goodsList objectAtIndex:0];
     NSString *shopId = [dic stringForKey:@"shopId"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    NSString *userType = user.userType;
+    if ([userType isEqualToString:@"1"]) {
         NSString *isCollect = [goodDic stringForKey:@"isCollect"];
         // 没有收藏  白色安心
         if ([isCollect isEqualToString:@"N"]) {
@@ -317,7 +324,8 @@
     NSMutableDictionary *goodDic = [goodsList objectAtIndex:1];
     NSString *shopId = [dic stringForKey:@"shopId"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    NSString *userType = user.userType;
+    if ([userType isEqualToString:@"1"]) {
         NSString *isCollect = [goodDic stringForKey:@"isCollect"];
         // 没有收藏  白色安心
         if ([isCollect isEqualToString:@"N"]) {
@@ -394,8 +402,8 @@
         [params setValue:user._id forKey:@"uid"];
     }
     [params setValue:shopId forKey:@"shopid"];
-    [params setValue:[NSString stringWithFormat:@"%f", latitude] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", longtide] forKey:@"lon"];
     [params setValue:[NSString stringWithFormat:@"%d",  1] forKey:@"pages"];
     [params setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [params setValue:[NSString stringWithFormat:@"%d", 1] forKey:@"pages"];

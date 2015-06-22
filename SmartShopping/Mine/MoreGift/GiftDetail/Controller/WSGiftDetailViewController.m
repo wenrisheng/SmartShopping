@@ -81,7 +81,7 @@
             }
             
             // 礼品所需的精明豆
-           int unitNum = [[_gift stringForKey:@"amount"] intValue];
+           int unitNum = [[_gift stringForKey:@"requiredBean"] intValue];
             
             // 当前用户的精明豆
             WSUser *user = [WSRunTime sharedWSRunTime].user;

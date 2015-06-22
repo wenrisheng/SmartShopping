@@ -71,7 +71,8 @@
 {
     NSString *shopId = [dic stringForKey:@"shopId"];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    NSString *userType = user.userType;
+    if ([userType isEqualToString:@"1"]) {
         NSString *isCollect = [dic stringForKey:@"isCollect"];
         // 没有收藏  白色安心
         if ([isCollect isEqualToString:@"N"]) {

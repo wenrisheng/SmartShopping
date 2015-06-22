@@ -48,6 +48,10 @@
     [_contentTableView addLegendFooterWithRefreshingBlock:^{
         [self requestShopSignList];
     }];
+    
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+     [self requestShopSignList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,8 +63,7 @@
 {
     [super viewWillAppear:animated];
     // 设置用户定位位置
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                          selector:@selector(locationUpdate:)
                                              name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
@@ -81,9 +84,6 @@
         self.city = city;
         self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
         self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-        if (dataArray.count == 0) {
-            [self requestShopSignList];
-        }
     }
 }
 
@@ -231,8 +231,8 @@
     NSString *shopName = [dic stringForKey:@"shopname"];
     NSString *address = [dic objectForKeyedSubscript:@"address"];
     WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
-    locationDetailVC.latitude = [lon doubleValue];
-    locationDetailVC.longitude = [lat doubleValue];
+    locationDetailVC.latitude = [lat doubleValue];
+    locationDetailVC.longitude = [lon doubleValue];
     locationDetailVC.locTitle = shopName;
     locationDetailVC.address = address;
     [self.navigationController pushViewController:locationDetailVC animated:YES];

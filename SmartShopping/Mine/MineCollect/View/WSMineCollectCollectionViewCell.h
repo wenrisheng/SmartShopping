@@ -12,11 +12,11 @@
 #define WSMINE_COLLECT_COLLECTION_VIEW_CELL_IMAGE_HEIGHT  142
 
 @interface WSMineCollectCollectionViewCell : UICollectionViewCell
-@property (strong, nonatomic) NSDictionary *dic;
+@property (strong, nonatomic) NSMutableDictionary *dic;
 
 @property (copy) void(^downloadImageFinish)(void);
 
-- (void)setModel:(NSDictionary *)dic;
+- (void)setModel:(NSMutableDictionary *)dic;
 
 @property (weak, nonatomic) IBOutlet UIView *conView;
 

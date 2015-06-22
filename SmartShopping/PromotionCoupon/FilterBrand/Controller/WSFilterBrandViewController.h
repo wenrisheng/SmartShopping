@@ -7,11 +7,17 @@
 //
 
 #import "WSServiceViewController.h"
+#import "WSPromotionCouponViewController.h"
 
 @interface WSFilterBrandViewController : WSServiceViewController
 
-@property (strong, nonatomic) NSString *mainId;
+
+@property (weak, nonatomic) WSPromotionCouponViewController *beforeVC;
+@property (strong, nonatomic) NSString *categoryId;
+
 
 @property (copy) void(^callBack)(NSArray *array);
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (weak, nonatomic) IBOutlet UITableView *contentTableView;
 
 @end

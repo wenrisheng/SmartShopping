@@ -369,8 +369,8 @@
                     <color key="backgroundColor" red="0.8784313725490196" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="RXw-ZL-lU8" firstAttribute="width" secondItem="9y4-5B-d2m" secondAttribute="width" multiplier="300/320" id="4jj-mb-erp"/>
-                        <constraint firstItem="M3l-74-ynG" firstAttribute="leading" secondItem="9y4-5B-d2m" secondAttribute="leading" id="CZ5-XC-ck3"/>
-                        <constraint firstAttribute="trailing" secondItem="M3l-74-ynG" secondAttribute="trailing" id="cZf-oo-T4c"/>
+                        <constraint firstItem="M3l-74-ynG" firstAttribute="leading" secondItem="9y4-5B-d2m" secondAttribute="leading" priority="250" id="CZ5-XC-ck3"/>
+                        <constraint firstAttribute="trailing" secondItem="M3l-74-ynG" secondAttribute="trailing" priority="250" id="cZf-oo-T4c"/>
                         <constraint firstItem="M3l-74-ynG" firstAttribute="top" secondItem="9y4-5B-d2m" secondAttribute="top" id="o3l-ub-igP"/>
                         <constraint firstAttribute="bottom" secondItem="M3l-74-ynG" secondAttribute="bottom" constant="-4" id="xs2-Kr-gJ4"/>
                     </constraints>
@@ -381,6 +381,7 @@
                 <constraint firstItem="9y4-5B-d2m" firstAttribute="top" secondItem="CmC-lQ-2L0" secondAttribute="bottom" id="18t-lS-wHk"/>
                 <constraint firstItem="CmC-lQ-2L0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ADJ-8J-jjT"/>
                 <constraint firstItem="9y4-5B-d2m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="IkB-vl-oLq"/>
+                <constraint firstItem="M3l-74-ynG" firstAttribute="width" secondItem="CmC-lQ-2L0" secondAttribute="width" id="LcO-be-2dP"/>
                 <constraint firstAttribute="trailing" secondItem="CmC-lQ-2L0" secondAttribute="trailing" id="PmP-jy-UQE"/>
                 <constraint firstAttribute="trailing" secondItem="9y4-5B-d2m" secondAttribute="trailing" id="cp2-EH-Onb"/>
                 <constraint firstAttribute="bottom" secondItem="9y4-5B-d2m" secondAttribute="bottom" id="eMf-P2-k6Y"/>

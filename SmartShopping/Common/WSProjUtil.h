@@ -22,9 +22,54 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
 
 + (UINavigationController *)getRootNav;
 
+/**
+ *  日期转换
+ *
+ *  @param dateStr
+ *
+ *  @return
+ */
 + (NSString *)converDateWithDateStr:(NSString *)dateStr;
+
+/**
+ *  距离转换
+ *
+ *  @param distance
+ *
+ *  @return
+ */
 + (NSString *)converDistanceWithDistanceStr:(NSString *)distance;
 
+/**
+ *  是否在店内
+ *
+ *  @param ibeacon
+ *  @param callback
+ */
 + (void)isInStoreWithIBeacon:(CLBeacon *)ibeacon callback:(void (^)(id result))callback;
+
+/**
+ *  同步用户精明豆
+ *
+ *  @param beanNumber 精明豆增量
+ *  @param callback   回调
+ */
++ (void)synchronBeanNumWithUser:(WSUser *)user beanNumber:(NSString *)beanNumber callBack:(void (^)())callback;
+
+/**
+ *  同步每天打开获取精明豆
+ *
+ *  @param user
+ *  @param callback
+ */
++ (void)synchronOpenAppBeanNumWithUser:(WSUser *)user callBack:(void (^)())callback;
+
+/**
+ *  同步首次打开app获取精明豆
+ *
+ *  @param user
+ *  @param callback
+ */
++ (void)synchronFirstUsedBeanNumWithUser:(WSUser *)user callBack:(void (^)())callback;
 
 @end

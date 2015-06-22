@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
 
-#define ASIHTTPWRAP_TIMEOUT_DEFAULT     10   //默认超时
+#define ASIHTTPWRAP_TIMEOUT_DEFAULT     5   //默认超时
 
 typedef void(^ServiceSucCallBack)(id result);
 typedef void(^ServiceFailCallBack)(id error);

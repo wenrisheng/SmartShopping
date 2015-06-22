@@ -14,6 +14,7 @@
 #import "WSScanProductViewController.h"
 #import "WSProductDetailViewController.h"
 #import "WSScanAfterViewController.h"
+#import "WSAdvertisementDetailViewController.h"
 
 @interface WSStoreDetailViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CHTCollectionViewDelegateWaterfallLayout>
 {
@@ -31,6 +32,8 @@
 @property (assign, nonatomic) double longtide;
 @property (assign, nonatomic) double latitude;
 
+@property (strong, nonatomic) NSMutableDictionary *goodsscanlist;
+
 
 @end
 
@@ -40,14 +43,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    NSString *commitName = @"而而而而而而而";
+//    NSString *commitName = @"而而而而而而而";
     NSString *shopName = [_shop objectForKey:@"shopName"];
     if (shopName.length == 0) {
         shopName = [_shop objectForKey:@"shopname"];
     }
-    if (shopName.length > commitName.length) {
-        shopName = [NSString stringWithFormat:@"%@…", [shopName substringToIndex:commitName.length]];
-    }
+//    if (shopName.length > commitName.length) {
+//        shopName = [NSString stringWithFormat:@"%@…", [shopName substringToIndex:commitName.length]];
+//    }
     
     _navigationBarManagerView.navigationBarButLabelView.label.text = shopName;
     dataArray = [[NSMutableArray alloc] init];
@@ -129,7 +132,6 @@
     if (slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
-
 }
 
 #pragma mark - 请求幻灯片
@@ -175,7 +177,11 @@
             if (currentPage == 0) {
                 [dataArray removeAllObjects];
             }
-            NSArray *goodslist = [[[result objectForKey:@"data"] objectForKey:@"goodsscanlist"] objectForKey:@"goodslist"];
+            if (!_goodsscanlist) {
+                self.goodsscanlist = [[NSMutableDictionary alloc] init];
+            }
+            [_goodsscanlist setValuesForKeysWithDictionary:[[result objectForKey:@"data"] objectForKey:@"goodsscanlist"]];
+            NSArray *goodslist = [_goodsscanlist objectForKey:@"goodslist"];
             NSInteger count = goodslist.count;
             for (int i = 0; i < count; i++) {
                 NSDictionary *dic = [goodslist objectAtIndex:i];
@@ -271,7 +277,15 @@
             layout.headerHeight = height;
             [layout invalidateLayout];
         };
-         NSInteger imageCount = slideImageArray.count;
+        imageScrollView.callback = ^(int index) {
+            DLog(@"广告：%d", index);
+            NSDictionary *dic = [slideImageArray objectAtIndex:index];
+            WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
+            advertisementVC.dic = dic;
+            [self.navigationController pushViewController:advertisementVC animated:YES];
+        };
+        
+        NSInteger imageCount = slideImageArray.count;
         NSMutableArray *imageDataArray = [NSMutableArray array];
         for (int i = 0; i < imageCount; i++) {
             NSDictionary *dic = [slideImageArray objectAtIndex:i];
@@ -280,8 +294,8 @@
         }
 
         [imageScrollView setImageData:imageDataArray];
-        if (_shop) {
-            NSString *userIsSign = [_shop stringForKey:@"userIsSign"];
+        if (_goodsscanlist) {
+            NSString *userIsSign = [_goodsscanlist stringForKey:@"userIsSign"];
             NSString *signImage = nil;
             NSString *scanImage = nil;
             // 可以签到
@@ -321,12 +335,17 @@
 {
     NSInteger row = indexPath.row;
     if (dataArray.count != 0) {
-        NSDictionary *dic = [dataArray objectAtIndex:row];
+        NSMutableDictionary *dic = [dataArray objectAtIndex:row];
         NSString *goodsId = [dic stringForKey:@"goodsId"];
         WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
         productDetailVC.goodsId = goodsId;
         NSString *shopid = [_shop stringForKey:@"shopid"];
         productDetailVC.shopId = shopid;
+        productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+            NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+            [dic setValue:isCollect forKey:@"isCollect"];
+            [_collectionView reloadData];
+        };
         [self.navigationController pushViewController:productDetailVC animated:YES];
     }
 }

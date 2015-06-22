@@ -50,6 +50,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,8 +62,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
+
     
     [self setLoginStatus];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -83,12 +84,19 @@
     self.city = @"广州";
 #endif
     if (_city.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"定位失败" duration:TOAST_VIEW_TIME];
         return;
     }
     
     [SVProgressHUD showWithStatus:@"正在刷新……"];
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:_city forKey:@"cityName"];
+    [param setValue:@"" forKey:@"beforeBean"];
+    [param setValue:@"" forKey:@"afterBean"];
+    [param setValue:@"" forKey:@"categoryId"];
+    [param setValue:@"" forKey:@"giftTag"];
+    [param setValue:@"" forKey:@"giftTagName"];
+
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSearchGift] data:param tag:WSInterfaceTypeSearchGift sucCallBack:^(id result) {
         [SVProgressHUD dismiss];
          BOOL flag = [WSInterfaceUtility validRequestResult:result];
@@ -110,14 +118,11 @@
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-//    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-//    if (deoCodeFalg == 0) {
-        NSString *city = [locationDic objectForKey:LOCATION_CITY];
-        self.city = city;
-        if (_giftList.count == 0) {
-            [self requestSearchGift];
-        }
-//    }
+    NSString *city = [locationDic objectForKey:LOCATION_CITY];
+    self.city = city;
+    if (_giftList.count == 0) {
+        [self requestSearchGift];
+    }
 }
 
 #pragma mark - 更新用户有没有登陆视图
@@ -128,7 +133,9 @@
         if (loginStatusView) {
             WSUser *user = [WSRunTime sharedWSRunTime].user;
             [loginStatusView clearSubviews];
-            if (user) {
+            NSString *userType = user.userType;
+            // 已登陆
+            if ([userType isEqualToString:@"1"]) {
                 if (!loginedView) {
                     loginedView = [WSLoginedView getView];
                     [loginedView.rightBut addTarget:self action:@selector(loginedRightButAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,7 +151,8 @@
 
                  NSString *beanNum = [WSUserUtil getUserPeasNum];
                 firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
-                
+            
+            // 未登录
             } else {
                 if (!noLoginView) {
                     noLoginView = [WSNoLoginView getView];
@@ -210,6 +218,9 @@
                 leftName = [firstDic objectForKey:@"giftName"];
                 leftPeaNum = [firstDic stringForKey:@"requiredBean"];
                 cell.leftBut.enabled = YES;
+                cell.leftView.hidden = NO;
+            } else {
+                cell.leftView.hidden = YES;
             }
             [cell.leftImageView sd_setImageWithURL:[NSURL URLWithString:leftImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
@@ -229,12 +240,15 @@
                 rightName = [secondDic objectForKey:@"giftName"];
                 rightPeaNum = [secondDic stringForKey:@"requiredBean"];
                 cell.rightBut.enabled = YES;
+                cell.rightView.hidden = NO;
+            } else {
+                cell.rightView.hidden = YES;
             }
             [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:rightImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
             }];
-            cell.rightLabel.text = leftName;
-            cell.rightPeasLabel.text = leftPeaNum;
+            cell.rightLabel.text = rightName;
+            cell.rightPeasLabel.text = rightPeaNum;
             
             return cell;
         }
@@ -336,8 +350,14 @@
                 NSDictionary *dic = [_giftList objectAtIndex:i];
                  NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"giftLogo"]];
                 image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:imageURL];
+                if (image) {
+                    break;
+                }
                 if (!image) {
                     image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageURL];
+                    if (image) {
+                        break;
+                    }
                 }
             }
             if (image) {

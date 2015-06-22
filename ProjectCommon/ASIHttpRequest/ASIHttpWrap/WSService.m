@@ -258,7 +258,8 @@
     // 请求失败
     [request setFailedBlock:^{
         if (showMessage) {
-             [SVProgressHUD showErrorWithStatus:@"加载失败！" duration:TOAST_VIEW_TIME];
+            [SVProgressHUD dismissWithError:@"加载失败！" afterDelay:TOAST_VIEW_TIME];
+            //[SVProgressHUD dismiss];
         }
        
         // 调试 打印请求错误

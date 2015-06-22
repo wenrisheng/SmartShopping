@@ -377,7 +377,6 @@
                                         <constraint firstAttribute="trailing" secondItem="tb4-U1-zf4" secondAttribute="trailing" constant="55" id="TFc-Jd-une"/>
                                         <constraint firstItem="KBe-D9-x4R" firstAttribute="top" secondItem="tb4-U1-zf4" secondAttribute="bottom" constant="8" id="W93-Ym-KVA"/>
                                         <constraint firstItem="3we-0d-lHK" firstAttribute="leading" secondItem="GAj-BG-d6x" secondAttribute="leading" id="hVh-EE-LNm"/>
-                                        <constraint firstAttribute="height" constant="285" id="mpj-q5-S02"/>
                                         <constraint firstItem="3we-0d-lHK" firstAttribute="top" secondItem="GAj-BG-d6x" secondAttribute="top" id="u5h-qA-oLf"/>
                                         <constraint firstItem="tb4-U1-zf4" firstAttribute="top" secondItem="3we-0d-lHK" secondAttribute="bottom" constant="4" id="yr1-yP-N4G"/>
                                     </constraints>
@@ -389,6 +388,7 @@
                                 <constraint firstAttribute="trailing" secondItem="Gbe-Ce-jk6" secondAttribute="trailing" id="Gav-MU-TBW"/>
                                 <constraint firstAttribute="trailing" secondItem="GAj-BG-d6x" secondAttribute="trailing" id="ICg-Ua-Son"/>
                                 <constraint firstAttribute="width" constant="320" id="Oym-De-mXT"/>
+                                <constraint firstAttribute="bottom" secondItem="GAj-BG-d6x" secondAttribute="bottom" id="ceq-fE-YHd"/>
                                 <constraint firstItem="Gbe-Ce-jk6" firstAttribute="top" secondItem="Kyz-bQ-IzV" secondAttribute="top" id="dq6-XZ-USa"/>
                                 <constraint firstItem="GAj-BG-d6x" firstAttribute="top" secondItem="Gbe-Ce-jk6" secondAttribute="bottom" id="gnt-oY-DuR"/>
                                 <constraint firstAttribute="height" constant="415" id="kBb-In-I7Y"/>
@@ -397,8 +397,12 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Kyz-bQ-IzV" secondAttribute="bottom" id="70d-pc-2PJ"/>
+                        <constraint firstItem="Kyz-bQ-IzV" firstAttribute="top" secondItem="107-pw-au4" secondAttribute="top" id="AzQ-Pd-tx4"/>
+                        <constraint firstItem="Kyz-bQ-IzV" firstAttribute="leading" secondItem="107-pw-au4" secondAttribute="leading" id="C7C-ll-O5t"/>
                         <constraint firstAttribute="trailing" secondItem="Kyz-bQ-IzV" secondAttribute="trailing" id="Cab-1p-MDp"/>
                         <constraint firstItem="Kyz-bQ-IzV" firstAttribute="leading" secondItem="107-pw-au4" secondAttribute="leading" id="P4o-83-58u"/>
+                        <constraint firstAttribute="trailing" secondItem="Kyz-bQ-IzV" secondAttribute="trailing" priority="250" id="meS-R8-6Vv"/>
                         <constraint firstAttribute="bottom" secondItem="Kyz-bQ-IzV" secondAttribute="bottom" id="pf5-Py-Uth"/>
                         <constraint firstItem="Kyz-bQ-IzV" firstAttribute="top" secondItem="107-pw-au4" secondAttribute="top" id="sPe-xo-I3A"/>
                     </constraints>
@@ -412,6 +416,7 @@
                 <constraint firstItem="2RQ-iY-3JB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Y1s-xc-nsU"/>
                 <constraint firstItem="2RQ-iY-3JB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="aRs-cR-sAX"/>
                 <constraint firstItem="107-pw-au4" firstAttribute="top" secondItem="2RQ-iY-3JB" secondAttribute="bottom" id="gdz-Hd-g4H"/>
+                <constraint firstItem="2RQ-iY-3JB" firstAttribute="width" secondItem="Kyz-bQ-IzV" secondAttribute="width" id="lRW-sU-WEv"/>
                 <constraint firstAttribute="bottom" secondItem="107-pw-au4" secondAttribute="bottom" id="mpi-i7-4Kp"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

@@ -14,7 +14,7 @@
                 <outlet property="emailView" destination="oA8-y0-Cgn" id="YSC-ji-l3W"/>
                 <outlet property="gainVarificateBut" destination="P53-nU-l7i" id="agN-u5-m3f"/>
                 <outlet property="inviateTextField" destination="jvZ-MS-SP7" id="ka7-pE-sGL"/>
-                <outlet property="inviateView" destination="FZS-GV-4b4" id="4qR-dB-fAi"/>
+                <outlet property="inviateView" destination="FZS-GV-4b4" id="eTH-Fw-5ZD"/>
                 <outlet property="ladyBut" destination="s4O-8V-tfu" id="qRn-EB-9Rg"/>
                 <outlet property="manBut" destination="s2L-js-zrG" id="WTo-Yc-GsW"/>
                 <outlet property="navigationBarManagerView" destination="ol3-Og-bA4" id="GJv-Bp-Q4B"/>

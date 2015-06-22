@@ -30,7 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIView *varificateView;
 @property (weak, nonatomic) IBOutlet UIButton *ladyBut;
 @property (weak, nonatomic) IBOutlet UIButton *manBut;
-@property (weak, nonatomic) IBOutlet UIView *inviateView;
 @property (weak, nonatomic) IBOutlet UIView *birdthDayView;
 @property (weak, nonatomic) IBOutlet UIButton *gainVarificateBut;
 
@@ -40,6 +39,7 @@
 - (IBAction)commitButAction:(id)sender;
 - (IBAction)birthdayButAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *commitBut;
+@property (weak, nonatomic) IBOutlet UIView *inviateView;
 
 
 @end
@@ -56,6 +56,20 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    NSString *byInviteCode = user.byInviteCode;
+    if (byInviteCode.length > 0) {
+        _inviateView.hidden = YES;
+        CGRect rect = _commitBut.frame;
+        rect.origin.y = 290;
+        _commitBut.frame = rect;
+    }
+
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -87,6 +101,7 @@
         isLady = YES;
         [self ladyButAction:nil];
     }
+    
 }
 
 - (IBAction)ladyButAction:(id)sender
@@ -149,7 +164,7 @@
 
 - (IBAction)birthdayButAction:(id)sender
 {
-    [WSDatePickerUtil showDatePickerWithConfrimCallBack:^(WSDatePickerView *datePickerView) {
+    [WSPickerViewUtil showDatePickerWithConfrimCallBack:^(WSDatePickerView *datePickerView) {
         NSDate *date = datePickerView.datePicker.date;
         NSString *dateStr = [WSBaseUtil getDateStrWithDate:date format:@"yyyy-MM-dd"];
         _birdthDayTextField.text = dateStr;
@@ -161,13 +176,13 @@
 - (void)requestUpdateUser
 {
     NSString *userID = [WSRunTime sharedWSRunTime].user._id;
-    int sex = 1;
+    NSString *sex = @"1";
     // 女
     if (isLady) {
-        sex = 0;
+        sex = @"0";
     }
     NSString *byInviteCode = _inviateTextField.text.length == 0 ? @"" : _inviateTextField.text;
-    NSDictionary *dic = @{@"id" : [NSNumber numberWithInt:[userID intValue]], @"nickname": _nicknameTextField.text, @"Email" : _emailTextField.text, @"byInviteCode": byInviteCode};
+    NSDictionary *dic = @{@"id" : userID, @"nickname": _nicknameTextField.text, @"validCode": _validCodeTextField.text, @"birthday": _birdthDayTextField.text, @"sex": sex, @"email" : _emailTextField.text, @"byInviteCode": byInviteCode};
 
     [SVProgressHUD showWithStatus:@"正在提交……"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdateUser] data:dic tag:WSInterfaceTypeUpdateUser sucCallBack:^(id result) {

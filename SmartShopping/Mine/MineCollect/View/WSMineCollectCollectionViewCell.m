@@ -12,7 +12,7 @@
 
 @implementation WSMineCollectCollectionViewCell
 
-- (void)setModel:(NSDictionary *)dic
+- (void)setModel:(NSMutableDictionary *)dic
 {
     self.dic = dic;
     NSString *imageURL = [WSInterfaceUtility getImageURLWithStr:[dic objectForKey:@"goodsLogo"]];
@@ -51,7 +51,11 @@
     NSString *goodsId = [_dic stringForKey:@"goodsId"];
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = [_dic stringForKey:@"shopId"];
-   
+    productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+        NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+        [_dic setValue:isCollect forKey:@"isCollect"];
+        [self setModel:_dic];
+    };
     [self.viewController.navigationController pushViewController:productDetailVC animated:YES];
 }
 
@@ -61,8 +65,8 @@
     NSString *shopName = [_dic stringForKey:@"shopName"];
     NSString *address = [_dic objectForKeyedSubscript:@"address"];
     WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
-    locationDetailVC.latitude = [lon doubleValue];
-    locationDetailVC.longitude = [lat doubleValue];
+    locationDetailVC.latitude = [lat doubleValue];
+    locationDetailVC.longitude = [lon doubleValue];
     locationDetailVC.locTitle = shopName;
     locationDetailVC.address = address;
     [self.viewController.navigationController pushViewController:locationDetailVC animated:YES];

@@ -56,6 +56,11 @@
     // Do any additional setup after loading the view from its nib.
     [self initView];
    [self setModelData];
+    
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+     [self requestSearchGift];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,15 +74,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
                                                  name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
-    if (dataArray.count == 0) {
-        if (_city.length != 0) {
-            [self requestSearchGift];
-        } else {
-            
-        }
-    } else {
-        
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,17 +91,10 @@
 
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
-//    int deoCodeFalg = [[locationDic objectForKey:DEO_CODE_FLAG] intValue];
-//    if (deoCodeFalg == 0) {
         NSString *city = [locationDic objectForKey:LOCATION_CITY];
         self.city = city;
         self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
         self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-        _navigationBarManagerView.navigationBarButSearchButView.leftLabel.text = self.city;
-        if (dataArray.count == 0) {
-            [self requestSearchGift];
-        }
-//    }
 }
 
 - (void)initView

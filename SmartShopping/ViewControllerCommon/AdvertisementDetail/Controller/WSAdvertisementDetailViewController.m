@@ -21,7 +21,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _naviagationBarManagerView.navigationBarButLabelView.label.text = @"广告详情";
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[_dic objectForKey:@"third_link"]]]];
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:[_dic stringForKey:@"id"] forKey:@"adsid"];
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    NSString *city = [locationDic objectForKey:LOCATION_CITY];
+    city = city.length > 0 ? city : @"";
+    [param setValue:city forKey:@"cityName"];
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        [param setValue:user._id forKey:@"uid"];
+    }
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeClickAdvert] data:param tag:WSInterfaceTypeClickAdvert sucCallBack:^(id result) {
+        
+    } failCallBack:^(id error) {
+        
+    } showMessage:NO];
 }
 
 - (void)didReceiveMemoryWarning {

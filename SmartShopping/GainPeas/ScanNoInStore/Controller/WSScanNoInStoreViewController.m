@@ -81,6 +81,10 @@
     [_collectionView addLegendFooterWithRefreshingBlock:^{
         [self requestGoodsScanList];
     }];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+
     [self requestGoodsScanList];
 
 }
@@ -93,10 +97,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // 设置用户定位位置
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
-    if (_city.length != 0 && slideImageArray.count == 0) {
+       if (_city.length != 0 && slideImageArray.count == 0) {
         [self requestGetAdsPhoto];
     }
     
@@ -145,7 +146,7 @@
         [self requestGetAdsPhoto];
     }
     if (dataArray.count == 0) {
-        [self requestGoodsScanList];
+        
     }
         DLog(@"定位：%@", city);
 //    }
@@ -205,8 +206,8 @@
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:_city forKey:@"cityName"];
-    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lon"];
-    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
+    [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
     [params setValue:_shopTypeId forKey:@"shopTypeId"];
     [params setValue:_retailId forKey:@"retailId"];
     [params setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
@@ -218,7 +219,10 @@
             [dataArray removeAllObjects];
         }
         curPage++;
-        [dataArray addObjectsFromArray:goodsScanList];
+        for (int i = 0; i < goodsScanList.count; i++) {
+            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[goodsScanList objectAtIndex:i]];
+            [dataArray addObject:dic];
+        }
         [_collectionView reloadData];
     } failCallBack:^(id error) {
         [_collectionView endHeaderAndFooterRefresh];
@@ -505,7 +509,7 @@
             DLog(@"广告：%d", index);
             NSDictionary *dic = [slideImageArray objectAtIndex:index];
             WSAdvertisementDetailViewController *advertisementVC = [[WSAdvertisementDetailViewController alloc] init];
-            advertisementVC.url = [dic objectForKey:@"third_link"];
+            advertisementVC.dic = dic;
             [self.navigationController pushViewController:advertisementVC animated:YES];
         };
 
@@ -519,12 +523,17 @@
 - (void)productButAction:(UIButton *)but
 {
     NSInteger tag = but.tag;
-    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    NSMutableDictionary *dic = [dataArray objectAtIndex:tag];
     NSString *goodsId = [dic stringForKey:@"goodsId"];
     NSString *shopId = [dic stringForKey:@"shopId"];
     WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
     productDetailVC.goodsId = goodsId;
     productDetailVC.shopId = shopId;
+    productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+        NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+        [dic setValue:isCollect forKey:@"isCollect"];
+        [_collectionView reloadData];
+    };
     [self.navigationController pushViewController:productDetailVC animated:YES];
 }
 

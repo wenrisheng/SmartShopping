@@ -32,6 +32,10 @@
     [_contentTableview addLegendHeaderWithRefreshingBlock:^{
         [self requestSearchGift];
     }];
+    // 设置用户定位位置
+    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
+    [self setLocationCity:locationDic];
+    [self requestSearchGift];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,18 +46,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-#ifdef DEBUG
-    self.city = @"广州";
-#endif
-    
-    // 设置用户定位位置
-    NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
-    [self setLocationCity:locationDic];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(locationUpdate:)
                                         name:GEO_CODE_SUCCESS_NOTIFICATION object:nil];
-    [self requestSearchGift];
 }
 
 - (void)locationUpdate:(NSNotification *)notification
@@ -65,12 +61,6 @@
 - (void)setLocationCity:(NSDictionary *)locationDic
 {
     self.city = [locationDic objectForKey:LOCATION_CITY];
-    DLog(@"定位：%@", _city);
-    if (_city.length > 0) {
-        if (dataArray.count == 0) {
-            [self requestSearchGift];
-        }
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

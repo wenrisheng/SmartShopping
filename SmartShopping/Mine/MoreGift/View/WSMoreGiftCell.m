@@ -27,6 +27,9 @@
         leftName = [firstDic objectForKey:@"giftName"];
         leftPeaNum = [firstDic stringForKey:@"requiredBean"];
         _leftBut.enabled = YES;
+        _leftView.hidden = NO;
+    } else {
+        _leftView.hidden = YES;
     }
     [_leftImageView sd_setImageWithURL:[NSURL URLWithString:leftImageURL] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         

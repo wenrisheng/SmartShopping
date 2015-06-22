@@ -12,4 +12,6 @@
 
 @interface WSPromotionCouponViewController : WSServiceViewController
 
+@property (assign, nonatomic) BOOL isLoadInStoreOrOutStore;
+
 @end

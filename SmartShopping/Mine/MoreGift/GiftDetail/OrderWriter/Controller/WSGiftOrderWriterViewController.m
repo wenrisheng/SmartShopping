@@ -10,7 +10,7 @@
 #import "WSOrderSucView.h"
 #import "WSOrderFailView.h"
 
-@interface WSGiftOrderWriterViewController () <UITextViewDelegate>
+@interface WSGiftOrderWriterViewController () <UITextViewDelegate, UITextFieldDelegate>
 {
     NSString *temStr1;
     NSString *temStr2;
@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *detailPlaceHolderLabel;
 @property (weak, nonatomic) IBOutlet UITextView *detailAddressTextView;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountPeaLabel;
+@property (weak, nonatomic) IBOutlet UIView *addressInfoView;
 
 - (IBAction)subButAction:(id)sender;
 - (IBAction)addButAction:(id)sender;
@@ -51,6 +52,11 @@
     canBuy = YES;
     curNum = @"1";
     [self initView];
+    NSString *giftType = [_gift stringForKey:@"giftType"];
+    // 虚拟物品
+    if ([giftType isEqualToString:@"2"]) {
+        _addressInfoView.hidden = YES;
+    }
     // 不可以减
     [self notSub];
 }
@@ -75,7 +81,7 @@
     _titleLabel.text = [_gift objectForKey:@"giftName"];
     
     // 礼品所需的精明豆
-    unitNum = [[_gift stringForKey:@"amount"] intValue];
+    unitNum = [[_gift stringForKey:@"requiredBean"] intValue];
     _peaNumLabel.text = [NSString stringWithFormat:@"%d个精明豆", unitNum];
 
     // 当前用户的精明豆
@@ -125,6 +131,22 @@
     _remainPeaLabel.attributedText = temStr;
     [_numLabel setBorderCornerWithBorderWidth:0 borderColor:[UIColor colorWithRed:0.906 green:0.910 blue:0.918 alpha:1.000] cornerRadius:5];
     _numLabel.text = curNum;
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    NSInteger tag = textField.tag;
+    // 配送地址
+    if (tag == 1) {
+        [WSPickerViewUtil showChinaAreaPickerWithConfrimCallBack:^(WSChinaAreaPickerView *datePickerView) {
+            textField.text = datePickerView.address;
+        } cancelCallBack:^(WSChinaAreaPickerView *datePickerView) {
+            
+        }];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - UITextViewDelegate
@@ -266,7 +288,7 @@
         [params setValue:_addressTextField.text forKey:@"deliveryAddress"];
         [params setValue:_detailAddressTextView.text forKey:@"address"];
         [params setValue:userId forKey:@"userId"];
-        [params setValue:[NSString stringWithFormat:@"%d", (int)curNum] forKey:@"buyNumber"];
+        [params setValue:_numLabel.text forKey:@"buyNumber"];
         [SVProgressHUD showWithStatus:@"正在提交……"];
         [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeExchangeGift] data:params tag:WSInterfaceTypeExchangeGift sucCallBack:^(id result) {
             [SVProgressHUD dismiss];
@@ -306,6 +328,12 @@
 - (BOOL)validateData
 {
     float flag = YES;
+    [self initView];
+    NSString *giftType = [_gift stringForKey:@"giftType"];
+    // 虚拟物品
+    if ([giftType isEqualToString:@"2"]) {
+        return YES;
+    }
     if (_telTextField.text.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请输入手机号码！" duration:2.0];
         flag = NO;
