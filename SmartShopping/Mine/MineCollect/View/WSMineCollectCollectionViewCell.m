@@ -38,6 +38,7 @@
             _smallImageView.contentMode = UIViewContentModeScaleToFill;
         }
     }];
+    _addressLabel.text = [dic stringForKey:@"address"];
 }
 
 - (void)awakeFromNib

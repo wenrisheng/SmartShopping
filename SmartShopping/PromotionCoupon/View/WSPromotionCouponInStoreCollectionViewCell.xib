@@ -55,11 +55,11 @@
                                             <constraint firstAttribute="bottom" secondItem="ch0-wB-FWM" secondAttribute="bottom" id="vY9-zS-VC0"/>
                                         </constraints>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scan_icon_02.png" translatesAutoresizingMaskIntoConstraints="NO" id="B8L-zZ-K2N">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_scan.png" translatesAutoresizingMaskIntoConstraints="NO" id="B8L-zZ-K2N">
+                                        <rect key="frame" x="0.0" y="0.0" width="32" height="28"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="cay-xD-Q0W"/>
-                                            <constraint firstAttribute="width" constant="30" id="iUx-Ib-VRn"/>
+                                            <constraint firstAttribute="height" constant="28" id="cay-xD-Q0W"/>
+                                            <constraint firstAttribute="width" constant="32" id="iUx-Ib-VRn"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xjd-ZS-r9o">
@@ -206,7 +206,7 @@
     </objects>
     <resources>
         <image name="collected.png" width="34" height="34"/>
-        <image name="scan_icon_02.png" width="90" height="90"/>
+        <image name="home_scan.png" width="64" height="56"/>
         <image name="share.png" width="34" height="34"/>
         <image name="time-clock.png" width="20" height="20"/>
     </resources>

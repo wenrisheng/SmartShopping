@@ -23,7 +23,8 @@
     _dateLabel.text = [WSProjUtil converDateWithDateStr:[dic objectForKey:@"goodsEndDate"]];
     NSString *isScan = [dic stringForKey:@"isScan"];
     NSString *scanImage = nil;
-    if ([isScan isEqualToString:@"Y"]) {
+    // 未扫描
+    if ([isScan isEqualToString:@"N"]) {
         scanImage = @"scan_green";
     } else {
         scanImage = @"scanning";

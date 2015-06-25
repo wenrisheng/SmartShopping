@@ -96,7 +96,12 @@
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    [params setValue:user._id forKey:@"uid"];
+    if (user) {
+         [params setValue:user._id forKey:@"uid"];
+    } else {
+        [params setValue:@"" forKey:@"uid"];
+    }
+   
     [params setValue:_city forKey:@"cityName"];
     [params setValue:[NSString stringWithFormat:@"%f", _latitude] forKey:@"lat"];
     [params setValue:[NSString stringWithFormat:@"%f", _longtide] forKey:@"lon"];
@@ -137,7 +142,7 @@
         cell = [WSNoinStoreCell getCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.titleBut addTarget:self action:@selector(storeNameButAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.signupBut addTarget:self action:@selector(storeNameButAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
         [cell.distanceBut addTarget:self action:@selector(distanceButAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     NSInteger row = indexPath.row;
@@ -173,6 +178,11 @@
     return sectionView;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
 #pragma mark - 商店名称按钮事件
 - (void)storeNameButAction:(UIButton *)but
 {
@@ -189,12 +199,10 @@
     //  1. GPS定位不在店内跳到 WSNoInStoreViewController
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
-    [WSUserUtil actionAfterLogin:^{
-        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-            CLBeacon *beacon = nil;
-            if (beaconsArray.count > 0) {
-                beacon = [beaconsArray objectAtIndex:0];
-            }
+   // [WSUserUtil actionAfterLogin:^{
+        //[[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
+            CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+    
             [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
                 BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
                 // 在店内
@@ -202,7 +210,7 @@
                     NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
                     NSString *isSign = [shop stringForKey:@"isSign"];
                     //  没签到
-                    if ([isSign isEqualToString:@"N"]) {
+                    if ([isSign isEqualToString:@"Y"]) {
                         WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
                         inStoreNoSignVC.shop = shop;
                         [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
@@ -213,12 +221,12 @@
                     }
                     // 不在店内
                 } else {
-                    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-                    [self.navigationController pushViewController:noInstoreVC animated:YES];
+                    WSInStoreNoSignScopeViewController *inStoreNoVC = [[WSInStoreNoSignScopeViewController alloc] init];
+                    [self.navigationController pushViewController:inStoreNoVC animated:YES];
                 }
             }];
-        }];
-    }];
+      //  }];
+  //  }];
 }
 
 #pragma mark 地图距离按钮事件

@@ -307,7 +307,7 @@
                 [cell.clearCacheBut addTarget:self action:@selector(clearCacheButAction:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.chectUpdateBut addTarget:self action:@selector(checkUpdateButAction:) forControlEvents:UIControlEventTouchUpInside];
             }
-            BOOL isPush = [WSRunTime sharedWSRunTime].user.isPushNotification;
+            BOOL isPush = [[USER_DEFAULT objectForKey:PUSH_NOTIFICATION] boolValue];
             if (isPush) {
                 [cell.pushSettingSwitch setOn:YES animated:YES];
             } else {
@@ -522,7 +522,8 @@
 - (void)pushSettingSwitchAction:(UISwitch *)pushSwitch
 {
     BOOL isPush = pushSwitch.on;
-    [WSRunTime sharedWSRunTime].user.isPushNotification = isPush;
+    [USER_DEFAULT setValue:[NSNumber numberWithBool:isPush] forKey:PUSH_NOTIFICATION];
+    [_contentTableView reloadData];
 }
 
 #pragma mark 清除缓存按钮事件
@@ -597,7 +598,7 @@
     if (tag == 102) {
         if (buttonIndex == 1) {
             WSUser *user = [WSRunTime sharedWSRunTime].user;
-            switch (user.loginType) {
+            switch ([user.loginType intValue]) {
                 case UserLoginTypePhone:
                 {
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_KEY];

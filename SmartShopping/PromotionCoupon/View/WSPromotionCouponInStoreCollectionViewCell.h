@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #define WSPromotionCouponInStoreCollectionViewCell_HEIGHT             200
+
 #define WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL       161
-#define WS_PROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT  131
+#define WSPROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT  131
 
 @class WSPromotionCouponInStoreCollectionViewCell;
 @protocol WSPromotionCouponInStoreCollectionViewCellDelegate <NSObject>

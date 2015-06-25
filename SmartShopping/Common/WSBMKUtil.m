@@ -72,7 +72,7 @@
         CLLocationCoordinate2D pt = location.coordinate;
         CLLocationDegrees latitude = pt.latitude;
         CLLocationDegrees longitude = pt.longitude;
-        DLog(@"当前用户位置更新 纬度latitude %f, 经度longitude %f", latitude, longitude);
+       // DLog(@"当前用户位置更新 纬度latitude %f, 经度longitude %f", latitude, longitude);
         [_locationDic setValue:[NSNumber numberWithInt:0] forKey:LOCATION_FLAG];
         [_locationDic setValue:[NSNumber numberWithDouble:latitude] forKey:LOCATION_LATITUDE];
         [_locationDic setValue:[NSNumber numberWithDouble:longitude] forKey:LOCATION_LONGITUDE];

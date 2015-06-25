@@ -10,6 +10,13 @@
 
 @implementation WSShareSDKUtil
 
++ (void)cancelAuth
+{
+    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
+}
+
 + (void)shareWithTitle:(NSString *)title
                content:(NSString *)content
            description:(NSString *)description

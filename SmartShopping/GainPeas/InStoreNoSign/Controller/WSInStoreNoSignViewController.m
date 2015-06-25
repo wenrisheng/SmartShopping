@@ -12,7 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "IBSDK.h"
 
-#define SIGNUPSUC_TIME      2
+
 
 @interface WSInStoreNoSignViewController ()
 {
@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) IBSDK *ibeacon;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @end
@@ -32,11 +33,12 @@
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"到店签到";
     _addressLabel.text = [_shop objectForKey:@"shopName"];
+    _titleLabel.text = [NSString stringWithFormat:@"摇一摇签到，马上赚取%@精明豆", [_shop stringForKey:@"beannumber"]];
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     
     [self becomeFirstResponder];
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"glass" ofType:@"wav"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"shake_sound_male" ofType:@"mp3"];
     NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
     player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     [player prepareToPlay];
@@ -60,11 +62,14 @@
             beanNum += [[_shop stringForKey:@"beannumber"] intValue];
             user.beanNumber = [NSString stringWithFormat:@"%d", beanNum];
             
-            //同步数据库精明豆
-            [self synchronUserPea];
-            
-            // 签到成功
-             [self showSignupSucView];
+            NSString *beannumber = [_shop stringForKey:@"beannumber"];
+            beannumber = beannumber.length > 0 ? beannumber : @"0";
+            [WSProjUtil showGainBeanNumWithBeanNum:beannumber callback:^{
+                [self.navigationController popViewControllerAnimated:NO];
+                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                storeDetailVC.shop = _shop;
+                [self.navigationController pushViewController:storeDetailVC animated:YES];
+            }];
         }
     } failCallBack:^(id error) {
         
@@ -103,47 +108,9 @@
     //摇动结束
     
     if (event.subtype == UIEventSubtypeMotionShake) {
-        [SVProgressHUD showWithStatus:@"扫描iBeacon中……"];
-        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-            [SVProgressHUD dismiss];
-            if (beaconsArray.count > 0) {
-                [WSProjUtil isInStoreWithIBeacon:[beaconsArray objectAtIndex:0] callback:^(id result) {
-                    NSDictionary *isInShopDic = [result objectForKey:IS_IN_SHOP_DATA];
-                    BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-                    if (isInStore) {
-                        NSString *isSign = [isInShopDic stringForKey:@"isSign"];
-                        if ([isSign isEqualToString:@"Y"]) {
-                             [self requestEarnSignBean];
-                        } else {
-                             [SVProgressHUD dismissWithError:@"亲，您不满足签到条件哦！" afterDelay:TOAST_VIEW_TIME];
-                        }
-                    } else {
-                        [SVProgressHUD dismissWithError:[NSString stringWithFormat:@"亲，您没在%@店哦！", [isInShopDic objectForKey:@"shopName"]] afterDelay:TOAST_VIEW_TIME];
-                    }
-                }];
-            } else {
-                [SVProgressHUD dismissWithError:@"亲，没有发现iBeacon哦!" afterDelay:TOAST_VIEW_TIME];
-            }
-        }];
+        [self requestEarnSignBean];
     }
     
-}
-
-- (void)showSignupSucView
-{
-    WSSignupSucView *sucView = [WSSignupSucView getView];
-    sucView.label.text = [NSString stringWithFormat:@"获得%d精明豆", [[_shop stringForKey:@"beannumber"] intValue]];
-    [self.view addSubview:sucView];
-    [sucView expandToSuperView];
-    [NSTimer scheduledTimerWithTimeInterval:SIGNUPSUC_TIME target:self selector:@selector(dismissSucView:) userInfo:nil repeats:NO];
-}
-
-- (void)dismissSucView:(NSTimer *)timer
-{
-    [self.navigationController popViewControllerAnimated:YES];
-    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-    storeDetailVC.shop = _shop;
-    [self.navigationController pushViewController:storeDetailVC animated:YES];
 }
 
 /*

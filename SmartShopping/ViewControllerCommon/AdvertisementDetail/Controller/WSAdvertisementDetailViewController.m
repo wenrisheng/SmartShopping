@@ -32,6 +32,8 @@
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
         [param setValue:user._id forKey:@"uid"];
+    } else {
+        [param setValue:@"" forKey:@"uid"];
     }
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeClickAdvert] data:param tag:WSInterfaceTypeClickAdvert sucCallBack:^(id result) {
         

@@ -22,7 +22,9 @@
     // 未读
     if ([isRead isEqualToString:@"1"]) {
         _contentLabel.textColor = [UIColor blackColor];
+        DLog("未读消息");
     } else {
+        DLog("已读消息");
         _contentLabel.textColor = [UIColor colorWithWhite:0.651 alpha:1.000];
     }
     _contentLabel.text = [dic objectForKey:@"title"];

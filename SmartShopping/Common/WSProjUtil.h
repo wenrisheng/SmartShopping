@@ -22,6 +22,8 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
 
 + (UINavigationController *)getRootNav;
 
++ (void)showGainBeanNumWithBeanNum:(NSString *)beanNumber callback:(void (^)(void))callback;
+
 /**
  *  日期转换
  *
@@ -41,12 +43,23 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
 + (NSString *)converDistanceWithDistanceStr:(NSString *)distance;
 
 /**
- *  是否在店内
+ *  用户是否在店内(此接口只用来签到，判断是否在店内，是否可以签到)
  *
  *  @param ibeacon
  *  @param callback
  */
 + (void)isInStoreWithIBeacon:(CLBeacon *)ibeacon callback:(void (^)(id result))callback;
+
+/**
+ *  判断用户是否在店内，是否可以扫描
+ *
+ *  @param ibeacon
+ *  @param synchronBeanNumWithUser
+ *  @param user
+ *  @param beanNumber
+ *  @param callback
+ */
++ (void)isInShopAndIsScanWithIBeacon:(CLBeacon *)ibeacon callback:(void (^)(id result))callback;
 
 /**
  *  同步用户精明豆
@@ -71,5 +84,25 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
  *  @param callback
  */
 + (void)synchronFirstUsedBeanNumWithUser:(WSUser *)user callBack:(void (^)())callback;
+
++ (void)requestTourist;
+
++ (WSUser *)convertDicToUser:(NSDictionary *)dic;
+
+/**
+ *  归档
+ *
+ *  @param obj
+ */
++ (void)archiverUser:(id)obj key:(NSString *)key;
+
+/**
+ *  解归档
+ *
+ *  @param key
+ *
+ *  @return
+ */
++ (id)unarchiverUserWithKey:(NSString *)key;
 
 @end

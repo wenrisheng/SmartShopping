@@ -13,6 +13,7 @@
 @interface WSMineConsumeViewController ()
 {
     NSMutableArray *dataArray;
+    int curPage;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -24,6 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    curPage = 0;
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的消费卷";
   //  _contentTableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     dataArray = [[NSMutableArray alloc] init];
@@ -40,13 +42,18 @@
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:userId forKey:@"userId"];
     [param setValue:@"2" forKey:@"giftType"];
+    [param setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
+    [param setValue:WSPAGE_SIZE forKey:@"pageSize"];
     [SVProgressHUD showWithStatus:@"加载中……"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeMyGiftList] data:param tag:WSInterfaceTypeMyGiftList sucCallBack:^(id result) {
         [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             NSArray *userGiftList = [[result objectForKey:@"data"] objectForKey:@"userGiftList"];
-            [dataArray removeAllObjects];
+            if (curPage == 0) {
+                [dataArray removeAllObjects];
+            }
+            curPage ++;
             [dataArray addObjectsFromArray:userGiftList];
             [_contentTableView reloadData];
         }

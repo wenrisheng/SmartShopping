@@ -561,7 +561,7 @@
                 <outlet property="signupBut" destination="ecy-a7-9m4" id="1UP-Rt-3qu"/>
                 <outlet property="storeNameLabel" destination="fj8-Z2-Wxu" id="m7t-EJ-C6N"/>
             </connections>
-            <point key="canvasLocation" x="124" y="253"/>
+            <point key="canvasLocation" x="-17" y="270"/>
         </collectionViewCell>
     </objects>
     <resources>

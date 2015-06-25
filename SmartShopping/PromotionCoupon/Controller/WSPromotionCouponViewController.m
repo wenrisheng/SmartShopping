@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
 @property (strong, nonatomic) NSMutableArray *inStore_brandIds; //品牌id数组
 
 @property (strong, nonatomic) NSDictionary *isInShop;
-@property (strong, nonatomic) NSDictionary *shop; // 在店内商店信息
+@property (strong, nonatomic) NSMutableDictionary *shop; // 在店内商店信息
 @property (strong, nonatomic) NSString *mainId;// 一级品类id
 
 
@@ -185,12 +185,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
         
         
         // 判断用户是否在店内
-        [SVProgressHUD showWithStatus:@"加载中……"];
-        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-            CLBeacon *beacon = nil;
-            if (beaconsArray.count > 0) {
-                beacon = [beaconsArray objectAtIndex:0];
-            }
+        CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
             [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
                 BOOL dataIsInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
                 // 在店内
@@ -224,7 +219,6 @@ typedef NS_ENUM(NSInteger, SearchType) {
                 }
                 
             }];
-        }];
     }
 }
 
@@ -290,7 +284,10 @@ typedef NS_ENUM(NSInteger, SearchType) {
             _instoreCollectionView.backgroundColor = [UIColor whiteColor];
             NSDictionary *shop = [[result objectForKey:@"data"] objectForKey:@"shop"];
             if (inStoreCurPage == 0) {
-                self.shop = shop;
+                self.shop = [NSMutableDictionary dictionaryWithDictionary:shop] ;
+                if (!outStoreToInStore) {
+                    [self.shop setValuesForKeysWithDictionary:_isInShop];
+                }
             }
             
             NSString *shopName = [shop objectForKey:@"shopName"];
@@ -305,6 +302,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             for (int i = 0; i < count; i++) {
                 NSDictionary *dic = [goodsList objectAtIndex:i];
                 NSMutableDictionary *converDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                [converDic setValue:_inStore_shopId forKey:@"shopId"];
                 [inStoreDataArray addObject:converDic];
             }
             searchType = SearchTypeInStore;
@@ -861,6 +859,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             NSRange range = [title rangeOfString:tempStr];
             if (range.length > 0) {
                 self.outStore_townId = @"";
+                self.outStore_districtId = @"";
             }
             
             // 在店内
@@ -1459,7 +1458,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             };
             [cell setModel:dic];
             [cell.seeMoreBut addTarget:self action:@selector(outStoreSeeMoreButAction:) forControlEvents:UIControlEventTouchUpInside];
-
+            cell.seeMoreBut.tag = row;
             return cell;
         }
             break;
@@ -1537,7 +1536,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             }
             if (image) {
                 float height = image.size.height * width / image.size.width;
-                return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL - HOMECOLLECTIONVIEWCELL_IMAGE_HEIGHT_SMALL + height);
+                return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL - WSPROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
             }
             return CGSizeMake(width, HOMECOLLECTIONVIEWCELL_HEIGHT_SMALL);
         }
@@ -1598,6 +1597,7 @@ typedef NS_ENUM(NSInteger, SearchType) {
             if ([kind isEqualToString:CHTCollectionElementKindSectionHeader]) {
                 WSPromotionCouponInStoreCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"WSPromotionCouponInStoreCollectionReusableView" forIndexPath:indexPath];
                 [view.signupBut addTarget:self action:@selector(signupButAction:) forControlEvents:UIControlEventTouchUpInside];
+                [view.distanceBut addTarget:self action:@selector(distanceButAction:) forControlEvents:UIControlEventTouchUpInside];
                 NSString *shopLogo = [_shop objectForKey:@"shopLogo"];
                 NSString *shopName = [_shop objectForKey:@"shopName"];
                 NSString *distance = [_shop objectForKey:@"distance"];
@@ -1661,17 +1661,31 @@ typedef NS_ENUM(NSInteger, SearchType) {
     NSString *isSign = [_shop stringForKey:@"isSign"];
     // 可以签到
     if ([isSign isEqualToString:@"1"]) {
-        [WSUserUtil actionAfterLogin:^{
+       // [WSUserUtil actionAfterLogin:^{
             WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
             inStoreNoSignVC.shop = _shop;
             [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-        }];
+      //  }];
 
     } else {
         WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
         storeDetailVC.shop = _shop;
         [self.navigationController pushViewController:storeDetailVC animated:YES];
     }
+}
+
+- (void)distanceButAction:(UIButton *)but
+{
+    NSString *lat = [_shop stringForKey:@"lat"];
+    NSString *lon = [_shop stringForKey:@"lon"];
+    NSString *shopName = [_shop stringForKey:@"shopName"];
+    NSString *address = [_shop objectForKeyedSubscript:@"address"];
+    WSLocationDetailViewController *locationDetailVC = [[WSLocationDetailViewController alloc] init];
+    locationDetailVC.latitude = [lat doubleValue];
+    locationDetailVC.longitude = [lon doubleValue];
+    locationDetailVC.locTitle = shopName;
+    locationDetailVC.address = address;
+    [self.navigationController pushViewController:locationDetailVC animated:YES];
 
 }
 

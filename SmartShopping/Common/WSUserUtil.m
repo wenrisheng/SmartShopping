@@ -14,7 +14,8 @@
 + (void)actionAfterLogin:(void(^)(void))action
 {
     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    NSString *userType = user.userType;
+    if ([userType isEqualToString:@"1"]) {
         if (action) {
             action();
         }
@@ -40,10 +41,7 @@
         }
         return user.beanNumber;
     } else{
-        int appPeasNum = [[USER_DEFAULT objectForKey:APP_PEAS_NUM] intValue];
-        appPeasNum = appPeasNum < 0 ? 0 : appPeasNum;
-        return [NSString stringWithFormat:@"%d", appPeasNum];
-
+        return @"0";
     }
 }
 

@@ -26,12 +26,22 @@
     [_loginImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:shopLogo]] placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"radom_%d", [WSProjUtil gerRandomColor]]] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
+    
+    NSString *isSign  = [dic stringForKey:@"isSign"];
+    NSString *userIsSign = [dic stringForKey:@"userIsSign"];
+    NSString *signImage = nil;
+    if ([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
+        signImage = @"gainpeas_icon-06";
+    } else {
+        signImage = @"gainpeas_icon-04";
+    }
+    [_signupBut setBackgroundImage:[UIImage imageNamed:signImage] forState:UIControlStateNormal];
+    
     _storeNameLabel.text = [dic objectForKey:@"shopName"];
     _addressLabel.text = [dic objectForKey:@"address"];
     NSString *distance = [dic stringForKey:@"distance"];
-    float distanceFloat = [distance floatValue];
 
-    _distanceLabel.text = [NSString stringWithFormat:@"%.1fm", distanceFloat];;
+    _distanceLabel.text = [WSProjUtil converDistanceWithDistanceStr:distance];
     _couponNumLabel.text = [NSString stringWithFormat:@"共有%@促销", [dic objectForKey:@"saleCount"]];
     NSArray *goodsList = [dic objectForKey:@"goodsList"];
     NSString *FgoodsScan = nil;
@@ -153,49 +163,79 @@
     // 跳到3.3.1 不在签到范围内
 //    WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
 //    [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
-    
-    // 可以签到
-    NSString *isSign = [dic stringForKey:@"isSign"];
-    if ([isSign isEqualToString:@"1"]) {
-        [WSUserUtil actionAfterLogin:^{
-            [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-                CLBeacon *beacon = nil;
-                if (beaconsArray.count > 0) {
-                    beacon = [beaconsArray objectAtIndex:0];
-                }
-                [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
-                    BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-                    // 在店内
-                    if (isInStore) {
-                        NSString *userIsSign = [dic stringForKey:@"userIsSign"];
-                        // 用户已经签到
-                        if ([userIsSign isEqualToString:@"Y"]) {
-                            WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                            storeDetailVC.shop = dic;
-                            [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
-                        } else {
-                            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                            WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                            inStoreNoSignVC.shop = shop;
-                            [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
-                        }
-                        // 不在店内
-                    } else {
-                        //不在签到范围内
-                        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
-                        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
-                    }
-                }];
-
-            }];
-        }];
+    NSString *isSign  = [dic stringForKey:@"isSign"];
+    NSString *userIsSign = [dic stringForKey:@"userIsSign"];
+    if ([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
+        CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
         
-    // 不可以签到
+        [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+            // 在店内
+            if (isInStore) {
+                NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+                NSString *isSign = [shop stringForKey:@"isSign"];
+                //  没签到
+                if ([isSign isEqualToString:@"Y"]) {
+                    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                    inStoreNoSignVC.shop = shop;
+                    [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                } else {
+                    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                    storeDetailVC.shop = dic;
+                    [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+                }
+                // 不在店内
+            } else {
+                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                storeDetailVC.shop = dic;
+                [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+            }
+        }];
+
     } else {
-        //不在签到范围内
-        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
-        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
+        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+        storeDetailVC.shop = dic;
+        [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
     }
+    
+//    // 可以签到
+//    NSString *isSign = [dic stringForKey:@"isSign"];
+//    if ([isSign isEqualToString:@"1"]) {
+//        [WSUserUtil actionAfterLogin:^{
+//           
+//                CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+//                [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+//                    BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+//                    // 在店内
+//                    if (isInStore) {
+//                        NSString *userIsSign = [dic stringForKey:@"userIsSign"];
+//                        // 用户已经签到
+//                        if ([userIsSign isEqualToString:@"Y"]) {
+//                            WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+//                            storeDetailVC.shop = dic;
+//                            [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+//                        } else {
+//                            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+//                            WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+//                            inStoreNoSignVC.shop = shop;
+//                            [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
+//                        }
+//                        // 不在店内
+//                    } else {
+//                        //不在签到范围内
+//                        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
+//                        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
+//                    }
+//                }];
+//
+//            }];
+//        
+//    // 不可以签到
+//    } else {
+//        //不在签到范围内
+//        WSInStoreNoSignScopeViewController *noSignScopeVC = [[WSInStoreNoSignScopeViewController alloc] init];
+//        [self.viewController.navigationController pushViewController:noSignScopeVC animated:YES];
+//    }
 }
 
 - (IBAction)lookMoreButAction:(id)sender

@@ -12,6 +12,6 @@
 
 @property (strong, nonatomic) NSString *shopid;
 @property (strong, nonatomic) NSString *goodsId;
-@property (strong, nonatomic) NSString *beanNum;
+@property (strong, nonatomic) NSDictionary *dic;
 
 @end

@@ -50,7 +50,9 @@
 - (void)requestInfo
 {
      WSUser *user = [WSRunTime sharedWSRunTime].user;
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+    NSString *userid = user._id;
+    userid = userid.length > 0 ? userid : @"";
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": userid} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
         [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -59,6 +61,29 @@
             }
             [_sortArray removeAllObjects];
             NSArray *messages = [[result objectForKey:@"data"] objectForKey:@"messages"];
+            
+            NSMutableArray *isids = [NSMutableArray array];
+            for (NSDictionary *dic in messages) {
+                NSString *isNewMessage = [dic stringForKey:@"isNewMessage"];
+                if ([isNewMessage isEqualToString:@"Y"]) {
+                    [isids addObject:[dic stringForKey:@"id"]];
+                }
+            }
+            if (isids.count > 0) {
+                NSMutableString *isNesMessages = [[NSMutableString alloc] init];
+                for (int i = 0; i < isids.count; i++) {
+                    if (i == isids.count - 1) {
+                        [isNesMessages appendString:[isids objectAtIndex:i]];
+                    } else {
+                        [isNesMessages appendString:[NSString stringWithFormat:@"%@,", [isids objectAtIndex:i]]];
+                    }
+                }
+                [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUpdateIsNewMessage] data:@{@"ids": isNesMessages} tag:WSInterfaceTypeUpdateIsNewMessage sucCallBack:^(id result) {
+                    
+                } failCallBack:^(id error) {
+                    
+                } showMessage:NO];
+            }
             [_sortArray addObjectsFromArray:messages];
             [_contentTableView reloadData];
         }
@@ -117,6 +142,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSDictionary *dic = [_sortArray objectAtIndex:row];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeuUpdateMessage] data:@{@"mesId": [dic stringForKey:@"id"]} tag:WSInterfaceTypeuUpdateMessage sucCallBack:^(id result) {
+        
+    } failCallBack:^(id error) {
+        
+    } showMessage:NO];
+    
     NSString *type = [dic stringForKey:@"type"];
     // 更新用户消息是否已读
     [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeuUpdateMessage] data:@{@"mesId": [dic stringForKey:@"id"]} tag:WSInterfaceTypeuUpdateMessage sucCallBack:^(id result) {

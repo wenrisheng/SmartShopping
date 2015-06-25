@@ -10,6 +10,8 @@
 
 @interface WSShareSDKUtil : NSObject
 
++ (void)cancelAuth;
+
 + (void)shareWithTitle:(NSString *)title
                content:(NSString *)content
            description:(NSString *)description

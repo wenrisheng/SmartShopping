@@ -42,6 +42,8 @@
     WSUser *user = [WSRunTime sharedWSRunTime].user;
     if (user) {
         [params setValue:user._id forKey:@"uid"];
+    } else {
+        [params setValue:@"" forKey:@"uid"];
     }
     [params setValue:_shopId forKey:@"shopid"];
     [SVProgressHUD showWithStatus:@"加载中……"];
@@ -135,11 +137,11 @@
                 if (_hasScan) {
                     [WSUserUtil actionAfterLogin:^{
                         WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
-                        scanProductVC.scanSucCallBack = ^(NSString *beanNumber) {
+                        scanProductVC.scanSucCallBack = ^(NSDictionary *dic) {
                             WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
                             scanAfterVC.goodsId = [_goodsDetails stringForKey:@"id"];
                             scanAfterVC.shopid = _shopId;
-                            scanAfterVC.beanNum = beanNumber;
+                            scanAfterVC.dic = dic;
                             [self.navigationController pushViewController:scanAfterVC animated:YES];
                         };
                         scanProductVC.shopid = _shopId;
@@ -191,10 +193,7 @@
                 break;
         }
     };
-    id h5url  = [_goodsDetails objectForKey:@"h5url"];
-    h5url = h5url == nil ? @"" : h5url;
-    BOOL flag = [h5url isKindOfClass:[NSNull class]];
-    h5url =  flag ? @"" : h5url;
+    NSString *h5url  = [_goodsDetails objectForKey:@"h5url"];
     NSURL *url =[NSURL URLWithString:h5url];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [_webView loadRequest:request];

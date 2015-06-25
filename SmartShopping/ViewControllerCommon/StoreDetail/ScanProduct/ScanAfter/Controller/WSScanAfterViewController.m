@@ -29,8 +29,10 @@
     _navigationgBarManagerView.navigationBarButLabelView.label.text = @"商品详情";
    // [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]]];
     time = 10;
-     timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-    [self requestProductDetail];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+    NSString *link2g = [_dic stringForKey:@"link2g"];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link2g]]];
+    _navigationgBarManagerView.navigationBarButLabelView.leftBut.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,20 +76,18 @@
     if (time >= 0) {
         _timeLabel.text = [NSString stringWithFormat:@"%ds", time];
         time -- ;
-        WSUser *user = [WSRunTime sharedWSRunTime].user;
-        NSString *beanNumber = user.beanNumber;
-        int allBea = [beanNumber intValue] + [_beanNum intValue];
-        user.beanNumber = [NSString stringWithFormat:@"%d", allBea];
-        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber":user.beanNumber} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
-            [SVProgressHUD dismiss];
- 
-        } failCallBack:^(id error) {
-            
-        }];
 
     } else {
         _bottomView.hidden = YES;
         [timer invalidate];
+        WSUser *user = [WSRunTime sharedWSRunTime].user;
+        NSString *beanNumber = user.beanNumber;
+        int allBea = [beanNumber intValue] + [[_dic stringForKey:@"beanNumber"] intValue];
+        user.beanNumber = [NSString stringWithFormat:@"%d", allBea];
+        _navigationgBarManagerView.navigationBarButLabelView.leftBut.hidden = NO;
+        [WSProjUtil showGainBeanNumWithBeanNum:[_dic stringForKey:@"beanNumber"] callback:^{
+            //[self.navigationController popViewControllerAnimated:YES];
+        }];
     }
 }
 

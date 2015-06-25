@@ -40,8 +40,8 @@
 //停止定位检测
 -(void)stopLocation;
 
-- (void)findIbeaconWithCallback:(void (^)(NSArray *beaconsArray))callback;
-
-- (void)findValidIbeaconWithCallBack:(void (^)(CLBeacon *beacon))iBeaconCallBack;
+//- (void)findIbeaconWithCallback:(void (^)(NSArray *beaconsArray))callback;
+//
+//- (void)findValidIbeaconWithCallBack:(void (^)(CLBeacon *beacon))iBeaconCallBack;
 
 @end

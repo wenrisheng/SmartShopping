@@ -201,6 +201,11 @@ self.city = @"广州";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -222,16 +227,20 @@ self.city = @"广州";
     self.longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     self.latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
     _navBarManagerView.navigationBarButSearchButView.leftLabel.text = _city;
-    DLog(@"定位：%@", _city);
+   // DLog(@"定位：%@", _city);
     if (_city.length > 0) {
         // 幻灯片
         if (self.city.length > 0 && slideImageArray.count == 0) {
             [self requestGetAdsPhoto];
         }
+        
+        //首次定位成功，请求商品数据
         if (isFirstLocationSuc) {
             isFirstLocationSuc = !isFirstLocationSuc;
             [self requestGetHomePageGoosShowMsg:YES];
         }
+        
+        // 加载游客数据
         [self requestTourist];
     }
 }
@@ -242,30 +251,17 @@ self.city = @"广州";
     if (!touristData) {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_city forKey:@"cityName"];
-
+        NSString *imei = [WSCalendarUtil getDateStrWithDate:[NSDate date] format:@"yyyyMMddHHmmss"];
+        [params setValue:imei forKey:@"imei"];
         [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeTouristRegist] data:params tag:WSInterfaceTypeTouristRegist sucCallBack:^(id result) {
-            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            BOOL flag = [WSInterfaceUtility validRequestResultNoErrorMsg:result];
             if (flag) {
                 NSDictionary *data = [result valueForKey:@"data"];
                 NSDictionary *userDic = [data valueForKey:@"user"];
                 
                 NSMutableDictionary *tempDic = [WSBaseUtil changNumberToStringForDictionary:userDic];
-                WSUser *tourist = [[WSUser alloc] init];
-                [tourist setValuesForKeysWithDictionary:tempDic];
+                 WSUser *tourist = [WSProjUtil convertDicToUser:tempDic];
                  tourist.userType = @"2";
-                
-                // 首次打开app
-                [WSProjUtil synchronFirstUsedBeanNumWithUser:tourist callBack:^{
-                    [_supermarketCollectionView reloadData];
-                }];
-                
-                [WSProjUtil synchronOpenAppBeanNumWithUser:tourist callBack:^{
-                    [_supermarketCollectionView reloadData];
-                }];
-                
-                // 本地游客信息
-                NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:tourist];
-                [USER_DEFAULT setObject:userdata forKey:TOURIST_KEY];
                 
                 // 如果用户没登录则为游客
                 NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
@@ -274,6 +270,20 @@ self.city = @"广州";
                     runTime.user = tourist;
                     [_supermarketCollectionView reloadData];
                 }
+
+                // 首次打开app
+                [WSProjUtil synchronFirstUsedBeanNumWithUser:tourist callBack:^{
+                    [self refrushPagePeaNum];
+                }];
+            
+                // 每天打开app
+                [WSProjUtil synchronOpenAppBeanNumWithUser:tourist callBack:^{
+                   [self refrushPagePeaNum];
+                }];
+                
+                // 本地游客信息
+ 
+                [WSProjUtil archiverUser:tourist key:TOURIST_KEY];
             }
         } failCallBack:^(id error) {
             
@@ -284,32 +294,40 @@ self.city = @"广州";
 - (void)synchronUserOrTourist
 {
     // 自动登录时同步用户数据
-    NSData *beforeData = [USER_DEFAULT objectForKey:USER_KEY];
-    if (beforeData) {
-        WSUser *beforeUser = [NSKeyedUnarchiver unarchiveObjectWithData:beforeData];
-        [WSRunTime sharedWSRunTime].user = beforeUser;
-        // 
+    WSUser *beforeUser = [WSProjUtil unarchiverUserWithKey:USER_KEY];
+    if (beforeUser) {
         [WSProjUtil synchronOpenAppBeanNumWithUser:beforeUser callBack:^{
-            [_supermarketCollectionView reloadData];
+             [self refrushPagePeaNum];
         }];
         
         [WSProjUtil synchronFirstUsedBeanNumWithUser:beforeUser callBack:^{
-             [_supermarketCollectionView reloadData];
+             [self refrushPagePeaNum];
         }];
+        [WSRunTime sharedWSRunTime].user = beforeUser;
     } else {
-        NSData *touristData = [USER_DEFAULT objectForKey:TOURIST_KEY];
-        if (touristData) {
-            WSUser *beforeTourist = [NSKeyedUnarchiver unarchiveObjectWithData:touristData];
+        WSUser *beforeTourist = [WSProjUtil unarchiverUserWithKey:USER_KEY];
+        if (beforeTourist) {
+            [WSRunTime sharedWSRunTime].user = beforeTourist;
             
+            // 首次打开app
+            [WSProjUtil synchronFirstUsedBeanNumWithUser:beforeTourist callBack:^{
+                [self refrushPagePeaNum];
+            }];
+            
+            // 每天打开app
             [WSProjUtil synchronOpenAppBeanNumWithUser:beforeTourist callBack:^{
                 [_supermarketCollectionView reloadData];
             }];
+            [WSRunTime sharedWSRunTime].user = beforeTourist;
         }
     }
 }
 
 - (void)requestGetHomePageGoosShowMsg:(BOOL)showMsg
 {
+#ifdef DEBUG
+    self.city = @"广州";
+#endif
     if (_city.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
         [_supermarketCollectionView endHeaderAndFooterRefresh];
@@ -339,6 +357,8 @@ self.city = @"广州";
         WSUser *user = [WSRunTime sharedWSRunTime].user;
         if (user) {
             [params setValue:user._id forKey:@"uid"];
+        } else {
+            [params setValue:@"" forKey:@"uid"];
         }
         [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetHomePageGoods] data:params tag:WSInterfaceTypeGetHomePageGoods sucCallBack:^(id result) {
             [_supermarketCollectionView endHeaderAndFooterRefresh];
@@ -437,12 +457,12 @@ self.city = @"广州";
 
 - (void)navigationBarRightButClick:(UIButton *)but
 {
-    [WSUserUtil actionAfterLogin:^{
+  //  [WSUserUtil actionAfterLogin:^{
         WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
         NSMutableArray *tempArray = [NSMutableArray arrayWithArray:_messages];
         infoListVC.dataArray = tempArray;
         [self.navigationController pushViewController:infoListVC animated:YES];
-    }];
+   // }];
 }
 
 - (BOOL)navigationBarSearchViewTextFieldShouldBeginEditing:(UITextField *)textField
@@ -620,8 +640,7 @@ self.city = @"广州";
                 [self.navigationController pushViewController:advertisementVC animated:YES];
             };
         }
-        NSString *beanNum = [WSUserUtil getUserPeasNum];
-        headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
+        [self refrushPagePeaNum];
         headerView.tag = indexPath.row;
         [headerView.segmentedControl addTarget:self action:@selector(typeSegmentControlAction:)forControlEvents:UIControlEventValueChanged];
         return headerView;
@@ -631,6 +650,12 @@ self.city = @"广州";
     } else {
         return nil;
     }
+}
+
+- (void)refrushPagePeaNum
+{
+    NSString *beanNum = [WSUserUtil getUserPeasNum];
+    headerView.peasLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
 }
 
 #pragma mark -
@@ -691,35 +716,29 @@ self.city = @"广州";
     //  1. GPS定位不在店内跳到 WSNoInStoreViewController
     //  2. GPS定位在店内但还未签到时跳到 WSInStoreNoSignViewController
     //  3. 在店内已签到 跳到 WSStoreDetailViewController
-    [WSUserUtil actionAfterLogin:^{
-        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-            CLBeacon *beacon = nil;
-            if (beaconsArray.count > 0) {
-                beacon = [beaconsArray objectAtIndex:0];
+    CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+    
+    [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+        // 在店内
+        if (isInStore) {
+            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+            NSString *isSign = [shop stringForKey:@"isSign"];
+            //  没签到
+            if ([isSign isEqualToString:@"Y"]) {
+                WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                inStoreNoSignVC.shop = shop;
+                [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
+            } else {
+                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                storeDetailVC.shop = shop;
+                [self.navigationController pushViewController:storeDetailVC animated:YES];
             }
-            [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
-                BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-                // 在店内
-                if (isInStore) {
-                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                    NSString *isSign = [shop stringForKey:@"isSign"];
-                    //  没签到
-                    if ([isSign isEqualToString:@"N"]) {
-                        WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                        inStoreNoSignVC.shop = shop;
-                        [self.navigationController pushViewController:inStoreNoSignVC animated:YES];
-                    } else {
-                        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                        storeDetailVC.shop = shop;
-                        [self.navigationController pushViewController:storeDetailVC animated:YES];
-                    }
-                    // 不在店内
-                } else {
-                    WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
-                    [self.navigationController pushViewController:noInstoreVC animated:YES];
-                }
-            }];
-        }];
+            // 不在店内
+        } else {
+            WSNoInStoreViewController *noInstoreVC = [[WSNoInStoreViewController alloc] init];
+            [self.navigationController pushViewController:noInstoreVC animated:YES];
+        }
     }];
 }
 
@@ -728,33 +747,29 @@ self.city = @"广州";
 {
     // 1. 在店内跳到 WSStoreDetailViewController
     // 2. 不在店内跳到 WSScanInStoreViewController
-    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-        CLBeacon *beacon = nil;
-        if (beaconsArray.count > 0) {
-            beacon = [beaconsArray objectAtIndex:0];
+
+    CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+    
+    [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+        // 在店内
+        if (isInStore) {
+            // [WSUserUtil actionAfterLogin:^{
+            NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+            NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
+            NSString *shopId = [dic stringForKey:@"shopId"];
+            NSString *shopName = [shop objectForKey:@"shopName"];
+            WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
+            scanInStoreVC.shopName = shopName;
+            scanInStoreVC.shopid = shopId;
+            [self.navigationController pushViewController:scanInStoreVC animated:YES];
+            // }];
+            
+            // 不在店内
+        } else {
+            WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
+            [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
         }
-        [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
-            BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
-            // 在店内
-            if (isInStore) {
-                [WSUserUtil actionAfterLogin:^{
-                    NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
-                    NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                    NSString *shopId = [dic stringForKey:@"shopId"];
-                    NSString *shopName = [shop objectForKey:@"shopName"];
-                    WSScanInStoreViewController *scanInStoreVC = [[WSScanInStoreViewController alloc] init];
-                    scanInStoreVC.shopName = shopName;
-                    scanInStoreVC.shopid = shopId;
-                    [self.navigationController pushViewController:scanInStoreVC animated:YES];
-                }];
-                
-                // 不在店内
-            } else {
-                WSScanNoInStoreViewController *scanNoInStoreVC = [[WSScanNoInStoreViewController alloc] init];
-                [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
-            }
-        }];
-        
     }];
 }
 

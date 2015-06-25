@@ -62,7 +62,7 @@
         cameraSimulator.readerView = _readerView;
     }
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"scan" ofType:@"wav"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"shake_match" ofType:@"mp3"];
     NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
    player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     [player prepareToPlay];
@@ -121,9 +121,8 @@
     [_readerView stop];
     [timer invalidate];
     self.scanStr = str;
-    [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-        if (beaconsArray.count > 0) {
-            [WSProjUtil isInStoreWithIBeacon:[beaconsArray objectAtIndex:0] callback:^(id result) {
+    CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+            [WSProjUtil isInShopAndIsScanWithIBeacon:beacon callback:^(id result) {
                 NSDictionary *isInShopDic = [result objectForKey:IS_IN_SHOP_DATA];
                 BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
                 if (isInStore) {
@@ -131,16 +130,24 @@
                     if ([isScan isEqualToString:@"Y"]) {
                         [self requestEarnBeanByScanGoodsWithBarcode:str];
                     } else {
-                        [SVProgressHUD dismissWithError:@"亲，您不满足扫描条件哦！" afterDelay:TOAST_VIEW_TIME];
+                        [SVProgressHUD showErrorWithStatus:@"亲，您不满足扫描条件哦！" duration:TOAST_VIEW_TIME];
+                        double delayInSeconds = TOAST_VIEW_TIME;
+                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
+
                     }
                 } else {
-                    [SVProgressHUD dismissWithError:[NSString stringWithFormat:@"亲，您没在%@店哦！", [isInShopDic objectForKey:@"shopName"]] afterDelay:TOAST_VIEW_TIME];
+                    [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"亲，您没在%@店哦！", [isInShopDic objectForKey:@"shopName"]] duration:TOAST_VIEW_TIME];
+                    double delayInSeconds = TOAST_VIEW_TIME;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+
                 }
             }];
-        } else {
-            [SVProgressHUD showErrorWithStatus:@"亲，没有扫描到iBeacon哦！" duration:TOAST_VIEW_TIME];
-        }
-    }];
     
 }
 
@@ -165,8 +172,8 @@
         if (flag) {
             [self.navigationController popViewControllerAnimated:YES];
             if (_scanSucCallBack) {
-                NSString *beanNumber = [[result objectForKey:@"data"] objectForKey:@"beanNumber"];
-                _scanSucCallBack(beanNumber);
+               NSDictionary *data = [result objectForKey:@"data"];
+                _scanSucCallBack(data);
             }
         } else {
              [_readerView start];
@@ -193,6 +200,7 @@
 
 - (IBAction)shanButAction:(id)sender
 {
+    [_textField resignFirstResponder];
     NSString *barcode = _textField.text;
     if (barcode.length > 0) {
         [self requestEarnBeanByScanGoodsWithBarcode:barcode];

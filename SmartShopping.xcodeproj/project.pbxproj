@@ -661,14 +661,16 @@
 		7CC827B71AF1311B00A837F8 /* kuang.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B41AF1311B00A837F8 /* kuang.png */; };
 		7CC827B81AF1311B00A837F8 /* lamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B51AF1311B00A837F8 /* lamp.png */; };
 		7CC827B91AF1311B00A837F8 /* light.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B61AF1311B00A837F8 /* light.png */; };
-		7CC9C8401B324D1E009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C83F1B324D1E009F318D /* Location.gpx */; };
-		7CC9C8411B324D1E009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C83F1B324D1E009F318D /* Location.gpx */; };
 		7CC9C85A1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
 		7CC9C85B1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
 		7CC9C85F1B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
 		7CC9C8601B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
 		7CC9C8621B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
 		7CC9C8631B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
+		7CC9C8F51B3B9347009F318D /* shake_match.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F31B3B9347009F318D /* shake_match.mp3 */; };
+		7CC9C8F61B3B9347009F318D /* shake_sound_male.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F41B3B9347009F318D /* shake_sound_male.mp3 */; };
+		7CC9C8F81B3B9D53009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F71B3B9D53009F318D /* Location.gpx */; };
+		7CC9C8F91B3B9D53009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F71B3B9D53009F318D /* Location.gpx */; };
 		7CCA018B1AEC69490081A8CC /* WSConsumeOrderWriterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */; };
 		7CCA018C1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */; };
 		7CCA01901AEC7B7C0081A8CC /* WSOrderSucView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA018F1AEC7B7C0081A8CC /* WSOrderSucView.xib */; };
@@ -1241,7 +1243,6 @@
 		7CC827B41AF1311B00A837F8 /* kuang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kuang.png; sourceTree = "<group>"; };
 		7CC827B51AF1311B00A837F8 /* lamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lamp.png; sourceTree = "<group>"; };
 		7CC827B61AF1311B00A837F8 /* light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light.png; sourceTree = "<group>"; };
-		7CC9C83F1B324D1E009F318D /* Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		7CC9C8541B329BB9009F318D /* ESTBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
 		7CC9C8551B329BB9009F318D /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
 		7CC9C8561B329BB9009F318D /* ESTBeaconManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
@@ -1251,6 +1252,9 @@
 		7CC9C85D1B33129B009F318D /* PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopView.h; sourceTree = "<group>"; };
 		7CC9C85E1B33129B009F318D /* PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopView.m; sourceTree = "<group>"; };
 		7CC9C8611B3312AB009F318D /* PopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopView.xib; sourceTree = "<group>"; };
+		7CC9C8F31B3B9347009F318D /* shake_match.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shake_match.mp3; sourceTree = "<group>"; };
+		7CC9C8F41B3B9347009F318D /* shake_sound_male.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shake_sound_male.mp3; sourceTree = "<group>"; };
+		7CC9C8F71B3B9D53009F318D /* Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		7CCA01881AEC69490081A8CC /* WSConsumeOrderWriterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSConsumeOrderWriterViewController.h; sourceTree = "<group>"; };
 		7CCA01891AEC69490081A8CC /* WSConsumeOrderWriterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSConsumeOrderWriterViewController.m; sourceTree = "<group>"; };
 		7CCA018A1AEC69490081A8CC /* WSConsumeOrderWriterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSConsumeOrderWriterViewController.xib; sourceTree = "<group>"; };
@@ -1986,6 +1990,8 @@
 		7C4206391AF60F71005F9F44 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				7CC9C8F31B3B9347009F318D /* shake_match.mp3 */,
+				7CC9C8F41B3B9347009F318D /* shake_sound_male.mp3 */,
 				7C42063C1AF60F7E005F9F44 /* glass.wav */,
 				7C42063A1AF60F71005F9F44 /* scan.wav */,
 			);
@@ -2880,6 +2886,7 @@
 		7CCBBD4B1AD418AF00EA1F7F = {
 			isa = PBXGroup;
 			children = (
+				7CC9C8F71B3B9D53009F318D /* Location.gpx */,
 				7C6557D31B07975800D832C2 /* ProjectCommon */,
 				7C0C896F1AF8CECF00F5C93C /* Default-568h@2x.png */,
 				7CCBBD801AD419FE00EA1F7F /* BaseStaticLibrary.xcodeproj */,
@@ -2929,7 +2936,6 @@
 				7C5403081B30FA490018981F /* area.plist */,
 				7CCBBD581AD418AF00EA1F7F /* Info.plist */,
 				7CCBBD591AD418AF00EA1F7F /* main.m */,
-				7CC9C83F1B324D1E009F318D /* Location.gpx */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3581,6 +3587,7 @@
 				TargetAttributes = {
 					7CCBBD531AD418AF00EA1F7F = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = M6BZ7CAAX7;
 					};
 				};
 			};
@@ -3669,7 +3676,6 @@
 				7CAB83241B2DEB6C00D50F7D /* shake-02.png in Resources */,
 				7CAB83251B2DEB6C00D50F7D /* WSSearchCommonViewController.xib in Resources */,
 				7CAB83261B2DEB6C00D50F7D /* WSGiftDetailViewController.xib in Resources */,
-				7CC9C8411B324D1E009F318D /* Location.gpx in Resources */,
 				7CAB83271B2DEB6C00D50F7D /* icon-03.png in Resources */,
 				7CAB83281B2DEB6C00D50F7D /* redmobile.png in Resources */,
 				7CAB83291B2DEB6C00D50F7D /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
@@ -3799,6 +3805,7 @@
 				7CAB83A41B2DEB6C00D50F7D /* radom_2.png in Resources */,
 				7CAB83A51B2DEB6C00D50F7D /* photo-02.png in Resources */,
 				7CAB83A61B2DEB6C00D50F7D /* WSGiftOrderWriterViewController.xib in Resources */,
+				7CC9C8F91B3B9D53009F318D /* Location.gpx in Resources */,
 				7CAB83A71B2DEB6C00D50F7D /* kuang.png in Resources */,
 				7CAB83A81B2DEB6C00D50F7D /* Images.xcassets in Resources */,
 				7CAB83A91B2DEB6C00D50F7D /* collected.png in Resources */,
@@ -3889,8 +3896,8 @@
 				7C7E88AA1B17EE6300E48B93 /* WSGuideViewController.xib in Resources */,
 				7CD0E4B11AE3A63100B78C9C /* shake-02.png in Resources */,
 				7C74B7E21B1B45D700CB7FE2 /* WSSearchCommonViewController.xib in Resources */,
+				7CC9C8F61B3B9347009F318D /* shake_sound_male.mp3 in Resources */,
 				7CCE4F5A1AEB73480097DFBB /* WSGiftDetailViewController.xib in Resources */,
-				7CC9C8401B324D1E009F318D /* Location.gpx in Resources */,
 				7CCD8B271ADFD0D5007B86A9 /* icon-03.png in Resources */,
 				7C7E26D21AF4DC0600EC6598 /* redmobile.png in Resources */,
 				7C741ADB1B1DE9F20086B32B /* ShareSDKiPadDefaultShareViewUI.bundle in Resources */,
@@ -3902,6 +3909,7 @@
 				7C3DFF2D1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.xib in Resources */,
 				7C741AD91B1DE9F20086B32B /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				7C6E57141AE15E9C00D020D5 /* get-02.png in Resources */,
+				7CC9C8F81B3B9D53009F318D /* Location.gpx in Resources */,
 				7CCAD32D1ADEB0C1001D3D8B /* c_normal.png in Resources */,
 				7CCBF5021AEFDEA2005321BF /* WSInviateFriendViewController.xib in Resources */,
 				7CCAD32A1ADEB0C1001D3D8B /* b_selected.png in Resources */,
@@ -3926,6 +3934,7 @@
 				7C249B731ADD6B7A000712BF /* WSInfoListCell.xib in Resources */,
 				7CCA01901AEC7B7C0081A8CC /* WSOrderSucView.xib in Resources */,
 				7CD0E48F1AE393A500B78C9C /* WSNoInStoreSectionView.xib in Resources */,
+				7CC9C8F51B3B9347009F318D /* shake_match.mp3 in Resources */,
 				7C3511721ADFF4380014696B /* WSMineThirdCell.xib in Resources */,
 				7CCD8B231ADFD0D5007B86A9 /* head-01.png in Resources */,
 				7CCD8B181ADFD0D5007B86A9 /* 05.png in Resources */,
@@ -4381,7 +4390,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4415,7 +4424,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "SmartShopping copy";
-				PROVISIONING_PROFILE = "054df010-a9dc-4391-8984-3c09dc7372c4";
+				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};
@@ -4427,7 +4436,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4461,7 +4470,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "SmartShopping copy";
-				PROVISIONING_PROFILE = "054df010-a9dc-4391-8984-3c09dc7372c4";
+				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};
@@ -4550,6 +4559,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4583,7 +4593,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
+				PROVISIONING_PROFILE = "95b51686-b807-40ce-9b33-2143a1930eca";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};
@@ -4596,6 +4606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4629,7 +4640,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5bd15d1f-6d78-4192-9454-7ea3b0befcaa";
+				PROVISIONING_PROFILE = "95b51686-b807-40ce-9b33-2143a1930eca";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/BaseStaticLibrary/**";
 				VALID_ARCHS = "armv7 arm64";
 			};

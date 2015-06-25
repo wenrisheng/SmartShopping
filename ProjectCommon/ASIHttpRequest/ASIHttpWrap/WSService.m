@@ -135,7 +135,7 @@
     [request startAsynchronous];
 }
 
-- (void)requestFinished:(ASIHTTPRequest *)request;
+- (void)requestFinished:(ASIHTTPRequest *)request
 
 {
     NSData *responseData = [request responseData];
@@ -173,7 +173,7 @@
     }
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request;
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
 #ifdef  DEBUG
      NSLog(@"request result Error! url:%@ \n tag:%d error:%@\n", [NSString stringWithContentsOfURL:request.url encoding:NSUTF8StringEncoding error:nil], (int)request.tag, request.error);
@@ -189,7 +189,7 @@
     }
 }
 
-+ (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack showMessage:(BOOL)showMessage;
++ (void)post:(NSString *)url data:(NSDictionary *)dataDic tag:(int)tag sucCallBack:(void (^)(id result))sucCallBack failCallBack:(void (^)(id error))failCallBack showMessage:(BOOL)showMessage
 {
     NSURL *nsUrl = [NSURL URLWithString:url];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsUrl];
@@ -210,7 +210,7 @@
 #ifdef DEBUG
     NSString * str = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
     DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
-    DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
+    DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str]);
 #endif
     __weak ASIFormDataRequest *respRequest = request;
     // 请求完成
@@ -226,7 +226,7 @@
 #ifdef DEBUG
         NSString * str = [[NSString alloc] initWithData:[respRequest postBody] encoding:NSUTF8StringEncoding];
         DLog(@"request \n { \n  url:%@, \n  tag:%d,\n  postbody:%@\n }", url, tag, str);
-        DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str])
+        DLog(@"request URL:%@", [NSString stringWithFormat:@"%@?%@", url, str]);
         NSError *requestError = respRequest.error;
         if (requestError) {
             DLog(@"requstError:%@", requestError);

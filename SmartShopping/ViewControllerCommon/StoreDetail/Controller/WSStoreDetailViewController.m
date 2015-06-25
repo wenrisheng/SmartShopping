@@ -180,6 +180,7 @@
             if (!_goodsscanlist) {
                 self.goodsscanlist = [[NSMutableDictionary alloc] init];
             }
+            currentPage ++;
             [_goodsscanlist setValuesForKeysWithDictionary:[[result objectForKey:@"data"] objectForKey:@"goodsscanlist"]];
             NSArray *goodslist = [_goodsscanlist objectForKey:@"goodslist"];
             NSInteger count = goodslist.count;
@@ -296,24 +297,30 @@
         [imageScrollView setImageData:imageDataArray];
         if (_goodsscanlist) {
             NSString *userIsSign = [_goodsscanlist stringForKey:@"userIsSign"];
+            NSString *isSign = [_goodsscanlist stringForKey:@"isSign"];
             NSString *signImage = nil;
             NSString *scanImage = nil;
+            NSString *signStr = nil;
             // 可以签到
-            if ([userIsSign isEqualToString:@"N"]) {
+            if ([isSign isEqualToString:@"1"]&&[userIsSign isEqualToString:@"N"]) {
                 signImage = @"gainpeas_icon-06";
-                
                 canSign = YES;
+                signStr = @"未签到";
             // 不可以签到
             } else {
                 signImage = @"gainpeas_icon-04";
                 canSign = NO;
+                 signStr = @"已签到";
             }
             BOOL hasScanGood = NO;
+            int allPeaNum = 0;
             for (NSDictionary *dic in dataArray) {
                 NSString *isScan = [dic stringForKey:@"isScan"];
-                if ([isScan isEqualToString:@"Y"]) {
+                int peaNum = [[dic stringForKey:@"beannumber"] intValue];
+                allPeaNum += peaNum;
+                if ([isScan isEqualToString:@"N"]) {
                     hasScanGood = YES;
-                    break;
+                
                 }
             }
             if (hasScanGood) {
@@ -322,7 +329,9 @@
                 scanImage = @"gainpeas_icon-05";
             }
             reusableView.signupImageView.image = [UIImage imageNamed:signImage];
+            reusableView.signupLabel.text = signStr;
             reusableView.scanImageView.image = [UIImage imageNamed:scanImage];
+            reusableView.peaLabel.text = [NSString stringWithFormat:@"%d豆", allPeaNum];
         }
         return reusableView;
     } else {
@@ -356,12 +365,11 @@
     NSDictionary *dic = [dataArray objectAtIndex:but.tag];
     NSString *isScan = [dic stringForKey:@"isScan"];
    
-    if ([isScan isEqualToString:@"Y"]) {
+    if ([isScan isEqualToString:@"N"]) {
         // 1. 不在店内则提示不在店内
         // 2. 在店内则跳到 WSScanProductViewController
-        [[WSRunTime sharedWSRunTime] findIbeaconWithCallback:^(NSArray *beaconsArray) {
-            if (beaconsArray.count > 0) {
-                [WSProjUtil isInStoreWithIBeacon:[beaconsArray objectAtIndex:0] callback:^(id result) {
+            CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+                [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
                     BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
                     // 在店内
                     if (isInStore) {
@@ -370,11 +378,11 @@
                             WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
                             NSString *shopid = [_shop stringForKey:@"shopid"];
                             NSString *goodsId = [dic stringForKey:@"goodsId"];
-                            scanProductVC.scanSucCallBack = ^(NSString *beanNumber) {
+                            scanProductVC.scanSucCallBack = ^(NSDictionary *dic) {
                                 WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
                                 scanAfterVC.goodsId = goodsId;
                                 scanAfterVC.shopid = shopid;
-                                scanAfterVC.beanNum = beanNumber;
+                                scanAfterVC.dic = dic;
                                 [self.navigationController pushViewController:scanAfterVC animated:YES];
                             };
                             scanProductVC.shopid = shopid;
@@ -388,10 +396,6 @@
                     }
                     
                 }];
-            } else {
-                [SVProgressHUD showErrorWithStatus:@"亲，没发现iBeacon哦！" duration:TOAST_VIEW_TIME];
-            }
-        }];
     } else {
         [SVProgressHUD showErrorWithStatus:@"亲，该商品已经扫描过了哦！" duration:TOAST_VIEW_TIME];
     }

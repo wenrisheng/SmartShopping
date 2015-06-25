@@ -153,6 +153,11 @@
             return [NSString stringWithFormat:@"%@/app/userMessage.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeUpdateIsNewMessage:
+        {
+          return [NSString stringWithFormat:@"%@/app/updateIsNewMessage.do", BASE_URL];  
+        }
+            break;
         case WSInterfaceTypeuUpdateMessage:
         {
             return [NSString stringWithFormat:@"%@/app/updateMessage.do", BASE_URL];
@@ -245,7 +250,12 @@
             break;
         case WSInterfaceTypeIsInShopAndIsScans:
         {
-            return [NSString stringWithFormat:@"%@/app/isInShopAndIsScan", BASE_URL];
+            return [NSString stringWithFormat:@"%@/app/isInShopAndIsScan.do", BASE_URL];
+        }
+            break;
+        case WSInterfaceTypeIsInshop:
+        {
+             return [NSString stringWithFormat:@"%@/app/isInshop.do", BASE_URL];
         }
             break;
 //        case WSInterfaceTypeSsInshopBySign:

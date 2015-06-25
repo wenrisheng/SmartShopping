@@ -32,9 +32,16 @@ typedef NS_ENUM(NSInteger, UserLoginType) {
 @property (strong, nonatomic) NSString *birthday;
 @property (strong, nonatomic) NSString *type;
 @property (strong, nonatomic) NSString *logoPath;
+@property (strong, nonatomic) NSString *cityId;
+@property (strong, nonatomic) NSString *cityName;
+@property (strong, nonatomic) NSString *eState;
+
+@property (strong, nonatomic) NSString *provinceId;
+@property (strong, nonatomic) NSString *provinceName;
+@property (strong, nonatomic) NSString *roleid;
+@property (strong, nonatomic) NSString *sysRole;
 
 @property (strong, nonatomic) NSString *createTime;
-@property (strong, nonatomic) NSString *eState;
 @property (strong, nonatomic) NSString *inviteCount;
 @property (strong, nonatomic) NSString *modifyTime;
 @property (strong, nonatomic) NSString *status;
@@ -45,13 +52,10 @@ typedef NS_ENUM(NSInteger, UserLoginType) {
 @property (strong, nonatomic) NSString *thirdid; // 第三方标记
 
 @property (strong, nonatomic) NSString *userType;  // @"1" 登录用户   @"2"游客
-
-// 推送通知
-@property (assign, nonatomic) BOOL isPushNotification;
-@property (assign, nonatomic) int loginType;
+@property (strong, nonatomic) NSString *loginType;
 
 // 第三方登录
-@property (assign, nonatomic) NSString *uid;
-@property (assign, nonatomic) NSString *profileImage;
+@property (strong, nonatomic) NSString *uid;
+@property (strong, nonatomic) NSString *profileImage;
 
 @end

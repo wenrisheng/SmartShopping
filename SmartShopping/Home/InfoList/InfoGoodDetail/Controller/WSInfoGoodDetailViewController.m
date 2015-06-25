@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"详情详情";
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"消息详情";
     [self requestProductDetail];
 }
 

@@ -14,7 +14,8 @@
 //#define BASE_URL    @"http://121.41.86.29:8888"
 
 
-typedef NS_ENUM(NSInteger, WSInterfaceType) {
+typedef NS_ENUM(NSInteger, WSInterfaceType)
+{
     
     /***************************登录 | 注册**********************************/
     WSInterfaceTypeLogin = 0,                     // 登陆
@@ -49,6 +50,7 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeClickAdvert,                  // 用户每次点击广告
     WSInterfaceTypeGetHomePageGoods,             // 首页附件精选
     WSInterfaceTypeUserMessage,                  // 消息列表
+    WSInterfaceTypeUpdateIsNewMessage,           //将新消息列表更新为旧消息
     WSInterfaceTypeuUpdateMessage,               // 更新用户消息是否已读
     WSInterfaceTypeDelMessage,                   // 删除用户消息
     WSInterfaceTypeGetGoodsDetails,              // 查询商品详情
@@ -64,7 +66,8 @@ typedef NS_ENUM(NSInteger, WSInterfaceType) {
     WSInterfaceTypeGetShopBrand,                 //品牌筛选条件
     WSInterfaceTypeOutShopGoodsList,             // 店外查询接口
     WSInterfaceTypeCheckMoreGoodsList,           // 查看更多
-    WSInterfaceTypeIsInShopAndIsScans,         // 用户是否在店内
+    WSInterfaceTypeIsInShopAndIsScans,         // 判断用户是否在店内，是否可以扫描
+    WSInterfaceTypeIsInshop,                   //用户是否在店内(此接口只用来签到，判断是否在店内，是否可以签到)
     
     /***************************到店签到**********************************/
     WSInterfaceTypeShopSignList,                 // 不在店内（列表）

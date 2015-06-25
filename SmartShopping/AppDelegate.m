@@ -1,7 +1,7 @@
 //
 //  AppDelegate.m
 //  SmartShopping
-//
+//  收藏和兑换礼品需要登录。
 //  Created by wrs on 15/4/7.
 //  Copyright (c) 2015年 wrs. All rights reserved.
 //
@@ -13,6 +13,7 @@
 #import "WSMineViewController.h"
 #import <Parse/Parse.h>
 #import "WSGuideViewController.h"
+#import "WSShareSDKUtil.h"
 
 @interface AppDelegate () <BMKGeneralDelegate>
 {
@@ -27,6 +28,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
+    
+    NSNumber *pushNotification = [USER_DEFAULT objectForKey:PUSH_NOTIFICATION];
+    if (!pushNotification) {
+        [USER_DEFAULT setValue:[NSNumber numberWithBool:YES] forKey:PUSH_NOTIFICATION];
+    }
 
     // 处理iOS8本地推送不能收到的问题
     float sysVersion = [[UIDevice currentDevice]systemVersion].floatValue;
@@ -70,6 +76,8 @@
     // 开启ibeacon扫描
     [[WSRunTime sharedWSRunTime] startLocation];
     
+    [WSShareSDKUtil cancelAuth];
+    
     return YES;
 }
 
@@ -77,11 +85,16 @@
 {
     // 首次使用
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetBeannumberByKeyWord] data:@{@"keyword": @"FIRST_USED"} tag:WSInterfaceTypeGetBeannumberByKeyWord sucCallBack:^(id result) {
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        BOOL flag = [WSInterfaceUtility validRequestResultNoErrorMsg:result];
         if (flag) {
             NSDictionary *data = [result objectForKey:@"data"];
             NSString *beanNumber = [data stringForKey:@"beanNumber"];
             [USER_DEFAULT setObject:beanNumber forKey:FIRST_USED];
+            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            [WSProjUtil synchronOpenAppBeanNumWithUser:user callBack:^{
+              
+            }];
+
         }
     } failCallBack:^(id error) {
         
@@ -89,11 +102,17 @@
     
     // 打开app
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetBeannumberByKeyWord] data:@{@"keyword": @"OPEN_APP"} tag:WSInterfaceTypeGetBeannumberByKeyWord sucCallBack:^(id result) {
-        BOOL flag = [WSInterfaceUtility validRequestResult:result];
+        BOOL flag = [WSInterfaceUtility validRequestResultNoErrorMsg:result];
         if (flag) {
             NSDictionary *data = [result objectForKey:@"data"];
             NSString *beanNumber = [data stringForKey:@"beanNumber"];
             [USER_DEFAULT setObject:beanNumber forKey:OPEN_APP];
+             WSUser *user = [WSRunTime sharedWSRunTime].user;
+            // 每天打开app
+            [WSProjUtil synchronOpenAppBeanNumWithUser:user callBack:^{
+               
+            }];
+
         }
     } failCallBack:^(id error) {
         
@@ -171,7 +190,6 @@
                     nweUser.beanNumber = @"0";
                 }
                 nweUser.phone = user.phone;
-                nweUser.isPushNotification = user.isPushNotification;
                 
                 [WSRunTime sharedWSRunTime].user = nweUser;
                 // 本地存储用户信息
@@ -290,12 +308,22 @@
     self.window.rootViewController = _nav;
 }
 
+
+
 #pragma mark -
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    NSDictionary *beaconDic = [notification userInfo];
-    NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
-    NSString *thirdlink = [beaconInfoDic objectForKey:@"thirdlink"];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
+    if (notification != nil) {
+        if([[NSDate date] timeIntervalSinceDate:notification.fireDate]>0.5){
+            //用户点击了，
+            NSDictionary *beaconDic = [notification userInfo];
+            NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
+            NSString *thirdlink = [beaconInfoDic objectForKey:@"thirdlink"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
+        }else{
+            //时间到了触发的
+        }
+    }
+
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
@@ -313,6 +341,12 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        // 本地存储用户信息
+        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
+        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -322,13 +356,8 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        // 本地存储用户信息
-        NSData *userdata = [NSKeyedArchiver archivedDataWithRootObject:[WSRunTime sharedWSRunTime].user];
-        [USER_DEFAULT setObject:userdata forKey:USER_KEY];
-    }
+
+   [WSShareSDKUtil cancelAuth];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="addressLabel" destination="IxD-uE-7gP" id="zJZ-xA-2hk"/>
                 <outlet property="navigationBarManagerView" destination="qdh-Oe-mLp" id="zBU-kg-CIu"/>
+                <outlet property="titleLabel" destination="8UW-e1-EYg" id="TFA-vE-IxY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

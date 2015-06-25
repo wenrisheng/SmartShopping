@@ -17,6 +17,7 @@
 #import "WSSearchNoDataCollectionViewCell.h"
 #import "WSPromotionCouponInStoreCollectionViewCell.h"
 #import "WSHomeViewController.h"
+#import "HomeCollectionViewCell.h"
 
 #define SEARCH_PRODUCT_HISTORY_KEY        @"SEARCH_PRODUCT_HISTORY_KEY"    // 商品搜索历史纪录
 #define HISTORY_COUNT                     10
@@ -212,7 +213,7 @@
         }
         curTabIndex = index;
     };
-    
+    [_collectionView registerNib:[UINib nibWithNibName:@"HomeCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"HomeCollectionViewCell"];
     [_collectionView registerNib:[UINib nibWithNibName:@"WSPromotionCouponInStoreCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell"];
     [_collectionView registerNib:[UINib nibWithNibName:@"WSSearchNoDataCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"WSSearchNoDataCollectionViewCell"];
 
@@ -311,7 +312,7 @@
         UIView *relativeview = _searchManagerView.searchTypeView.leftView;
         NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:-10];
         NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:relativeview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_searchManagerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_searchManagerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-5];
         
         NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.toastView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:titlArray.count * WSCLEARHISTORYCELL_HEIGHT + self.toastView.tableViewTopCon.constant];
         [self.view addConstraints:@[left, right, top, height]];
@@ -674,6 +675,7 @@
             NSRange range = [title rangeOfString:tempStr];
             if (range.length > 0) {
                 weakSelf.townId = @"";
+                 weakSelf.districtId = @"";
             }
 
         }
@@ -1019,6 +1021,7 @@
                     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
                     [dic setValuesForKeysWithDictionary:goods];
                     [dic setValue:[shop stringForKey:@"shopId"] forKey:@"shopId"];
+                    [dic setValuesForKeysWithDictionary:shop];
                     [dataArray addObject:dic];
                 }
             }
@@ -1101,18 +1104,34 @@
         WSSearchNoDataCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WSSearchNoDataCollectionViewCell" forIndexPath:indexPath];
         return cell;
     }
-    WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
-    cell.refreshPage = ^ () {
-        curPage = 0;
-        [self requestSelectGoods];
+//    WSPromotionCouponInStoreCollectionViewCell *cell = (WSPromotionCouponInStoreCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"WSPromotionCouponInStoreCollectionViewCell" forIndexPath:indexPath];
+//    cell.refreshPage = ^ () {
+//        curPage = 0;
+//        [self requestSelectGoods];
+//    };
+//    cell.downloadImageFinish = ^() {
+//        CHTCollectionViewWaterfallLayout *layout =
+//        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+//        [layout invalidateLayout];
+//    };
+//    NSMutableDictionary *dic = [dataArray objectAtIndex:row];
+//    [cell setModel:dic];
+    
+    HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"HomeCollectionViewCell" forIndexPath:indexPath];
+    cell.refreshPage = ^() {
+                curPage = 0;
+                [self requestSelectGoods];
     };
-    cell.downloadImageFinish = ^() {
-        CHTCollectionViewWaterfallLayout *layout =
-        (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
-        [layout invalidateLayout];
-    };
-    NSMutableDictionary *dic = [dataArray objectAtIndex:row];
-    [cell setModel:dic];
+
+        cell.tag = row;
+        cell.downloadImageFinish = ^() {
+            CHTCollectionViewWaterfallLayout *layout =
+            (CHTCollectionViewWaterfallLayout *)collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        };
+        NSDictionary *dic = [dataArray objectAtIndex:row];
+        [cell setModel:dic];
+
     return cell;
 
 }
@@ -1135,7 +1154,7 @@
     }
     if (image) {
         float height = image.size.height * width / image.size.width;
-        return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL - WS_PROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
+        return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL - WSPROMOTIONCOUPON_INSTORE_COLLECTION_VIEW_CELL_IMAGE_HEIGHT + height);
     }
 
     

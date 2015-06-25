@@ -108,10 +108,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WSRunTime);
     //距离值再过滤
     NSPredicate *distPredicate = [NSPredicate predicateWithFormat:@"accuracy<%f", IBEACON_DISTANCE_VALUE];
     beacons = [beacons filteredArrayUsingPredicate:distPredicate];
-    
+
     //距离值从小到大排序
     if([beacons count]>1){
-        NSLog(@"多个Beacon,将进行排序");
+      //  NSLog(@"多个Beacon,将进行排序");
         //返回一个按距离由近到远排序的数组
         beacons=[beacons sortedArrayUsingComparator:
                  ^NSComparisonResult(CLBeacon* obj1, CLBeacon* obj2){
@@ -131,7 +131,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WSRunTime);
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region{
     if([beacons count] > 0) {
-        NSLog(@"当前区域内有%d个beacon", (int)[beacons count]);
+       // NSLog(@"当前区域内有%d个beacon", (int)[beacons count]);
         
         if ([beacons count] > 0) {
             [self dealScanBeacon:beacons];
@@ -150,7 +150,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WSRunTime);
             } else if ([beacon.minor integerValue] == 6) { //B
             
             }
+        } else {
+            self.validBeacon = nil;
         }
+    } else {
+        self.validBeacon = nil;
     }
 }
 
@@ -221,15 +225,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WSRunTime);
                 double validDistanceDouble = [validDistance doubleValue];
                 // 在有效距离内则发送本地通知
                 if (distance <= validDistanceDouble) {
-                    NSString *title = [beaconInfoDic objectForKey:@"beaconInfoDic"];
-                    title = title.length > 0 ? title : @"精明购";
-                    UILocalNotification *notification = [[UILocalNotification alloc] init];
-                    notification.alertBody = title;
-                    notification.userInfo = @{IBEACON_INFO: beaconInfoDic};
-                    notification.soundName =UILocalNotificationDefaultSoundName;
-                    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-                    
-                    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+                    BOOL isPush = [[USER_DEFAULT objectForKey:PUSH_NOTIFICATION] boolValue];
+                    if (isPush) {
+//                        NSString *timeFormat = @"yyyy-MM-dd HH:mm:ss";
+//                        NSString *nowTime = [WSCalendarUtil getDateStrWithDate:[NSDate date] format:timeFormat];
+                        
+                        NSString *title = [beaconInfoDic objectForKey:@"beaconInfoDic"];
+                        title = title.length > 0 ? title : @"精明购";
+                        UILocalNotification *notification = [[UILocalNotification alloc] init];
+                        notification.alertBody = title;
+                        notification.userInfo = @{IBEACON_INFO: beaconInfoDic};
+                        notification.soundName =UILocalNotificationDefaultSoundName;
+                        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+                        
+                        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
+                    }
                 }
             });
 
