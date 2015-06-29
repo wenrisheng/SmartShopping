@@ -34,7 +34,7 @@
 
 + (NSString *)getUserPeasNum
 {
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    WSUser *user = [WSProjUtil getCurUser];
     if (user) {
         if (user.beanNumber.length <= 0) {
             return @"0";

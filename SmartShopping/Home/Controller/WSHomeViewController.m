@@ -123,10 +123,6 @@ typedef NS_ENUM(NSInteger, ShopType)
     layout.minimumColumnSpacing = COLLECTION_VIEW_GAP;
     layout.minimumInteritemSpacing = COLLECTION_VIEW_GAP;
    _supermarketCollectionView.collectionViewLayout = layout;
-    
-    // 同步用户信息与精明豆
-    [self synchronUserOrTourist];
-    
 }
 
 
@@ -177,9 +173,13 @@ self.city = @"广州";
 
     
     // 请求消息列表
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
-        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": user._id} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+    NSString *userId = [WSProjUtil getCurUserId];
+    if (userId) {
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        [param setValue:userId forKey:@"userId"];
+        [param setValue:@"1" forKey:@"pages"];
+        [param setValue:WSPAGE_SIZE forKey:@"pageSize"];
+        [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:param tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
                 NSDictionary *data = [result objectForKey:@"data"];
@@ -194,6 +194,8 @@ self.city = @"广州";
         } failCallBack:^(id error) {
             
         } showMessage:NO];
+    } else {
+         _navBarManagerView.navigationBarButSearchButView.rightLabel.hidden = YES;
     }
     
     if (headerView) {
@@ -210,6 +212,13 @@ self.city = @"广州";
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - 更新用户精明豆通知
+- (void)updateUserBeanNumber:(NSNotification *)notification
+{
+    [super updateUserBeanNumber:notification];
+    [self refrushPagePeaNum];
 }
 
 #pragma mark - 用户位置更新
@@ -245,6 +254,7 @@ self.city = @"广州";
     }
 }
 
+#pragma mark - 请求游客
 - (void)requestTourist
 {
     NSData *touristData = [USER_DEFAULT objectForKey:TOURIST_KEY];
@@ -284,42 +294,13 @@ self.city = @"广州";
                 // 本地游客信息
  
                 [WSProjUtil archiverUser:tourist key:TOURIST_KEY];
+                
+                WSUser *testTourst = [WSProjUtil unarchiverUserWithKey:TOURIST_KEY];
+                
             }
         } failCallBack:^(id error) {
             
         } showMessage:NO];
-    }
-}
-
-- (void)synchronUserOrTourist
-{
-    // 自动登录时同步用户数据
-    WSUser *beforeUser = [WSProjUtil unarchiverUserWithKey:USER_KEY];
-    if (beforeUser) {
-        [WSProjUtil synchronOpenAppBeanNumWithUser:beforeUser callBack:^{
-             [self refrushPagePeaNum];
-        }];
-        
-        [WSProjUtil synchronFirstUsedBeanNumWithUser:beforeUser callBack:^{
-             [self refrushPagePeaNum];
-        }];
-        [WSRunTime sharedWSRunTime].user = beforeUser;
-    } else {
-        WSUser *beforeTourist = [WSProjUtil unarchiverUserWithKey:USER_KEY];
-        if (beforeTourist) {
-            [WSRunTime sharedWSRunTime].user = beforeTourist;
-            
-            // 首次打开app
-            [WSProjUtil synchronFirstUsedBeanNumWithUser:beforeTourist callBack:^{
-                [self refrushPagePeaNum];
-            }];
-            
-            // 每天打开app
-            [WSProjUtil synchronOpenAppBeanNumWithUser:beforeTourist callBack:^{
-                [_supermarketCollectionView reloadData];
-            }];
-            [WSRunTime sharedWSRunTime].user = beforeTourist;
-        }
     }
 }
 
@@ -747,7 +728,6 @@ self.city = @"广州";
 {
     // 1. 在店内跳到 WSStoreDetailViewController
     // 2. 不在店内跳到 WSScanInStoreViewController
-
     CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
     
     [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
@@ -776,10 +756,10 @@ self.city = @"广州";
 #pragma mark 邀请好友
 - (void)invateFriendAction:(id)sender
 {
-    [WSUserUtil actionAfterLogin:^{
+   // [WSUserUtil actionAfterLogin:^{
         WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
         [self.navigationController pushViewController:inviateFriendVC animated:YES];
-    }];
+   // }];
 }
 
 - (void)toScanNoInStore

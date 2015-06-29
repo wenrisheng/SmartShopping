@@ -15,6 +15,7 @@
 @interface WSInfoListViewController () <WSNavigationBarButLabelViewDelegate>
 {
     UIAlertView *alertView;
+    int curPage;
 }
 @property (strong, nonatomic) NSDictionary *delectDic;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -30,29 +31,31 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    curPage = 0;
     self.sortArray = [[NSMutableArray alloc] init];
     _navigationBarManagerView.navigationBarButLabelView.delegate = self;
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"消息列表";
     
     [_contentTableView addLegendHeaderWithRefreshingBlock:^{
+        curPage = 0;
         [self requestInfo];
     }];
-    if (_dataArray.count != 0) {
-        [_sortArray removeAllObjects];
-        [self.sortArray addObjectsFromArray:_dataArray];
-    } else {
-         [self requestInfo];
-    }
-    
+    [_contentTableView addLegendFooterWithRefreshingBlock:^{
+        [self requestInfo];
+    }];
+    [self requestInfo];
+
 }
 
 - (void)requestInfo
 {
-     WSUser *user = [WSRunTime sharedWSRunTime].user;
-    NSString *userid = user._id;
+    NSString *userid = [WSProjUtil getCurUserId];
     userid = userid.length > 0 ? userid : @"";
-    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:@{@"userId": userid} tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:userid forKey:@"userId"];
+    [param setValue:[NSString stringWithFormat:@"%d", curPage + 1] forKey:@"pages"];
+    [param setValue:WSPAGE_SIZE forKey:@"pageSize"];
+    [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeUserMessage] data:param tag:WSInterfaceTypeUserMessage sucCallBack:^(id result) {
         [_contentTableView endHeaderAndFooterRefresh];
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
@@ -64,8 +67,8 @@
             
             NSMutableArray *isids = [NSMutableArray array];
             for (NSDictionary *dic in messages) {
-                NSString *isNewMessage = [dic stringForKey:@"isNewMessage"];
-                if ([isNewMessage isEqualToString:@"Y"]) {
+                NSString *isNewMessage = [dic stringForKey:@"isRead"];
+                if ([isNewMessage isEqualToString:@"1"]) {
                     [isids addObject:[dic stringForKey:@"id"]];
                 }
             }
@@ -84,6 +87,10 @@
                     
                 } showMessage:NO];
             }
+            if (curPage == 0) {
+                [_sortArray removeAllObjects];
+            }
+            curPage ++;
             [_sortArray addObjectsFromArray:messages];
             [_contentTableView reloadData];
         }

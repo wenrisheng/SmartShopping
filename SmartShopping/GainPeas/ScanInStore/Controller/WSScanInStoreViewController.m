@@ -83,9 +83,6 @@
     [self setLocationCity:locationDic];
     
     [self requestGetAdsPhoto];
-    
-    // 请求店内扫描产品
-    [self requestInShopGoodsScanList];
 
 }
 
@@ -381,8 +378,9 @@
             BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
             // 在店内
             if (isInStore) {
-                [WSUserUtil actionAfterLogin:^{
-                    
+                NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                NSString *curShopId = [dic stringForKey:@"shopId"];
+                if ([_shopid isEqualToString:curShopId]) {
                     WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
                     NSString *goodsId = [dic stringForKey:@"goodsId"];
                     scanProductVC.scanSucCallBack = ^(NSDictionary *dic) {
@@ -395,11 +393,13 @@
                     scanProductVC.shopid = _shopid;
                     scanProductVC.goodsId = goodsId;
                     [self.navigationController pushViewController:scanProductVC animated:YES];
-                }];
-                
+                } else {
+                    [SVProgressHUD showErrorWithStatus:@"不在店内，无法进行扫描!" duration:TOAST_VIEW_TIME];
+                }
                 // 不在店内
             } else {
-                [SVProgressHUD showErrorWithStatus:@"亲，您当前不在店内！" duration:TOAST_VIEW_TIME];
+                [SVProgressHUD showErrorWithStatus:@"不在店内，无法进行扫描!" duration:TOAST_VIEW_TIME];
+
             }
             
         }];

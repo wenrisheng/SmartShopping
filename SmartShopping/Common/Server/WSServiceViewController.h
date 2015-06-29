@@ -15,4 +15,7 @@
 // 初始化服务
 - (void)initService;
 
+// 更新用户精明豆通知
+- (void)updateUserBeanNumber:(NSNotification *)notification;
+
 @end

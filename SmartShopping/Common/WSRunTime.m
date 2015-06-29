@@ -234,9 +234,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WSRunTime);
                         title = title.length > 0 ? title : @"精明购";
                         UILocalNotification *notification = [[UILocalNotification alloc] init];
                         notification.alertBody = title;
-                        notification.userInfo = @{IBEACON_INFO: beaconInfoDic};
+                        notification.userInfo = @{IBEACON_INFO: beaconInfoDic, @"time": [NSDate date]};
                         notification.soundName =UILocalNotificationDefaultSoundName;
-                        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+                     //   [[UIApplication sharedApplication] cancelAllLocalNotifications];
                         
                         [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 

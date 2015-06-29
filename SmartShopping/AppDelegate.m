@@ -24,11 +24,13 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     self.window.backgroundColor = [UIColor clearColor];
     
+    // 默认开始启动时接受推送通知
     NSNumber *pushNotification = [USER_DEFAULT objectForKey:PUSH_NOTIFICATION];
     if (!pushNotification) {
         [USER_DEFAULT setValue:[NSNumber numberWithBool:YES] forKey:PUSH_NOTIFICATION];
@@ -42,11 +44,11 @@
         [[UIApplication sharedApplication]registerUserNotificationSettings:setting];
     }
     
-    // 同步用户信息与精明豆
-   // [self synchronUserDataAndPeaNum];
-    
     // 同步精明豆获取规则接口
     [self synchronBeannumberByKeyWord];
+    
+    // 同步用户信息与精明豆
+    [self initUserInfo];
     
     // 百度地图
     [self initBMK];
@@ -76,7 +78,15 @@
     // 开启ibeacon扫描
     [[WSRunTime sharedWSRunTime] startLocation];
     
+    // 取消第三方授权
     [WSShareSDKUtil cancelAuth];
+    
+    // 由本地通知启动app
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        NSDictionary *userIndo = [localNotification userInfo];
+        [self dealLocalNotification:userIndo];
+    }
     
     return YES;
 }
@@ -90,8 +100,8 @@
             NSDictionary *data = [result objectForKey:@"data"];
             NSString *beanNumber = [data stringForKey:@"beanNumber"];
             [USER_DEFAULT setObject:beanNumber forKey:FIRST_USED];
-            WSUser *user = [WSRunTime sharedWSRunTime].user;
-            [WSProjUtil synchronOpenAppBeanNumWithUser:user callBack:^{
+            WSUser *user = [WSProjUtil getCurUser];
+            [WSProjUtil synchronFirstUsedBeanNumWithUser:user callBack:^{
               
             }];
 
@@ -107,7 +117,7 @@
             NSDictionary *data = [result objectForKey:@"data"];
             NSString *beanNumber = [data stringForKey:@"beanNumber"];
             [USER_DEFAULT setObject:beanNumber forKey:OPEN_APP];
-             WSUser *user = [WSRunTime sharedWSRunTime].user;
+             WSUser *user = [WSProjUtil getCurUser];
             // 每天打开app
             [WSProjUtil synchronOpenAppBeanNumWithUser:user callBack:^{
                
@@ -117,6 +127,20 @@
     } failCallBack:^(id error) {
         
     } showMessage:NO];
+}
+
+- (void)initUserInfo
+{
+    WSUser *user = [WSProjUtil getCurUser];
+    
+    [WSProjUtil synchronOpenAppBeanNumWithUser:user callBack:^{
+      //  [self refrushPagePeaNum];
+    }];
+    
+    [WSProjUtil synchronFirstUsedBeanNumWithUser:user callBack:^{
+        //[self refrushPagePeaNum];
+    }];
+   [WSRunTime sharedWSRunTime].user = user;
 }
 
 - (void)synchronUserDataAndPeaNum
@@ -308,17 +332,22 @@
     self.window.rootViewController = _nav;
 }
 
-
+- (void)dealLocalNotification:(NSDictionary *)beaconDic
+{
+    NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
+    NSString *thirdlink = [beaconInfoDic objectForKey:@"thirdlink"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
+}
 
 #pragma mark -
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     if (notification != nil) {
-        if([[NSDate date] timeIntervalSinceDate:notification.fireDate]>0.5){
+        NSDictionary *dic = [notification userInfo];
+        NSDate *notificationDate = [dic objectForKey:@"time"];
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:notificationDate];
+        if(interval > 1){
             //用户点击了，
-            NSDictionary *beaconDic = [notification userInfo];
-            NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
-            NSString *thirdlink = [beaconInfoDic objectForKey:@"thirdlink"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
+            [self dealLocalNotification:dic];
         }else{
             //时间到了触发的
         }

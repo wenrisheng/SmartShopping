@@ -128,41 +128,41 @@
 
             
 
-            UIView *popView = [[UIView alloc]initWithFrame:CGRectMake(100, 0, 100, 60)];
-            [popView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithWhite:0.867 alpha:1.000] cornerRadius:5];
-            popView.backgroundColor = [UIColor whiteColor];
-            CGRect bounds = popView.bounds;
-            //
-            UILabel *driverName = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, bounds.size.width - 2 * 5, TITLE_VIEW_HEIGT)];
-            driverName.text = _locTitle;
-            driverName.backgroundColor = [UIColor clearColor];
-            driverName.font = [UIFont systemFontOfSize:14];
-            driverName.textColor = [UIColor colorWithWhite:0.406 alpha:1.000];
-            [popView addSubview:driverName];
-//            CGSize size = [driverName boundingRectWithSize:CGSizeMake(0, TITLE_VIEW_HEIGT)];
-//            CGRect rect = driverName.frame;
-//            rect.size.width = size.width;
-//            driverName.frame = rect;
+//            UIView *popView = [[UIView alloc]initWithFrame:CGRectMake(100, 0, 100, 60)];
+//            [popView setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithWhite:0.867 alpha:1.000] cornerRadius:5];
+//            popView.backgroundColor = [UIColor whiteColor];
+//            CGRect bounds = popView.bounds;
+//            //
+//            UILabel *driverName = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, bounds.size.width - 2 * 5, TITLE_VIEW_HEIGT)];
+//            driverName.text = _locTitle;
+//            driverName.backgroundColor = [UIColor clearColor];
+//            driverName.font = [UIFont systemFontOfSize:14];
+//            driverName.textColor = [UIColor colorWithWhite:0.406 alpha:1.000];
+//            [popView addSubview:driverName];
+//            
+//            UILabel *carName = [[UILabel alloc]initWithFrame:CGRectMake(5, 15, bounds.size.width - 2 * 5, bounds.size.height - TITLE_VIEW_HEIGT)];
+//            carName.text = _address;
+//            carName.numberOfLines = 0;
+//            carName.backgroundColor = [UIColor clearColor];
+//            carName.font = [UIFont systemFontOfSize:10];
+//            carName.textColor = [UIColor colorWithWhite:0.562 alpha:1.000];
+//            [popView addSubview:carName];
             
-            UILabel *carName = [[UILabel alloc]initWithFrame:CGRectMake(5, 15, bounds.size.width - 2 * 5, bounds.size.height - TITLE_VIEW_HEIGT)];
-            carName.text = _address;
-            carName.numberOfLines = 0;
-            carName.backgroundColor = [UIColor clearColor];
-            carName.font = [UIFont systemFontOfSize:10];
-            carName.textColor = [UIColor colorWithWhite:0.562 alpha:1.000];
-            [popView addSubview:carName];
-//            CGSize size1 = [carName boundingRectWithSize:CGSizeMake(size.width, 0)];
-//            CGRect rect1= driverName.frame;
-//            rect1.size.height = size1.height;
-//            rect1.origin.y = size.height;
-//            driverName.frame = rect1;
+            PaopaoView *paopaoView = GET_XIB_FIRST_OBJECT(@"PaopaoView");
+            paopaoView.titleLabel.text = _locTitle;
+            paopaoView.addressLabel.text = _address;
+            CGSize size1 = [paopaoView.titleLabel boundingRectWithSize:CGSizeMake(CGRectGetWidth(paopaoView.titleLabel.bounds), 0)];
+            if (size1.height < 20) {
+                size1.height = 20;
+            }
+            CGSize size2 = [paopaoView.addressLabel boundingRectWithSize:CGSizeMake(CGRectGetWidth(paopaoView.addressLabel.bounds), 0)];
+            paopaoView.titleLabelHeightCon.constant = size1.height;
+            CGFloat height = size1.height + size2.height;
+            height += 20;
+            paopaoView.frame = CGRectMake(0, 0, CGRectGetWidth(paopaoView.bounds), height);
             
-//            CGRect rect3 = popView.frame;
-//            rect3.size.width = size.width;
-//            rect3.size.height = rect.size.height + rect1.size.height;
-//            popView.frame = rect3;
             
-            BMKActionPaopaoView *actionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:popView];
+            BMKActionPaopaoView *actionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:paopaoView];
            // actionPaopaoView.frame = CGRectMake(0, 0, 100, 60);
             annotationView.paopaoView = nil;
             annotationView.paopaoView = actionPaopaoView;
@@ -185,8 +185,14 @@
 //    }
 //    annotationView.annotationImages = images;
 //    return annotationView;
-    
 }
+
+- (void)mapView:(BMKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    BMKAnnotationView *annotationView = [views objectAtIndex:0];
+    [mapView selectAnnotation:annotationView.annotation animated:YES];
+}
+
 - (void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view
 {
     

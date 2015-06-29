@@ -76,11 +76,12 @@
         [_contentTableview endHeaderAndFooterRefresh];
         return;
     }
+    _giftTag = _giftTag.length > 0 ? _giftTag : @"";
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:@"" forKey:@"beforeBean"];
     [params setValue:@"" forKey:@"afterBean"];
     [params setValue:@"" forKey:@"categoryId"];
-    [params setValue:@"" forKey:@"giftTag"];
+    [params setValue:_giftTag forKey:@"giftTag"];
     [params setValue:_typeName forKey:@"giftTagName"];
     [params setValue:_city forKey:@"cityName"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSearchGift] data:params tag:WSInterfaceTypeSearchGift sucCallBack:^(id result) {

@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
 
 + (UINavigationController *)getRootNav;
 
-+ (void)showGainBeanNumWithBeanNum:(NSString *)beanNumber callback:(void (^)(void))callback;
++ (void)showGainBeanNumWithBeanNum:(NSString *)beanNumber inView:(UIView *)view callback:(void (^)(void))callback;
 
 /**
  *  日期转换
@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
  *  @param beanNumber 精明豆增量
  *  @param callback   回调
  */
-+ (void)synchronBeanNumWithUser:(WSUser *)user beanNumber:(NSString *)beanNumber callBack:(void (^)())callback;
++ (void)synchronBeanNumWithUser:(WSUser *)user offsetBeanNumber:(NSString *)beanNumber callBack:(void (^)())callback;
 
 /**
  *  同步每天打开获取精明豆
@@ -84,8 +84,6 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
  *  @param callback
  */
 + (void)synchronFirstUsedBeanNumWithUser:(WSUser *)user callBack:(void (^)())callback;
-
-+ (void)requestTourist;
 
 + (WSUser *)convertDicToUser:(NSDictionary *)dic;
 
@@ -104,5 +102,9 @@ typedef NS_ENUM(NSInteger, IsInStoreType) {
  *  @return
  */
 + (id)unarchiverUserWithKey:(NSString *)key;
+
++ (WSUser *)getCurUser;
+
++ (NSString *)getCurUserId;
 
 @end

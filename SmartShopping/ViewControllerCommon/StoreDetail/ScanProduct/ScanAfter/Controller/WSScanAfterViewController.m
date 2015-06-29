@@ -80,12 +80,12 @@
     } else {
         _bottomView.hidden = YES;
         [timer invalidate];
-        WSUser *user = [WSRunTime sharedWSRunTime].user;
-        NSString *beanNumber = user.beanNumber;
-        int allBea = [beanNumber intValue] + [[_dic stringForKey:@"beanNumber"] intValue];
-        user.beanNumber = [NSString stringWithFormat:@"%d", allBea];
+
         _navigationgBarManagerView.navigationBarButLabelView.leftBut.hidden = NO;
-        [WSProjUtil showGainBeanNumWithBeanNum:[_dic stringForKey:@"beanNumber"] callback:^{
+        [WSProjUtil synchronBeanNumWithUser:[WSProjUtil getCurUser] offsetBeanNumber:[_dic stringForKey:@"beanNumber"] callBack:^{
+            
+        }];
+        [WSProjUtil showGainBeanNumWithBeanNum:[_dic stringForKey:@"beanNumber"] inView:self.view callback:^{
             //[self.navigationController popViewControllerAnimated:YES];
         }];
     }

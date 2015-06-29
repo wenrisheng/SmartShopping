@@ -1611,12 +1611,21 @@ typedef NS_ENUM(NSInteger, SearchType) {
                 view.distanceLabel.text = resultDicsance;
                 
                 NSString *isSign = [_shop stringForKey:@"isSign"];
-                
-                // 可以签到
-                if ([isSign isEqualToString:@"1"]) {
+                NSString *userIsSign = [_shop stringForKey:@"userIsSign"];
+                if (![isSign isEqualToString:@"1"]) {
+                    view.signupImageView.hidden = YES;
+                } else if([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
+                    view.signupImageView.hidden = NO;
                     view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-06"];
                 } else {
+                    view.signupImageView.hidden = NO;
                     view.signupImageView.image = [UIImage imageNamed:@"gainpeas_icon-04"];
+                }
+                // 可以签到
+                if ([isSign isEqualToString:@"1"]) {
+                    
+                } else {
+                    
                 }
                 return view;
             }

@@ -260,6 +260,10 @@
 
 - (void)doSearch
 {
+    if (_searchManagerView.searchTypeView.centerTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入搜索关键字！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
     if (_searchname.length > 0) {
         NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_STORE_HISTORY_KEY];

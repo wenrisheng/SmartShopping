@@ -14,6 +14,7 @@
 #import "CollectSucView.h"
 #import "WSNoInStoreViewController.h"
 #import "WSInStoreNoSignViewController.h"
+#import "WSInStoreNoSignScopeViewController.h"
 
 @implementation WSPromotionCouponOutStoreCollectionViewCell
 @synthesize dic;
@@ -30,9 +31,13 @@
     NSString *isSign  = [dic stringForKey:@"isSign"];
     NSString *userIsSign = [dic stringForKey:@"userIsSign"];
     NSString *signImage = nil;
-    if ([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
+    if (![isSign isEqualToString:@"1"]) {
+        _signupBut.hidden = YES;
+    } else if ([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
+         _signupBut.hidden = NO;
         signImage = @"gainpeas_icon-06";
     } else {
+         _signupBut.hidden = NO;
         signImage = @"gainpeas_icon-04";
     }
     [_signupBut setBackgroundImage:[UIImage imageNamed:signImage] forState:UIControlStateNormal];
@@ -160,42 +165,47 @@
 
 - (IBAction)signupButAction:(id)sender
 {
-    // 跳到3.3.1 不在签到范围内
-//    WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
-//    [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
     NSString *isSign  = [dic stringForKey:@"isSign"];
     NSString *userIsSign = [dic stringForKey:@"userIsSign"];
+    // 可以签到
     if ([isSign isEqualToString:@"1"] && [userIsSign isEqualToString:@"N"]) {
         CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
-        
         [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
             BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
             // 在店内
             if (isInStore) {
                 NSDictionary *shop = [result objectForKey:IS_IN_SHOP_DATA];
-                NSString *isSign = [shop stringForKey:@"isSign"];
-                //  没签到
-                if ([isSign isEqualToString:@"Y"]) {
-                    WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
-                    inStoreNoSignVC.shop = shop;
-                    [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                NSString *curShopId = [shop stringForKey:@"shopId"];
+                NSString *dataShopId = [dic stringForKey:@"shopId"];
+                
+                // 位置所在店跟点击商店是同一个
+                if ([curShopId isEqualToString:dataShopId]) {
+                    NSString *isSign = [shop stringForKey:@"isSign"];
+                    //  没签到
+                    if ([isSign isEqualToString:@"Y"]) {
+                        WSInStoreNoSignViewController *inStoreNoSignVC = [[WSInStoreNoSignViewController alloc] init];
+                        inStoreNoSignVC.shop = shop;
+                        [self.viewController.navigationController pushViewController:inStoreNoSignVC animated:YES];
+                    } else {
+                        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
+                        storeDetailVC.shop = dic;
+                        [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+                    }
+                // 位置所在店跟点击商店不是同一个
                 } else {
-                    WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                    storeDetailVC.shop = dic;
-                    [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+                    WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
+                    [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
                 }
-                // 不在店内
+            // 不在店内
             } else {
-                WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-                storeDetailVC.shop = dic;
-                [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+                WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
+                [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
             }
         }];
-
+    // 不可以签到
     } else {
-        WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
-        storeDetailVC.shop = dic;
-        [self.viewController.navigationController pushViewController:storeDetailVC animated:YES];
+        WSInStoreNoSignScopeViewController *inStoreNoSignScopeVC = [[WSInStoreNoSignScopeViewController alloc ] init];
+        [self.viewController.navigationController pushViewController:inStoreNoSignScopeVC animated:YES];
     }
     
 //    // 可以签到

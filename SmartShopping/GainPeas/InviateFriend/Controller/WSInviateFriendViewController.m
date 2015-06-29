@@ -22,12 +22,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *inviateCodeLabel;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet ACImageScrollManagerView *adImageScrollManagerView;
+@property (weak, nonatomic) IBOutlet UILabel *inviteMsgLabel;
+@property (strong, nonatomic) NSString *shareUrl;
 
 - (IBAction)weixinButAction:(id)sender;
 - (IBAction)pengyouquanButAction:(id)sender;
 - (IBAction)weiboButAction:(id)sender;
 - (IBAction)qqkongjianButAction:(id)sender;
 - (IBAction)qqButAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
 
 @end
 
@@ -38,8 +41,19 @@
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"邀请好友";
     slideImageArray = [[NSMutableArray alloc] init];
-    NSString *inviateCode = [WSRunTime sharedWSRunTime].user.inviteCode;
-    _inviateCodeLabel.text = inviateCode;
+    WSUser *user = [WSProjUtil getCurUser];
+    NSString *userType = user.userType;
+    // 已登陆
+    if (![userType isEqualToString:@"1"]) {
+        NSString *inviateCode = user.inviteCode;
+        _inviateCodeLabel.text = inviateCode;
+    } else {
+        _inviteMsgLabel.hidden = YES;
+        _inviateCodeLabel.hidden = YES;
+    }
+    self.shareUrl = [NSString stringWithFormat:@"%@/views/share.jsp", BASE_URL];
+    
+   _bottomImageView.image = [QRCodeGenerator qrImageForString:_shareUrl imageSize:_bottomImageView.bounds.size.width];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,16 +174,24 @@
 
 - (void)inviateFriendWithType:(ShareType)shareType
 {
-    NSString *title = @"亲，快来下载精明购";
-    NSString *content = [NSString stringWithFormat:@"好友邀请码：%@", [WSRunTime sharedWSRunTime].user.inviteCode];
-    NSString *appURL = APP_URL;
+    NSString *title = @"亲，快来下载精明购吧";
+    WSUser *user = [WSProjUtil getCurUser];
+    NSString *userType = user.userType;
+    NSString *content;
+    // 已登陆
+    if ([userType isEqualToString:@"1"]) {
+       content = [NSString stringWithFormat:@"好友邀请码：%@", user.inviteCode];
+    } else {
+        content = @"";
+    }
+   
     //创建分享内容
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"];
     id<ISSContent> publishContent = [ShareSDK content:content
                                        defaultContent:@""
                                                 image:[ShareSDK imageWithPath:imagePath]
                                                 title:title
-                                                  url:appURL
+                                                  url:_shareUrl
                                           description:nil
                                             mediaType:SSPublishContentMediaTypeNews];
     

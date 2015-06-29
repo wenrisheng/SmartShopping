@@ -135,18 +135,33 @@
 
                 // 扫描
                 if (_hasScan) {
-                    [WSUserUtil actionAfterLogin:^{
-                        WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
-                        scanProductVC.scanSucCallBack = ^(NSDictionary *dic) {
-                            WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
-                            scanAfterVC.goodsId = [_goodsDetails stringForKey:@"id"];
-                            scanAfterVC.shopid = _shopId;
-                            scanAfterVC.dic = dic;
-                            [self.navigationController pushViewController:scanAfterVC animated:YES];
-                        };
-                        scanProductVC.shopid = _shopId;
-                        scanProductVC.goodsId = [_goodsDetails stringForKey:@"id"];
-                        [self.navigationController pushViewController:scanProductVC animated:YES];
+                    CLBeacon *beacon = [WSRunTime sharedWSRunTime].validBeacon;
+                    
+                    [WSProjUtil isInStoreWithIBeacon:beacon callback:^(id result) {
+                        BOOL  isInStore = [[result objectForKey:IS_IN_SHOP_FLAG] boolValue];
+                        // 在店内
+                        if (isInStore) {
+                            NSDictionary *dic = [result objectForKey:IS_IN_SHOP_DATA];
+                            NSString *curShopId = [dic stringForKey:@"shopId"];
+                            if ([_shopId isEqualToString:curShopId]) {
+                                WSScanProductViewController *scanProductVC = [[WSScanProductViewController alloc] init];
+                                scanProductVC.scanSucCallBack = ^(NSDictionary *dic) {
+                                    WSScanAfterViewController *scanAfterVC = [[WSScanAfterViewController alloc] init];
+                                    scanAfterVC.goodsId = [_goodsDetails stringForKey:@"id"];
+                                    scanAfterVC.shopid = _shopId;
+                                    scanAfterVC.dic = dic;
+                                    [self.navigationController pushViewController:scanAfterVC animated:YES];
+                                };
+                                scanProductVC.shopid = _shopId;
+                                scanProductVC.goodsId = [_goodsDetails stringForKey:@"id"];
+                                [self.navigationController pushViewController:scanProductVC animated:YES];
+                            } else {
+                                [SVProgressHUD showErrorWithStatus:@"不在店内，无法进行扫描!" duration:TOAST_VIEW_TIME];
+                            }
+                        // 不在店内
+                        } else {
+                            [SVProgressHUD showErrorWithStatus:@"不在店内，无法进行扫描!" duration:TOAST_VIEW_TIME];
+                        }
                     }];
                 // 分享
                 } else {

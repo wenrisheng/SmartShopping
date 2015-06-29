@@ -184,7 +184,7 @@
         [SVProgressHUD showErrorWithStatus:@"定位失败！" duration:TOAST_VIEW_TIME];
         return;
     }
-    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"2"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
+    [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeGetAdsPhoto] data:@{@"cityName": _city, @"moduleid" : @"3"} tag:WSInterfaceTypeGetAdsPhoto sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
             [slideImageArray removeAllObjects];

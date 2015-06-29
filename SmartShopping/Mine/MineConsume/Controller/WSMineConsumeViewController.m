@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     curPage = 0;
-    _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的消费卷";
+    _navigationBarManagerView.navigationBarButLabelView.label.text = @"我的消费券";
   //  _contentTableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     dataArray = [[NSMutableArray alloc] init];
     

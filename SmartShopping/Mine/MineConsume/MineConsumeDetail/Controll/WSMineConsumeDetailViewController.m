@@ -54,7 +54,7 @@
     _valueLabel.textColor = color;
     
     _titleLabel.text = [_dic objectForKey:@"shopName"];
-    _addressLabel.text = [NSString stringWithFormat:@"地址：%@", [_dic objectForKey:@"address"]];
+    _addressLabel.text = [NSString stringWithFormat:@"地址：%@", [_dic stringForKey:@"address"]];
     _numLabel.text = [_dic stringForKey:@"giftNumber"];
     
    _scanImageView.image = [QRCodeGenerator qrImageForString:[_dic stringForKey:@"giftNumber"] imageSize:_scanImageView.bounds.size.width];

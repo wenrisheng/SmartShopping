@@ -82,6 +82,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - 更新用户精明豆通知
+- (void)updateUserBeanNumber:(NSNotification *)notification
+{
+    [super updateUserBeanNumber:notification];
+    [self setBeanNumber];
+}
+
 #pragma mark - 用户位置更新
 - (void)locationUpdate:(NSNotification *)notification
 {
@@ -106,9 +113,15 @@
     for (UIView *view in array) {
         [view setBorderCornerWithBorderWidth:1 borderColor:[UIColor colorWithRed:0.765 green:0.769 blue:0.773 alpha:1.000] cornerRadius:5];
     }
+    [self setBeanNumber];
+
+}
+
+- (void)setBeanNumber
+{
     // 设置用户精明豆数量
     NSString *peaNum = [WSUserUtil getUserPeasNum];
-   
+    
     NSString *str = @"个精明豆";
     NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", peaNum, str]];
     [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.890 green:0.380 blue:0.090 alpha:1.000] range:NSMakeRange(0, peaNum.length)];
@@ -116,7 +129,6 @@
     [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(0, peaNum.length)];
     [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(peaNum.length, str.length)];
     _peasLabel.attributedText = tempStr;
-
 }
 
 #pragma mark 请求礼物
@@ -231,7 +243,6 @@
             [self.navigationController pushViewController:noInstoreVC animated:YES];
         }
     }];
-
 }
 
 #pragma mark 扫描按钮事件
@@ -262,15 +273,14 @@
             [self.navigationController pushViewController:scanNoInStoreVC animated:YES];
         }
     }];
+
 }
 
 #pragma mark 邀请好友按钮事件
 - (IBAction)inviateFriendButAction:(id)sender
 {
-    [WSUserUtil actionAfterLogin:^{
-        WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
-        [self.navigationController pushViewController:inviateFriendVC animated:YES];
-    }];
+    WSInviateFriendViewController *inviateFriendVC = [[WSInviateFriendViewController alloc] init];
+    [self.navigationController pushViewController:inviateFriendVC animated:YES];
 }
 
 #pragma mark - 到店签到 不在店内

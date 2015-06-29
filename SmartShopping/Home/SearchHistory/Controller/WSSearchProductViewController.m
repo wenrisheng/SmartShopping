@@ -18,6 +18,7 @@
 #import "WSPromotionCouponInStoreCollectionViewCell.h"
 #import "WSHomeViewController.h"
 #import "HomeCollectionViewCell.h"
+#import "WSProductDetailViewController.h"
 
 #define SEARCH_PRODUCT_HISTORY_KEY        @"SEARCH_PRODUCT_HISTORY_KEY"    // 商品搜索历史纪录
 #define HISTORY_COUNT                     10
@@ -279,6 +280,10 @@
 
 - (void)doSearch
 {
+    if (_searchManagerView.searchTypeView.centerTextField.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入搜索关键字！" duration:TOAST_VIEW_TIME];
+        return;
+    }
     [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
     if (_searchname.length > 0) {
         NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
@@ -1164,6 +1169,25 @@
         return CGSizeMake(width, WSPromotionCouponInStoreCollectionViewCell_HEIGHT_SMALL);
     }
 
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    WSProductDetailViewController *productDetailVC = [[WSProductDetailViewController alloc] init];
+    NSInteger row = indexPath.row;
+    NSMutableDictionary *dic = [dataArray objectAtIndex:row];
+    NSString *goodsId = [dic stringForKey:@"goodsId"];
+    productDetailVC.goodsId = goodsId;
+    productDetailVC.shopId = [dic stringForKey:@"shopId"];
+    productDetailVC.CollectCallBack = ^(NSDictionary *resultDic) {
+        NSString *isCollect = [resultDic stringForKey:@"isCollect"];
+        [dic setValue:isCollect forKey:@"isCollect"];
+        [collectionView reloadData];
+    };
+    [self.navigationController pushViewController:productDetailVC animated:YES];
+    
+    
 }
 
 @end

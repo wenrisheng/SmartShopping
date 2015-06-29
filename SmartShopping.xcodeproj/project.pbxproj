@@ -60,7 +60,6 @@
 		7C4206381AF5FECC005F9F44 /* WSScanAfterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */; };
 		7C42063B1AF60F71005F9F44 /* scan.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7C42063A1AF60F71005F9F44 /* scan.wav */; };
 		7C42063D1AF60F7E005F9F44 /* glass.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7C42063C1AF60F7E005F9F44 /* glass.wav */; };
-		7C4206401AF61094005F9F44 /* WSAudioUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C42063F1AF61094005F9F44 /* WSAudioUtil.m */; };
 		7C426B5C1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C426B5A1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.m */; };
 		7C426B5D1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C426B5B1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.xib */; };
 		7C43C5291AFBD000001FEA64 /* CollectSucView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43C5281AFBD000001FEA64 /* CollectSucView.m */; };
@@ -304,7 +303,6 @@
 		7CAB827E1B2DEB6C00D50F7D /* WSGiftOrderWriterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA18AD1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m */; };
 		7CAB827F1B2DEB6C00D50F7D /* ASIS3ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C65580C1B07975800D832C2 /* ASIS3ServiceRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CAB82801B2DEB6C00D50F7D /* WSScanNoInStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF4ED1AEFC53E005321BF /* WSScanNoInStoreViewController.m */; };
-		7CAB82811B2DEB6C00D50F7D /* WSAudioUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C42063F1AF61094005F9F44 /* WSAudioUtil.m */; };
 		7CAB82821B2DEB6C00D50F7D /* ASIWebPageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6557EF1B07975800D832C2 /* ASIWebPageRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CAB82831B2DEB6C00D50F7D /* ASIS3Bucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6558021B07975800D832C2 /* ASIS3Bucket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CAB82841B2DEB6C00D50F7D /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3DFF2F1AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m */; };
@@ -663,10 +661,6 @@
 		7CC827B91AF1311B00A837F8 /* light.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CC827B61AF1311B00A837F8 /* light.png */; };
 		7CC9C85A1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
 		7CC9C85B1B329BB9009F318D /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */; };
-		7CC9C85F1B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
-		7CC9C8601B33129B009F318D /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9C85E1B33129B009F318D /* PopView.m */; };
-		7CC9C8621B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
-		7CC9C8631B3312AB009F318D /* PopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8611B3312AB009F318D /* PopView.xib */; };
 		7CC9C8F51B3B9347009F318D /* shake_match.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F31B3B9347009F318D /* shake_match.mp3 */; };
 		7CC9C8F61B3B9347009F318D /* shake_sound_male.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F41B3B9347009F318D /* shake_sound_male.mp3 */; };
 		7CC9C8F81B3B9D53009F318D /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7CC9C8F71B3B9D53009F318D /* Location.gpx */; };
@@ -785,6 +779,8 @@
 		7CCE4F5A1AEB73480097DFBB /* WSGiftDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCE4F581AEB73480097DFBB /* WSGiftDetailViewController.xib */; };
 		7CCE4F601AEB7B9F0097DFBB /* WSAdviceBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE4F5E1AEB7B9F0097DFBB /* WSAdviceBackViewController.m */; };
 		7CCE4F611AEB7B9F0097DFBB /* WSAdviceBackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCE4F5F1AEB7B9F0097DFBB /* WSAdviceBackViewController.xib */; };
+		7CCE670B1B3D31A3007B3155 /* WSAudioUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE670A1B3D31A3007B3155 /* WSAudioUtil.m */; };
+		7CCE670C1B3D31A3007B3155 /* WSAudioUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE670A1B3D31A3007B3155 /* WSAudioUtil.m */; };
 		7CCFCD631AE9CCD20096152F /* arrow-click.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCFCD601AE9CCD20096152F /* arrow-click.png */; };
 		7CCFCD641AE9CCD20096152F /* arrow-down.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCFCD611AE9CCD20096152F /* arrow-down.png */; };
 		7CCFCD651AE9CCD20096152F /* arrow-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CCFCD621AE9CCD20096152F /* arrow-up.png */; };
@@ -971,8 +967,6 @@
 		7C4206361AF5FECC005F9F44 /* WSScanAfterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSScanAfterViewController.xib; sourceTree = "<group>"; };
 		7C42063A1AF60F71005F9F44 /* scan.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scan.wav; sourceTree = "<group>"; };
 		7C42063C1AF60F7E005F9F44 /* glass.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = glass.wav; sourceTree = "<group>"; };
-		7C42063E1AF61094005F9F44 /* WSAudioUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAudioUtil.h; sourceTree = "<group>"; };
-		7C42063F1AF61094005F9F44 /* WSAudioUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAudioUtil.m; sourceTree = "<group>"; };
 		7C426B591AFA7353009B2C4D /* WSMoreGiftSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSMoreGiftSearchResultCell.h; sourceTree = "<group>"; };
 		7C426B5A1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSMoreGiftSearchResultCell.m; sourceTree = "<group>"; };
 		7C426B5B1AFA7353009B2C4D /* WSMoreGiftSearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSMoreGiftSearchResultCell.xib; sourceTree = "<group>"; };
@@ -1249,9 +1243,6 @@
 		7CC9C8571B329BB9009F318D /* ESTBeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
 		7CC9C8581B329BB9009F318D /* ESTBeaconUpdateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconUpdateInfo.h; sourceTree = "<group>"; };
 		7CC9C8591B329BB9009F318D /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEstimoteSDK.a; sourceTree = "<group>"; };
-		7CC9C85D1B33129B009F318D /* PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopView.h; sourceTree = "<group>"; };
-		7CC9C85E1B33129B009F318D /* PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopView.m; sourceTree = "<group>"; };
-		7CC9C8611B3312AB009F318D /* PopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopView.xib; sourceTree = "<group>"; };
 		7CC9C8F31B3B9347009F318D /* shake_match.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shake_match.mp3; sourceTree = "<group>"; };
 		7CC9C8F41B3B9347009F318D /* shake_sound_male.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shake_sound_male.mp3; sourceTree = "<group>"; };
 		7CC9C8F71B3B9D53009F318D /* Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
@@ -1394,6 +1385,8 @@
 		7CCE4F5D1AEB7B9F0097DFBB /* WSAdviceBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAdviceBackViewController.h; sourceTree = "<group>"; };
 		7CCE4F5E1AEB7B9F0097DFBB /* WSAdviceBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAdviceBackViewController.m; sourceTree = "<group>"; };
 		7CCE4F5F1AEB7B9F0097DFBB /* WSAdviceBackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSAdviceBackViewController.xib; sourceTree = "<group>"; };
+		7CCE67091B3D31A3007B3155 /* WSAudioUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAudioUtil.h; sourceTree = "<group>"; };
+		7CCE670A1B3D31A3007B3155 /* WSAudioUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAudioUtil.m; sourceTree = "<group>"; };
 		7CCFCD601AE9CCD20096152F /* arrow-click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-click.png"; sourceTree = "<group>"; };
 		7CCFCD611AE9CCD20096152F /* arrow-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-down.png"; sourceTree = "<group>"; };
 		7CCFCD621AE9CCD20096152F /* arrow-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-up.png"; sourceTree = "<group>"; };
@@ -1970,9 +1963,6 @@
 				7C4206241AF5A954005F9F44 /* WSLocationDetailViewController.h */,
 				7C4206251AF5A954005F9F44 /* WSLocationDetailViewController.m */,
 				7C4206261AF5A954005F9F44 /* WSLocationDetailViewController.xib */,
-				7CC9C85D1B33129B009F318D /* PopView.h */,
-				7CC9C85E1B33129B009F318D /* PopView.m */,
-				7CC9C8611B3312AB009F318D /* PopView.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2641,14 +2631,14 @@
 				7C46E4481AF07DD000EBDCDC /* WSProjUtil.m */,
 				7C7C9F831AF28C370011485C /* WSBMKUtil.h */,
 				7C7C9F841AF28C370011485C /* WSBMKUtil.m */,
-				7C42063E1AF61094005F9F44 /* WSAudioUtil.h */,
-				7C42063F1AF61094005F9F44 /* WSAudioUtil.m */,
 				7C2E385D1AF8C24900EF54B0 /* WSUserUtil.h */,
 				7C2E385E1AF8C24900EF54B0 /* WSUserUtil.m */,
 				7C36DFB71B0235D30030530C /* WSShareSDKUtil.h */,
 				7C36DFB81B0235D30030530C /* WSShareSDKUtil.m */,
 				7C4C7F7A1B139552002A264A /* WSProjShareUtil.h */,
 				7C4C7F7B1B139552002A264A /* WSProjShareUtil.m */,
+				7CCE67091B3D31A3007B3155 /* WSAudioUtil.h */,
+				7CCE670A1B3D31A3007B3155 /* WSAudioUtil.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3780,7 +3770,6 @@
 				7CAB838C1B2DEB6C00D50F7D /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7CAB838D1B2DEB6C00D50F7D /* icon-05.png in Resources */,
 				7CAB838E1B2DEB6C00D50F7D /* WSScanNoInStoreViewController.xib in Resources */,
-				7CC9C8631B3312AB009F318D /* PopView.xib in Resources */,
 				7CAB838F1B2DEB6C00D50F7D /* WSMineInfoViewController.xib in Resources */,
 				7CAB83901B2DEB6C00D50F7D /* 02.png in Resources */,
 				7CAB83911B2DEB6C00D50F7D /* radio_choose-02.png in Resources */,
@@ -4004,7 +3993,6 @@
 				7C741AE01B1DE9F20086B32B /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				7C74B7D21B19E80B00CB7FE2 /* icon-05.png in Resources */,
 				7CCBF4F01AEFC53E005321BF /* WSScanNoInStoreViewController.xib in Resources */,
-				7CC9C8621B3312AB009F318D /* PopView.xib in Resources */,
 				7CD0E45A1AE2A51B00B78C9C /* WSMineInfoViewController.xib in Resources */,
 				7CCD8B151ADFD0D5007B86A9 /* 02.png in Resources */,
 				7CD0E45E1AE2A75000B78C9C /* radio_choose-02.png in Resources */,
@@ -4096,7 +4084,6 @@
 				7CAB823F1B2DEB6C00D50F7D /* WSMineConsumeViewController.m in Sources */,
 				7CAB82401B2DEB6C00D50F7D /* WSLoginViewController.m in Sources */,
 				7CAB82411B2DEB6C00D50F7D /* WSSearchCommonViewController.m in Sources */,
-				7CC9C8601B33129B009F318D /* PopView.m in Sources */,
 				7CAB82421B2DEB6C00D50F7D /* WSMineCollectCollectionViewCell.m in Sources */,
 				7CAB82431B2DEB6C00D50F7D /* WSFilterBrandViewController.m in Sources */,
 				7CAB82441B2DEB6C00D50F7D /* ASICloudFilesObjectRequest.m in Sources */,
@@ -4160,7 +4147,6 @@
 				7CAB827E1B2DEB6C00D50F7D /* WSGiftOrderWriterViewController.m in Sources */,
 				7CAB827F1B2DEB6C00D50F7D /* ASIS3ServiceRequest.m in Sources */,
 				7CAB82801B2DEB6C00D50F7D /* WSScanNoInStoreViewController.m in Sources */,
-				7CAB82811B2DEB6C00D50F7D /* WSAudioUtil.m in Sources */,
 				7CAB82821B2DEB6C00D50F7D /* ASIWebPageRequest.m in Sources */,
 				7CAB82831B2DEB6C00D50F7D /* ASIS3Bucket.m in Sources */,
 				7CAB82841B2DEB6C00D50F7D /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */,
@@ -4194,6 +4180,7 @@
 				7CAB829E1B2DEB6C00D50F7D /* WSSearchHistoryView.m in Sources */,
 				7CAB829F1B2DEB6C00D50F7D /* WSMoreGiftViewController.m in Sources */,
 				7CAB82A01B2DEB6C00D50F7D /* WSMineCollectViewController.m in Sources */,
+				7CCE670C1B3D31A3007B3155 /* WSAudioUtil.m in Sources */,
 				7CAB82A11B2DEB6C00D50F7D /* WSPromotionCouponInStoreCollectionReusableView.m in Sources */,
 				7CAB82A21B2DEB6C00D50F7D /* WSHomeViewController.m in Sources */,
 				7CAB82A31B2DEB6C00D50F7D /* WSNoinStoreCell.m in Sources */,
@@ -4224,7 +4211,6 @@
 				7CD8F3311AE557E90039CE0F /* WSMineConsumeViewController.m in Sources */,
 				7C6E56F51AE1594100D020D5 /* WSLoginViewController.m in Sources */,
 				7C74B7E11B1B45D700CB7FE2 /* WSSearchCommonViewController.m in Sources */,
-				7CC9C85F1B33129B009F318D /* PopView.m in Sources */,
 				7CD8F3291AE54E240039CE0F /* WSMineCollectCollectionViewCell.m in Sources */,
 				7CD771491AEE4D390040E9FD /* WSFilterBrandViewController.m in Sources */,
 				7C6558A71B07975800D832C2 /* ASICloudFilesObjectRequest.m in Sources */,
@@ -4288,7 +4274,6 @@
 				7CCA18AF1AEBDA2100714EA0 /* WSGiftOrderWriterViewController.m in Sources */,
 				7C6558AE1B07975800D832C2 /* ASIS3ServiceRequest.m in Sources */,
 				7CCBF4EF1AEFC53E005321BF /* WSScanNoInStoreViewController.m in Sources */,
-				7C4206401AF61094005F9F44 /* WSAudioUtil.m in Sources */,
 				7C6558A11B07975800D832C2 /* ASIWebPageRequest.m in Sources */,
 				7C6558A91B07975800D832C2 /* ASIS3Bucket.m in Sources */,
 				7C3DFF311AE91D210065BB7F /* WSPromotionCouponOutStoreCollectionViewCell.m in Sources */,
@@ -4322,6 +4307,7 @@
 				7C4BB9981B0AF3C5007293C3 /* WSSearchHistoryView.m in Sources */,
 				7CA484591AEA8C3F00116BBC /* WSMoreGiftViewController.m in Sources */,
 				7CD8F3241AE54CAB0039CE0F /* WSMineCollectViewController.m in Sources */,
+				7CCE670B1B3D31A3007B3155 /* WSAudioUtil.m in Sources */,
 				7C3DFF2C1AE91CDB0065BB7F /* WSPromotionCouponInStoreCollectionReusableView.m in Sources */,
 				7C249B471ADD6114000712BF /* WSHomeViewController.m in Sources */,
 				7CD0E4931AE394D600B78C9C /* WSNoinStoreCell.m in Sources */,
@@ -4559,7 +4545,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",
@@ -4606,7 +4592,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guangzhou SmartGo Technology Co., Ltd. (M6BZ7CAAX7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: JIAJIA LU (G9AJFTEP5H)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ProjectCommon/BaiduMapAPI",

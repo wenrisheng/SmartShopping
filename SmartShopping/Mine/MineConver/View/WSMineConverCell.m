@@ -28,6 +28,7 @@
     _numLabel.text = [dic stringForKey:@"beanNumber"];
     _timeLabel.text = [dic objectForKey:@"exchangeTime"];
     _statusLabel.text = [dic objectForKey:@"giftStatus"];
+    _shuliangLabel.text = [NSString stringWithFormat:@"数量：%@", [dic stringForKey:@"count"]];
 }
 
 - (void)awakeFromNib {

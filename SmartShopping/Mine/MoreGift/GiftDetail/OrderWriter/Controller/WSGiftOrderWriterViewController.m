@@ -9,6 +9,7 @@
 #import "WSGiftOrderWriterViewController.h"
 #import "WSOrderSucView.h"
 #import "WSOrderFailView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface WSGiftOrderWriterViewController () <UITextViewDelegate, UITextFieldDelegate>
 {
@@ -20,6 +21,7 @@
     WSOrderSucView *sucView;
     WSOrderFailView *failView;
     BOOL canBuy;
+    AVAudioPlayer *player;
 }
 
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
@@ -59,6 +61,10 @@
     }
     // 不可以减
     [self notSub];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"shake_sound_male" ofType:@"mp3"];
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
+    player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [player prepareToPlay];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -294,10 +300,16 @@
             [SVProgressHUD dismiss];
             BOOL flag = [WSInterfaceUtility validRequestResult:result];
             if (flag) {
+               // [WSAudioUtil playLongSoundEffectWithResourceName:@"shake_match" type:@"mp3"];
+                [WSAudioUtil playShortSoundEffectWithResourceName:@"shake_match" type:@"mp3"];
+               // [player play];
                 WSUser *user = [WSRunTime sharedWSRunTime].user;
-                int currentPeaNum = [user.beanNumber intValue];
-                int remainPeaNum = currentPeaNum - ([curNum intValue] * unitNum);
+               int currentPeaNum = [user.beanNumber intValue];
+                int subPeaNum = [curNum intValue] * unitNum;
+                int remainPeaNum = currentPeaNum - subPeaNum;
                 user.beanNumber = [NSString stringWithFormat:@"%d", remainPeaNum];
+                [WSProjUtil archiverUser:user key:USER_KEY];
+                [WSProjUtil synchronBeanNumWithUser:user offsetBeanNumber:[NSString stringWithFormat:@"%d", subPeaNum] callBack:nil];
                 [self commitOrderSuc];
             }
         } failCallBack:^(id error) {

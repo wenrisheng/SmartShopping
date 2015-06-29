@@ -10,7 +10,9 @@
 
 @interface PaopaoView : UIView
 
-@property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UILabel *addressLabel;
+@property (weak, nonatomic) IBOutlet WSVerticalLabel *titleLabel;
+@property (weak, nonatomic) IBOutlet WSVerticalLabel *addressLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightCon;
+
 
 @end

@@ -10,7 +10,7 @@
 #import "IBSDK.h"
 #import "WSSignupSucView.h"
 
-#define GAIN_BEANNUM_SUC      5
+#define GAIN_BEANNUM_SUC      3
 
 @implementation WSProjUtil
 
@@ -25,12 +25,11 @@
     return appDelegate.nav;
 }
 
-+ (void)showGainBeanNumWithBeanNum:(NSString *)beanNumber callback:(void (^)(void))callback
++ (void)showGainBeanNumWithBeanNum:(NSString *)beanNumber inView:(UIView *)view callback:(void (^)(void))callback
 {
     WSSignupSucView *sucView = [WSSignupSucView getView];
     sucView.label.text = [NSString stringWithFormat:@"获得%@精明豆", beanNumber];
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    [window addSubview:sucView];
+    [view addSubview:sucView];
     [sucView expandToSuperView];
     // 延迟5秒执行：
     double delayInSeconds = GAIN_BEANNUM_SUC;
@@ -41,7 +40,6 @@
             callback();
         }
     });
-  
 }
 
 + (NSString *)converDateWithDateStr:(NSString *)dateStr
@@ -175,10 +173,24 @@
     } showMessage:YES];
 }
 
-+ (void)synchronBeanNumWithUser:(WSUser *)user beanNumber:(NSString *)beanNumber callBack:(void (^)())callback
++ (void)synchronBeanNumWithUser:(WSUser *)user offsetBeanNumber:(NSString *)beanNumber callBack:(void (^)())callback
 {
+    if (!user) {
+        return;
+    }
     NSString *userType = user.userType;
     beanNumber = beanNumber.length > 0 ? beanNumber : @"0";
+    
+    int userBeanNum = [user.beanNumber intValue];
+    int allBeanNum = [beanNumber intValue] + userBeanNum;
+    user.beanNumber = [NSString stringWithFormat:@"%d", allBeanNum];
+   // WSUser *currentUser = [WSRunTime sharedWSRunTime].user;
+    
+    // 发送跟更新精明豆通知
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:user forKey:USER_KEY];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_USER_BEANNUMER object:nil userInfo:param];
+    
     // 登录用户
     if ([userType isEqualToString:@"1"]) {
         [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeSynchroBeanNumber] data:@{@"uid": user._id, @"beanNumber": beanNumber, @"touristid": @""} tag:WSInterfaceTypeSynchroBeanNumber sucCallBack:^(id result) {
@@ -248,7 +260,7 @@
         NSString *userBeanNumber = user.beanNumber;
         int beanNum = [userBeanNumber intValue] + appPeasNum;
         user.beanNumber = [NSString stringWithFormat:@"%d", beanNum];
-        [WSProjUtil synchronBeanNumWithUser:user beanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:callback];
+        [WSProjUtil synchronBeanNumWithUser:user offsetBeanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:callback];
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:[NSNumber numberWithBool:YES] forKey:APP_DAY_PEA_IS_GET];
         [dic setObject:dateStr forKey:APP_DAY_PEA_IS_GET_DAY];
@@ -263,7 +275,7 @@
             NSString *userBeanNumber = user.beanNumber;
             int beanNum = [userBeanNumber intValue] + appPeasNum;
             user.beanNumber = [NSString stringWithFormat:@"%d", beanNum];
-            [WSProjUtil synchronBeanNumWithUser:user beanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:callback];
+            [WSProjUtil synchronBeanNumWithUser:user offsetBeanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:callback];
             
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setObject:[NSNumber numberWithBool:YES] forKey:APP_DAY_PEA_IS_GET];
@@ -290,7 +302,7 @@
             NSString *userBeanNumber = user.beanNumber;
             int beanNum = [userBeanNumber intValue] + appPeasNum;
             user.beanNumber = [NSString stringWithFormat:@"%d", beanNum];
-            [WSProjUtil synchronBeanNumWithUser:user beanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:nil];
+            [WSProjUtil synchronBeanNumWithUser:user offsetBeanNumber:[NSString stringWithFormat:@"%d", appPeasNum] callBack:nil];
             [USER_DEFAULT setValue:[NSNumber numberWithBool:NO] forKey:APP_NOT_FIRST_OPEN];
         }
     }
@@ -336,24 +348,60 @@
     if (!obj) {
         return;
     }
-    NSMutableData *aadatA = [[NSMutableData alloc] init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:aadatA];
-    [archiver encodeObject:obj forKey:key];
-    [archiver finishEncoding];
-    [USER_DEFAULT setObject:aadatA forKey:key];
+//    NSMutableData *aadatA = [[NSMutableData alloc] init];
+//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:aadatA];
+//    [archiver encodeObject:obj forKey:key];
+//    [archiver finishEncoding];
+//    [USER_DEFAULT setObject:aadatA forKey:key];
+    
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setObject:data forKey:key];
 }
 
 + (id)unarchiverUserWithKey:(NSString *)key
 {
-    NSData *endata = [USER_DEFAULT objectForKey:key];
-    if (!endata) {
+    NSData *data = [USER_DEFAULT objectForKey:key];
+    if (!data) {
         return nil;
     }
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:endata];
+    id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    //解档出数据模型Student
-    id obj = [unarchiver decodeObjectForKey:key];
+//    NSData *endata = [USER_DEFAULT objectForKey:key];
+//    if (!endata) {
+//        return nil;
+//    }
+//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:endata];
+//    
+//    //解档出数据模型Student
+//    id obj = [unarchiver decodeObjectForKey:key];
     return obj;
+}
+
++ (WSUser *)getCurUser
+{
+    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    if (user) {
+        return user;
+    }
+    WSUser *beforeUser = [WSProjUtil unarchiverUserWithKey:USER_KEY];
+    if (beforeUser) {
+        return beforeUser;
+    }
+    WSUser *beforeTourist = [WSProjUtil unarchiverUserWithKey:TOURIST_KEY];
+    if (beforeTourist) {
+        return beforeTourist;
+    }
+    return nil;
+}
+
++ (NSString *)getCurUserId
+{
+    WSUser *user = [WSProjUtil getCurUser];
+    if (user) {
+        return user._id;
+    }
+    return nil;
 }
 
 @end

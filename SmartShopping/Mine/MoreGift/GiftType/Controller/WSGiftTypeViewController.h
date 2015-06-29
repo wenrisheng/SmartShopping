@@ -10,6 +10,7 @@
 
 @interface WSGiftTypeViewController : WSServiceViewController
 
+@property (strong, nonatomic) NSString *giftTag;
 @property (strong, nonatomic) NSString *typeName;
 
 @end

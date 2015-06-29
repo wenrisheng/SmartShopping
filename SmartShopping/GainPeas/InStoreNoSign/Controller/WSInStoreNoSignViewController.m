@@ -52,19 +52,17 @@
 
 - (void)requestEarnSignBean
 {
-    NSString *userId = [WSRunTime sharedWSRunTime].user._id;
+    NSString *userId = [WSProjUtil getCurUserId];
+    userId = userId.length > 0 ? userId : @"";
     NSString *shopid = [_shop stringForKey:@"shopId"];
     [WSService post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeEarnSignBean] data:@{@"uid": userId, @"shopid": shopid} tag:WSInterfaceTypeEarnSignBean sucCallBack:^(id result) {
         BOOL flag = [WSInterfaceUtility validRequestResult:result];
         if (flag) {
-            WSUser *user = [WSRunTime sharedWSRunTime].user;
-            int beanNum = [user.beanNumber intValue];
-            beanNum += [[_shop stringForKey:@"beannumber"] intValue];
-            user.beanNumber = [NSString stringWithFormat:@"%d", beanNum];
-            
+            [WSProjUtil synchronBeanNumWithUser:[WSProjUtil getCurUser] offsetBeanNumber: [_shop stringForKey:@"beannumber"] callBack:nil];
             NSString *beannumber = [_shop stringForKey:@"beannumber"];
             beannumber = beannumber.length > 0 ? beannumber : @"0";
-            [WSProjUtil showGainBeanNumWithBeanNum:beannumber callback:^{
+            
+            [WSProjUtil showGainBeanNumWithBeanNum:beannumber inView:self.view callback:^{
                 [self.navigationController popViewControllerAnimated:NO];
                 WSStoreDetailViewController *storeDetailVC = [[WSStoreDetailViewController alloc] init];
                 storeDetailVC.shop = _shop;

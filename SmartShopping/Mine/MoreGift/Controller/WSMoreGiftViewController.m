@@ -97,6 +97,12 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)updateUserBeanNumber:(NSNotification *)notification
+{
+    [super updateUserBeanNumber:notification];
+    [self setBeanNum];
+}
+
 #pragma mark - 转换数据模型
 - (void)converDataArrayModel
 {
@@ -154,14 +160,7 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"奖励兑换";
     
     // 设置用户精明豆数量
-    NSString *peaNum = [WSUserUtil getUserPeasNum];
-    NSString *str = @"个精明豆";
-    NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", peaNum, str]];
-    [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.890 green:0.380 blue:0.090 alpha:1.000] range:NSMakeRange(0, peaNum.length)];
-    [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.204 green:0.208 blue:0.212 alpha:1.000] range:NSMakeRange(peaNum.length, str.length)];
-    [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(0, peaNum.length)];
-    [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(peaNum.length, str.length)];
-    _peaLabel.attributedText = tempStr;
+    [self setBeanNum];
     
     // 设置tab
     NSArray *titles = @[@"豆子范围", @"全部分类"];
@@ -211,6 +210,18 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
         }
         curTabIndex = index;
     };
+}
+
+- (void)setBeanNum
+{
+    NSString *peaNum = [WSUserUtil getUserPeasNum];
+    NSString *str = @"个精明豆";
+    NSMutableAttributedString *tempStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", peaNum, str]];
+    [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.890 green:0.380 blue:0.090 alpha:1.000] range:NSMakeRange(0, peaNum.length)];
+    [tempStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.204 green:0.208 blue:0.212 alpha:1.000] range:NSMakeRange(peaNum.length, str.length)];
+    [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(0, peaNum.length)];
+    [tempStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(peaNum.length, str.length)];
+    _peaLabel.attributedText = tempStr;
 }
 
 #pragma mark - 请求精明豆范围
@@ -558,7 +569,12 @@ typedef NS_ENUM(NSInteger, MoreGiftViewType) {
     NSInteger tag = but.tag;
     NSDictionary *dic = [converDataArray objectAtIndex:tag];
     NSString *title = [dic objectForKey:CATEGORY_TITLE];
+    NSArray *giftList = [dic objectForKey:CATEGORY_DATA_ARRAY];
     WSGiftTypeViewController *giftTypeVC = [[WSGiftTypeViewController alloc] init];
+    if (giftList.count > 0) {
+        giftTypeVC.giftTag = [[giftList objectAtIndex:0] stringForKey:@"giftTag"];
+    }
+    
     giftTypeVC.typeName = title;
     [self.navigationController pushViewController:giftTypeVC animated:YES];
 }

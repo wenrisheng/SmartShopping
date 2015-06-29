@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define WSMINECONVERCELL_HEIGHT    80
+#define WSMINECONVERCELL_HEIGHT    93
 
 @interface WSMineConverCell : UITableViewCell
 
@@ -24,5 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *topSaperateView;
 @property (weak, nonatomic) IBOutlet UIView *bottomSaperateView;
+
+@property (weak, nonatomic) IBOutlet UILabel *shuliangLabel;
+
 
 @end

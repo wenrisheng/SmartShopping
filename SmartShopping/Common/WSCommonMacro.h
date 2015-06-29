@@ -12,7 +12,7 @@
 #define USER_KEY                      @"USER_KEY"                    // 保存登陆用户信息，用来做自动登录
 #define APP_PEAS_NUM                  @"APP_PEAS_NUM"                // 本机保存的精明豆数量
 #define WSPAGE_SIZE                   @"15"                          // 每页请求条数
-#define TOURIST_KEY                   @"ROURIST_KEY"                //游客
+#define TOURIST_KEY                   @"ROURIST_KEY"                 //游客
 #define FIRST_USED                    @"FIRS_USED"                   // 首次使用app获取精明豆数量
 #define OPEN_APP                      @"OPEN_APP"                     //打开app获取精明豆数量
 
@@ -20,6 +20,7 @@
 #define APP_DAY_PEA                   @"APP_DAY_PEA"                // 每天领取精明豆
 #define APP_DAY_PEA_IS_GET            @"APP_DAY_PEA_IS_GET"         // 今天是否领取了精明豆
 #define APP_DAY_PEA_IS_GET_DAY        @"APP_DAY_PEA_IS_GET_DAY"     // 领取了精明豆的日期
+#define UPDATE_USER_BEANNUMER         @"UPDATE_USER_BEANNUMBER"     // 更新了用户精明豆
 
 #define APP_GUIDE                     @"APP_GUIDE"                   // 引导页是否已经显示
 #define PUSH_NOTIFICATION             @"PUSH_NOTIFICATION"         // 推送通知

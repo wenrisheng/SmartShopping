@@ -77,6 +77,14 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - 更新用户精明豆通知
+- (void)updateUserBeanNumber:(NSNotification *)notification
+{
+    [super updateUserBeanNumber:notification];
+    NSString *beanNum = [WSUserUtil getUserPeasNum];
+    firstCell.peaNumLabel.text = [NSString stringWithFormat:@"%@豆", beanNum];
+}
+
 - (void)requestSearchGift
 {
 #ifdef DEBUG
@@ -131,7 +139,7 @@
     if (firstCell) {
         UIView *loginStatusView = firstCell.loginStatusView;
         if (loginStatusView) {
-            WSUser *user = [WSRunTime sharedWSRunTime].user;
+            WSUser *user = [WSProjUtil getCurUser];
             [loginStatusView clearSubviews];
             NSString *userType = user.userType;
             // 已登陆
@@ -170,8 +178,10 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    WSUser *user = [WSProjUtil getCurUser];
+    NSString *userType = user.userType;
+    // 已登陆
+    if ([userType isEqualToString:@"1"]) {
         return 6;
     } else {
        return 5;
@@ -589,6 +599,7 @@
             [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
             [USER_DEFAULT removeObjectForKey:USER_KEY];
             [[SDImageCache sharedImageCache] clearMemory];
+           //NSUInteger imageSize = [[SDImageCache sharedImageCache] getSize];
             [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
             [SVProgressHUD showSuccessWithStatus:@"缓存已清除！" duration:TOAST_VIEW_TIME];
             }];
@@ -630,6 +641,8 @@
             
             
             [WSRunTime sharedWSRunTime].user = nil;
+            WSUser *tourist = [WSProjUtil unarchiverUserWithKey:TOURIST_KEY];
+            [WSRunTime sharedWSRunTime].user = tourist;
             [_contentTableView reloadData];
         }
     }
