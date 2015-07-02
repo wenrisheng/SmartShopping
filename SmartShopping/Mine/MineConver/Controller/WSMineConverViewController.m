@@ -13,8 +13,10 @@
 {
     NSMutableArray *dataArray;
     int curPage;
+    UIAlertView *alertView;
 }
 
+@property (strong, nonatomic) NSDictionary *delectDic;
 @property (weak, nonatomic) IBOutlet WSNavigationBarManagerView *navigationBarManagerView;
 @property (weak, nonatomic) IBOutlet UITableView *contentTableView;
 
@@ -98,8 +100,12 @@
     if (!cell) {
         cell = [WSMineConverCell getCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UISwipeGestureRecognizer *swipeGest = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestAction:)];
+        swipeGest.direction = UISwipeGestureRecognizerDirectionLeft;
+        [cell addGestureRecognizer:swipeGest];
     }
     NSInteger row = indexPath.row;
+    cell.tag = row;
     NSInteger itemCount = dataArray.count;
     if (row == itemCount - 1) {
         cell.bottomSaperateView.hidden = NO;
@@ -150,6 +156,46 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+}
+
+#pragma mark - swipeGestAction
+- (void)swipeGestAction:(UISwipeGestureRecognizer *)swipeGest
+{
+    if (!alertView) {
+        alertView  = [[UIAlertView alloc] initWithTitle:@"操作" message:@"确定删除？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+    }
+    
+    [alertView show];
+    
+    UIView *view = [swipeGest view];
+    NSInteger tag = view.tag;
+    NSDictionary *dic = [dataArray objectAtIndex:tag];
+    self.delectDic = dic;
+    DLog(@"tag:%d", (int)tag);
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if (buttonIndex==1) {
+        NSString *giftid = [_delectDic stringForKey:@"giftId"];
+        [SVProgressHUD showWithStatus:@"正在删除……"];
+        [self.service post:[WSInterfaceUtility getURLWithType:WSInterfaceTypeDelUserGift] data:@{ @"giftid": giftid} tag:WSInterfaceTypeDelUserGift sucCallBack:^(id result) {
+            [SVProgressHUD dismiss];
+            BOOL flag = [WSInterfaceUtility validRequestResult:result];
+            if (flag) {
+                [dataArray removeObject:_delectDic];
+                self.delectDic = nil;
+                [_contentTableView reloadData];
+            }
+        } failCallBack:^(id error) {
+            [SVProgressHUD dismissWithError:@"删除失败！" afterDelay:TOAST_VIEW_TIME];
+        }];
+        
+    }
+    
     
 }
 

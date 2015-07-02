@@ -37,6 +37,10 @@
 #define BMK_AK                        @"uvZy3pgyP8CbBjoIw9Muj2Oc"
 #define LOCATION_DISTANCE_FILTER      10.0f   //最小距离更新(米)
 
+// JPush
+#define JPUSH_APPKEY                  @"c4a0523cfe76aa1fc0fdd951"
+#define JPUSH_MASTER_SECRET           @"e0f2491ac2a4142eb163d2dc"
+
 // ShareSKD
 #define SHARESDK_APPKEY               @"6bb713bd24e4"
 #define SHARESKE_APPSECRET            @"973ae7cda390a8137f236f19f23bb78c"

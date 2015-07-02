@@ -13,6 +13,8 @@
 		7C0C89701AF8CECF00F5C93C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C0C896F1AF8CECF00F5C93C /* Default-568h@2x.png */; };
 		7C1748B41B25D9DD002CE5CE /* libIBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1748B31B25D9DD002CE5CE /* libIBSDK.a */; };
 		7C1748B61B25DA87002CE5CE /* home_scan.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C1748B51B25DA87002CE5CE /* home_scan.png */; };
+		7C18FA8C1B4376DE00FD2F07 /* libPushSDK-1.8.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C18FA8B1B4376DE00FD2F07 /* libPushSDK-1.8.3.a */; };
+		7C18FA901B43776800FD2F07 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C18FA8F1B43776800FD2F07 /* PushConfig.plist */; };
 		7C1CE3A71B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1CE3A51B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m */; };
 		7C1CE3A81B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1CE3A61B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib */; };
 		7C1FCF7F1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FCF7D1B077DE40009A694 /* WSPromotionCouponInStoreCollectionViewCell.m */; };
@@ -901,6 +903,9 @@
 		7C1748B21B25D9DD002CE5CE /* IBSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IBSDK.h; sourceTree = "<group>"; };
 		7C1748B31B25D9DD002CE5CE /* libIBSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libIBSDK.a; sourceTree = "<group>"; };
 		7C1748B51B25DA87002CE5CE /* home_scan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_scan.png; sourceTree = "<group>"; };
+		7C18FA8A1B4376DE00FD2F07 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		7C18FA8B1B4376DE00FD2F07 /* libPushSDK-1.8.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.3.a"; sourceTree = "<group>"; };
+		7C18FA8F1B43776800FD2F07 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7C1CE3A41B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSSearchNoDataCollectionViewCell.h; sourceTree = "<group>"; };
 		7C1CE3A51B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSearchNoDataCollectionViewCell.m; sourceTree = "<group>"; };
 		7C1CE3A61B0CC9C500642847 /* WSSearchNoDataCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSSearchNoDataCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -1616,6 +1621,7 @@
 				7C741AC61B1DE9F10086B32B /* TencentWeiboConnection.framework in Frameworks */,
 				7C741AD61B1DE9F20086B32B /* libTCWeiboSDK.a in Frameworks */,
 				7C741AAC1B1DE9F10086B32B /* CopyConnection.framework in Frameworks */,
+				7C18FA8C1B4376DE00FD2F07 /* libPushSDK-1.8.3.a in Frameworks */,
 				7C9084301ADF729E0073D94C /* ImageIO.framework in Frameworks */,
 				7C741AC01B1DE9F10086B32B /* QQConnection.framework in Frameworks */,
 				7C90842E1ADF723A0073D94C /* libz.1.2.5.dylib in Frameworks */,
@@ -1684,6 +1690,23 @@
 				7C1748B31B25D9DD002CE5CE /* libIBSDK.a */,
 			);
 			path = iBeacon;
+			sourceTree = "<group>";
+		};
+		7C18FA881B4376DE00FD2F07 /* JPush */ = {
+			isa = PBXGroup;
+			children = (
+				7C18FA891B4376DE00FD2F07 /* lib */,
+			);
+			path = JPush;
+			sourceTree = "<group>";
+		};
+		7C18FA891B4376DE00FD2F07 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				7C18FA8A1B4376DE00FD2F07 /* APService.h */,
+				7C18FA8B1B4376DE00FD2F07 /* libPushSDK-1.8.3.a */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 		7C249B141ADD6114000712BF /* Controller */ = {
@@ -2072,6 +2095,7 @@
 		7C6557D31B07975800D832C2 /* ProjectCommon */ = {
 			isa = PBXGroup;
 			children = (
+				7C18FA881B4376DE00FD2F07 /* JPush */,
 				7C1748B11B25D9DD002CE5CE /* iBeacon */,
 				7C741A631B1DE9F10086B32B /* ShareSDK */,
 				7C6557D41B07975800D832C2 /* ASIHttpRequest */,
@@ -2924,6 +2948,7 @@
 				7CCD118C1AD5575E005A1429 /* images */,
 				7CCBBD9D1AD427BE00EA1F7F /* PrefixHeader.pch */,
 				7C5403081B30FA490018981F /* area.plist */,
+				7C18FA8F1B43776800FD2F07 /* PushConfig.plist */,
 				7CCBBD581AD418AF00EA1F7F /* Info.plist */,
 				7CCBBD591AD418AF00EA1F7F /* main.m */,
 			);
@@ -3913,6 +3938,7 @@
 				7C013EF21AD5699E00E74C78 /* BaseStaticLibraryResource.bundle in Resources */,
 				7CD0E4A91AE3A40E00B78C9C /* WSInStoreNoSignViewController.xib in Resources */,
 				7CD0E4661AE2B63900B78C9C /* WSLoginedView.xib in Resources */,
+				7C18FA901B43776800FD2F07 /* PushConfig.plist in Resources */,
 				7C42063D1AF60F7E005F9F44 /* glass.wav in Resources */,
 				7C74B7D81B1B458700CB7FE2 /* WSSearchProductViewController.xib in Resources */,
 				7CCA18B81AEBDC9500714EA0 /* middle.png in Resources */,
@@ -4575,6 +4601,7 @@
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/ProjectCommon/Zbar",
 					"$(PROJECT_DIR)/ProjectCommon/iBeacon",
+					"$(PROJECT_DIR)/ProjectCommon/JPush/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -4622,6 +4649,7 @@
 					"$(PROJECT_DIR)/ProjectCommon/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/ProjectCommon/Zbar",
 					"$(PROJECT_DIR)/ProjectCommon/iBeacon",
+					"$(PROJECT_DIR)/ProjectCommon/JPush/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";

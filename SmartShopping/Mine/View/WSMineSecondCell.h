@@ -11,6 +11,7 @@
 #define WSMINESECONDCELL_HEIGHT     230
 
 #define WS_MINE_SECONDE_CELL_IMAGE_HEIGHT 100
+
 #define WS_MINE_SECONDE_CELL_IMAGE_WIDTH  135
 
 @interface WSMineSecondCell : UITableViewCell

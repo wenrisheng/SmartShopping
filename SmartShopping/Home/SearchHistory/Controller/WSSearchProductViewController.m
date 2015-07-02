@@ -287,17 +287,26 @@
     [_searchManagerView.searchTypeView.centerTextField resignFirstResponder];
     if (_searchname.length > 0) {
         NSMutableArray *historyArray = [USER_DEFAULT objectForKey:SEARCH_PRODUCT_HISTORY_KEY];
-        NSMutableArray *curHistoryArray = [NSMutableArray array];
-        [curHistoryArray addObject:_searchname];
-        [curHistoryArray addObjectsFromArray:historyArray];
-        NSInteger count = curHistoryArray.count;
-        if (count > HISTORY_COUNT) {
-            int subCount = (int)count - HISTORY_COUNT;
-            for (int i = 0; i < subCount; i ++) {
-                [curHistoryArray removeLastObject];
+        BOOL isEquest = NO;
+        for (NSString *historyStr in historyArray) {
+            if ([historyStr isEqualToString:_searchname]) {
+                isEquest = YES;
+                break;
             }
         }
-        [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_PRODUCT_HISTORY_KEY];
+        if (!isEquest) {
+            NSMutableArray *curHistoryArray = [NSMutableArray array];
+            [curHistoryArray addObject:_searchname];
+            [curHistoryArray addObjectsFromArray:historyArray];
+            NSInteger count = curHistoryArray.count;
+            if (count > HISTORY_COUNT) {
+                int subCount = (int)count - HISTORY_COUNT;
+                for (int i = 0; i < subCount; i ++) {
+                    [curHistoryArray removeLastObject];
+                }
+            }
+            [USER_DEFAULT setValue:curHistoryArray forKey:SEARCH_PRODUCT_HISTORY_KEY];
+        }
     }
     
     curPage = 0;

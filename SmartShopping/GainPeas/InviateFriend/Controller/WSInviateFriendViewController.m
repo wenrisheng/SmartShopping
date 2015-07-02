@@ -36,21 +36,23 @@
 
 @implementation WSInviateFriendViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _navigationBarManagerView.navigationBarButLabelView.label.text = @"邀请好友";
     slideImageArray = [[NSMutableArray alloc] init];
-    WSUser *user = [WSProjUtil getCurUser];
-    NSString *userType = user.userType;
+  //  WSUser *user = [WSProjUtil getCurUser];
+  //  NSString *userType = user.userType;
     // 已登陆
-    if (![userType isEqualToString:@"1"]) {
-        NSString *inviateCode = user.inviteCode;
-        _inviateCodeLabel.text = inviateCode;
-    } else {
-        _inviteMsgLabel.hidden = YES;
-        _inviateCodeLabel.hidden = YES;
-    }
+//    if (![userType isEqualToString:@"1"]) {
+//        NSString *inviateCode = user.inviteCode;
+//        _inviateCodeLabel.text = inviateCode;
+//    } else {
+//        _inviteMsgLabel.hidden = YES;
+//        _inviateCodeLabel.hidden = YES;
+//    }
+    
     self.shareUrl = [NSString stringWithFormat:@"%@/views/share.jsp", BASE_URL];
     
    _bottomImageView.image = [QRCodeGenerator qrImageForString:_shareUrl imageSize:_bottomImageView.bounds.size.width];

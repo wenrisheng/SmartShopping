@@ -80,8 +80,9 @@
     NSDictionary *locationDic = [WSBMKUtil sharedInstance].locationDic;
     double longtide = [[locationDic objectForKey:LOCATION_LONGITUDE] doubleValue];
     double latitude = [[locationDic objectForKey:LOCATION_LATITUDE] doubleValue];
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
-    if (user) {
+    WSUser *user = [WSProjUtil getCurUser];
+    NSString *userId = user._id;
+    if (userId) {
         [param setValue:user._id forKey:@"uid"];
     } else {
         [param setValue:@"" forKey:@"uid"];

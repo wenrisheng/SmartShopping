@@ -22,11 +22,14 @@
     [_leftImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
-    
-    _giftNumLabel.text = [NSString stringWithFormat:@"礼品编号：%@", [dic stringForKey:@"giftNumber"]];
+    NSString *giftNumber = [dic stringForKey:@"giftNumber"];
+    _giftNumLabel.text = [NSString stringWithFormat:@"礼品编号：%@", giftNumber];
     _nameLabel.text = [dic objectForKey:@"giftName"];
     _numLabel.text = [dic stringForKey:@"beanNumber"];
-    _timeLabel.text = [dic objectForKey:@"exchangeTime"];
+    NSString *time = [dic objectForKey:@"exchangeTime"];
+    NSDate *tempTime = [WSCalendarUtil getDateWithDateStr:time format:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *timeStr = [WSCalendarUtil getDateStrWithDate:tempTime format:@"yyyy-MM-dd HH:mm"];
+    _timeLabel.text = timeStr;
     _statusLabel.text = [dic objectForKey:@"giftStatus"];
     _shuliangLabel.text = [NSString stringWithFormat:@"数量：%@", [dic stringForKey:@"count"]];
 }

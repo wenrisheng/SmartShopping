@@ -22,7 +22,11 @@
         color = [UIColor colorWithRed:0.655 green:0.659 blue:0.667 alpha:1.000];
         status = @"已使用";
     }
-    [_leftView setBorderCornerWithBorderWidth:1 borderColor:color cornerRadius:1];
+   // [_leftView setBorderCornerWithBorderWidth:1 borderColor:color cornerRadius:1];
+    NSString *imageUrl = [dic stringForKey:@"logoPath"];
+    [_logoImageView sd_setImageWithURL:[NSURL URLWithString:[WSInterfaceUtility getImageURLWithStr:imageUrl]] placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
     _consumeLabel.textColor = color;
     _statusLabel.textColor = color;
     _statusLabel.text = status;

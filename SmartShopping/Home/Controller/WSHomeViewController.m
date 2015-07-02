@@ -598,7 +598,7 @@ self.city = @"广州";
                 [imageDataArray addObject:imageURL];
             }
             
-            [imageScrollView setImageData:imageDataArray];
+            [imageScrollView setImageData:@[[imageDataArray objectAtIndex:0]]];
             __weak ACImageScrollView *weekImageScrollView = imageScrollView;
             imageScrollView.downloadImageFinish = ^(NSInteger index, UIImage *image) {
                 float height = 0;

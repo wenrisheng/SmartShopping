@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, WSInterfaceType)
     WSInterfaceTypeCollectGoods,                 //收藏商品
     WSInterfaceTypeMyCollectList,                // 我的收藏列表
     WSInterfaceTypeDeleteCollect,                //删除收藏
+    WSInterfaceTypeDelUserGift,                  //删除用户礼品信息
     WSInterfaceTypeSynchroBeanNumber,            //用户登录时同步精明豆
     
     /***************************首页**********************************/

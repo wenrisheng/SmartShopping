@@ -14,6 +14,8 @@
 #import <Parse/Parse.h>
 #import "WSGuideViewController.h"
 #import "WSShareSDKUtil.h"
+#import "APService.h"
+#import "WSInfoListViewController.h"
 
 @interface AppDelegate () <BMKGeneralDelegate>
 {
@@ -41,8 +43,13 @@
     if (sysVersion >= 8.0) {
         UIUserNotificationType type=UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIUserNotificationTypeSound;
         UIUserNotificationSettings *setting=[UIUserNotificationSettings settingsForTypes:type categories:nil];
-        [[UIApplication sharedApplication]registerUserNotificationSettings:setting];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
+    } else {
+        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
     }
+    
+    // 初始化JPush
+    [self initJPushWithlaunchOptions:launchOptions];
     
     // 同步精明豆获取规则接口
     [self synchronBeannumberByKeyWord];
@@ -81,6 +88,14 @@
     // 取消第三方授权
     [WSShareSDKUtil cancelAuth];
     
+   //处理由通知启动app
+    [self dealStartupByNotificationWithOptions:launchOptions];
+    
+    return YES;
+}
+
+- (void)dealStartupByNotificationWithOptions:(NSDictionary *)launchOptions
+{
     // 由本地通知启动app
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
@@ -88,7 +103,40 @@
         [self dealLocalNotification:userIndo];
     }
     
-    return YES;
+    NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    // 点击通知启动时有远程通知，点击app图标启动时没有远程通知
+    if (remoteNotification) {
+        WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
+        [_nav pushViewController:infoListVC animated:YES];
+    }
+}
+
+- (void)initJPushWithlaunchOptions:(NSDictionary *)launchOptions
+{
+    // Required
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                       UIUserNotificationTypeSound |
+                                                       UIUserNotificationTypeAlert)
+                                           categories:nil];
+    } else {
+        //categories 必须为nil
+        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                       UIRemoteNotificationTypeSound |
+                                                       UIRemoteNotificationTypeAlert)
+                                           categories:nil];
+    }
+#else
+    //categories 必须为nil
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                   UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)
+                                       categories:nil];
+#endif
+    // Required
+    [APService setupWithOption:launchOptions];
 }
 
 - (void)synchronBeannumberByKeyWord
@@ -332,6 +380,7 @@
     self.window.rootViewController = _nav;
 }
 
+#pragma mark - 处理本地通知
 - (void)dealLocalNotification:(NSDictionary *)beaconDic
 {
     NSDictionary *beaconInfoDic = [beaconDic objectForKey:IBEACON_INFO];
@@ -339,7 +388,7 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:thirdlink]];
 }
 
-#pragma mark -
+#pragma mark - 接收到本地通知
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     if (notification != nil) {
         NSDictionary *dic = [notification userInfo];
@@ -355,6 +404,105 @@
 
 }
 
+#pragma mark - 远程通知
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    // Required
+    [APService registerDeviceToken:deviceToken];
+    
+    // 发送给后台服务器
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    // Required
+    [APService handleRemoteNotification:userInfo];
+    if ([userInfo count]) {
+        NSString *tempStr1 =
+        [[userInfo description] stringByReplacingOccurrencesOfString:@"\\u"
+                                                     withString:@"\\U"];
+        NSString *tempStr2 =
+        [tempStr1 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        NSString *tempStr3 =
+        [[@"\"" stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
+        NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *str =
+        [NSPropertyListSerialization propertyListFromData:tempData
+                                         mutabilityOption:NSPropertyListImmutable
+                                                   format:NULL
+                                         errorDescription:NULL];
+        DLog(@"收到远程通知:%@", str);
+        
+        NSDictionary *aps = [userInfo objectForKey:@"aps"];
+        NSString *alert = [aps objectForKey:@"alert"];
+        DLog(@"通知内容：%@", alert);
+        DLog(@"收到推送消息：%@", userInfo);
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        switch (state) {
+            case UIApplicationStateActive:
+            {
+                DLog(@"app active时可以回调此方法，但是手机通知栏没有通知跟声音");
+            }
+                break;
+            case UIApplicationStateBackground:
+            {
+                DLog(@"UIApplicationStateBackground");
+            }
+                break;
+            case UIApplicationStateInactive:
+            {
+                DLog(@"点击通知图标时点通知启动");
+                NSArray *VCs = _nav.viewControllers;
+                BOOL hasInfoVC = NO;
+                for (UIViewController *vc in VCs) {
+                    if ([vc isKindOfClass:[WSInfoListViewController class]]) {
+                        [_nav popToViewController:vc animated:YES];
+                        hasInfoVC = YES;
+                    }
+                }
+                if (!hasInfoVC) {
+                    WSInfoListViewController *infoListVC = [[WSInfoListViewController alloc] init];
+                    [_nav pushViewController:infoListVC animated:YES];
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    
+    // IOS 7 Support Required
+    [APService handleRemoteNotification:userInfo];
+    completionHandler(UIBackgroundFetchResultNewData);
+}
+
+// Called when your app has been activated by the user selecting an action from
+// a local notification.
+// A nil action identifier indicates the default action.
+// You should call the completion handler as soon as you've finished handling
+// the action.
+- (void)application:(UIApplication *)application
+handleActionWithIdentifier:(NSString *)identifier
+forLocalNotification:(UILocalNotification *)notification
+  completionHandler:(void (^)())completionHandler {
+}
+
+// Called when your app has been activated by the user selecting an action from
+// a remote notification.
+// A nil action identifier indicates the default action.
+// You should call the completion handler as soon as you've finished handling
+// the action.
+- (void)application:(UIApplication *)application
+handleActionWithIdentifier:(NSString *)identifier
+forRemoteNotification:(NSDictionary *)userInfo
+  completionHandler:(void (^)())completionHandler {
+}
+
+#pragma mark -
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return [ShareSDK handleOpenURL:url wxDelegate:nil];

@@ -118,6 +118,11 @@
             return [NSString stringWithFormat:@"%@/app/deleteCollect.do", BASE_URL];
         }
             break;
+        case WSInterfaceTypeDelUserGift:
+        {
+            return [NSString stringWithFormat:@"%@/app/delUserGift.do", BASE_URL];
+        }
+            break;
         case WSInterfaceTypeSynchroBeanNumber:
         {
             return [NSString stringWithFormat:@"%@/app/synchroBeanNumber.do", BASE_URL];

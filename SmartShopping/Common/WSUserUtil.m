@@ -13,7 +13,7 @@
 
 + (void)actionAfterLogin:(void(^)(void))action
 {
-    WSUser *user = [WSRunTime sharedWSRunTime].user;
+    WSUser *user = [WSProjUtil getCurUser];
     NSString *userType = user.userType;
     if ([userType isEqualToString:@"1"]) {
         if (action) {

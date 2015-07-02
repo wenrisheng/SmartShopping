@@ -372,8 +372,8 @@
             }
             if (image) {
                 float imageWidth = (tableView.bounds.size.width - 20) * WS_MINE_SECONDE_CELL_IMAGE_WIDTH / 300;
-                float height = imageWidth * image.size.height / image.size.width;
-                return height + WSMINESECONDCELL_HEIGHT - WS_MINE_SECONDE_CELL_IMAGE_HEIGHT;
+               // float height = imageWidth * image.size.height / image.size.width;
+                return imageWidth + WSMINESECONDCELL_HEIGHT - WS_MINE_SECONDE_CELL_IMAGE_HEIGHT;
                 
             }
             return WSMINESECONDCELL_HEIGHT;

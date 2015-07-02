@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -23,20 +23,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kSX-BO-VDT">
                                 <rect key="frame" x="8" y="10" width="70" height="70"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="¥ 320" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7o-1B-1tl">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eoW-Mx-QBI">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="k7o-1B-1tl" secondAttribute="bottom" id="L8v-N7-FkI"/>
                                     <constraint firstAttribute="width" constant="70" id="Y3k-Ti-a9K"/>
-                                    <constraint firstAttribute="trailing" secondItem="k7o-1B-1tl" secondAttribute="trailing" id="aMn-G0-LJc"/>
                                     <constraint firstAttribute="height" constant="70" id="cYn-xq-BYV"/>
-                                    <constraint firstItem="k7o-1B-1tl" firstAttribute="leading" secondItem="kSX-BO-VDT" secondAttribute="leading" id="fZa-rq-lDf"/>
-                                    <constraint firstItem="k7o-1B-1tl" firstAttribute="top" secondItem="kSX-BO-VDT" secondAttribute="top" id="xB3-zX-qyH"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="卷号：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Oh-cW-Rjd">
@@ -108,9 +102,9 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="consumeLabel" destination="k7o-1B-1tl" id="jEH-jP-AqM"/>
                 <outlet property="consumeNumLabel" destination="bUd-8Z-wdS" id="qAR-VJ-UMD"/>
                 <outlet property="leftView" destination="kSX-BO-VDT" id="wqu-V6-sU6"/>
+                <outlet property="logoImageView" destination="eoW-Mx-QBI" id="rxc-Ks-fca"/>
                 <outlet property="statusLabel" destination="cH3-M3-8NM" id="Rx1-VJ-5wG"/>
                 <outlet property="titleLabel" destination="VL3-PP-e4x" id="jk9-hb-onF"/>
             </connections>

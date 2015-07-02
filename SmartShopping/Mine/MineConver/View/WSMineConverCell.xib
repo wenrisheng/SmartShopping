@@ -18,13 +18,14 @@
                         <rect key="frame" x="10" y="6" width="300" height="80.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kJo-5k-qFc">
-                                <rect key="frame" x="0.0" y="1" width="69" height="78.5"/>
+                                <rect key="frame" x="0.0" y="3" width="75" height="75"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="69" id="4nA-2m-VFE"/>
+                                    <constraint firstAttribute="width" constant="75" id="4nA-2m-VFE"/>
+                                    <constraint firstAttribute="height" constant="75" id="Jw8-fF-gHn"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="玉兰油AALL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uc5-Yb-fIs">
-                                <rect key="frame" x="76" y="18" width="160" height="21"/>
+                                <rect key="frame" x="82" y="18" width="154" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="sQP-QX-N3c"/>
                                 </constraints>
@@ -33,19 +34,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gainpeas_dou.png" translatesAutoresizingMaskIntoConstraints="NO" id="hLr-GM-z2b">
-                                <rect key="frame" x="77" y="39" width="20" height="20"/>
+                                <rect key="frame" x="83" y="39" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="9wc-sJ-Up4"/>
                                     <constraint firstAttribute="height" constant="20" id="xcE-Yd-g5I"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBW-N3-u35">
-                                <rect key="frame" x="104" y="39" width="88" height="21"/>
+                                <rect key="frame" x="110" y="39" width="82" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="hpY-oM-HXe"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15-04-01 18:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1O-0r-ASc">
@@ -69,13 +70,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="数量：4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfx-rL-vpS">
-                                <rect key="frame" x="77" y="57" width="215" height="21"/>
+                                <rect key="frame" x="83" y="57" width="209" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="礼品编号：25443" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9f-ln-Vu3">
-                                <rect key="frame" x="76" y="0.0" width="224" height="21"/>
+                                <rect key="frame" x="82" y="0.0" width="218" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="A1f-Uj-bq0"/>
                                 </constraints>
@@ -96,6 +97,7 @@
                             <constraint firstItem="sBW-N3-u35" firstAttribute="leading" secondItem="hLr-GM-z2b" secondAttribute="trailing" constant="7" id="KLX-eK-ond"/>
                             <constraint firstItem="hLr-GM-z2b" firstAttribute="leading" secondItem="kJo-5k-qFc" secondAttribute="trailing" constant="8" id="Lsa-xL-G2y"/>
                             <constraint firstItem="Mj9-B2-cah" firstAttribute="leading" secondItem="uc5-Yb-fIs" secondAttribute="trailing" constant="5" id="P4D-Qr-aFw"/>
+                            <constraint firstAttribute="centerY" secondItem="kJo-5k-qFc" secondAttribute="centerY" id="PsZ-G3-lm5"/>
                             <constraint firstItem="sBW-N3-u35" firstAttribute="top" secondItem="uc5-Yb-fIs" secondAttribute="bottom" id="RM6-9l-jpD"/>
                             <constraint firstItem="Mj9-B2-cah" firstAttribute="top" secondItem="rZI-nS-122" secondAttribute="top" constant="19" id="RT8-9L-w26"/>
                             <constraint firstItem="kJo-5k-qFc" firstAttribute="leading" secondItem="rZI-nS-122" secondAttribute="leading" id="X62-XD-qjP"/>
@@ -109,6 +111,12 @@
                             <constraint firstAttribute="trailing" secondItem="Mj9-B2-cah" secondAttribute="trailing" id="vVE-oe-hig"/>
                             <constraint firstAttribute="bottom" secondItem="Qfx-rL-vpS" secondAttribute="bottom" constant="2.5" id="ynm-ht-nsx"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="DRr-s4-zN8"/>
+                                <exclude reference="nww-xF-MYk"/>
+                            </mask>
+                        </variation>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dwm-IJ-lqL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -140,6 +148,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="bottomSaperateView" destination="Nbq-ly-Z4l" id="UIc-Ym-ixf"/>
+                <outlet property="giftNumLabel" destination="X9f-ln-Vu3" id="bQS-de-oxh"/>
                 <outlet property="leftImageView" destination="kJo-5k-qFc" id="wF4-ZJ-yB2"/>
                 <outlet property="nameLabel" destination="uc5-Yb-fIs" id="i0W-Af-1Dh"/>
                 <outlet property="shuliangLabel" destination="Qfx-rL-vpS" id="JFy-E7-9uy"/>
@@ -147,7 +156,7 @@
                 <outlet property="timeLabel" destination="v1O-0r-ASc" id="XDf-bB-ZDo"/>
                 <outlet property="topSaperateView" destination="Dwm-IJ-lqL" id="UY8-g7-gYy"/>
             </connections>
-            <point key="canvasLocation" x="182" y="368.5"/>
+            <point key="canvasLocation" x="228" y="385.5"/>
         </tableViewCell>
     </objects>
     <resources>
